@@ -15,7 +15,7 @@ set :scm, :git
 
 #set :deploy_subdir, 'webroot'
 
-set :linked_files, %w{common/config/main-local.php common/config/params-local.php console/config/main-local.php console/config/params-local.php}
+set :linked_files, %w{common/config/main-local.php common/config/params-local.php console/config/main-local.php console/config/params-local.php site/config/main-local.php site/config/params-local.php}
 
 #set :linked_files, %w{webroot/protected/config/db.php webroot/protected/runtime/application.log}
 
