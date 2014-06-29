@@ -15,6 +15,8 @@ set :scm, :git
 
 #set :deploy_subdir, 'webroot'
 
+set :linked_files, %w{common/config/main-local.php common/config/params-local.php}
+
 #set :linked_files, %w{webroot/protected/config/db.php webroot/protected/runtime/application.log}
 
 # Default value for :format is :pretty
@@ -59,6 +61,15 @@ namespace :deploy do
   end
 
   after :updated, 'deploy:composer_install'
+
+  desc 'Migrating database'
+  task :migrate do
+    on roles(:app) do
+      execute "cd #{release_path} && ./yii migrate --interactive=0"
+    end
+  end
+
+  after :composer_install, :migrate
 
   desc "Switching index.php to prod"
   task :switch_index do
