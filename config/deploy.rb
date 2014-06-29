@@ -15,7 +15,7 @@ set :scm, :git
 
 #set :deploy_subdir, 'webroot'
 
-set :linked_files, %w{common/config/main-local.php common/config/params-local.php}
+set :linked_files, %w{common/config/main-local.php common/config/params-local.php console/config/main-local.php console/config/params-local.php}
 
 #set :linked_files, %w{webroot/protected/config/db.php webroot/protected/runtime/application.log}
 
@@ -69,7 +69,7 @@ namespace :deploy do
     end
   end
 
-  after :composer_install, :migrate
+  after :published, :migrate
 
   desc "Switching index.php to prod"
   task :switch_index do
@@ -80,6 +80,6 @@ namespace :deploy do
     end
   end
 
-  after :published, 'deploy:switch_index'
+  after :migrate, 'deploy:switch_index'
 
 end
