@@ -21,6 +21,28 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date +1 week"))]); ?>">&gt;&gt;</a> 
 </div>
 
+
+<?php
+    if($score < 30) {
+        $alert_level = "success";
+        $alert_msg = "You're doing well! Keep on doing whatever it is you're doing!";
+    } else if($score < 50) {
+        $alert_level = "info";
+        $alert_msg = "Some warning signs, but nothing too bad. Have some quiet time, process things, and call a friend.";
+    } else if($score < 70) {
+        $alert_level = "warning";
+        $alert_msg = "Definite warning signs. You aren't doing well. Take some time out, write out what you're feeling, and discuss it with someone.";
+    } else {
+        $alert_level = "danger";
+        $alert_msg = "Welcome to the dangerzone. You need to take action right now, or else you WILL act out. Go call someone.";
+    }
+?>
+
+<div id='score'>
+    <h2>Score: <?php print $score; ?></h2>
+    <div class='alert alert-<?php print $alert_level; ?>'><?php print $alert_msg; ?></div>
+</div>
+
 <?php
 $form = ActiveForm::begin([
     'id' => 'checkin-form',

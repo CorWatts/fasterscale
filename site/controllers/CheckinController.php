@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\db\Query;
+use yii\helpers\VarDumper;
 
 class CheckinController extends \yii\web\Controller
 {
@@ -67,23 +68,77 @@ class CheckinController extends \yii\web\Controller
             $date = date("Y-m-d");
 
         $form = new CheckinForm();
-        $user_options = UserOption::find()->where(["user_id" => Yii::$app->user->id, 'date(date)' => $date])->with('option')->asArray()->all();
-
-        $options_by_category = array();
-        foreach($user_options as $option) {
-            $options_by_category[$option['option']['category_id']][] = $option['option_id'];
-        }
-        foreach($options_by_category as $category_id => $options) {
-            $attribute = "options$category_id";
-            $form->$attribute = $options;
-        }
 
         $categories = Category::find()->asArray()->all();
 
         $options = Option::find()->asArray()->all();
         $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
-        return $this->render('view', ['model' => $form, 'categories' => $categories, 'optionsList' => $optionsList, 'date' => $date]);
+        $user_options = UserOption::find()->where(["user_id" => Yii::$app->user->id, 'date(date)' => $date])->with('option')->asArray()->all();
+
+        $score = 0;
+
+        if($user_options) {
+            foreach($user_options as $option) {
+                $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
+                $attribute = "options".$option['option']['category_id'];
+                $form->{$attribute}[] = $option['option_id'];
+            }
+
+
+            $query = new Query;
+            $query->select("c.id as category_id, c.name as name, c.weight as weight, COUNT(o.id) as option_count")
+                ->from('category c')
+                ->join("INNER JOIN", "option o", "o.category_id = c.id")
+                ->groupBy('c.id, c.name, c.weight')
+                ->orderBy('c.id')
+                ->indexBy('category_id');
+            $category_options = $query->all();
+
+            /*
+            $query = new Query;
+            $query->select("o.category_id as category_id, COUNT(l.id) as option_count")
+                ->from('user_option_link l')
+                ->join("INNER JOIN", "option o", "o.id = l.option_id")
+                ->groupBy('o.category_id')
+                ->orderBy('o.category_id')
+                ->where('l.date::date=:date', [":date" => date("Y-m-d")])
+                ->indexBy('category_id');
+            $user_options = $query->all();
+             */
+
+            $query = new Query;
+            $query->params = [":user_id" => Yii::$app->user->id];
+            $query->select("o.id as id, o.name as name, COUNT(o.id) as count")
+                ->from('user_option_link l')
+                ->join("INNER JOIN", "option o", "l.option_id = o.id")
+                ->groupBy('o.id, l.user_id')
+                ->having('l.user_id = :user_id')
+                ->orderBy('count DESC')
+                ->limit(5);
+            $user_rows = $query->all();
+
+
+            foreach($category_options as $options) {
+                if(array_key_exists($options['category_id'], $user_options_by_category))
+                    $stats[$options['category_id']] = $category_options[$options['category_id']]['weight'] * (count($user_options_by_category[$options['category_id']]) / $options['option_count']);
+                else
+                    $stats[$options['category_id']] = 0;
+            }
+
+            $sum = 0;
+            $count = 0;
+            foreach($stats as $stat) {
+                $sum += $stat;
+
+                if($stat > 0)
+                    $count += 1;
+            }
+            $avg = $sum / $count;
+            $score = round($avg * 100);
+        }
+
+        return $this->render('view', ['model' => $form, 'categories' => $categories, 'optionsList' => $optionsList, 'date' => $date, 'score' => $score]);
     }
 
     public function actionReport() {
@@ -96,10 +151,11 @@ class CheckinController extends \yii\web\Controller
             ->having('l.user_id = :user_id')
             ->orderBy('count DESC')
             ->limit(5);
-        $rows = $query->all();
+        $user_rows = $query->all();
 
 
-        return $this->render('report', ['top_options' => $rows]);
+
+        return $this->render('report', ['top_options' => $user_rows]);
 
     }
 }
