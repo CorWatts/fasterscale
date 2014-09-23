@@ -180,6 +180,10 @@ class CheckinController extends \yii\web\Controller
                 "highlight" => "#D4A76A"
             ],
             [
+                "color" => "#277553",
+                "highlight" => "#499272"
+            ],
+            [
                 "color" => "#29506D",
                 "highlight" => "#496D89"
             ],
