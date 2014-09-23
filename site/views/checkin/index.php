@@ -7,7 +7,7 @@ use yii\bootstrap\Button;
  */
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
-    return "<label class='checkbox-inline'><input type='checkbox' name='$name' value='$value' />$label</label>";
+    return "<label class='checkbox-inline'><input type='checkbox' name='$name' value='$value' />$label</label><br />";
 }
 ?>
 <h1>Check In</h1>

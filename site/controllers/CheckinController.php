@@ -153,9 +153,56 @@ class CheckinController extends \yii\web\Controller
             ->limit(5);
         $user_rows = $query->all();
 
+        $query2 = new Query;
+        $query2->params = [":user_id" => Yii::$app->user->id];
+        $query2->select("c.name as name, COUNT(o.id) as count")
+            ->from('user_option_link l')
+            ->join("INNER JOIN", "option o", "l.option_id = o.id")
+            ->join("INNER JOIN", "category c", "o.category_id = c.id")
+            ->groupBy('c.id, c.name, l.user_id')
+            ->having('l.user_id = :user_id');
+        $answer_pie = $query2->all();
+        $pie_colors = [
+            [
+                "color" => "#277553",
+                "highlight" => "#499272"
+            ],
+            [
+                "color" => "#29506D",
+                "highlight" => "#496D89"
+            ],
+            [
+                "color" => "AA5939",
+                "highlight" => "D4886A"
+            ],
+            [
+                "color" => "#AA7939",
+                "highlight" => "#D4A76A"
+            ],
+            [
+                "color" => "#29506D",
+                "highlight" => "#496D89"
+            ],
+            [
+                "color" => "AA5939",
+                "highlight" => "D4886A"
+            ]
+        ];
 
 
-        return $this->render('report', ['top_options' => $user_rows]);
+        $pie_data = [];
+        foreach($answer_pie as $key => $category) {
+            $json = [
+                "value" => $category['count'],
+                "color" => $pie_colors[$key]["color"],
+                "highlight" => $pie_colors[$key]["highlight"],
+                "label" => $category['name']
+            ];
+            $pie_data[] = $json;
+        }
+
+
+        return $this->render('report', ['top_options' => $user_rows, 'pie_chart' => json_encode($pie_data)]);
 
     }
 }
