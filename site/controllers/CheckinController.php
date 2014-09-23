@@ -208,7 +208,6 @@ class CheckinController extends \yii\web\Controller
         }
 
 
-        return $this->render('report', ['top_options' => $user_rows, 'pie_chart' => json_encode($pie_data)]);
-
+        return $this->render('report', ['top_options' => $user_rows, 'pie_chart' => json_encode($pie_data, JSON_NUMERIC_CHECK)]);
     }
 }
