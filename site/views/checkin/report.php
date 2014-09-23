@@ -8,29 +8,33 @@ use yii\web\JsExpression;
  */
 ?>
 <h1>Checkin Report</h1>
-<table class='table table-striped'>
-    <tr>
-        <th>#</th>
-        <th>Option Name</th>
-        <th>Count</th>
-    </tr>
-<?php foreach($top_options as $key => $row) {
-    $num = $key + 1;
-    print "<tr>".
-        "<td>".$num."</td>".
-        "<td>{$row['name']}</td>".
-        "<td>{$row['count']}</td>".
-    "</tr>";
 
-}
-
-?>
-</table>
 
 <div class='row'>
     <div class='col-md-4'>
         <h2>Answers by Category</h2>
-        <canvas id='category_pie_chart' width="250" height="250"></canvas></div>
+        <canvas id='category_pie_chart' width="250" height="250"></canvas>
+    </div>
+    <div class='col-md-8'>
+        <h2>Top Answers</h2>
+        <table class='table table-striped'>
+            <tr>
+                <th>#</th>
+                <th>Option Name</th>
+                <th>Count</th>
+            </tr>
+        <?php foreach($top_options as $key => $row) {
+            $num = $key + 1;
+            print "<tr>".
+                "<td>".$num."</td>".
+                "<td>{$row['name']}</td>".
+                "<td>{$row['count']}</td>".
+            "</tr>";
+
+        }
+        ?>
+        </table>
+    </div>
 </div>
 <?php
 $this->registerJs('
