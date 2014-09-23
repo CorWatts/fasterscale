@@ -134,7 +134,9 @@ class CheckinController extends \yii\web\Controller
                 if($stat > 0)
                     $count += 1;
             }
-            $avg = $sum / $count;
+
+            $avg = ($count > 0) ? $sum / $count : 0;
+
             $score = round($avg * 100);
         }
 
