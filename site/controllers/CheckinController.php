@@ -199,7 +199,7 @@ class CheckinController extends \yii\web\Controller
         $pie_data = [];
         foreach($answer_pie as $key => $category) {
             $json = [
-                "value" => $category['count'],
+                "value" => (int)$category['count'],
                 "color" => $pie_colors[$key]["color"],
                 "highlight" => $pie_colors[$key]["highlight"],
                 "label" => $category['name']
@@ -208,6 +208,6 @@ class CheckinController extends \yii\web\Controller
         }
 
 
-        return $this->render('report', ['top_options' => $user_rows, 'pie_chart' => json_encode($pie_data, JSON_NUMERIC_CHECK)]);
+        return $this->render('report', ['top_options' => $user_rows, 'pie_chart' => json_encode($pie_data)]);
     }
 }
