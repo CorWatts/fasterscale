@@ -23,7 +23,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
             'clientOptions' => [
                 'dateFormat' => 'yy-mm-dd', 
                 'defaultDate' => date("Y-m-d", strtotime($date)),
-                'onSelect' => new \yii\web\JsExpression("function(dateText, obj) { console.log(location.href); console.log(dateText); location.href = dateText; }")
+                'onSelect' => new \yii\web\JsExpression("function(dateText, obj) { console.log(location.href); console.log(dateText); location.href = '/checkin/view/'+dateText; }")
             ]
         ]) ?>
     </div>
