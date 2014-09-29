@@ -19,7 +19,8 @@
 		"yiisoft/yii2-bootstrap": "*",
 		"yiisoft/yii2-swiftmailer": "*",
 		"yiisoft/yii2-gii": "*",
-        "miloschuman/yii2-highcharts-widget": "dev-master"
+        "miloschuman/yii2-highcharts-widget": "dev-master",
+		"yiisoft/yii2-jui": "*"
 	},
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",

@@ -92,3 +92,4 @@ a.desc:after {
 
 #checkin-form .btn {margin-bottom: 4px;}
 #checkin-form .control-label {font-size: 16px;}
+#ui-datepicker-div {z-index: 1050 !important;}

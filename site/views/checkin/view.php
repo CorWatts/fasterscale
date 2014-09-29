@@ -16,11 +16,20 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 <div id='past-checkin-nav' class='btn-group'>
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date -1 week"))]); ?>">&lt;&lt;</a> 
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date -1 day"))]); ?>">&lt;</a> 
-    <button type="button" class="btn btn-default disabled"><?php print date("F j Y", strtotime($date)); ?></button>
+    <div class="btn btn-default">
+        <?= yii\jui\DatePicker::widget([
+            'name' => 'attributeName', 
+            'value'=> date("Y-m-d", strtotime($date)), 
+            'clientOptions' => [
+                'dateFormat' => 'yy-mm-dd', 
+                'defaultDate' => date("Y-m-d", strtotime($date)),
+                'onSelect' => new \yii\web\JsExpression("function(dateText, obj) { console.log(location.href); console.log(dateText); location.href = dateText; }")
+            ]
+        ]) ?>
+    </div>
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date +1 day"))]); ?>">&gt;</a> 
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date +1 week"))]); ?>">&gt;&gt;</a> 
 </div>
-
 
 <?php
     if($score < 30) {
