@@ -23,7 +23,12 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
             'clientOptions' => [
                 'dateFormat' => 'yy-mm-dd', 
                 'defaultDate' => date("Y-m-d", strtotime($date)),
-                'onSelect' => new \yii\web\JsExpression("function(dateText, obj) { console.log(location.href); console.log(dateText); location.href = '/checkin/view/'+dateText; }")
+                'onSelect' => new \yii\web\JsExpression("function(dateText, obj) { location.href = '/checkin/view/'+dateText; }"),
+                'beforeShowDay' => new \yii\web\JsExpression("function(date) { 
+                    var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                    var dates = ".json_encode($past_checkin_dates).";
+                    return [ dates.indexOf(string) > -1 ];
+                }")
             ]
         ]) ?>
     </div>

@@ -54,7 +54,6 @@ class CheckinController extends \yii\web\Controller
             Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
             return $this->redirect('checkin/view', 200);
         } else {
-            print_r($form->getErrors());
             $categories = Category::find()->asArray()->all();
             $options = Option::find()->asArray()->all();
             $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
@@ -68,6 +67,17 @@ class CheckinController extends \yii\web\Controller
             $date = date("Y-m-d");
 
         $form = new CheckinForm();
+
+        $query = new Query;
+        $query->params = [":user_id" => Yii::$app->user->id];
+        $query->select("date(date)")
+            ->from('user_option_link l')
+            ->groupBy('date, user_id')
+            ->having('user_id = :user_id');
+        $temp_dates = $query->all();
+        foreach($temp_dates as $temp_date) {
+            $past_checkin_dates[] = $temp_date['date'];
+        }
 
         $categories = Category::find()->asArray()->all();
 
@@ -118,7 +128,6 @@ class CheckinController extends \yii\web\Controller
                 ->limit(5);
             $user_rows = $query->all();
 
-
             foreach($category_options as $options) {
                 if(array_key_exists($options['category_id'], $user_options_by_category))
                     $stats[$options['category_id']] = $category_options[$options['category_id']]['weight'] * (count($user_options_by_category[$options['category_id']]) / $options['option_count']);
@@ -140,7 +149,7 @@ class CheckinController extends \yii\web\Controller
             $score = round($avg * 100);
         }
 
-        return $this->render('view', ['model' => $form, 'categories' => $categories, 'optionsList' => $optionsList, 'date' => $date, 'score' => $score]);
+        return $this->render('view', ['model' => $form, 'categories' => $categories, 'optionsList' => $optionsList, 'date' => $date, 'score' => $score, 'past_checkin_dates' => $past_checkin_dates]);
     }
 
     public function actionReport() {
