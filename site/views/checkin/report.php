@@ -8,6 +8,49 @@ use yii\web\JsExpression;
  */
 
 $this->title = "Checkin Report";
+
+$pie_colors = [
+    [
+        "color" => "#277553",
+        "highlight" => "#499272"
+    ],
+    [
+        "color" => "#29506D",
+        "highlight" => "#496D89"
+    ],
+    [
+        "color" => "AA5939",
+        "highlight" => "D4886A"
+    ],
+    [
+        "color" => "#AA7939",
+        "highlight" => "#D4A76A"
+    ],
+    [
+        "color" => "#277553",
+        "highlight" => "#499272"
+    ],
+    [
+        "color" => "#29506D",
+        "highlight" => "#496D89"
+    ],
+    [
+        "color" => "AA5939",
+        "highlight" => "D4886A"
+    ]
+];
+
+
+$pie_data = [];
+foreach($answer_pie as $key => $category) {
+    $json = [
+        "value" => (int)$category['count'],
+        "color" => $pie_colors[$key]["color"],
+        "highlight" => $pie_colors[$key]["highlight"],
+        "label" => $category['name']
+    ];
+    $pie_data[] = $json;
+}
 ?>
 <h1>Checkin Report</h1>
 
@@ -66,27 +109,6 @@ $this->registerJs('
 
         };
         var ctx = document.getElementById("category_pie_chart").getContext("2d");
-        var myPieChart = new Chart(ctx).Pie('.$pie_chart.', pie_chart_data);
+        var myPieChart = new Chart(ctx).Pie('.json_encode($pie_data).', pie_chart_data);
 ');
-?>
-
-<?php
-/*
-echo Highcharts::widget([
-   'options' => [
-      'chart' => ['type' => 'area'],
-      'title' => ['text' => 'Fruit Consumption'],
-      'xAxis' => [
-        'categories' => ['2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', '2014-01-06', '2014-01-07', '2014-01-08', '2014-01-09']
-      ],
-      'yAxis' => [
-         'title' => ['text' => 'Fruit eaten'],
-         'labels' => ['formatter' => new JSExpression('function() { return this.value; }')]
-      ],
-      'series' => [
-         ['name' => 'Jane', 'data' => [89, 99, 45, 76,21, 83, 33, 36, 55]],
-      ]
-   ]
-]);
- */
 ?>
