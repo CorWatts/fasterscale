@@ -75,6 +75,7 @@ class CheckinController extends \yii\web\Controller
             ->groupBy('date, user_id')
             ->having('user_id = :user_id');
         $temp_dates = $query->all();
+	$past_checkin_dates = [];
         foreach($temp_dates as $temp_date) {
             $past_checkin_dates[] = $temp_date['date'];
         }

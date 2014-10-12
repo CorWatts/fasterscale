@@ -20,11 +20,11 @@
 		"yiisoft/yii2-swiftmailer": "*",
 		"yiisoft/yii2-gii": "*",
         "miloschuman/yii2-highcharts-widget": "dev-master",
-		"yiisoft/yii2-jui": "*"
+		"yiisoft/yii2-jui": "*",
+		"yiisoft/yii2-debug": "*"
 	},
 	"require-dev": {
-		"yiisoft/yii2-codeception": "*",
-		"yiisoft/yii2-debug": "*"
+		"yiisoft/yii2-codeception": "*"
 	},
 	"suggest": {
 		"codeception/codeception": "Codeception, 1.8.*@dev is currently works well with Yii.",
