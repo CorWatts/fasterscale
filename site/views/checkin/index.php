@@ -6,6 +6,8 @@ use yii\bootstrap\Button;
  * @var yii\web\View $this
  */
 
+$this->title = "Check In";
+
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
     return "<label class='checkbox-inline'><input type='checkbox' name='$name' value='$value' />$label</label><br />";
 }

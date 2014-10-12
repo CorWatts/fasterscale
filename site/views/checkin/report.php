@@ -6,6 +6,8 @@ use yii\web\JsExpression;
 /**
  * @var yii\web\View $this
  */
+
+$this->title = "Checkin Report";
 ?>
 <h1>Checkin Report</h1>
 

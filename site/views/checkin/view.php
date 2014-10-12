@@ -7,6 +7,8 @@ use yii\bootstrap\Button;
  * @var yii\web\View $this
  */
 
+$this->title = "Past Checkins";
+
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
     $checked_val = ($checked) ? "active" : "";
     return "<button class='btn btn-default $checked_val' data-toggle='button' name='$name' value='$value'>$label</button>";
@@ -16,10 +18,11 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 <div id='past-checkin-nav' class='btn-group'>
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date -1 week"))]); ?>">&lt;&lt;</a> 
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date -1 day"))]); ?>">&lt;</a> 
-    <div class="btn btn-default">
         <?= yii\jui\DatePicker::widget([
             'name' => 'attributeName', 
-            'value'=> date("Y-m-d", strtotime($date)), 
+            'value' => date("Y-m-d", strtotime($date)), 
+            'options' => ['class'=> 'btn btn-default'],
+            'language' => 'en',
             'clientOptions' => [
                 'dateFormat' => 'yy-mm-dd', 
                 'defaultDate' => date("Y-m-d", strtotime($date)),
@@ -31,7 +34,6 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
                 }")
             ]
         ]) ?>
-    </div>
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date +1 day"))]); ?>">&gt;</a> 
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date +1 week"))]); ?>">&gt;&gt;</a> 
 </div>
