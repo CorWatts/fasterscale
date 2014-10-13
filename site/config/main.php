@@ -40,6 +40,10 @@ return [
 
             ]
         ],
+        'request' => [
+            'enableCookieValidation' => true,
+            'enableCsrfValidation' => true
+        ]
     ],
     'params' => $params,
 ];
