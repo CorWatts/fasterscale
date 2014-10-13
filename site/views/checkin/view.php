@@ -23,8 +23,8 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
             'value' => date("Y-m-d", strtotime($date)), 
             'options' => ['class'=> 'btn btn-default'],
             'language' => 'en',
+            'dateFormat' => 'yyyy-MM-dd', 
             'clientOptions' => [
-                'dateFormat' => 'yy-mm-dd', 
                 'defaultDate' => date("Y-m-d", strtotime($date)),
                 'onSelect' => new \yii\web\JsExpression("function(dateText, obj) { location.href = '/checkin/view/'+dateText; }"),
                 'beforeShowDay' => new \yii\web\JsExpression("function(date) { 
