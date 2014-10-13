@@ -112,7 +112,7 @@ class UserOption extends \yii\db\ActiveRecord
         $scoresByMonth = [];
 
         $user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date(date)'])->where(["and", "user_id=".Yii::$app->user->id, "date(date)>'".date("Y-m-d", strtotime("Today - 1 month"))."'"])->orderBy('date(date)')->with('option')->asArray()->all();
-        $user_options_by_date = [];
+        $options_by_date = [];
         foreach($user_options as $user_option) {
             $options_by_date[$user_option['date']][] = $user_option['option'];
         }
