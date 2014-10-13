@@ -80,30 +80,9 @@ class UserOption extends \yii\db\ActiveRecord
         if($user_options) {
             foreach($user_options as $option) {
                 $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
-                $attribute = "options".$option['option']['category_id'];
-                $form->{$attribute}[] = $option['option_id'];
             }
 
-
-            $query = new Query;
-            $query->select("c.id as category_id, c.name as name, c.weight as weight, COUNT(o.id) as option_count")
-                ->from('category c')
-                ->join("INNER JOIN", "option o", "o.category_id = c.id")
-                ->groupBy('c.id, c.name, c.weight')
-                ->orderBy('c.id')
-                ->indexBy('category_id');
-            $category_options = $query->all();
-
-            $query = new Query;
-            $query->params = [":user_id" => Yii::$app->user->id];
-            $query->select("o.id as id, o.name as name, COUNT(o.id) as count")
-                ->from('user_option_link l')
-                ->join("INNER JOIN", "option o", "l.option_id = o.id")
-                ->groupBy('o.id, l.user_id')
-                ->having('l.user_id = :user_id')
-                ->orderBy('count DESC')
-                ->limit(5);
-            $user_rows = $query->all();
+            $category_options = Option::getAllOptionsByCategory();
 
             foreach($category_options as $options) {
                 if(array_key_exists($options['category_id'], $user_options_by_category))
@@ -127,6 +106,47 @@ class UserOption extends \yii\db\ActiveRecord
         }
 
         return $score;
+    }
+
+    public function calculateScoresOfLastMonth() {
+        $scoresByMonth = [];
+
+        $user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date(date)'])->where(["and", "user_id=".Yii::$app->user->id, "date(date)>'".date("Y-m-d", strtotime("Today - 1 month"))."'"])->orderBy('date(date)')->with('option')->asArray()->all();
+        $user_options_by_date = [];
+        foreach($user_options as $user_option) {
+            $options_by_date[$user_option['date']][] = $user_option['option'];
+        }
+
+        foreach($options_by_date as $date => $options) {
+            foreach($options as $option) {
+                $options_by_category[$option['category_id']][] = $option['id'];
+            }
+            //return $options_by_category;
+
+            $category_options = Option::getAllOptionsByCategory();
+
+            foreach($category_options as $options) {
+                if(array_key_exists($options['category_id'], $options_by_category))
+                    $stats[$options['category_id']] = $category_options[$options['category_id']]['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
+                else
+                    $stats[$options['category_id']] = 0;
+            }
+
+            $sum = 0;
+            $count = 0;
+            foreach($stats as $stat) {
+                $sum += $stat;
+
+                if($stat > 0)
+                    $count += 1;
+            }
+
+            $avg = ($count > 0) ? $sum / $count : 0;
+
+            $scoresByMonth[$date] = round($avg * 100);
+        }
+
+        return $scoresByMonth;
     }
 
     public function getPastCheckinDates()

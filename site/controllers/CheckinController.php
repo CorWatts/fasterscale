@@ -69,6 +69,13 @@ class CheckinController extends \yii\web\Controller
         $form = new CheckinForm();
 
         $past_checkin_dates = UserOption::getPastCheckinDates();
+        $user_options = UserOption::find()->where(["user_id" => Yii::$app->user->id, 'date(date)' => $date])->with('option')->asArray()->all();
+        foreach($user_options as $option) {                                                                                                                         
+                $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
+                $attribute = "options".$option['option']['category_id'];
+                $form->{$attribute}[] = $option['option_id'];
+            }   
+
 
         $categories = Category::find()->asArray()->all();
 
@@ -102,7 +109,8 @@ class CheckinController extends \yii\web\Controller
             ->having('l.user_id = :user_id');
         $answer_pie = $query2->all();
 
+       $scores = UserOption::calculateScoresOfLastMonth();
 
-        return $this->render('report', ['top_options' => $user_rows, 'answer_pie' => $answer_pie]);
+        return $this->render('report', ['top_options' => $user_rows, 'answer_pie' => $answer_pie, 'scores' => $scores]);
     }
 }

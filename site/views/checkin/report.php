@@ -58,7 +58,7 @@ foreach($answer_pie as $key => $category) {
 <div class='row'>
     <div class='col-md-4'>
         <h2>Answers by Category</h2>
-        <canvas id='category_pie_chart' width="250" height="250"></canvas>
+        <canvas id='category-pie-chart' width="250" height="250"></canvas>
     </div>
     <div class='col-md-8'>
         <h2>Top Answers</h2>
@@ -81,34 +81,38 @@ foreach($answer_pie as $key => $category) {
         </table>
     </div>
 </div>
+<div class='row'>
+    <div class='col-md-12'>
+        <h2>Last Month's Scores</h2>
+        <canvas id='scores-line-chart' width="1100" height="400"></canvas>
+    </div>
+</div>
 <?php
 $this->registerJs('
-        var pie_chart_data = {
-            //Boolean - Whether we should show a stroke on each segment
-            segmentShowStroke : true,
-
-            //String - The colour of each segment stroke
-            segmentStrokeColor : "#fff",
-
-            //Number - The width of each segment stroke
-            segmentStrokeWidth : 2,
-
-            //Number - Amount of animation steps
-            animationSteps : 100,
-
-            //String - Animation easing effect
-            animationEasing : "easeOutBounce",
-
-            //Boolean - Whether we animate the rotation of the Doughnut
-            animateRotate : true,
-
-            //Boolean - Whether we animate scaling the Doughnut from the centre
-            animateScale : true,
-
-            legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-
+        var pie_chart_options = {
         };
-        var ctx = document.getElementById("category_pie_chart").getContext("2d");
-        var myPieChart = new Chart(ctx).Pie('.json_encode($pie_data).', pie_chart_data);
+        var pie_chart_ctx = document.getElementById("category-pie-chart").getContext("2d");
+        var myPieChart = new Chart(pie_chart_ctx).Pie('.json_encode($pie_data).', pie_chart_options);
 ');
+
+
+
+$data = json_encode([
+    "labels" => array_keys($scores),
+    "datasets" => [
+        [
+            "fillColor" => "rgba(72,108,136,0.4)",
+            "strokeColor" => "rgba(41,79,109,1)",
+            "pointColor" => "rgba(41,79,109,1)",
+            "pointStrokeColor" => "#fff",
+            "pointHighlightFill" => "rgba(112,141,164,1)",
+            "pointHighlightStroke" => "#fff",
+            "data" => array_values($scores)
+        ]
+    ]
+]);
+$this->registerJs("
+    var line_chart_options = {};
+    var line_chart_ctx = document.getElementById('scores-line-chart').getContext('2d');
+    var scores_line_chart = new Chart(line_chart_ctx).Line($data, {});");
 ?>
