@@ -117,13 +117,12 @@ class UserOption extends \yii\db\ActiveRecord
             $options_by_date[$user_option['date']][] = $user_option['option'];
         }
 
+        $category_options = Option::getAllOptionsByCategory();
+
         foreach($options_by_date as $date => $options) {
             foreach($options as $option) {
                 $options_by_category[$option['category_id']][] = $option['id'];
             }
-            //return $options_by_category;
-
-            $category_options = Option::getAllOptionsByCategory();
 
             foreach($category_options as $options) {
                 if(array_key_exists($options['category_id'], $options_by_category))
@@ -140,6 +139,9 @@ class UserOption extends \yii\db\ActiveRecord
                 if($stat > 0)
                     $count += 1;
             }
+
+            unset($stats);
+            unset($options_by_category);
 
             $avg = ($count > 0) ? $sum / $count : 0;
 

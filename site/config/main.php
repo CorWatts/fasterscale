@@ -43,7 +43,17 @@ return [
         'request' => [
             'enableCookieValidation' => true,
             'enableCsrfValidation' => true
-        ]
+        ],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'dateFormat' => 'medium',//'yyyy-MM-dd',
+            'datetimeFormat' => 'yyyy-MM-dd H:i:s',
+            'timeFormat' => 'H:i:s',
+            'timeZone' => 'America/Los_Angeles',
+            'locale' => 'en_US'
+        ] 
     ],
     'params' => $params,
+    /*
+     */
 ];

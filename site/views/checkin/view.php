@@ -20,6 +20,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date -1 day"))]); ?>">&lt;</a> 
         <?= yii\jui\DatePicker::widget([
             'name' => 'attributeName', 
+            //'value' => date("Y-m-d", strtotime($date)), 
             'value' => date("Y-m-d", strtotime($date)), 
             'options' => ['class'=> 'btn btn-default'],
             'language' => 'en',

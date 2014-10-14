@@ -52,7 +52,7 @@ class CheckinController extends \yii\web\Controller
                 $user_option->save();
             }
             Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
-            return $this->redirect('checkin/view', 200);
+            return $this->redirect(['checkin/view'], 200);
         } else {
             $categories = Category::find()->asArray()->all();
             $options = Option::find()->asArray()->all();
