@@ -12,19 +12,19 @@
 		"irc": "irc://irc.freenode.net/yii",
 		"source": "https://github.com/yiisoft/yii2"
 	},
-	"minimum-stability": "beta",
+	"minimum-stability": "stable",
 	"require": {
 		"php": ">=5.4.0",
-		"yiisoft/yii2": "dev-master",
+		"yiisoft/yii2": "*",
 		"yiisoft/yii2-bootstrap": "*",
 		"yiisoft/yii2-swiftmailer": "*",
-		"yiisoft/yii2-gii": "*",
 		"yiisoft/yii2-jui": "*",
-		"yiisoft/yii2-debug": "*",
-        "fxp/composer-asset-plugin": "*",
+        "fxp/composer-asset-plugin": "1.0.*@dev",
         "bower-asset/jquery": "@stable",
+        "bower-asset/bootstrap": "@stable",
         "bower-asset/jquery-ui": "@stable",
-        "bower-asset/jquery.inputmask": "@stable"
+        "bower-asset/jquery.inputmask": "@stable",
+        "bower-asset/punycode": "@stable"
 	},
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",
