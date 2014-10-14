@@ -21,6 +21,7 @@
 		"yiisoft/yii2-gii": "*",
 		"yiisoft/yii2-jui": "*",
 		"yiisoft/yii2-debug": "*",
+        "fxp/composer-asset-plugin": "*",
         "bower-asset/jquery": "@stable",
         "bower-asset/jquery-ui": "@stable",
         "bower-asset/jquery.inputmask": "@stable"
