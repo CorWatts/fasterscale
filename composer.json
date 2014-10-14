@@ -19,18 +19,17 @@
 		"yiisoft/yii2-bootstrap": "*",
 		"yiisoft/yii2-swiftmailer": "*",
 		"yiisoft/yii2-gii": "*",
-        "miloschuman/yii2-highcharts-widget": "dev-master",
 		"yiisoft/yii2-jui": "*",
-		"yiisoft/yii2-debug": "*"
+		"yiisoft/yii2-debug": "*",
+        "bower-asset/jquery": "@stable",
+        "bower-asset/jquery-ui": "@stable",
+        "bower-asset/jquery.inputmask": "@stable"
 	},
 	"require-dev": {
-		"yiisoft/yii2-codeception": "*"
-	},
-	"suggest": {
-		"codeception/codeception": "Codeception, 1.8.*@dev is currently works well with Yii.",
-		"codeception/specify": "BDD style code blocks for PHPUnit and Codeception",
-		"codeception/verify": "BDD Assertions for PHPUnit and Codeception",
-		"yiisoft/yii2-faker": "Fixtures generator for Yii2 based on Faker lib"
+		"yiisoft/yii2-codeception": "*",
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*",
+        "yiisoft/yii2-faker": "*"
 	},
 	"scripts": {
 		"post-create-project-cmd": [
