@@ -34,7 +34,7 @@ class UserOption extends \yii\db\ActiveRecord
         return [
             [['user_id', 'option_id', 'date'], 'required'],
             [['user_id', 'option_id'], 'integer'],
-            [['date'], 'string']
+            //[['date'], 'string']
         ];
     }
 

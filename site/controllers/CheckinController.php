@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\db\Query;
+use yii\db\Expression;
 use yii\helpers\VarDumper;
 
 class CheckinController extends \yii\web\Controller
@@ -42,13 +43,14 @@ class CheckinController extends \yii\web\Controller
 
             // delete the old data, we only store one data set per day
             if(sizeof($options) > 0)
-                UserOption::deleteAll('user_id=:user_id AND date(date)=:date', [':user_id' => Yii::$app->user->id, ':date' => date('Y-m-d H:i:s')]);
+                UserOption::deleteAll('user_id=:user_id AND date(date)=now()::date', [':user_id' => Yii::$app->user->id]);
 
             foreach($options as $option_id) {
                 $user_option = new UserOption;
                 $user_option->option_id = $option_id;
                 $user_option->user_id = Yii::$app->user->id;
-                $user_option->date = date('Y-m-d H:i:s');
+                //$user_option->date = date('Y-m-d H:i:s');
+                $user_option->date = new Expression("now()::timestamp");
                 $user_option->save();
             }
             Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
