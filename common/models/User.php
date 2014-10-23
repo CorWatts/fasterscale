@@ -5,6 +5,8 @@ use yii;
 use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use \DateTime;
+use \DateTimeZone;
 
 /**
  * User model
@@ -174,5 +176,17 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function convertLocalTimeToUTC($local_timestamp) {
+        $timestamp = new DateTime($local_timestamp);
+        $timestamp->setTimeZone(new DateTimeZone("UTC"));
+        return $timestamp->format("Y-m-d H:i:s");
+    }
+
+    public function convertUTCToLocalDate($utc_timestamp) {
+        $timestamp = new DateTime($utc_timestamp, new DateTimeZone("UTC"));
+        $timestamp->setTimeZone(new DateTimeZone("PST"));
+        return $timestamp->format("Y-m-d");
     }
 }

@@ -16,17 +16,17 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 ?>
 <h1>View Past Checkins</h1>
 <div id='past-checkin-nav' class='btn-group'>
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date -1 week"))]); ?>">&lt;&lt;</a> 
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date -1 day"))]); ?>">&lt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$actual_date -1 week"))]); ?>">&lt;&lt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$actual_date -1 day"))]); ?>">&lt;</a> 
         <?= yii\jui\DatePicker::widget([
             'name' => 'attributeName', 
             //'value' => date("Y-m-d", strtotime($date)), 
-            'value' => date("Y-m-d", strtotime($date)), 
+            'value' => $utc_date,
             'options' => ['class'=> 'btn btn-default'],
             'language' => 'en',
             'dateFormat' => 'yyyy-MM-dd', 
             'clientOptions' => [
-                'defaultDate' => date("Y-m-d", strtotime($date)),
+                'defaultDate' => $actual_date,
                 'onSelect' => new \yii\web\JsExpression("function(dateText, obj) { location.href = '/checkin/view/'+dateText; }"),
                 'beforeShowDay' => new \yii\web\JsExpression("function(date) { 
                     var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
@@ -35,8 +35,8 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
                 }")
             ]
         ]) ?>
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date +1 day"))]); ?>">&gt;</a> 
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$date +1 week"))]); ?>">&gt;&gt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$actual_date +1 day"))]); ?>">&gt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$actual_date +1 week"))]); ?>">&gt;&gt;</a> 
 </div>
 
 <?php

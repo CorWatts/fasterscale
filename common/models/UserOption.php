@@ -4,7 +4,10 @@ namespace common\models;
 
 use Yii;
 use common\models\UserOption;
+use common\models\User;
 use yii\db\Query;
+use \DateTime;
+use \DateTimeZone;
 
 /**
  * This is the model class for table "user_option_link".
@@ -71,9 +74,9 @@ class UserOption extends \yii\db\ActiveRecord
      * @date date string in yyyy-mm-dd format
      * @return int score
      */
-    public function calculateScoreByDate($date)
+    public function calculateScoreByUTCRange($start, $end)
     {
-        $user_options = UserOption::find()->where(["user_id" => Yii::$app->user->id, 'date(date)' => $date])->with('option')->asArray()->all();
+        $user_options = UserOption::find()->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->with('option')->asArray()->all();
 
         $score = 0;
 
@@ -111,7 +114,13 @@ class UserOption extends \yii\db\ActiveRecord
     public function calculateScoresOfLastMonth() {
         $scoresByMonth = [];
 
-        $user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date(date)'])->where(["and", "user_id=".Yii::$app->user->id, "date(date)>'".date("Y-m-d", strtotime("Today - 1 month"))."'"])->orderBy('date(date)')->with('option')->asArray()->all();
+        $start = new DateTime("now - 1 month", new DateTimeZone("UTC"));
+        $start = $start->format("Y-m-d H:i:s");
+        $end = new DateTime("now", new DateTimeZone("UTC"));
+        $end = $end->format("Y-m-d H:i:s");
+
+        $user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date(date)'])->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->orderBy('date(date)')->with('option')->asArray()->all();
+
         $options_by_date = [];
         foreach($user_options as $user_option) {
             $options_by_date[$user_option['date']][] = $user_option['option'];
@@ -156,13 +165,13 @@ class UserOption extends \yii\db\ActiveRecord
         $past_checkin_dates = [];
         $query = new Query;
         $query->params = [":user_id" => Yii::$app->user->id];
-        $query->select("date(date)")
+        $query->select("date")
             ->from('user_option_link l')
             ->groupBy('date, user_id')
             ->having('user_id = :user_id');
         $temp_dates = $query->all();
         foreach($temp_dates as $temp_date) {
-            $past_checkin_dates[] = $temp_date['date'];
+            $past_checkin_dates[] = User::convertUTCToLocalDate($temp_date['date']);
         }
 
         return $past_checkin_dates;
