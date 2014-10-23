@@ -119,11 +119,11 @@ class UserOption extends \yii\db\ActiveRecord
         $end = new DateTime("now", new DateTimeZone("UTC"));
         $end = $end->format("Y-m-d H:i:s");
 
-        $user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date(date)'])->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->orderBy('date(date)')->with('option')->asArray()->all();
+        $user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date'])->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->orderBy('date')->with('option')->asArray()->all();
 
         $options_by_date = [];
         foreach($user_options as $user_option) {
-            $options_by_date[$user_option['date']][] = $user_option['option'];
+            $options_by_date[\common\models\User::convertUTCToLocalDate($user_option['date'])][] = $user_option['option'];
         }
 
         $category_options = Option::getAllOptionsByCategory();
