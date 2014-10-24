@@ -189,4 +189,19 @@ class User extends ActiveRecord implements IdentityInterface
         $timestamp->setTimeZone(new DateTimeZone("PST"));
         return $timestamp->format("Y-m-d");
     }
+
+    public function getLocalTime() {
+        $timestamp = new DateTime("now", new DateTimeZone("PST"));
+        return $timestamp->format("Y-m-d H:i:s");
+    }
+
+    public function getLocalDate() {
+        $timestamp = new DateTime("now", new DateTimeZone("PST"));
+        return $timestamp->format("Y-m-d");
+    }
+
+    public function alterLocalDate($date, $modifier) {
+        $new_date = new DateTime("$date $modifier", new DateTimeZone("PST"));
+        return $new_date->format("Y-m-d");
+    }
 }

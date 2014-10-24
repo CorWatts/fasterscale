@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Button;
+use common\models\User;
 /**
  * @var yii\web\View $this
  */
@@ -13,11 +14,12 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
     $checked_val = ($checked) ? "active" : "";
     return "<button class='btn btn-default $checked_val' data-toggle='button' name='$name' value='$value'>$label</button>";
 }
+print "<br><br><br>$actual_date";
 ?>
 <h1>View Past Checkins</h1>
 <div id='past-checkin-nav' class='btn-group'>
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$actual_date -1 week"))]); ?>">&lt;&lt;</a> 
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$actual_date -1 day"))]); ?>">&lt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>User::alterLocalDate($actual_date, "-1 week")]); ?>">&lt;&lt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>User::alterLocalDate($actual_date, "-1 day")]); ?>">&lt;</a> 
         <?= yii\jui\DatePicker::widget([
             'name' => 'attributeName', 
             //'value' => date("Y-m-d", strtotime($date)), 
@@ -35,21 +37,28 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
                 }")
             ]
         ]) ?>
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$actual_date +1 day"))]); ?>">&gt;</a> 
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>date("Y-m-d", strtotime("$actual_date +1 week"))]); ?>">&gt;&gt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>User::alterLocalDate($actual_date, "+1 day")]); ?>">&gt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>User::alterLocalDate($actual_date, "+1 week")]); ?>">&gt;&gt;</a> 
 </div>
 
 <?php
-    if($score < 30) {
+    switch(true) {
+    case ($score < 30):
         $alert_level = "success";
         $alert_msg = "You're doing well! Keep on doing whatever it is you're doing!";
-    } else if($score < 50) {
+        break;
+
+    case ($score < 50):
         $alert_level = "info";
         $alert_msg = "Some warning signs, but nothing too bad. Have some quiet time, process things, and call a friend.";
-    } else if($score < 70) {
+        break;
+
+    case ($score < 70):
         $alert_level = "warning";
         $alert_msg = "Definite warning signs. You aren't doing well. Take some time out, write out what you're feeling, and discuss it with someone.";
-    } else {
+        break;
+
+    default:
         $alert_level = "danger";
         $alert_msg = "Welcome to the dangerzone. You need to take action right now, or else you WILL act out. Go call someone.";
     }
