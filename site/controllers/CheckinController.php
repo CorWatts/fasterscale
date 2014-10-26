@@ -72,6 +72,7 @@ class CheckinController extends \yii\web\Controller
 
         $utc_start_time = \common\models\User::convertLocalTimeToUTC($date." 00:00:00");
         $utc_end_time = \common\models\User::convertLocalTimeToUTC($date." 23:59:59");
+        $utc_date = \common\models\User::getLocalDate("UTC");
         $form = new CheckinForm();
 
         $past_checkin_dates = UserOption::getPastCheckinDates();
@@ -90,7 +91,7 @@ class CheckinController extends \yii\web\Controller
 
         $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
 
-        return $this->render('view', ['model' => $form, 'categories' => $categories, 'optionsList' => $optionsList, 'actual_date' => $date, 'utc_date' => date("Y-m-d", strtotime($utc_end_time)), 'score' => $score, 'past_checkin_dates' => $past_checkin_dates]);
+        return $this->render('view', ['model' => $form, 'categories' => $categories, 'optionsList' => $optionsList, 'actual_date' => $date, 'utc_date' => $utc_date, 'score' => $score, 'past_checkin_dates' => $past_checkin_dates]);
     }
 
     public function actionReport() {

@@ -14,7 +14,6 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
     $checked_val = ($checked) ? "active" : "";
     return "<button class='btn btn-default $checked_val' data-toggle='button' name='$name' value='$value'>$label</button>";
 }
-print "<br><br><br>$actual_date";
 ?>
 <h1>View Past Checkins</h1>
 <div id='past-checkin-nav' class='btn-group'>
@@ -22,7 +21,6 @@ print "<br><br><br>$actual_date";
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>User::alterLocalDate($actual_date, "-1 day")]); ?>">&lt;</a> 
         <?= yii\jui\DatePicker::widget([
             'name' => 'attributeName', 
-            //'value' => date("Y-m-d", strtotime($date)), 
             'value' => $utc_date,
             'options' => ['class'=> 'btn btn-default'],
             'language' => 'en',
