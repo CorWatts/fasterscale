@@ -8,7 +8,6 @@ use yii\widgets\ActiveForm;
  * @var \common\models\LoginForm $model
  */
 $this->title = 'Login';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
