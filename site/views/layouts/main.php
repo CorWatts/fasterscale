@@ -69,7 +69,7 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; Corey Watts <?= date('Y') ?></p>
+        <p class="pull-left">&copy; <a href="http://corwatts.com">Corey Watts</a> <?= date('Y') ?></p>
         <p class="pull-right">Powered by Yii, written in Vim</p>
         </div>
     </footer>
