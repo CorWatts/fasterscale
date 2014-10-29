@@ -68,7 +68,7 @@ class CheckinController extends \yii\web\Controller
     public function actionView($date = null)
     {
         if(is_null($date))
-            $date = date("Y-m-d");
+            $date = \common\models\User::getLocalDate();
 
         $utc_start_time = \common\models\User::convertLocalTimeToUTC($date." 00:00:00");
         $utc_end_time = \common\models\User::convertLocalTimeToUTC($date." 23:59:59");

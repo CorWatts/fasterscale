@@ -49,7 +49,7 @@ return [
             'dateFormat' => 'medium',//'yyyy-MM-dd',
             'datetimeFormat' => 'yyyy-MM-dd H:i:s',
             'timeFormat' => 'H:i:s',
-            'timeZone' => 'America/Los_Angeles',
+            'timeZone' => 'UTC',
             'locale' => 'en_US'
         ] 
     ],

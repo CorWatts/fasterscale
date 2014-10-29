@@ -22,6 +22,7 @@ use \DateTimeZone;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string $timezone
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -125,6 +126,10 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->auth_key;
     }
 
+    public function getTimezone() {
+        return $this->timezone;
+    }
+
     /**
      * @inheritdoc
      */
@@ -178,30 +183,36 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    public function convertLocalTimeToUTC($local_timestamp) {
-        $timestamp = new DateTime($local_timestamp);
+    public static function convertLocalTimeToUTC($local_timestamp) {
+        $timestamp = new DateTime($local_timestamp, new DateTimeZone(Yii::$app->user->identity->timezone));
         $timestamp->setTimeZone(new DateTimeZone("UTC"));
         return $timestamp->format("Y-m-d H:i:s");
     }
 
-    public function convertUTCToLocalDate($utc_timestamp) {
+    public static function convertUTCToLocalDate($utc_timestamp) {
         $timestamp = new DateTime($utc_timestamp, new DateTimeZone("UTC"));
-        $timestamp->setTimeZone(new DateTimeZone("America/Los_Angeles"));
+        $timestamp->setTimeZone(new DateTimeZone(Yii::$app->user->identity->timezone));
         return $timestamp->format("Y-m-d");
     }
 
-    public function getLocalTime($timezone = "America/Los_Angeles") {
+    public static function getLocalTime($timezone = null) {
+	if($timezone === null)
+	    $timezone = Yii::$app->user->identity->timezone;
+
         $timestamp = new DateTime("now", new DateTimeZone($timezone));
         return $timestamp->format("Y-m-d H:i:s");
     }
 
-    public function getLocalDate($timezone = "America/Los_Angeles") {
+    public static function getLocalDate($timezone = null) {
+	if($timezone === null)
+	    $timezone = Yii::$app->user->identity->timezone;
+
         $timestamp = new DateTime("now", new DateTimeZone($timezone));
         return $timestamp->format("Y-m-d");
     }
 
-    public function alterLocalDate($date, $modifier) {
-        $new_date = new DateTime("$date $modifier", new DateTimeZone("America/Los_Angeles"));
+    public static function alterLocalDate($date, $modifier) {
+        $new_date = new DateTime("$date $modifier", new DateTimeZone(Yii::$app->user->identity->timezone));
         return $new_date->format("Y-m-d");
     }
 }

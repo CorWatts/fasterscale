@@ -4,6 +4,7 @@ namespace site\models;
 use common\models\User;
 use yii\base\Model;
 use Yii;
+use \DateTimeZone;
 
 /**
  * Signup form
@@ -13,6 +14,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $timezone = "America/Los_Angeles"; // default
     public $verifyCode;
 
     /**
@@ -33,6 +35,10 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+
+            ['timezone', 'required'],
+            ['timezone', 'string', 'min' => 2, 'max' => 255],
+            ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
             
             // verifyCode needs to be entered correctly
             ['verifyCode', 'captcha'],
@@ -51,6 +57,7 @@ class SignupForm extends Model
             $user->username = $this->username;
             $user->email = $this->email;
             $user->setPassword($this->password);
+	    $user->timezone = $this->timezone;
             $user->generateAuthKey();
             $user->save();
             return $user;
