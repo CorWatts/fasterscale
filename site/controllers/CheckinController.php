@@ -72,7 +72,7 @@ class CheckinController extends \yii\web\Controller
 
         $utc_start_time = \common\models\User::convertLocalTimeToUTC($date." 00:00:00");
         $utc_end_time = \common\models\User::convertLocalTimeToUTC($date." 23:59:59");
-        $utc_date = \common\models\User::getLocalDate("UTC");
+        $utc_date = \common\models\User::convertLocalTimeToUTC($date);
         $form = new CheckinForm();
 
         $past_checkin_dates = UserOption::getPastCheckinDates();

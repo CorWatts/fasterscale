@@ -186,7 +186,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function convertUTCToLocalDate($utc_timestamp) {
         $timestamp = new DateTime($utc_timestamp, new DateTimeZone("UTC"));
-        $timestamp->setTimeZone(new DateTimeZone("PST"));
+        $timestamp->setTimeZone(new DateTimeZone("America/Los_Angeles"));
         return $timestamp->format("Y-m-d");
     }
 
@@ -201,7 +201,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public function alterLocalDate($date, $modifier) {
-        $new_date = new DateTime("$date $modifier", new DateTimeZone("PST"));
+        $new_date = new DateTime("$date $modifier", new DateTimeZone("America/Los_Angeles"));
         return $new_date->format("Y-m-d");
     }
 }
