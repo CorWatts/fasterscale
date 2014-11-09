@@ -176,6 +176,23 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Finds out if password reset token is valid
+     *
+     * @param string $token password reset token
+     * @return boolean
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        $parts = explode('_', $token);
+        $timestamp = (int) end($parts);
+        return $timestamp + $expire >= time();
+    }
+
+    /**
      * Removes password reset token
      */
     public function removePasswordResetToken()

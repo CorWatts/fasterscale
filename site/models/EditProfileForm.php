@@ -22,18 +22,15 @@ class EditProfileForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.', 'filter' => "id <> ".Yii::$app->user->id],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
             ['email', 'email'],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'filter' => "id <> ".Yii::$app->user->id],
 
             ['password', 'string', 'min' => 6],
 
-            ['timezone', 'required'],
             ['timezone', 'string', 'min' => 2, 'max' => 255],
             ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
         ];
@@ -48,10 +45,14 @@ class EditProfileForm extends Model
     {
         if ($this->validate()) {
             $user = User::findOne(Yii::$app->user->id);
-            $user->username = $this->username;
-            $user->email = $this->email;
-            $user->setPassword($this->password);
-	    $user->timezone = $this->timezone;
+            if($this->username)
+            	$user->username = $this->username;
+            if($this->email)
+            	$user->email = $this->email;
+            if($this->password)
+            	$user->setPassword($this->password);
+            if($this->timezone)
+	    	$user->timezone = $this->timezone;
             $user->save();
             return $user;
         }
