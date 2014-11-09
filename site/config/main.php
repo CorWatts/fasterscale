@@ -32,7 +32,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<action:(index|about|contact|signup|login|logout|request-password-reset)>' => 'site/<action>',
+                '<action:(index|about|contact|signup|login|logout|profile|request-password-reset)>' => 'site/<action>',
                 'checkin/view/<date:\d{4}-\d{2}-\d{2}>' => 'checkin/view',
                 'report/view/<date:\d{4}-\d{2}-\d{2}>' => 'report/view',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',

@@ -6,7 +6,9 @@ use common\models\LoginForm;
 use site\models\PasswordResetRequestForm;
 use site\models\ResetPasswordForm;
 use site\models\SignupForm;
+use site\models\EditProfileForm;
 use site\models\ContactForm;
+use common\models\User;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -170,6 +172,25 @@ class SiteController extends Controller
         }
 
         return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionProfile()
+    {
+        $model = new EditProfileForm();
+	$user = User::findOne(Yii::$app->user->id);
+	$model->username = $user->username;
+	$model->email = $user->email;
+	$model->timezone = $user->timezone;
+        if ($model->load(Yii::$app->request->post())) {
+            $saved_user = $model->profile();
+            if ($saved_user) {
+            	Yii::$app->getSession()->setFlash('success', 'New profile data saved!');
+            }
+        }
+
+        return $this->render('profile', [
             'model' => $model,
         ]);
     }

@@ -45,8 +45,9 @@ AppAsset::register($this);
                 $menuItems[] = ['label' => 'Check In', 'url' => ['/checkin/index']];
                 $menuItems[] = ['label' => 'Past Check Ins', 'url' => ['/checkin/view']];
                 $menuItems[] = ['label' => 'Statistics', 'url' => ['/checkin/report']];
+                $menuItems[] = ['label' => Yii::$app->user->identity->username, 'url' => ['/site/profile']];
                 $menuItems[] = [
-                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                    'label' => 'Logout',
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post']
                 ];
