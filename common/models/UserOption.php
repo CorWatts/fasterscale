@@ -112,50 +112,55 @@ class UserOption extends \yii\db\ActiveRecord
     }
 
     public function calculateScoresOfLastMonth() {
-        $scoresByMonth = [];
+	$key = "scores_of_last_month_".Yii::$app->user->id;
+	$scoresByMonth = Yii::$app->cache->get($key);
+	if($scoresByMonth === false) {
+		$scoresByMonth = [];
 
-        $start = new DateTime("now - 1 month", new DateTimeZone("UTC"));
-        $start = $start->format("Y-m-d H:i:s");
-        $end = new DateTime("now", new DateTimeZone("UTC"));
-        $end = $end->format("Y-m-d H:i:s");
+		$start = new DateTime("now - 1 month", new DateTimeZone("UTC"));
+		$start = $start->format("Y-m-d H:i:s");
+		$end = new DateTime("now", new DateTimeZone("UTC"));
+		$end = $end->format("Y-m-d H:i:s");
 
-        $user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date'])->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->orderBy('date')->with('option')->asArray()->all();
+		$user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date'])->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->orderBy('date')->with('option')->asArray()->all();
 
-        $options_by_date = [];
-        foreach($user_options as $user_option) {
-            $options_by_date[\common\models\User::convertUTCToLocalDate($user_option['date'])][] = $user_option['option'];
-        }
+		$options_by_date = [];
+		foreach($user_options as $user_option) {
+		    $options_by_date[\common\models\User::convertUTCToLocalDate($user_option['date'])][] = $user_option['option'];
+		}
 
-        $category_options = Option::getAllOptionsByCategory();
+		$category_options = Option::getAllOptionsByCategory();
 
-        foreach($options_by_date as $date => $options) {
-            foreach($options as $option) {
-                $options_by_category[$option['category_id']][] = $option['id'];
-            }
+		foreach($options_by_date as $date => $options) {
+		    foreach($options as $option) {
+			$options_by_category[$option['category_id']][] = $option['id'];
+		    }
 
-            foreach($category_options as $options) {
-                if(array_key_exists($options['category_id'], $options_by_category))
-                    $stats[$options['category_id']] = $category_options[$options['category_id']]['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
-                else
-                    $stats[$options['category_id']] = 0;
-            }
+		    foreach($category_options as $options) {
+			if(array_key_exists($options['category_id'], $options_by_category))
+			    $stats[$options['category_id']] = $category_options[$options['category_id']]['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
+			else
+			    $stats[$options['category_id']] = 0;
+		    }
 
-            $sum = 0;
-            $count = 0;
-            foreach($stats as $stat) {
-                $sum += $stat;
+		    $sum = 0;
+		    $count = 0;
+		    foreach($stats as $stat) {
+			$sum += $stat;
 
-                if($stat > 0)
-                    $count += 1;
-            }
+			if($stat > 0)
+			    $count += 1;
+		    }
 
-            unset($stats);
-            unset($options_by_category);
+		    unset($stats);
+		    unset($options_by_category);
 
-            $avg = ($count > 0) ? $sum / $count : 0;
+		    $avg = ($count > 0) ? $sum / $count : 0;
 
-            $scoresByMonth[$date] = round($avg * 100);
-        }
+		    $scoresByMonth[$date] = round($avg * 100);
+		}
+		Yii::$app->cache->set($key, $scoresByMonth, 60*60*24);
+	}
 
         return $scoresByMonth;
     }

@@ -51,7 +51,10 @@ return [
             'timeFormat' => 'H:i:s',
             'timeZone' => 'UTC',
             'locale' => 'en_US'
-        ] 
+        ],
+	'session' => [
+	    'class'=> 'yii\web\CacheSession',
+	]
     ],
     'params' => $params,
     /*
