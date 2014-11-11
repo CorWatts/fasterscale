@@ -112,7 +112,7 @@ class UserOption extends \yii\db\ActiveRecord
     }
 
     public function calculateScoresOfLastMonth() {
-	$key = "scores_of_last_month_".Yii::$app->user->id;
+	$key = "scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate();
 	$scoresByMonth = Yii::$app->cache->get($key);
 	if($scoresByMonth === false) {
 		$scoresByMonth = [];
