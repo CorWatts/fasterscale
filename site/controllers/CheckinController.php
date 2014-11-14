@@ -44,8 +44,11 @@ class CheckinController extends \yii\web\Controller
             $options = array_filter($options);
 
             // delete the old data, we only store one data set per day
-            if(sizeof($options) > 0)
+            if(sizeof($options) > 0) {
                 UserOption::deleteAll('user_id=:user_id AND date(date)=now()::date', [':user_id' => Yii::$app->user->id]);
+                // delete cached scores
+                Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
+            }
 
             foreach($options as $option_id) {
                 $user_option = new UserOption;
