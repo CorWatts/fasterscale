@@ -5,6 +5,7 @@ namespace site\controllers;
 use Yii;
 use common\models\Category;
 use common\models\Option;
+use common\models\User;;
 use common\models\UserOption;
 use site\models\CheckinForm;
 use yii\base\InvalidParamException;
@@ -46,9 +47,10 @@ class CheckinController extends \yii\web\Controller
             // delete the old data, we only store one data set per day
             if(sizeof($options) > 0) {
                 UserOption::deleteAll('user_id=:user_id AND date(date)=now()::date', [':user_id' => Yii::$app->user->id]);
-                // delete cached scores
-                Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
             }
+
+            // delete cached scores
+            Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
 
             foreach($options as $option_id) {
                 $user_option = new UserOption;
