@@ -5,7 +5,7 @@ namespace site\controllers;
 use Yii;
 use common\models\Category;
 use common\models\Option;
-use common\models\User;;
+use common\models\User;
 use common\models\UserOption;
 use site\models\CheckinForm;
 use yii\base\InvalidParamException;
