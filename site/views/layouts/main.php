@@ -82,7 +82,7 @@ AppAsset::register($this);
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
         ga('create', 'UA-56659433-1', 'auto');
-		ga('create', 'UA-30383134-1', {'siteSpeedSampleRate': 100});
+	ga('create', 'UA-56659433-1', {'siteSpeedSampleRate': 100});
         ga('send', 'pageview')
     </script>
 
