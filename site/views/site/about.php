@@ -12,4 +12,30 @@ $this->title = 'About';
 
     <h2>Who am I?</h2>
     <p>Hi! I'm Corey! I'm a software engineer living in San Francisco. I love coding and I love coding even more when it helps other people. I hope this app helps you to be more mindful of your emotional state. If you have any questions, comments, complaints, or feedback please drop me a line on the contact form!</p>
+
+    <h2>The Code</h2>
+    <p>If you're interested in peeking beneath the hood, or maybe even helping me with some code contributions, you can find the repo at <a href='https://github.com/CorWatts/emotionalcheckin'>Github</a>.</p>
+
+    <h2>Latest Commits</h2>
+    <table id='commits' class="table table-striped">
+        <tr>
+            <th>Link</th>
+            <th>Committer</th>
+            <th>Description</th>
+        </tr>
+    </table>
 </div>
+
+<?php
+$this->registerJs("$.ajax({
+    type: 'GET',
+    url: 'https://api.github.com/repos/CorWatts/emotionalcheckin/commits',
+    dataType: 'json',
+    success: function(data) {
+        data = data.slice(0,9);
+        $.each(data, function(key, commit) {
+            $('#commits').append(\"<tr><td><a href='\"+commit.html_url+\"'>Commit</a></td><td><a href='\"+commit.author.html_url+\"'>\"+commit.author.login+\"</a></td><td>\"+commit.commit.message+\"</td></tr>\");
+        });
+    }
+});");
+?>
