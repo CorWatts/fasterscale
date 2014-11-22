@@ -58,7 +58,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 
     default:
         $alert_level = "danger";
-        $alert_msg = "Welcome to the dangerzone. You need to take action right now, or else you WILL act out. Go call someone.";
+        $alert_msg = "Welcome to the dangerzone. You need to take action right now, or else you WILL act out. Go call someone. Try visiting <a href='http://emergency.nofap.org/'>http://emergency.nofap.org</a> for immediate help.";
     }
 ?>
 
