@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use yii\jui\DatePicker;
 
 /**
  * @var yii\web\View $this
@@ -19,11 +20,13 @@ $this->title = 'About';
     <h2>Latest Commits</h2>
     <table id='commits' class="table table-striped">
         <tr>
+            <th>Date</th>
             <th>Link</th>
             <th>Committer</th>
             <th>Description</th>
         </tr>
     </table>
+    <div id="spinner"><img src="/img/spinner.gif" id="spinner-gif" /></div>
 </div>
 
 <?php
@@ -32,9 +35,15 @@ $this->registerJs("$.ajax({
     url: 'https://api.github.com/repos/CorWatts/emotionalcheckin/commits',
     dataType: 'json',
     success: function(data) {
+        $('#spinner').remove();
         data = data.slice(0,9);
         $.each(data, function(key, commit) {
-            $('#commits').append(\"<tr><td><a href='\"+commit.html_url+\"'>Commit</a></td><td><a href='\"+commit.author.html_url+\"'>\"+commit.author.login+\"</a></td><td>\"+commit.commit.message+\"</td></tr>\");
+            $('#commits').append(\"<tr>\"+
+                    \"<td>\"+$.datepicker.formatDate('dd M, yy', new Date(commit.commit.committer.date))+\"</td>\"+
+                    \"<td><a href='\"+commit.html_url+\"'>Commit</a></td>\"+
+                    \"<td><a href='\"+commit.author.html_url+\"'>\"+commit.author.login+\"</a></td>\"+
+                    \"<td>\"+commit.commit.message+\"</td>\"+
+                \"</tr>\");
         });
     }
 });");
