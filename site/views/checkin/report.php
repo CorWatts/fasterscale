@@ -2,7 +2,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
-//use miloschuman\highcharts\Highcharts;
 /**
  * @var yii\web\View $this
  */

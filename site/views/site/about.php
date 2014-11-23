@@ -20,7 +20,7 @@ $this->title = 'About';
     <h2>Latest Commits</h2>
     <table id='commits' class="table table-striped">
         <tr>
-            <th>Date</th>
+            <th>When</th>
             <th>Link</th>
             <th>Committer</th>
             <th>Description</th>
@@ -39,7 +39,7 @@ $this->registerJs("$.ajax({
         data = data.slice(0,9);
         $.each(data, function(key, commit) {
             $('#commits').append(\"<tr>\"+
-                    \"<td>\"+$.datepicker.formatDate('dd M, yy', new Date(commit.commit.committer.date))+\"</td>\"+
+                    \"<td>\"+moment(commit.commit.committer.date).fromNow()+\"</td>\"+
                     \"<td><a href='\"+commit.html_url+\"'>Commit</a></td>\"+
                     \"<td><a href='\"+commit.author.html_url+\"'>\"+commit.author.login+\"</a></td>\"+
                     \"<td>\"+commit.commit.message+\"</td>\"+

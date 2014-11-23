@@ -22,10 +22,10 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/chart.min.js',
+        'js/moment.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
-	'site\assets\JqueryUiAsset'
     ];
 }

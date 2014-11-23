@@ -8,6 +8,7 @@ use common\models\Option;
 use common\models\User;
 use common\models\UserOption;
 use site\models\CheckinForm;
+use site\models\QuestionForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -60,8 +61,8 @@ class CheckinController extends \yii\web\Controller
                 $user_option->date = new Expression("now()::timestamp");
                 $user_option->save();
             }
-            Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
-            return $this->redirect(['checkin/view'], 200);
+            Yii::$app->session->setFlash('success', 'Your emotions have been logged! Answer the questions below to compete your checkin.');
+            return $this->redirect(['checkin/questions'], 200);
         } else {
             $categories = Category::find()->asArray()->all();
             $options = Option::find()->asArray()->all();
@@ -69,6 +70,24 @@ class CheckinController extends \yii\web\Controller
             return $this->render('index', ['categories' => $categories, 'model' => $form, 'optionsList' => $optionsList]);
         }
     }
+
+	public function actionQuestions()
+	{
+        $user_options = UserOption::getUserOptionsWithCategory(User::getLocalDate("UTC"));
+        if(!$user_options)
+            return $this->redirect(['checkin/index'], 200);
+
+		$form = new QuestionForm();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+			//$model = $form->saveAnswers();
+            Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
+			//if($model)
+				return $this->redirect(['checkin/view'], 200);
+        }
+
+	    return $this->render('questions', ['model' => $form, 'options' => $user_options]);	
+
+	}
 
     public function actionView($date = null)
     {

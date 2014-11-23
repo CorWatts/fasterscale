@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use \DateTimeZone;
 
@@ -21,7 +21,7 @@ $timezones = DateTimeZone::listIdentifiers();
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-profile']); ?>
                 <?= $form->field($model, 'username') ?>
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>']); ?>
                 <?= $form->field($model, 'password')->passwordInput() ?>
 		<?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
                 <div class="form-group">

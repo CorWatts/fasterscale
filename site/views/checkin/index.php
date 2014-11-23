@@ -9,7 +9,20 @@ use yii\bootstrap\Button;
 $this->title = "Check In";
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
-    return "<label class='checkbox-inline'><input type='checkbox' name='$name' value='$value' />$label</label><br />";
+    return Html::checkbox
+        (
+            $name,
+            $checked,
+            [
+                'value' => $value,
+                'label' => $label,
+                'container' => false,
+                'labelOptions' =>
+                [
+                    'class' => $checked ? 'btn btn-default active' : 'btn btn-default',
+                ],
+            ]
+        );
 }
 ?>
 <h1>Check In</h1>
@@ -21,7 +34,7 @@ $form = ActiveForm::begin([
 ]);
 
 foreach($categories as $category) {
-    print $form->field($model, "options{$category['id']}")->checkboxList($optionsList[$category['id']], ['item' => "checkboxItemTemplate"]);
+    print $form->field($model, "options{$category['id']}")->checkboxList($optionsList[$category['id']], ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]);
 }
 print Html::submitButton('Submit', ['class' => 'btn btn-success']); 
 ActiveForm::end();
