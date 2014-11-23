@@ -52,9 +52,15 @@ return [
             'timeZone' => 'UTC',
             'locale' => 'en_US'
         ],
-	'session' => [
-	    'class'=> 'yii\web\CacheSession',
-	]
+	    'session' => [
+	        'class'=> 'yii\web\CacheSession',
+	    ],
+        'assetManager' => [
+            'converter' => [
+                'class' => 'yii\web\AssetConverter',
+            ],
+            'bundles' => require(__DIR__ . '/../assets/assets-compressed.php'),
+        ],
     ],
     'params' => $params,
     /*

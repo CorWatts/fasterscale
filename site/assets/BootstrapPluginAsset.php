@@ -10,23 +10,19 @@ namespace site\assets;
 use yii\web\AssetBundle;
 
 /**
+ * Asset bundle for the Twitter bootstrap javascript files.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AppAsset extends AssetBundle
+class BootstrapPluginAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
-    public $css = [
-        'css/site.css',
-    ];
+    public $sourcePath = '@bower/bootstrap-sass/dist';
     public $js = [
-        'js/chart.min.js',
+        'js/bootstrap.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
         'yii\web\JqueryAsset',
         'yii\bootstrap\BootstrapAsset',
-        'site\assets\MomentAsset',
     ];
 }
