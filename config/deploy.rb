@@ -82,4 +82,15 @@ namespace :deploy do
 
   after :migrate, 'deploy:switch_index'
 
+  desc "Combining and minifying assets"
+  task :do_assets do
+    on roles(:web) do
+        within release_path do
+          execute './yii asset site/assets/assets.php site/assets/assets-compressed.php;'
+        end
+    end
+  end
+
+  after :migrate, 'deploy:do_assets'
+
 end
