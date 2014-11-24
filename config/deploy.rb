@@ -86,7 +86,7 @@ namespace :deploy do
   task :do_assets do
     on roles(:web) do
         within release_path do
-          execute './yii asset site/assets/assets.php site/assets/assets-compressed.php;'
+          execute './yii', 'asset', 'site/assets/assets.php', 'site/assets/assets-compressed.php;'
         end
     end
   end

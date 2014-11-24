@@ -51,7 +51,10 @@
 			"console/migrations",
 
 			"site/runtime",
-			"site/web/assets"
+			"site/assets",
+			"site/web/assets",
+            "site/web/css",
+            "site/web/js"
 		],
         "executable": [
             "yii"
