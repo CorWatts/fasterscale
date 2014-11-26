@@ -57,7 +57,7 @@ foreach($answer_pie as $key => $category) {
 <div class='row'>
     <div class='col-md-4'>
         <h2>Answers by Category</h2>
-        <canvas id='category-pie-chart' width="250" height="250"></canvas>
+        <canvas id='category-pie-chart'></canvas>
     </div>
     <div class='col-md-8'>
         <h2>Top Answers</h2>
@@ -83,15 +83,17 @@ foreach($answer_pie as $key => $category) {
 <div class='row'>
     <div class='col-md-12'>
         <h2>Last Month's Scores</h2>
-        <canvas id='scores-line-chart' width="1100" height="400"></canvas>
+        <canvas id='scores-line-chart' width=1100' height='400'></canvas>
     </div>
 </div>
 <?php
 $this->registerJs('
-        var pie_chart_options = {
-        };
-        var pie_chart_ctx = document.getElementById("category-pie-chart").getContext("2d");
-        var myPieChart = new Chart(pie_chart_ctx).Pie('.json_encode($pie_data).', pie_chart_options);
+    var pie_chart_options = {
+        responsive: true
+    };
+    
+    var pie_chart_ctx = document.getElementById("category-pie-chart").getContext("2d");
+    var myPieChart = new Chart(pie_chart_ctx).Pie('.json_encode($pie_data).', pie_chart_options);
 ');
 
 
@@ -111,7 +113,10 @@ $data = json_encode([
     ]
 ]);
 $this->registerJs("
-    var line_chart_options = {};
+    var line_chart_options = {
+        responsive:true
+    };
+
     var line_chart_ctx = document.getElementById('scores-line-chart').getContext('2d');
     var scores_line_chart = new Chart(line_chart_ctx).Line($data, {});");
 ?>

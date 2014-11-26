@@ -39,7 +39,7 @@ $this->registerJs("$.ajax({
         data = data.slice(0,9);
         $.each(data, function(key, commit) {
             $('#commits').append(\"<tr>\"+
-                    \"<td>\"+moment(commit.commit.committer.date).fromNow()+\"</td>\"+
+                    \"<td class='text-nowrap'>\"+moment(commit.commit.committer.date).fromNow()+\"</td>\"+
                     \"<td><a href='\"+commit.html_url+\"'>Commit</a></td>\"+
                     \"<td><a href='\"+commit.author.html_url+\"'>\"+commit.author.login+\"</a></td>\"+
                     \"<td>\"+commit.commit.message+\"</td>\"+
