@@ -25,7 +25,7 @@ $timezones = DateTimeZone::listIdentifiers();
                 <?= $form->field($model, 'password')->passwordInput() ?>
 		<?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
                 <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'profile-button']) ?>
+                    <?= Html::submitButton('Save', ['class' => 'btn btn-primary', 'name' => 'profile-button']) ?>
                 </div>
             <?php ActiveForm::end(); ?>
         </div>
