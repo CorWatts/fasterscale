@@ -89,6 +89,7 @@ foreach($answer_pie as $key => $category) {
 <?php
 $this->registerJs('
     Chart.defaults.global.responsive = true;
+    Chart.defaults.global.scaleBeginAtZero = true;
 
     var pie_chart_options = {};
     

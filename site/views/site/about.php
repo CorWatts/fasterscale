@@ -32,11 +32,10 @@ $this->title = 'About';
 <?php
 $this->registerJs("$.ajax({
     type: 'GET',
-    url: 'https://api.github.com/repos/CorWatts/emotionalcheckin/commits',
+    url: 'https://api.github.com/repos/CorWatts/emotionalcheckin/commits?per_page=10',
     dataType: 'json',
     success: function(data) {
         $('#spinner').remove();
-        data = data.slice(0,9);
         $.each(data, function(key, commit) {
             $('#commits').append(\"<tr>\"+
                     \"<td class='text-nowrap'>\"+moment(commit.commit.committer.date).fromNow()+\"</td>\"+
