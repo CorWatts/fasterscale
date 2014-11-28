@@ -65,24 +65,4 @@ class SignupForm extends Model
 
         return null;
     }
-
-/**
-     * Signs user up.
-     *
-     * @return User|null the saved model or null if saving fails
-     */
-    public function profile()
-    {
-        if ($this->validate()) {
-            $user = Yii::$app->user;
-            $user->username = $this->username;
-            $user->email = $this->email;
-            $user->setPassword($this->password);
-	    $user->timezone = $this->timezone;
-            $user->save();
-            return $user;
-        }
-
-        return null;
-    }
 }
