@@ -8,6 +8,7 @@ use common\models\User;
 use yii\db\Query;
 use \DateTime;
 use \DateTimeZone;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "user_option_link".
@@ -192,5 +193,15 @@ class UserOption extends \yii\db\ActiveRecord
             ->where(['l.user_id' => Yii::$app->user->id, 'date(l.date)' => $checkin_date]);
         $user_options = $query->all();
         return $user_options;
+    }
+
+    public function saveAll($options) {
+        foreach($options as $option_id) {
+            $user_option = new UserOption;
+            $user_option->option_id = $option_id;
+            $user_option->user_id = Yii::$app->user->id;
+            $user_option->date = new Expression("now()::timestamp");
+            $user_option->save();
+        }
     }
 }

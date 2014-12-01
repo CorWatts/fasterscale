@@ -179,13 +179,14 @@ class SiteController extends Controller
     public function actionProfile()
     {
         $model = new EditProfileForm();
-	$user = User::findOne(Yii::$app->user->id);
-	$model->username = $user->username;
-	$model->email = $user->email;
-	$model->timezone = $user->timezone;
+        $user = User::findOne(Yii::$app->user->id);
+        $model->username = $user->username;
+        $model->email = $user->email;
+        $model->timezone = $user->timezone;
+
         if ($model->load(Yii::$app->request->post())) {
-            $saved_user = $model->profile();
-            if ($saved_user) {
+            $saved_user = $model->saveProfile();
+            if($saved_user) {
             	Yii::$app->getSession()->setFlash('success', 'New profile data saved!');
             }
         }

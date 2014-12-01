@@ -46,7 +46,7 @@ return [
         ],
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
-            'dateFormat' => 'medium',//'yyyy-MM-dd',
+            'dateFormat' => 'medium',
             'datetimeFormat' => 'yyyy-MM-dd H:i:s',
             'timeFormat' => 'H:i:s',
             'timeZone' => 'UTC',
@@ -63,6 +63,4 @@ return [
         ],
     ],
     'params' => $params,
-    /*
-     */
 ];

@@ -37,11 +37,11 @@ class EditProfileForm extends Model
     }
 
 /**
-     * Signs user up.
+     * saves user's profile info.
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function profile()
+    public function saveProfile()
     {
         if ($this->validate()) {
             $user = User::findOne(Yii::$app->user->id);

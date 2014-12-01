@@ -15,8 +15,6 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\db\Query;
-use yii\db\Expression;
-use yii\helpers\VarDumper;
 use \DateTime;
 use \DateTimeZone;
 
@@ -47,27 +45,36 @@ class CheckinController extends \yii\web\Controller
 
             // delete the old data, we only store one data set per day
             if(sizeof($options) > 0) {
-                UserOption::deleteAll('user_id=:user_id AND date(date)=now()::date', [':user_id' => Yii::$app->user->id]);
+                $date = User::getLocalDate();
+                $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
+                $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+                UserOption::deleteAll("user_id=:user_id 
+                    AND date > :start_date 
+                    AND date < :end_date", 
+                    [
+                        "user_id" => Yii::$app->user->id, 
+                        ':start_date' => $utc_start_time, 
+                        ":end_date" => $utc_end_time
+                    ]
+                );
             }
-
+    
             // delete cached scores
             Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
 
-            foreach($options as $option_id) {
-                $user_option = new UserOption;
-                $user_option->option_id = $option_id;
-                $user_option->user_id = Yii::$app->user->id;
-                //$user_option->date = date('Y-m-d H:i:s');
-                $user_option->date = new Expression("now()::timestamp");
-                $user_option->save();
-            }
+            UserOption::saveAll($options);
+
             Yii::$app->session->setFlash('success', 'Your emotions have been logged! Answer the questions below to compete your checkin.');
             return $this->redirect(['checkin/questions'], 200);
         } else {
             $categories = Category::find()->asArray()->all();
             $options = Option::find()->asArray()->all();
             $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
-            return $this->render('index', ['categories' => $categories, 'model' => $form, 'optionsList' => $optionsList]);
+            return $this->render('index', [
+                'categories' => $categories,
+                'model' => $form,
+                'optionsList' => $optionsList
+            ]);
         }
     }
 
@@ -85,24 +92,38 @@ class CheckinController extends \yii\web\Controller
 				return $this->redirect(['checkin/view'], 200);
         }
 
-	    return $this->render('questions', ['model' => $form, 'options' => $user_options]);	
+        return $this->render('questions', [
+            'model' => $form,
+            'options' => $user_options
+        ]);	
 
 	}
 
     public function actionView($date = null)
     {
         if(is_null($date))
-            $date = \common\models\User::getLocalDate();
+            $date = User::getLocalDate();
 
-        $utc_start_time = \common\models\User::convertLocalTimeToUTC($date." 00:00:00");
-        $utc_end_time = \common\models\User::convertLocalTimeToUTC($date." 23:59:59");
-        $utc_date = \common\models\User::convertLocalTimeToUTC($date);
+        $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
+        $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+        $utc_date = User::convertLocalTimeToUTC($date);
         $form = new CheckinForm();
 
         $past_checkin_dates = UserOption::getPastCheckinDates();
-        $user_options = UserOption::find()->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $utc_start_time, ":end_date" => $utc_end_time])->with('option')->asArray()->all();
-        foreach($user_options as $option) {                                                                                                                         
-                $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
+        $user_options = UserOption::find()
+            ->where("user_id=:user_id 
+                AND date > :start_date 
+                AND date < :end_date", 
+                [
+                    "user_id" => Yii::$app->user->id, 
+                    ':start_date' => $utc_start_time, 
+                    ":end_date" => $utc_end_time
+                ])
+            ->with('option')
+            ->asArray()
+            ->all();
+
+        foreach($user_options as $option) {                                                     $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
                 $attribute = "options".$option['option']['category_id'];
                 $form->{$attribute}[] = $option['option_id'];
             }   
@@ -115,7 +136,15 @@ class CheckinController extends \yii\web\Controller
 
         $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
 
-        return $this->render('view', ['model' => $form, 'categories' => $categories, 'optionsList' => $optionsList, 'actual_date' => $date, 'utc_date' => $utc_date, 'score' => $score, 'past_checkin_dates' => $past_checkin_dates]);
+        return $this->render('view', [
+            'model' => $form,
+            'categories' => $categories, 
+            'optionsList' => $optionsList, 
+            'actual_date' => $date, 
+            'utc_date' => $utc_date, 
+            'score' => $score, 
+            'past_checkin_dates' => $past_checkin_dates
+        ]);
     }
 
     public function actionReport() {
@@ -142,6 +171,10 @@ class CheckinController extends \yii\web\Controller
 
        $scores = UserOption::calculateScoresOfLastMonth();
 
-        return $this->render('report', ['top_options' => $user_rows, 'answer_pie' => $answer_pie, 'scores' => $scores]);
+        return $this->render('report', [
+            'top_options' => $user_rows,
+            'answer_pie' => $answer_pie,
+            'scores' => $scores
+        ]);
     }
 }
