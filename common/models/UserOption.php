@@ -185,7 +185,7 @@ class UserOption extends \yii\db\ActiveRecord
 
     public function getUserOptionsWithCategory($checkin_date) {
         $query = new Query;
-        $query->select('c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
+        $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
             ->from('user_option_link l')
             ->innerJoin('option o', 'l.option_id=o.id')
             ->innerJoin('category c', 'o.category_id=c.id')

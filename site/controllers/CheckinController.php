@@ -7,6 +7,7 @@ use common\models\Category;
 use common\models\Option;
 use common\models\User;
 use common\models\UserOption;
+use common\models\Question;
 use site\models\CheckinForm;
 use site\models\QuestionForm;
 use yii\base\InvalidParamException;
@@ -86,10 +87,23 @@ class CheckinController extends \yii\web\Controller
 
 		$form = new QuestionForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-			//$model = $form->saveAnswers();
-            Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
-			//if($model)
-				return $this->redirect(['checkin/view'], 200);
+            $date = User::getLocalDate();
+            $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
+            $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+            Question::deleteAll("user_id=:user_id 
+                AND date > :start_date 
+                AND date < :end_date", 
+                [
+                    "user_id" => Yii::$app->user->id, 
+                    ':start_date' => $utc_start_time, 
+                    ":end_date" => $utc_end_time
+                ]
+            );
+			$result = $form->saveAnswers();
+            if($result) {
+                Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
+			    return $this->redirect(['checkin/view'], 200);
+            }
         }
 
         return $this->render('questions', [
@@ -123,11 +137,11 @@ class CheckinController extends \yii\web\Controller
             ->asArray()
             ->all();
 
-        foreach($user_options as $option) {                                                     $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
-                $attribute = "options".$option['option']['category_id'];
-                $form->{$attribute}[] = $option['option_id'];
-            }   
-
+        foreach($user_options as $option) {
+            $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
+            $attribute = "options".$option['option']['category_id'];
+            $form->{$attribute}[] = $option['option_id'];
+        }   
 
         $categories = Category::find()->asArray()->all();
 
