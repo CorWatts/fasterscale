@@ -183,7 +183,7 @@ class UserOption extends \yii\db\ActiveRecord
         return $past_checkin_dates;
     }
 
-    public function getUserOptionsWithCategory($checkin_date) {
+    public function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
         $query = new Query;
         $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
             ->from('user_option_link l')
@@ -191,6 +191,9 @@ class UserOption extends \yii\db\ActiveRecord
             ->innerJoin('category c', 'o.category_id=c.id')
             ->orderBy('c.id')
             ->where(['l.user_id' => Yii::$app->user->id, 'date(l.date)' => $checkin_date]);
+        if($exclude_1s)
+            $query->andWhere("c.id <> 1");
+
         $user_options = $query->all();
         return $user_options;
     }

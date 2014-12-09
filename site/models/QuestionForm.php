@@ -63,13 +63,13 @@ class QuestionForm extends Model
 
     public function attributeLabels() {
         return [
-            'option_id1' => 'Restoration',
-            'option_id2' => 'Forgetting Priorities',
-            'option_id3' => 'Anxiety',
-            'option_id4' => 'Speeding Up',
-            'option_id5' => 'Ticked Off',
-            'option_id6' => 'Exhausted',
-            'option_id7' => 'Relapsed/Moral Failure'
+            'user_option_id1' => 'Restoration',
+            'user_option_id2' => 'Forgetting Priorities',
+            'user_option_id3' => 'Anxiety',
+            'user_option_id4' => 'Speeding Up',
+            'user_option_id5' => 'Ticked Off',
+            'user_option_id6' => 'Exhausted',
+            'user_option_id7' => 'Relapsed/Moral Failure'
         ];
     }
 

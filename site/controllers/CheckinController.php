@@ -81,9 +81,9 @@ class CheckinController extends \yii\web\Controller
 
 	public function actionQuestions()
 	{
-        $user_options = UserOption::getUserOptionsWithCategory(User::getLocalDate("UTC"));
+        $user_options = UserOption::getUserOptionsWithCategory(User::getLocalDate("UTC"), true);
         if(!$user_options)
-            return $this->redirect(['checkin/index'], 200);
+            return $this->redirect(['checkin/view'], 200);
 
 		$form = new QuestionForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
