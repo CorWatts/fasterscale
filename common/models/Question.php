@@ -31,6 +31,9 @@ class Question extends \yii\db\ActiveRecord
         2 => "How does it affect the important people in my life?",
         3 => "Why do I do this? What is the benefit for me?"
     ];
+
+    public $question_text;
+
     /**
      * @inheritdoc
      */
@@ -66,6 +69,11 @@ class Question extends \yii\db\ActiveRecord
             'answer' => 'Answer',
             'date' => 'Date',
         ];
+    }
+
+    public function afterFind()
+    {
+        $this->question_text = self::$QUESTIONS[$this->question];
     }
 
     /**

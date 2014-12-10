@@ -4,6 +4,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Button;
 use common\models\User;
+use common\models\Question;
 /**
  * @var yii\web\View $this
  */
@@ -67,7 +68,29 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
     <div class='alert alert-<?php print $alert_level; ?>'><?php print $alert_msg; ?></div>
 </div>
 
-<?php
+<?php if($questions) {
+    $organized_question_answers = [];
+    foreach($questions as $question) {
+        $organized_question_answers[$question->option->name][$question->question] = [
+            "title" => Question::$QUESTIONS[$question->question],
+            "answer" => $question->answer
+        ];
+    }
+
+    foreach($organized_question_answers as $option => $questions) {
+        print "<div class='well well-sm'>";
+        print "<button type='button' class='btn btn-primary' disabled='disabled'>$option</button>";
+        print "<div class='row'>";
+        foreach($questions as $question) { 
+            print "<div class='col-md-4'>";
+            print "<p><strong>{$question['title']}</strong></p>";
+            print "<p>{$question['answer']}</p>";
+            print "</div>";
+        }
+        print "</div></div>";
+    }
+}
+
 $form = ActiveForm::begin([
     'id' => 'checkin-form',
     'options' => ['class' => 'form-horizontal'],

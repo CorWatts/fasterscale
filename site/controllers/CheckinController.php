@@ -137,6 +137,18 @@ class CheckinController extends \yii\web\Controller
             ->asArray()
             ->all();
 
+        $questions = Question::find()
+            ->where("user_id=:user_id 
+                AND date > :start_date 
+                AND date < :end_date", 
+                [
+                    "user_id" => Yii::$app->user->id, 
+                    ':start_date' => $utc_start_time, 
+                    ":end_date" => $utc_end_time
+                ])
+            ->with('option')
+            ->all();
+
         foreach($user_options as $option) {
             $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
             $attribute = "options".$option['option']['category_id'];
@@ -157,7 +169,8 @@ class CheckinController extends \yii\web\Controller
             'actual_date' => $date, 
             'utc_date' => $utc_date, 
             'score' => $score, 
-            'past_checkin_dates' => $past_checkin_dates
+            'past_checkin_dates' => $past_checkin_dates,
+            'questions' => $questions
         ]);
     }
 
