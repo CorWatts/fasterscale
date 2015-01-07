@@ -15,6 +15,12 @@ class EditProfileForm extends Model
     public $email;
     public $password;
     public $timezone;
+    public $send_email;
+    public $email_threshold;
+    public $partner_email1;
+    public $partner_email2;
+    public $partner_email3;
+
     /**
      * @inheritdoc
      */
@@ -33,10 +39,39 @@ class EditProfileForm extends Model
 
             ['timezone', 'string', 'min' => 2, 'max' => 255],
             ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
+
+            ['send_email', 'boolean'],
+            ['email_threshold', 'integer'],
+            [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
+            ['email_threshold', 'required', 'when'=> function($model) {
+                return $model->send_email;
+            }, 'whenClient' => "function(attribute, value) {
+                return $('#send_email').is(':checked');
+    }"],
+            [['partner_email1', 'partner_email2', 'partner_email3'], 'required', 'when' => function($model) {
+                return ($model->send_email && !$model->partner_email1 && !$model->partner_email2 && !$model->partner_email3);
+            }, 'skipOnEmpty' => false, 'skipOnError' => false, 'whenClient' => "function(attribute, value) {
+                if($('#editprofileform-send_email').is(':checked')) {
+                    if(($('#editprofileform-partner_email1').val() != '' 
+                        || $('#editprofileform-partner_email2').val() != ''
+                        || $('#editprofileform-partner_email3').val() != ''))
+                    return false;
+               }
+               return true;
+            }", 'message' => "If you've elected to send email reports, at least one partner email must be set."]
         ];
     }
 
-/**
+    public function attributeLabels() {
+        return [
+            'partner_email1' => "Partner Email #1",
+            'partner_email2' => "Partner Email #2",
+            'partner_email3' => "Partner Email #3",
+            'send_email' => 'Send an email when I score above a certain threshold'
+        ];
+    }
+
+    /**
      * saves user's profile info.
      *
      * @return User|null the saved model or null if saving fails
@@ -53,7 +88,21 @@ class EditProfileForm extends Model
             	$user->setPassword($this->password);
             if($this->timezone)
 	    	$user->timezone = $this->timezone;
+            if($this->send_email) {
+                $user->email_threshold = $this->email_threshold;
+                $user->partner_email1 = $this->partner_email1;
+                $user->partner_email2 = $this->partner_email2;
+                $user->partner_email3 = $this->partner_email3;
+            } else {
+                $user->email_threshold = null;
+                $user->partner_email1 = null;
+                $user->partner_email2 = null;
+                $user->partner_email3 = null;
+            }
             $user->save();
+
+            //Yii::$app->user->setIdentity($user); // update user identity session
+
             return $user;
         }
 

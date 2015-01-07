@@ -183,6 +183,11 @@ class SiteController extends Controller
         $model->username = $user->username;
         $model->email = $user->email;
         $model->timezone = $user->timezone;
+        $model->send_email = (isset($user->email_threshold) && (isset($user->partner_email1) || isset($user->partner_email2) || isset($user->partner_email3)));
+        $model->email_threshold = $user->email_threshold;
+        $model->partner_email1 = $user->partner_email1;
+        $model->partner_email2 = $user->partner_email2;
+        $model->partner_email3 = $user->partner_email3;
 
         if ($model->load(Yii::$app->request->post())) {
             $saved_user = $model->saveProfile();

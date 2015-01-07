@@ -27,6 +27,13 @@ $timezones = DateTimeZone::listIdentifiers();
                 <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                     'template' => '<div class="row"><div class="col-md-5">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
                 ]) ?>
+                <?= $form->field($model, 'send_email')->checkbox() ?>
+                <div id='email_threshold_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>
+                    <?= $form->field($model, 'email_threshold')->textInput(['class'=>'form-control', 'style'=>'width: 50px;']) ?>
+                    <?= $form->field($model, 'partner_email1')->input('email'); ?>
+                    <?= $form->field($model, 'partner_email2')->input('email'); ?>
+                    <?= $form->field($model, 'partner_email3')->input('email'); ?>
+                </div>
                 <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
@@ -34,3 +41,9 @@ $timezones = DateTimeZone::listIdentifiers();
         </div>
     </div>
 </div>
+
+<?php $this->registerJs(
+    "$('#signupform-send_email').click(function() {
+        $('#email_threshold_fields').toggle();
+    });"
+);

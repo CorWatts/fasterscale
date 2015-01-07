@@ -65,6 +65,8 @@ class CheckinController extends \yii\web\Controller
 
             UserOption::saveAll($options);
 
+            User::sendEmailReport(User::getLocalDate("UTC"));
+
             Yii::$app->session->setFlash('success', 'Your emotions have been logged! Answer the questions below to compete your checkin.');
             return $this->redirect(['checkin/questions'], 200);
         } else {

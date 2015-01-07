@@ -23,6 +23,10 @@ use \DateTimeZone;
  * @property integer $updated_at
  * @property string $password write-only password
  * @property string $timezone
+ * @property integer $email_threshold
+ * @property string $partner_email1
+ * @property string $partner_email2
+ * @property string $partner_email3
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -231,5 +235,10 @@ class User extends ActiveRecord implements IdentityInterface
     public static function alterLocalDate($date, $modifier) {
         $new_date = new DateTime("$date $modifier", new DateTimeZone(Yii::$app->user->identity->timezone));
         return $new_date->format("Y-m-d");
+    }
+
+    public static function sendEmailReport($utc_date) {
+        $score = UserOption::calculateScoreByUTCRange($utc_date." 00:00:00", $utc_date." 23:59:59");
+        
     }
 }
