@@ -2,7 +2,7 @@
 lock '3.2.1'
 
 set :application, 'Checkin'
-set :repo_url, 'ssh://git@errethak.be:9000/checkin'
+set :repo_url, 'ssh://git@github.com:CorWatts/emotionalcheckin.git'
 
 # Default branch is :master
 set :branch, 'master'
