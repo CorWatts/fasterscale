@@ -28,25 +28,25 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            //['username', 'filter', 'filter' => 'trim'],
-            //['username', 'required'],
-            //['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
-            //['username', 'string', 'min' => 2, 'max' => 255],
+            ['username', 'filter', 'filter' => 'trim'],
+            ['username', 'required'],
+            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            ['username', 'string', 'min' => 2, 'max' => 255],
 
-            //['email', 'filter', 'filter' => 'trim'],
-            //['email', 'required'],
-            //['email', 'email'],
-            //['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'filter', 'filter' => 'trim'],
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
-            //['password', 'required'],
-            //['password', 'string', 'min' => 6],
+            ['password', 'required'],
+            ['password', 'string', 'min' => 6],
 
-            //['timezone', 'required'],
-            //['timezone', 'string', 'min' => 2, 'max' => 255],
-            //['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
+            ['timezone', 'required'],
+            ['timezone', 'string', 'min' => 2, 'max' => 255],
+            ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
             
             // verifyCode needs to be entered correctly
-            //['verifyCode', 'captcha'],
+            ['verifyCode', 'captcha'],
 
             ['send_email', 'boolean'],
             ['email_threshold', 'integer'],
