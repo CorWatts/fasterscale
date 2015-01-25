@@ -237,8 +237,121 @@ class User extends ActiveRecord implements IdentityInterface
         return $new_date->format("Y-m-d");
     }
 
-    public static function sendEmailReport($utc_date) {
-        $score = UserOption::calculateScoreByUTCRange($utc_date." 00:00:00", $utc_date." 23:59:59");
+    public function sendEmailReport($date) {
+        $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
+        $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+        $utc_date = User::convertLocalTimeToUTC($date);
+
+		if(!is_null($this->email_threshold) && !$this->partner_email1 && !$this->partner_email2 && !$this->partner_email3)
+			return false; // they don't have their partner emails set
+
+        $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
+
+		$questions = User::getUserQuestions($date);
+        $user_options = User::getUserOptions($date);
+		//var_dump($user_options[1]); exit();
         
+
+        $categories = Category::find()->asArray()->all();
+
+        $options = Option::find()->asArray()->all();
+        $options_list = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
+
+		$message = Yii::$app->mailer->compose('checkinReport', [
+			'user' => $this,
+            'categories' => $categories, 
+            'options_list' => $options_list, 
+			'user_options' => $user_options,
+            'date' => $date, 
+            'score' => $score, 
+            'questions' => $questions
+		])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+		->setReplyTo($this->email)
+		->setSubject($this->username." has scored high in The Faster Scale App");
+
+		$messages = [];
+		if($this->partner_email1)
+			$messages[] = $message->setTo($this->partner_email1);
+		if($this->partner_email2)
+			$messages[] = $message->setTo($this->partner_email2);
+		if($this->partner_email3)
+			$messages[] = $message->setTo($this->partner_email3);
+
+		return Yii::$app->mailer->sendMultiple($messages);
     }
+
+	public static function getUserQuestions($local_date) {
+        if(is_null($local_date))
+            $local_date = User::getLocalDate();
+
+        $utc_start_time = User::convertLocalTimeToUTC($local_date." 00:00:00");
+        $utc_end_time = User::convertLocalTimeToUTC($local_date." 23:59:59");
+        $utc_date = User::convertLocalTimeToUTC($local_date);
+
+        $questions = Question::find()
+            ->where("user_id=:user_id 
+                AND date > :start_date 
+                AND date < :end_date", 
+                [
+                    "user_id" => Yii::$app->user->id, 
+                    ':start_date' => $utc_start_time, 
+                    ":end_date" => $utc_end_time
+                ])
+            ->with('option')
+            ->all();
+
+		if($questions) {
+			$organized_question_answers = [];
+			foreach($questions as $question) {
+				$question_data = [
+					"id" => $question->option->id,
+					"title" => $question->option->name
+				];
+
+				$question_answer = [
+					"title" => Question::$QUESTIONS[$question->question],
+					"answer" => $question->answer
+				];
+
+				$organized_question_answers[$question->option->id]['question'] = $question_data;
+				$organized_question_answers[$question->option->id]["answers"][] = $question_answer;
+			}
+			return $organized_question_answers;
+		}
+
+		return [];
+	}
+
+	public static function getUserOptions($local_date) {
+        if(is_null($local_date))
+            $local_date = User::getLocalDate();
+
+        $utc_start_time = User::convertLocalTimeToUTC($local_date." 00:00:00");
+        $utc_end_time = User::convertLocalTimeToUTC($local_date." 23:59:59");
+        $utc_date = User::convertLocalTimeToUTC($local_date);
+
+        $user_options = UserOption::find()
+            ->where("user_id=:user_id 
+                AND date > :start_date 
+                AND date < :end_date", 
+                [
+                    "user_id" => Yii::$app->user->id, 
+                    ':start_date' => $utc_start_time, 
+                    ":end_date" => $utc_end_time
+                ])
+            ->with('option', 'option.category')
+            ->asArray()
+            ->all();
+
+		if($user_options) {
+			foreach($user_options as $option) {
+				$user_options_by_category[$option['option']['category_id']]['category_name'] = $option['option']['category']['name'];
+				$user_options_by_category[$option['option']['category_id']]['options'][] = ["id" => $option['option_id'], "name"=>$option['option']['name']];
+			}
+
+			return $user_options_by_category;
+		}
+
+		return [];
+	}
 }

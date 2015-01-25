@@ -65,8 +65,6 @@ class CheckinController extends \yii\web\Controller
 
             UserOption::saveAll($options);
 
-            User::sendEmailReport(User::getLocalDate("UTC"));
-
             Yii::$app->session->setFlash('success', 'Your emotions have been logged! Answer the questions below to compete your checkin.');
             return $this->redirect(['checkin/questions'], 200);
         } else {
@@ -102,6 +100,15 @@ class CheckinController extends \yii\web\Controller
                 ]
             );
 			$result = $form->saveAnswers();
+
+        	$user = User::findOne([
+            	'status' => User::STATUS_ACTIVE,
+            	'email' => Yii::$app->user->identity->email,
+        	]);
+        	$score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
+			if(!is_null($user->email_threshold) && $score > $user->email_threshold)
+				$user->sendEmailReport($user->getLocalDate());
+
             if($result) {
                 Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
 			    return $this->redirect(['checkin/view'], 200);
@@ -120,41 +127,17 @@ class CheckinController extends \yii\web\Controller
         if(is_null($date))
             $date = User::getLocalDate();
 
-        $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
-        $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
-        $utc_date = User::convertLocalTimeToUTC($date);
-        $form = new CheckinForm();
-
         $past_checkin_dates = UserOption::getPastCheckinDates();
-        $user_options = UserOption::find()
-            ->where("user_id=:user_id 
-                AND date > :start_date 
-                AND date < :end_date", 
-                [
-                    "user_id" => Yii::$app->user->id, 
-                    ':start_date' => $utc_start_time, 
-                    ":end_date" => $utc_end_time
-                ])
-            ->with('option')
-            ->asArray()
-            ->all();
+		$questions = User::getUserQuestions($date);
+        $user_options = User::getUserOptions($date);
+		//var_dump($user_options); exit();
 
-        $questions = Question::find()
-            ->where("user_id=:user_id 
-                AND date > :start_date 
-                AND date < :end_date", 
-                [
-                    "user_id" => Yii::$app->user->id, 
-                    ':start_date' => $utc_start_time, 
-                    ":end_date" => $utc_end_time
-                ])
-            ->with('option')
-            ->all();
-
-        foreach($user_options as $option) {
-            $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
-            $attribute = "options".$option['option']['category_id'];
-            $form->{$attribute}[] = $option['option_id'];
+        $form = new CheckinForm();
+        foreach($user_options as $category_id => $category_data) {
+			foreach($category_data['options'] as $option) {
+            	$attribute = "options$category_id";
+            	$form->{$attribute}[] = $option['id'];
+			}
         }   
 
         $categories = Category::find()->asArray()->all();
@@ -162,6 +145,9 @@ class CheckinController extends \yii\web\Controller
         $options = Option::find()->asArray()->all();
         $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
+        $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
+        $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+        $utc_date = User::convertLocalTimeToUTC($date);
         $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
 
         return $this->render('view', [

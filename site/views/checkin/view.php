@@ -69,19 +69,11 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 </div>
 
 <?php if($questions) {
-    $organized_question_answers = [];
-    foreach($questions as $question) {
-        $organized_question_answers[$question->option->name][$question->question] = [
-            "title" => Question::$QUESTIONS[$question->question],
-            "answer" => $question->answer
-        ];
-    }
-
-    foreach($organized_question_answers as $option => $questions) {
+	foreach($questions as $option_id => $option_questions) {
         print "<div class='well well-sm'>";
-        print "<button type='button' class='btn btn-primary' disabled='disabled'>$option</button>";
+        print "<button type='button' class='btn btn-primary' disabled='disabled'>{$option_questions['question']['title']}</button>";
         print "<div class='row'>";
-        foreach($questions as $question) { 
+		foreach($option_questions['answers'] as $question) { 
             print "<div class='col-md-4'>";
             print "<p><strong>{$question['title']}</strong></p>";
             print "<p>{$question['answer']}</p>";

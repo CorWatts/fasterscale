@@ -57,7 +57,7 @@ class QuestionForm extends Model
     {
         return [
             [['user_option_id1', 'user_option_id2', 'user_option_id3', 'user_option_id4', 'user_option_id5', 'user_option_id6', 'user_option_id7'], 'integer'],
-            [['answer_1a','answer_1b','answer_1c','answer_2a','answer_2b','answer_2c','answer_3a','answer_3b','answer_3c','answer_4a','answer_4b','answer_4c','answer_5b','answer_5c','answer_6b','answer_6c','answer_7b','answer_7c'], 'safe']
+            [['answer_1a','answer_1b','answer_1c','answer_2a','answer_2b','answer_2c','answer_3a','answer_3b','answer_3c','answer_4a','answer_4b','answer_4c','answer_5a', 'answer_5b','answer_5c','answer_6a', 'answer_6b','answer_6c','answer_7a','answer_7b','answer_7c'], 'safe']
         ];
     }
 
@@ -75,8 +75,9 @@ class QuestionForm extends Model
 
     public function saveAnswers() {
         $result = true;
-        for($i = 1; $i < 8; $i ++) {
-            if(isset($this->{"user_option_id".$i})) {
+        for($i = 2; $i < 8; $i ++) {
+			$option_id = "user_option_id".$i;
+            if(isset($this->$option_id)) {
                 $user_option = UserOption::find()->with("option")->where(['id' => $this->{"user_option_id".$i}])->one();
                 for($j = 1; $j < 4; $j ++) {
                     $answer_prop = "answer_".$i.Question::$TYPES[$j];
@@ -89,7 +90,6 @@ class QuestionForm extends Model
                         $model->date = new Expression("now()::timestamp");
                         $model->question = $j;
                         $model->answer = $this->$answer_prop;
-                        $model->save();
                         if(!$model->save()) {
                             $result = false;
                         }
