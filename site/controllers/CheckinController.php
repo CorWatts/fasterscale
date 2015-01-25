@@ -65,7 +65,7 @@ class CheckinController extends \yii\web\Controller
 
             UserOption::saveAll($options);
 
-            Yii::$app->session->setFlash('success', 'Your emotions have been logged! Answer the questions below to compete your checkin.');
+            Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
             return $this->redirect(['checkin/questions'], 200);
         } else {
             $categories = Category::find()->asArray()->all();
@@ -106,11 +106,14 @@ class CheckinController extends \yii\web\Controller
             	'email' => Yii::$app->user->identity->email,
         	]);
         	$score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
-			if(!is_null($user->email_threshold) && $score > $user->email_threshold)
+			if(!is_null($user->email_threshold) && $score > $user->email_threshold) {
 				$user->sendEmailReport($user->getLocalDate());
+            	Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
+			} else {
+                Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
+			}
 
             if($result) {
-                Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
 			    return $this->redirect(['checkin/view'], 200);
             }
         }
