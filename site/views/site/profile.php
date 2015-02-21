@@ -19,7 +19,11 @@ $timezones = DateTimeZone::listIdentifiers();
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-profile']); ?>
+			<?php $form = ActiveForm::begin([
+				'id' => 'form-profile',
+				'enableClientValidation' => false,
+				'enableAjaxValidation' => true
+			]); ?>
                 <?= $form->field($model, 'username') ?>
                 <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>']); ?>
                 <?= $form->field($model, 'password')->passwordInput() ?>
