@@ -77,11 +77,11 @@ class QuestionForm extends Model
         $result = true;
         for($i = 2; $i < 8; $i ++) {
 			$option_id = "user_option_id".$i;
-            if(isset($this->$option_id)) {
+            if(!empty($this->$option_id)) {
                 $user_option = UserOption::find()->with("option")->where(['id' => $this->{"user_option_id".$i}])->one();
                 for($j = 1; $j < 4; $j ++) {
                     $answer_prop = "answer_".$i.Question::$TYPES[$j];
-                    if(isset($this->$answer_prop)) {
+                    if(!empty($this->$answer_prop)) {
                         $user_option_prop = "user_option_id".$i;
                         $model = new Question;
                         $model->user_id = Yii::$app->user->id;
