@@ -12,8 +12,8 @@ use common\models\Question;
 $this->title = "Past Checkins";
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
-    $checked_val = ($checked) ? "active" : "";
-    return "<button class='btn btn-default $checked_val' data-toggle='button' name='$name' value='$value'>$label</button>";
+    $checked_val = ($checked) ? "btn-primary" : "";
+    return "<button class='btn btn-default $checked_val' data-toggle='button' disabled='disabled' name='$name' value='$value'>$label</button>";
 }
 ?>
 <h1>View Past Checkins</h1>
