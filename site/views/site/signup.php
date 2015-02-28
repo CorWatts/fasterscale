@@ -33,7 +33,7 @@ $timezones = DateTimeZone::listIdentifiers();
                 ]) ?>
                 <?= $form->field($model, 'send_email')->checkbox() ?>
                 <div id='email_threshold_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>
-                    <?= $form->field($model, 'email_threshold')->textInput(['class'=>'form-control', 'style'=>'width: 50px;']) ?>
+                    <?= $form->field($model, 'email_threshold', ['template' => '{label}<div class="row"><div class="col-md-2">{input}</div><div class="col-md-10"><p class="bg-info text-center" style="margin: 5px 0px;">We recommend a score of 60 to start out with</p></div></div>{error}'])->textInput(['class'=>'form-control']) ?>
                     <?= $form->field($model, 'partner_email1')->input('email'); ?>
                     <?= $form->field($model, 'partner_email2')->input('email'); ?>
                     <?= $form->field($model, 'partner_email3')->input('email'); ?>

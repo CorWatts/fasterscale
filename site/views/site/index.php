@@ -20,8 +20,8 @@ $this->title = 'The Faster Scale App';
                 <p>Use Michael Dye's popular and proven relapse prevention tool: The Faster Scale. Log the emotions you are experiencing in order to see how vulnerable to temptation you are in the moment. Check in daily to see the progress of your emotions over time.</p>
             </div>
             <div class="col-lg-4">
-                <h2>Useful Analytics</h2>
-                <p>Everyone loves analytics. View beautiful charts and graphs to gain additional insights to your emotional tendencies. Your daily checkin answers are stored so you can go back to any point in history and view what you were experiencing at that time.</p>
+                <h2>Useful Analytics & Alerts</h2>
+                <p>Everyone loves analytics. View beautiful charts and graphs to gain additional insights to your emotional tendencies. Your daily checkin answers are stored so you can go back to any point in history and view what you were experiencing at that time. You can also choose to send a report to your friends if you score above a certain threshold, which opens up avenues for conversation.</p>
             </div>
             <div class="col-lg-4">
                 <h2>Danger Score</h2>
