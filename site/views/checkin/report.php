@@ -64,13 +64,15 @@ foreach($answer_pie as $key => $category) {
         <table class='table table-striped'>
             <tr>
                 <th>#</th>
-                <th>Option Name</th>
+                <th>Category</th>
+                <th>Option</th>
                 <th>Count</th>
             </tr>
         <?php foreach($top_options as $key => $row) {
             $num = $key + 1;
             print "<tr>".
                 "<td>".$num."</td>".
+                "<td>{$row['category']}</td>".
                 "<td>{$row['name']}</td>".
                 "<td>{$row['count']}</td>".
             "</tr>";
