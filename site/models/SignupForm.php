@@ -46,17 +46,21 @@ class SignupForm extends Model
             ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
             
             // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+            ['verifyCode', 'captcha', 'captchaAction' => 'site/captcha', 'caseSensitive' => false],
 
             ['send_email', 'boolean'],
             ['email_threshold', 'integer'],
             ['email_threshold', 'required', 'when'=> function($model) {
                 return $model->send_email;
-            }, 'message' => "If you've elected to send email reports, you must set a threshold."],
+			}, 'message' => "If you've elected to send email reports, you must set a threshold.", "whenClient" => "function(attribute, value) {
+				return $('#signupform-send_email').is(':checked');
+			}"],
             [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
             [['partner_email1', 'partner_email2', 'partner_email3'], 'required', 'when' => function($model) {
                 return ($model->send_email && !$model->partner_email1 && !$model->partner_email2 && !$model->partner_email3);
-            }, 'message' => "If you've elected to send email reports, at least one partner email must be set."]
+			}, 'message' => "If you've elected to send email reports, at least one partner email must be set.", "whenClient" => "function(attribute, value) {
+				return $('#signupform-send_email').is(':checked') && (!$('#signupform-partner_email1').is(':checked') && !$('#signupform-partner_email2').is(':checked') && !$('#signupform-partner_email3').is(':checked'));
+			}"]
         ];
     }
 

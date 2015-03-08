@@ -42,23 +42,17 @@ class EditProfileForm extends Model
 
             ['send_email', 'boolean'],
             ['email_threshold', 'integer'],
-            [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
             ['email_threshold', 'required', 'when'=> function($model) {
                 return $model->send_email;
-            }, 'whenClient' => "function(attribute, value) {
-                return $('#send_email').is(':checked');
-    }"],
+			}, 'message' => "If you've elected to send email reports, you must set a threshold.", "whenClient" => "function(attribute, value) {
+				return $('#signupform-send_email').is(':checked');
+			}"],
+            [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
             [['partner_email1', 'partner_email2', 'partner_email3'], 'required', 'when' => function($model) {
                 return ($model->send_email && !$model->partner_email1 && !$model->partner_email2 && !$model->partner_email3);
-            }, 'skipOnEmpty' => false, 'skipOnError' => false, 'whenClient' => "function(attribute, value) {
-                if($('#editprofileform-send_email').is(':checked')) {
-                    if(($('#editprofileform-partner_email1').val() != '' 
-                        || $('#editprofileform-partner_email2').val() != ''
-                        || $('#editprofileform-partner_email3').val() != ''))
-                    return false;
-               }
-               return true;
-            }", 'message' => "If you've elected to send email reports, at least one partner email must be set."]
+			}, 'message' => "If you've elected to send email reports, at least one partner email must be set.", "whenClient" => "function(attribute, value) {
+				return $('#signupform-send_email').is(':checked') && (!$('#signupform-partner_email1').is(':checked') && !$('#signupform-partner_email2').is(':checked') && !$('#signupform-partner_email3').is(':checked'));
+			}"]
         ];
     }
 

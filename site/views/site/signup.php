@@ -21,8 +21,8 @@ $timezones = DateTimeZone::listIdentifiers();
         <div class="col-lg-5">
 			<?php $form = ActiveForm::begin([
 				'id' => 'form-signup',
-				'enableClientValidation' => false,
-				'enableAjaxValidation' => true
+				'enableClientValidation' => true,
+				'options' => ['validateOnSubmit' => true]
 			]); ?>
                 <?= $form->field($model, 'username') ?>
                 <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>']); ?>
