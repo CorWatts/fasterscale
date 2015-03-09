@@ -56,10 +56,10 @@ class SignupForm extends Model
 				return $('#signupform-send_email').is(':checked');
 			}"],
             [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
-            [['partner_email1', 'partner_email2', 'partner_email3'], 'required', 'when' => function($model) {
-                return ($model->send_email && !$model->partner_email1 && !$model->partner_email2 && !$model->partner_email3);
+            [['partner_email1'], 'required', 'when' => function($model) {
+                return $model->send_email;
 			}, 'message' => "If you've elected to send email reports, at least one partner email must be set.", "whenClient" => "function(attribute, value) {
-				return $('#signupform-send_email').is(':checked') && (!$('#signupform-partner_email1').is(':checked') && !$('#signupform-partner_email2').is(':checked') && !$('#signupform-partner_email3').is(':checked'));
+				return $('#signupform-send_email').is(':checked');
 			}"]
         ];
     }
