@@ -41,11 +41,12 @@ class CheckinController extends \yii\web\Controller
     {
         $form = new CheckinForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $options = array_merge((array)$form->options1, (array)$form->options2, (array)$form->options3, (array)$form->options4, (array)$form->options5, (array)$form->options6, (array)$form->options7);
-            $options = array_filter($options);
-
             // delete the old data, we only store one data set per day
-            if(sizeof($options) > 0) {
+            $options = array_merge((array)$form->options1, (array)$form->options2, (array)$form->options3, (array)$form->options4, (array)$form->options5, (array)$form->options6, (array)$form->options7);
+            $options = array_filter($options); // strip out false values
+			$form->compiled_options = $options;
+
+            if(sizeof($form->compiled_options) > 0) {
                 $date = User::getLocalDate();
                 $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
                 $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
@@ -63,7 +64,7 @@ class CheckinController extends \yii\web\Controller
             // delete cached scores
             Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
 
-            UserOption::saveAll($options);
+			$form->save();
 
             Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
             return $this->redirect(['checkin/questions'], 200);

@@ -197,14 +197,4 @@ class UserOption extends \yii\db\ActiveRecord
         $user_options = $query->all();
         return $user_options;
     }
-
-    public function saveAll($options) {
-        foreach($options as $option_id) {
-            $user_option = new UserOption;
-            $user_option->option_id = $option_id;
-            $user_option->user_id = Yii::$app->user->id;
-            $user_option->date = new Expression("now()::timestamp");
-            $user_option->save();
-        }
-    }
 }

@@ -3,6 +3,8 @@ namespace site\models;
 
 use Yii;
 use yii\base\Model;
+use yii\db\Expression;
+use common\models\UserOption;
 
 /**
  * Checkin form
@@ -17,6 +19,7 @@ class CheckinForm extends Model
     public $options6;
     public $options7;
 
+	public $compiled_options;
     /**
      * @inheritdoc
      */
@@ -49,4 +52,24 @@ class CheckinForm extends Model
             }
         }
     }
+
+	public function save() {
+		if(empty($this->compiled_options)) {
+            $options = array_merge((array)$this->options1, (array)$this->options2, (array)$this->options3, (array)$this->options4, (array)$this->options5, (array)$this->options6, (array)$this->options7);
+            $this->compiled_options = array_filter($options); // strip out false values
+		}
+
+
+		$rows = [];
+        foreach($this->compiled_options as $option_id) {
+			$temp = [
+				Yii::$app->user->id,
+				(int)$option_id,
+				new Expression("now()::timestamp")
+			];
+			$rows[] = $temp;
+		}
+		
+		Yii::$app->db->createCommand()->batchInsert(UserOption::tableName(), ['user_id', 'option_id', 'date'], $rows)->execute();
+	}
 }
