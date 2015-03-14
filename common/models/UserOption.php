@@ -75,7 +75,7 @@ class UserOption extends \yii\db\ActiveRecord
      * @date date string in yyyy-mm-dd format
      * @return int score
      */
-    public function calculateScoreByUTCRange($start, $end)
+    public static function calculateScoreByUTCRange($start, $end)
     {
         $user_options = UserOption::find()->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->with('option')->asArray()->all();
 
@@ -112,7 +112,7 @@ class UserOption extends \yii\db\ActiveRecord
         return $score;
     }
 
-    public function calculateScoresOfLastMonth() {
+    public static function calculateScoresOfLastMonth() {
 	$key = "scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate();
 	$scoresByMonth = Yii::$app->cache->get($key);
 	if($scoresByMonth === false) {
@@ -166,7 +166,7 @@ class UserOption extends \yii\db\ActiveRecord
         return $scoresByMonth;
     }
 
-    public function getPastCheckinDates()
+    public static function getPastCheckinDates()
     {
         $past_checkin_dates = [];
         $query = new Query;
@@ -183,7 +183,7 @@ class UserOption extends \yii\db\ActiveRecord
         return $past_checkin_dates;
     }
 
-    public function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
+    public static function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
         $query = new Query;
         $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
             ->from('user_option_link l')

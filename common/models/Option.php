@@ -64,7 +64,7 @@ class Option extends \yii\db\ActiveRecord
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
-    public function getAllOptionsByCategory() {
+    public static function getAllOptionsByCategory() {
             $query = new Query;
             $query->select("c.id as category_id, c.name as name, c.weight as weight, COUNT(o.id) as option_count")
                 ->from('category c')
