@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use common\models\UserOption;
 
 /**
  * @var yii\web\View $this
@@ -27,6 +28,11 @@ use yii\helpers\Html;
 									</tr>
 
 									<tr><td><h2>Score: <?= $score ?></h2><td></tr>
+									<tr><td>
+										<h2>Past Month's Scores:</h2>
+										<img src="data:image/png;base64,<?= base64_encode(UserOption::generateScoresGraph()) ?>" /><br />
+										<span>Note: Some email clients (GMail/Outlook) might not display this image.</span>
+									</td><tr>
 								</table>
 
 								<h2>Questions:</h2>

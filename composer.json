@@ -27,7 +27,7 @@
         "bower-asset/punycode": "@stable",
 		"twbs/bootstrap-sass": "@stable",
 		"moment/moment": "dev-master",
-		"nesbot/Carbon": "*"
+		"jpgraph/jpgraph": "dev-master"
 	},
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",
