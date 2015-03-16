@@ -210,7 +210,7 @@ class UserOption extends \yii\db\ActiveRecord
 		$data = array_values($values);
 
 		// Setup the graph
-		$graph = new \Graph(300,250);
+		$graph = new \Graph(600,500);
 		$graph->SetScale("textlin");
 
 		$theme_class=new \UniversalTheme;
