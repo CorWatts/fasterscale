@@ -27,7 +27,7 @@
         "bower-asset/punycode": "@stable",
 		"twbs/bootstrap-sass": "@stable",
 		"moment/moment": "dev-master",
-		"jpgraph/jpgraph": "dev-master"
+		"mld/svg-graph": "dev-master"
 	},
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",

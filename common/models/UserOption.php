@@ -9,7 +9,7 @@ use yii\db\Query;
 use \DateTime;
 use \DateTimeZone;
 use yii\db\Expression;
-use JpGraph\JpGraph;
+use \SVGGraph;
 
 /**
  * This is the model class for table "user_option_link".
@@ -202,50 +202,24 @@ class UserOption extends \yii\db\ActiveRecord
 	public static function generateScoresGraph() {
 		$values = UserOption::calculateScoresOfLastMonth();
 
-		JpGraph::load();
-		JpGraph::module("line");
-
-		ob_start();
-
-		$data = array_values($values);
-
-		// Setup the graph
-		$graph = new \Graph(600,500);
-		$graph->SetScale("textlin");
-
-		$theme_class=new \UniversalTheme;
-
-		$graph->SetTheme($theme_class);
-		$graph->img->SetAntiAliasing(false);
-		$graph->title->Set('Last Month\'s Scores');
-		$graph->SetBox(false);
-
-		$graph->img->SetAntiAliasing();
-
-		$graph->yaxis->HideZeroLabel();
-		$graph->yaxis->HideLine(false);
-		$graph->yaxis->HideTicks(false,false);
-
-		$graph->xgrid->Show();
-		$graph->xgrid->SetLineStyle("solid");
-		$graph->xaxis->SetTickLabels(array_keys($values));
-		$graph->xaxis->SetLabelAngle(90);
-		$graph->xgrid->SetColor('#E3E3E3');
-
-		// Create the first line
-		$p1 = new \LinePlot($data);
-		$graph->Add($p1);
-		$p1->SetColor("#6495ED");
-		$p1->SetLegend('Scores');
-
-		$graph->legend->SetFrameWeight(1);
-
-		// Output line
-		$graph->Stroke();
-
-		$img = ob_get_contents();
-		ob_end_clean();
-
-		return $img;
+		$settings = array(
+		  'back_colour'       => '#fff',    'stroke_colour'      => 'blue',
+		  'back_stroke_width' => 0,         'back_stroke_colour' => '#eee',
+		  'axis_colour'       => '#333',    'axis_overlap'       => 2,
+		  'axis_font'         => 'Georgia', 'axis_font_size'     => 10,
+		  'grid_colour'       => '#666',    'label_colour'       => '#000',
+		  'pad_right'         => 20,        'pad_left'           => 20,
+		  'link_base'         => '/',       'link_target'        => '_top',
+		  'fill_under'        => array(true, false),
+		  'marker_size'       => 3,
+		  'marker_type'       => array('circle', 'square'),
+		  'marker_colour'     => array('blue')
+		);
+		 
+		 
+		$graph = new SVGGraph(600, 300, $settings);
+		 
+		$graph->Values($values);
+		return $graph->Fetch('LineGraph');
 	}
 }

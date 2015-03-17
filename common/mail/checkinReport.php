@@ -173,7 +173,7 @@ use common\models\UserOption;
 																						<tr>
 																							<td style="vertical-align: top; font-size: 18px; font-weight: bold; line-height: 100%; padding-bottom: 25px; text-align: left; border-collapse: collapse;">
 																								<h1 style="font-family: Helvetica,sans-serif; color: #384047; display: block; font-size: 24px; font-weight: bold; line-height: 130%; letter-spacing: normal; margin-right: 0; margin-top: 15px; margin-bottom: 15px; margin-left: 0; text-align: left;">The Faster Scale App -- Email Report for <?= Html::encode($user->username) ?></h1>
-																								<h2 style="font-family: Helvetica,sans-serif; color: #8d9aa5; display: block; font-size: 18px; font-weight: normal; line-height: 150%; letter-spacing: normal; margin-right: 0; margin-top: 15px; margin-bottom: 10px; margin-left: 0; text-align: left;">Hello there! <?= Html::encode($user->username) ?> has set you as one of their report recipients. These reports are sent out when <?= Html::encode($user->username) ?> scores above <?= Html::encode($user->email_threshold) ?> in their checkin. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</b></h2>
+																																																<p style=\"font-family: Helvetica,sans-serif; line-height: 160%; margin-top: 15px; margin-bottom: 15px; text-decoration: none;\">Hello there! <?= Html::encode($user->username) ?> has set you as one of their report recipients. These reports are sent out when <?= Html::encode($user->username) ?> scores above <?= Html::encode($user->email_threshold) ?> in their checkin. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</p>
 																						</td>
 																					</tr>
 																				</tbody>
@@ -196,7 +196,7 @@ use common\models\UserOption;
 																				<tbody>
 																					<tr>
 																						<td style="vertical-align: top; color: #fff; font-size: 14px; text-align: center; border-collapse: collapse; margin: 0; padding: 0; background: #fff;">
-																							<img style="width: 100%; max-width: 600px; height: auto; border: 0px; line-height: 100%; outline: none; text-decoration: none; text-align: center; margin: 0px;" src="data:image/png;base64,<?= base64_encode(UserOption::generateScoresGraph()) ?>" alt="Scores of the Last Month" />
+																						<?= UserOption::generateScoresGraph() ?>
 																						</td>
 																					</tr>
 																				</tbody>
