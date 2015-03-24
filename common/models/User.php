@@ -269,25 +269,23 @@ class User extends ActiveRecord implements IdentityInterface
         $options = Option::find()->asArray()->all();
         $options_list = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
-		$message = Yii::$app->mailer->compose('checkinReport', [
-			'user' => $this,
-            'categories' => $categories, 
-            'options_list' => $options_list, 
-			'user_options' => $user_options,
-            'date' => $date, 
-            'score' => $score, 
-            'questions' => $questions
-		])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-		->setReplyTo($this->email)
-		->setSubject($this->username." has scored high in The Faster Scale App");
-
 		$messages = [];
-		if($this->partner_email1)
-			$messages[] = $message->setTo($this->partner_email1);
-		if($this->partner_email2)
-			$messages[] = $message->setTo($this->partner_email2);
-		if($this->partner_email3)
-			$messages[] = $message->setTo($this->partner_email3);
+		foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
+			if($email) {
+				$messages[] = Yii::$app->mailer->compose('checkinReport', [
+					'user' => $this,
+					'categories' => $categories, 
+					'options_list' => $options_list, 
+					'user_options' => $user_options,
+					'date' => $date, 
+					'score' => $score, 
+					'questions' => $questions
+				])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+				->setReplyTo($this->email)
+				->setSubject($this->username." has scored high in The Faster Scale App")
+				->setTo($email);
+			}
+		}
 
 		return Yii::$app->mailer->sendMultiple($messages);
     }

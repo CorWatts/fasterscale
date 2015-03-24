@@ -211,7 +211,7 @@ class UserOption extends \yii\db\ActiveRecord
 		  'pad_right'         => 20,        'pad_left'           => 20,
 		  'link_base'         => '/',       'link_target'        => '_top',
 		  'fill_under'        => array(true, false),
-		  'marker_size'       => 3,
+		  'marker_size'       => 3,			'auto_fit'			 => true,
 		  'marker_type'       => array('circle', 'square'),
 		  'marker_colour'     => array('blue')
 		);
