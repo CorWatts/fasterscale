@@ -279,7 +279,8 @@ class User extends ActiveRecord implements IdentityInterface
 					'user_options' => $user_options,
 					'date' => $date, 
 					'score' => $score, 
-					'questions' => $questions
+					'questions' => $questions,
+					'email' => $email
 				])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
 				->setReplyTo($this->email)
 				->setSubject($this->username." has scored high in The Faster Scale App")

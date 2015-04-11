@@ -11,10 +11,10 @@ use common\models\UserOption;
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>The Faster Scale App -- Email Report</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width">
-    <style>
+	<title>The Faster Scale App -- Email Report</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width"/>
+	<style>
 /**********************************************
 * Ink v1.0.5 - Copyright 2013 ZURB Inc        *
 **********************************************/
@@ -783,32 +783,32 @@ body.outlook p {
 
   </style>
 </head>
-<body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;text-align: left;line-height: 19px;font-size: 14px;width: 100% !important;">
-    <table class="body" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;height: 100%;width: 100%;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;">
-        <tr style="padding: 0;vertical-align: top;text-align: left;">
-            <td class="center" align="center" valign="top" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: center;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-        <center style="width: 100%;min-width: 580px;">
+<body>
+	<table class="body">
+		<tr>
+			<td class="center" align="center" valign="top">
+        <center>
 
 
-          <table class="row header" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;background: #999999;width: 100%;position: relative;">
-            <tr style="padding: 0;vertical-align: top;text-align: left;">
-              <td class="center" align="center" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: center;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                <center style="width: 100%;min-width: 580px;">
+          <table class="row header">
+            <tr>
+              <td class="center" align="center">
+                <center>
 
-                  <table class="container" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: inherit;width: 580px;margin: 0 auto;">
-                    <tr style="padding: 0;vertical-align: top;text-align: left;">
-                      <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
+                  <table class="container">
+                    <tr>
+                      <td class="wrapper last">
 
-                        <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 580px;">
-                          <tr style="padding: 0;vertical-align: top;text-align: left;">
+                        <table class="twelve columns">
+                          <tr>
 
-                            <td class="six sub-columns" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;min-width: 0px;padding-right: 10px;width: 50%;border-collapse: collapse !important;">
-                              <h1 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 40px;">The Faster Scale App</h1>
+                            <td class="six sub-columns">
+							  <h1>The Faster Scale App</h1>
                             </td>
-                            <td class="six sub-columns last" align="right" style="text-align: right;vertical-align: middle;word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;min-width: 0px;padding-right: 0px;width: 50%;border-collapse: collapse !important;">
-                              <span class="template-label" style="color: #ffffff;font-weight: bold;font-size: 11px;">The Faster Scale App</span>
+                            <td class="six sub-columns last" align="right" style="text-align:right; vertical-align:middle;">
+                              <span class="template-label">The Faster Scale App</span>
                             </td>
-                            <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
+                            <td class="expander"></td>
 
                           </tr>
                         </table>
@@ -823,90 +823,94 @@ body.outlook p {
           </table>
           <br>
 
-          <table class="container" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: inherit;width: 580px;margin: 0 auto;">
-            <tr style="padding: 0;vertical-align: top;text-align: left;">
-              <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
+          <table class="container">
+            <tr>
+              <td>
 
                 <!-- content start -->
-                <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;display: block;">
-                  <tr style="padding: 0;vertical-align: top;text-align: left;">
-                    <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
-                      <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 580px;">
-                        <tr style="padding: 0;vertical-align: top;text-align: left;">
-                          <td class="panel" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;background: #f2f2f2;border: 1px solid #d9d9d9;border-collapse: collapse !important;">
-                            <?= UserOption::generateScoresGraph() ?>
+                <table class="row">
+                  <tr>
+                    <td class="wrapper last">
+                      <table class="twelve columns">
+                        <tr>
+                          <td class="panel">
+				            <?= UserOption::generateScoresGraph() ?>
                           </td>
-                          <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
+                          <td class="expander"></td>
                         </tr>
                       </table>
                     </td>
                   </tr>
                 </table>
-                <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;display: block;">
-                  <tr style="padding: 0;vertical-align: top;text-align: left;">
-                    <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
-                      <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 580px;">
-                        <tr style="padding: 0;vertical-align: top;text-align: left;">
-                          <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                            <p class="lead" style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 21px;font-size: 18px;">Hello there! <?= Html::encode($user->username) ?> has set you as one of their report recipients. These reports are sent out when <?= Html::encode($user->username) ?> scores above <?= Html::encode($user->email_threshold) ?> in their checkin. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</p>
+                <table class="row">
+                  <tr>
+                    <td class="wrapper last">
+                      <table class="twelve columns">
+                        <tr>
+                          <td>
+							<p class="lead">Hello there! <?= Html::encode($user->username) ?> has set you as one of their report recipients. These reports are sent out when <?= Html::encode($user->username) ?> scores above <?= Html::encode($user->email_threshold) ?> in their checkin. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</p>
                           </td>
-                          <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
+                          <td class="expander"></td>
                         </tr>
                       </table>
                     </td>
                   </tr>
                 </table>
-                <h3 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 32px;">Questions:</h3>
-                <?php 
-                  if($questions)  {
-                    foreach($questions as $option_id => $option_questions) { ?>
-                      <h5 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 24px;"><?= $option_questions['question']['title'] ?></h5>
-                      <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;display: block;">
-                        <tr style="padding: 0;vertical-align: top;text-align: left;">
-                          <?php foreach($option_questions['answers'] as $key => $question) {  ?>
-                          <td class="wrapper<?php if($key === 2) { echo " last"; } ?>" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                            <table class="four columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 180px;">
-                              <tr style="padding: 0;vertical-align: top;text-align: left;">
-                                <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                                  <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><b><?= $question['title'] ?></b></p>
-                                  <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><?= $question['answer'] ?></p>
+				<h3>Questions:</h3>
+				<?php 
+				  if($questions)  {
+					foreach($questions as $option_id => $option_questions) { ?>
+                      <table class="row">
+                        <tr>
+						  <h5><?= $option_questions['question']['title'] ?></h5>
+						  <?php foreach($option_questions['answers'] as $key => $question) {  ?>
+						  <td class="wrapper<?php if($key === 2) { echo " last"; } ?>">
+							<table class="four columns">
+                              <tr>
+                                <td>
+								  <p><b><?= $question['title'] ?></b></p>
+								  <p><?= $question['answer'] ?></p>
                                 </td>
-                                <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
+                                <td class="expander"></td>
                               </tr>
                             </table>
-                          </td>
-                      <?php } ?>
+						  </td>
+					  <?php } ?>
                       </tr>
                     </table>
-                    <?php }
-                    } ?>
-
-                <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;">
-                  <tr style="padding: 0;vertical-align: top;text-align: left;">
-                    <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
-                      <h3 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 32px;">Selected Emotions:</h3>
-                        <?php foreach($user_options as $user_option) { ?>
-                          <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><b><?= $user_option['category_name'] ?></b></p>
-                          <?php foreach($user_option['options'] as $option) { ?>
-                            <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><?= $option['name'] ?>
-                        <?php }
-                        } ?>
-                    </p></td>
+                <?php }
+			      }
+				?>
+                    </td>
                   </tr>
                 </table>
 
-                <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;">
-                  <tr style="padding: 0;vertical-align: top;text-align: left;">
-                    <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
+                <table class="row">
+                  <tr>
+                    <td class="wrapper last">
+					  <h3>Selected Emotions:</h3>
+						<?php foreach($user_options as $user_option) { ?>
+						  <p><b><?= $user_option['category_name'] ?></b></p>
+						  <?php foreach($user_option['options'] as $option) { ?>
+							<p><?= $option['name'] ?></p
+						  <?php }
+						} ?>
+                    </td>
+                  </tr>
+                </table>
 
-                      <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 580px;">
-                        <tr style="padding: 0;vertical-align: top;text-align: left;">
-                          <td align="center" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                            <center style="width: 100%;min-width: 580px;">
-                            <p style="text-align: center;margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;line-height: 19px;font-size: 14px;"><a href="http://ilikecodeine.com/terms" style="color: #2ba6cb;text-decoration: none;">Terms</a> | <a href="http://ilikecodeine.com/privacy" style="color: #2ba6cb;text-decoration: none;">Privacy</a> | <a href="http://ilikecodeine.com/unsubscribe?email=&lt;?= $email ?&gt;" style="color: #2ba6cb;text-decoration: none;">Unsubscribe</a></p>
+                <table class="row">
+                  <tr>
+                    <td class="wrapper last">
+
+                      <table class="twelve columns">
+                        <tr>
+                          <td align="center">
+                            <center>
+							<p style="text-align:center;"><a href="http://ilikecodeine.com/terms">Terms</a> | <a href="http://ilikecodeine.com/privacy">Privacy</a> | <a href="http://ilikecodeine.com/unsubscribe?email=<?= $email ?>">Unsubscribe</a></p>
                             </center>
                           </td>
-                          <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
+                          <td class="expander"></td>
                         </tr>
                       </table>
 
@@ -915,8 +919,13 @@ body.outlook p {
                 </table>
 
                 <!-- container end below -->
-              </center></td>
+              </td>
             </tr>
           </table>
+
+        </center>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>
