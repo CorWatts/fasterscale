@@ -907,7 +907,7 @@ body.outlook p {
                         <tr>
                           <td align="center">
                             <center>
-							<p style="text-align:center;"><a href="http://ilikecodeine.com/terms">Terms</a> | <a href="http://ilikecodeine.com/privacy">Privacy</a> | <a href="http://ilikecodeine.com/unsubscribe?email=<?= $email ?>">Unsubscribe</a></p>
+							<p style="text-align:center;"><a href="http://fasterscaleapp.com/terms">Terms</a> | <a href="http://fasterscaleapp.com/privacy">Privacy</a> | <a href="http://fasterscaleapp.com/unsubscribe?email=<?= $email ?>">Unsubscribe</a></p>
                             </center>
                           </td>
                           <td class="expander"></td>

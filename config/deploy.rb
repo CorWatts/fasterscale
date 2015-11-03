@@ -5,7 +5,7 @@ set :repo_url, 'ssh://git@github.com/CorWatts/emotionalcheckin.git'
 set :branch, 'master'
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/var/www/vhosts/ilikecodeine.com'
+set :deploy_to, '/var/www/vhosts/fasterscaleapp.com'
 
 # Default value for :scm is :git
 set :scm, :git
