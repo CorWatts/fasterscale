@@ -2,7 +2,6 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
-use \DateTimeZone;
 
 /**
  * @var yii\web\View $this
@@ -10,7 +9,7 @@ use \DateTimeZone;
  * @var \site\models\SignupForm $model
  */
 $this->title = 'Profile';
-$timezones = DateTimeZone::listIdentifiers();
+$timezones = \DateTimeZone::listIdentifiers();
 ?>
 <div class="site-profile">
     <h1><?= Html::encode($this->title) ?></h1>
