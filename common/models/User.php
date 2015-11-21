@@ -254,62 +254,70 @@ class User extends ActiveRecord implements IdentityInterface
         $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
         $utc_date = User::convertLocalTimeToUTC($date);
 
-		if(!is_null($this->email_threshold) && !$this->partner_email1 && !$this->partner_email2 && !$this->partner_email3)
-			return false; // they don't have their partner emails set
+        if(!is_null($this->email_threshold) && !$this->partner_email1 && !$this->partner_email2 && !$this->partner_email3)
+          return false; // they don't have their partner emails set
 
-        $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
+            $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
 
-		$questions = User::getUserQuestions($date);
-        $user_options = User::getUserOptions($date);
-		//var_dump($user_options[1]); exit();
-        
+        $questions = User::getUserQuestions($date);
+            $user_options = User::getUserOptions($date);
+        //var_dump($user_options[1]); exit();
+            
 
-        $categories = Category::find()->asArray()->all();
+            $categories = Category::find()->asArray()->all();
 
-        $options = Option::find()->asArray()->all();
-        $options_list = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
+            $options = Option::find()->asArray()->all();
+            $options_list = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
-		$messages = [];
-		foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
-			if($email) {
-				$messages[] = Yii::$app->mailer->compose('checkinReport', [
-					'user' => $this,
-					'categories' => $categories, 
-					'options_list' => $options_list, 
-					'user_options' => $user_options,
-					'date' => $date, 
-					'score' => $score, 
-					'questions' => $questions,
-					'email' => $email
-				])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-				->setReplyTo($this->email)
-				->setSubject($this->username." has scored high in The Faster Scale App")
-				->setTo($email);
-			}
-		}
+        $messages = [];
+        foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
+          if($email) {
+            $messages[] = Yii::$app->mailer->compose('checkinReport', [
+              'user' => $this,
+              'categories' => $categories, 
+              'options_list' => $options_list, 
+              'user_options' => $user_options,
+              'date' => $date, 
+              'score' => $score, 
+              'questions' => $questions,
+              'email' => $email
+            ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+            ->setReplyTo($this->email)
+            ->setSubject($this->username." has scored high in The Faster Scale App")
+            ->setTo($email);
+          }
+        }
 
-		return Yii::$app->mailer->sendMultiple($messages);
+        return Yii::$app->mailer->sendMultiple($messages);
     }
 
-	public static function getUserQuestions($local_date) {
-        if(is_null($local_date))
-            $local_date = User::getLocalDate();
+    public function sendSignupNotificationEmail() {
+        return \Yii::$app->mailer->compose('signupNotification')
+            ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+            ->setTo(\Yii::$app->params['adminEmail'])
+            ->setSubject('A new user has signed up for '.\Yii::$app->name)
+            ->send();
+    }
 
-        $utc_start_time = User::convertLocalTimeToUTC($local_date." 00:00:00");
-        $utc_end_time = User::convertLocalTimeToUTC($local_date." 23:59:59");
-        $utc_date = User::convertLocalTimeToUTC($local_date);
+	  public static function getUserQuestions($local_date) {
+      if(is_null($local_date))
+          $local_date = User::getLocalDate();
 
-        $questions = Question::find()
-            ->where("user_id=:user_id 
-                AND date > :start_date 
-                AND date < :end_date", 
-                [
-                    "user_id" => Yii::$app->user->id, 
-                    ':start_date' => $utc_start_time, 
-                    ":end_date" => $utc_end_time
-                ])
-            ->with('option')
-            ->all();
+      $utc_start_time = User::convertLocalTimeToUTC($local_date." 00:00:00");
+      $utc_end_time = User::convertLocalTimeToUTC($local_date." 23:59:59");
+      $utc_date = User::convertLocalTimeToUTC($local_date);
+
+      $questions = Question::find()
+          ->where("user_id=:user_id 
+              AND date > :start_date 
+              AND date < :end_date", 
+              [
+                  "user_id" => Yii::$app->user->id, 
+                  ':start_date' => $utc_start_time, 
+                  ":end_date" => $utc_end_time
+              ])
+          ->with('option')
+          ->all();
 
 		if($questions) {
 			$organized_question_answers = [];
