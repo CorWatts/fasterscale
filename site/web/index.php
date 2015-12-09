@@ -12,6 +12,7 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/../config/main.php'),
     require(__DIR__ . '/../config/main-local.php')
 );
+$config['components']['assetManager']['forceCopy'] = true;
 
 $application = new yii\web\Application($config);
 $application->run();

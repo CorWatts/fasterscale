@@ -16,8 +16,8 @@ return [
     'bundles' => [
         'site\assets\AppAsset',
         'yii\web\YiiAsset',
-        'yii\web\JqueryAsset',
         'yii\bootstrap\BootstrapAsset',
+        'site\assets\JuiAsset',
     ],
     // Asset bundle for compression output:
     'targets' => [
@@ -32,7 +32,16 @@ return [
     ],
     // Asset manager configuration:
     'assetManager' => [
-        'basePath' => '@webroot/assets',
-        'baseUrl' => '@web/assets',
+      'basePath' => '@webroot/assets',
+      'baseUrl' => '@web',
+      'bundles' => [
+        'yii\jui\JuiAsset' => [
+          'sourcePath' => null,
+          'basePath' => null,
+          'baseUrl' => null,
+          'js' => [],
+          'css' => [],
+        ],
+      ],
     ],
 ];

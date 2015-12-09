@@ -56,6 +56,7 @@ return [
 	        'class'=> 'yii\web\CacheSession',
 	    ],
         'assetManager' => [
+            'linkAssets' => true,
             'converter' => [
                 'class' => 'yii\web\AssetConverter',
             ],
