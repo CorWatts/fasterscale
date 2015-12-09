@@ -52,7 +52,7 @@ namespace :deploy do
   task :switch_index do
     on roles(:web) do
         within release_path do
-          execute 'mv', 'site/web/prod.php', 'site/web/index.php;'
+          execute 'cp', 'site/web/prod.php', 'site/web/index.php;'
         end
     end
   end
