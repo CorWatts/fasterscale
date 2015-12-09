@@ -24,7 +24,6 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
             'name' => 'attributeName', 
             'value' => $utc_date,
             'options' => ['class'=> 'btn btn-default'],
-            'language' => 'en',
             'dateFormat' => 'yyyy-MM-dd', 
             'clientOptions' => [
                 'defaultDate' => $actual_date,
