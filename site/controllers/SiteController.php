@@ -28,10 +28,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'logout', 'signup', 'privacy', 'terms'],
+                'only' => ['login', 'logout', 'signup', 'privacy', 'terms', 'about', 'welcome'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'error', 'privacy', 'terms'],
+                        'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'welcome'],
                         'allow' => true,
                     ],
                     [
@@ -122,6 +122,11 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    public function actionWelcome()
+    {
+        return $this->render('welcome');
+    }
+
     public function actionSignup()
     {
         $model = new SignupForm();
@@ -137,7 +142,7 @@ class SiteController extends Controller
             if ($user) {
                 $user->sendSignupNotificationEmail();
                 if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
+                    return $this->redirect('/welcome',302);
                 }
             }
         }

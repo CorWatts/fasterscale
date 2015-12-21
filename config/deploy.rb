@@ -12,7 +12,7 @@ set :scm, :git
 
 set :keep_releases, 3
 
-set :linked_files, %w{common/config/main-local.php common/config/params-local.php console/config/main-local.php console/config/params-local.php site/config/main-local.php site/config/params-local.php}
+set :linked_files, %w{common/config/main-local.php common/config/params-local.php console/config/main-local.php console/config/params-local.php site/config/main-local.php site/config/params-local.php .ruby-gemset .ruby-version}
 
 # Default value for :log_level is :debug
 set :log_level, :debug
