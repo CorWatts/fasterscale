@@ -30,6 +30,7 @@ class EditProfileForm extends Model
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.', 'filter' => "id <> ".Yii::$app->user->id],
             ['username', 'string', 'min' => 2, 'max' => 255],
+            ['username', 'required'],
 
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'email'],
