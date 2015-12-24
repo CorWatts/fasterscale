@@ -31,7 +31,7 @@ class SiteController extends Controller
                 'only' => ['login', 'logout', 'signup', 'privacy', 'terms', 'about', 'welcome'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'welcome'],
+                        'actions' => ['index', 'error', 'privacy', 'terms', 'about'],
                         'allow' => true,
                     ],
                     [
@@ -40,7 +40,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'welcome'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
