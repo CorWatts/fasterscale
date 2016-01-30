@@ -60,7 +60,6 @@ return [
             'converter' => [
                 'class' => 'yii\web\AssetConverter',
             ],
-            'bundles' => require(__DIR__ . '/../assets/assets-compressed.php'),
         ],
     ],
     'params' => $params,

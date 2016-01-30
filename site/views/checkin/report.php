@@ -90,13 +90,14 @@ foreach($answer_pie as $key => $category) {
 </div>
 <?php
 $this->registerJs('
-    Chart.defaults.global.responsive = true;
-    Chart.defaults.global.scaleBeginAtZero = true;
-
     var pie_chart_options = {};
     
     var pie_chart_ctx = document.getElementById("category-pie-chart").getContext("2d");
     var myPieChart = new Chart(pie_chart_ctx).Pie('.json_encode($pie_data).', pie_chart_options);
+
+    Chart.defaults.global.responsive = true;
+    Chart.defaults.global.scaleBeginAtZero = true;
+
 ');
 
 
