@@ -5,14 +5,7 @@ return [
     'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\MemCache',
-	    'servers' => [
-		[
-		    'host' => 'localhost',
-		    'port' => 11211,
-		    'weight' => 100
-		]
-	    ]
+            'class' => 'yii\caching\DummyCache', // OR USE MEMCACHE OR SOMETHING
         ],
     ],
 ];

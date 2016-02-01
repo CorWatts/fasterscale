@@ -44,14 +44,6 @@ return [
             'enableCookieValidation' => true,
             'enableCsrfValidation' => true
         ],
-        'formatter' => [
-            'class' => 'yii\i18n\Formatter',
-            'dateFormat' => 'medium',
-            'datetimeFormat' => 'yyyy-MM-dd H:i:s',
-            'timeFormat' => 'H:i:s',
-            'timeZone' => 'UTC',
-            'locale' => 'en_US'
-        ],
 	    'session' => [
 	        'class'=> 'yii\web\CacheSession',
 	    ],
