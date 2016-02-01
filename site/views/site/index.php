@@ -15,7 +15,7 @@ $this->title = 'The Faster Scale App';
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-md-4">
 							<div class="thumbnail">
 								<img src="/img/chart.png" alt="...">
 								<div class="caption">
@@ -24,11 +24,11 @@ $this->title = 'The Faster Scale App';
 								</div>
 							</div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <h2>The Faster Scale</h2>
                 <p>Use Michael Dye's popular and proven relapse prevention tool: The Faster Scale. Log the emotions you are experiencing in order to see how vulnerable to temptation you are in the moment. Check in daily to see the progress of your emotions over time.</p>
             </div>
-            <div class="col-lg-4">
+            <div class="col-md-4">
 							<div class="thumbnail">
 								<img src="/img/medium_score.png" alt="...">
 								<div class="caption">
