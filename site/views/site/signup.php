@@ -21,14 +21,15 @@ $timezones = DateTimeZone::listIdentifiers();
 			<?php $form = ActiveForm::begin([
 				'id' => 'form-signup',
 				'enableClientValidation' => true,
+        'enableAjaxValidation' => false,
 				'options' => ['validateOnSubmit' => true]
 			]); ?>
                 <?= $form->field($model, 'username') ?>
                 <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>'])->input('email') ?>
                 <?= $form->field($model, 'password')->passwordInput() ?>
-		<?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                    'template' => '<div class="row"><div class="col-md-5">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
+                <?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
+                <?= $form->field($model, 'captcha')->widget(Captcha::className(), [
+                  'template' => '<div class="row"><div class="col-md-5">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
                 ]) ?>
                 <?= $form->field($model, 'send_email')->checkbox() ?>
                 <div id='email_threshold_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>

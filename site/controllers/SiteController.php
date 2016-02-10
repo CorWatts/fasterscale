@@ -31,7 +31,7 @@ class SiteController extends Controller
                 'only' => ['login', 'logout', 'signup', 'privacy', 'terms', 'about', 'welcome'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'error', 'privacy', 'terms', 'about'],
+                        'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'captcha'],
                         'allow' => true,
                     ],
                     [
@@ -66,7 +66,6 @@ class SiteController extends Controller
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' =>  null,
             ],
         ];
     }
@@ -130,12 +129,6 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
-
-		if (Yii::$app->request->isAjax && $model->load($_POST))
-		{
-			Yii::$app->response->format = 'json';
-			return \yii\widgets\ActiveForm::validate($model);
-		}
 
         if ($model->load(Yii::$app->request->post())) {
             $user = $model->signup();

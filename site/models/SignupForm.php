@@ -15,7 +15,7 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $timezone = "America/Los_Angeles"; // default
-    public $verifyCode;
+    public $captcha;
     public $send_email;
     public $email_threshold;
     public $partner_email1;
@@ -45,8 +45,8 @@ class SignupForm extends Model
             ['timezone', 'string', 'min' => 2, 'max' => 255],
             ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
             
-            // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha', 'captchaAction' => 'site/captcha', 'caseSensitive' => false],
+            // captcha needs to be entered correctly
+            ['captcha', 'captcha', 'caseSensitive' => false],
 
             ['send_email', 'boolean'],
             ['email_threshold', 'integer'],
@@ -85,8 +85,9 @@ class SignupForm extends Model
             $user->username = $this->username;
             $user->email = $this->email;
             $user->setPassword($this->password);
-	        $user->timezone = $this->timezone;
+	          $user->timezone = $this->timezone;
             $user->generateAuthKey();
+
             if($this->send_email) {
                 $user->email_threshold = $this->email_threshold;
                 $user->partner_email1 = $this->partner_email1;
