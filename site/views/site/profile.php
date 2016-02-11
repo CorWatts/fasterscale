@@ -3,11 +3,6 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
-/**
- * @var yii\web\View $this
- * @var yii\widgets\ActiveForm $form
- * @var \site\models\SignupForm $model
- */
 $this->title = 'Profile';
 $timezones = \DateTimeZone::listIdentifiers();
 ?>
@@ -17,22 +12,22 @@ $timezones = \DateTimeZone::listIdentifiers();
     <p>Edit your account information below:</p>
 
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-md-5">
 			<?php $form = ActiveForm::begin([
 				'id' => 'form-profile',
 				'enableClientValidation' => true,
 				'options' => ['validateOnSubmit' => true]
 			]); ?>
-                <?= $form->field($model, 'username') ?>
-                <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>']); ?>
-                <?= $form->field($model, 'password')->passwordInput() ?>
-		        <?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
-                <?= $form->field($model, 'send_email')->checkbox() ?>
-                <div id='email_threshold_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>
-                    <?= $form->field($model, 'email_threshold')->textInput(['class'=>'form-control', 'style'=>'width: 50px;']) ?>
-                    <?= $form->field($model, 'partner_email1')->input('email'); ?>
-                    <?= $form->field($model, 'partner_email2')->input('email'); ?>
-                    <?= $form->field($model, 'partner_email3')->input('email'); ?>
+                <?= $form->field($profile, 'username') ?>
+                <?= $form->field($profile, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>']); ?>
+                <?= $form->field($profile, 'password')->passwordInput() ?>
+		        <?= $form->field($profile, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
+                <?= $form->field($profile, 'send_email')->checkbox() ?>
+                <div id='email_threshold_fields' <?php if(!$profile->send_email) { ?>style="display: none;"<?php } ?>>
+                    <?= $form->field($profile, 'email_threshold')->textInput(['class'=>'form-control', 'style'=>'width: 50px;']) ?>
+                    <?= $form->field($profile, 'partner_email1')->input('email'); ?>
+                    <?= $form->field($profile, 'partner_email2')->input('email'); ?>
+                    <?= $form->field($profile, 'partner_email3')->input('email'); ?>
                 </div>
                 <div class="form-group">
                     <?= Html::submitButton('Save', ['class' => 'btn btn-primary', 'name' => 'profile-button']) ?>
@@ -40,6 +35,25 @@ $timezones = \DateTimeZone::listIdentifiers();
             <?php ActiveForm::end(); ?>
         </div>
     </div>
+
+  <div class="row">
+    <div class="col-md-5">
+      <h4>Delete your account?</h4>
+      <p>Aww shucks, we're sorry to see you go! If you're really sure about this, please enter your password below and click the Delete button. Your account and all your stored data will be deleted, and a notification email will be sent to you and your partners.</p>
+      <?php $form = ActiveForm::begin([
+        'id' => 'form-delete-account',
+        'action' => ['site/delete-account'],
+        'method' => 'post',
+        'enableClientValidation' => true,
+        'options' => ['validateOnSubmit' => true]
+      ]); ?>
+      <?= $form->field($delete, 'password')->passwordInput() ?>
+      <div class="form-group">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-danger', 'name' => 'delete-account-button']) ?>
+      </div>
+      <?php ActiveForm::end(); ?>
+    </div>
+  </div>
 </div>
 
 <?php $this->registerJs(

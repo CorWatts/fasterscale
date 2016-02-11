@@ -7,6 +7,7 @@ use site\models\PasswordResetRequestForm;
 use site\models\ResetPasswordForm;
 use site\models\SignupForm;
 use site\models\EditProfileForm;
+use site\models\DeleteAccountForm;
 use site\models\ContactForm;
 use common\models\User;
 use yii\base\InvalidParamException;
@@ -28,10 +29,9 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'logout', 'signup', 'privacy', 'terms', 'about', 'welcome'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'captcha'],
+                        'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'captcha', 'contact'],
                         'allow' => true,
                     ],
                     [
@@ -40,7 +40,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'welcome'],
+                        'actions' => ['logout', 'welcome', 'delete-account', 'profile'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -50,6 +50,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'deleteAccount' => ['post'],
                 ],
             ],
         ];
@@ -184,34 +185,54 @@ class SiteController extends Controller
 
     public function actionProfile()
     {
-        $model = new EditProfileForm();
+        $editProfileForm = new EditProfileForm();
 
-		if (Yii::$app->request->isAjax && $model->load($_POST))
+		if (Yii::$app->request->isAjax && $editProfileForm->load($_POST))
 		{
 			Yii::$app->response->format = 'json';
-			return \yii\widgets\ActiveForm::validate($model);
+			return \yii\widgets\ActiveForm::validate($editProfileForm);
 		}
 
         $user = User::findOne(Yii::$app->user->id);
-        $model->username = $user->username;
-        $model->email = $user->email;
-        $model->timezone = $user->timezone;
-        $model->send_email = (isset($user->email_threshold) && (isset($user->partner_email1) || isset($user->partner_email2) || isset($user->partner_email3)));
-        $model->email_threshold = $user->email_threshold;
-        $model->partner_email1 = $user->partner_email1;
-        $model->partner_email2 = $user->partner_email2;
-        $model->partner_email3 = $user->partner_email3;
+        $editProfileForm->username = $user->username;
+        $editProfileForm->email = $user->email;
+        $editProfileForm->timezone = $user->timezone;
+        $editProfileForm->send_email = (isset($user->email_threshold) && (isset($user->partner_email1) || isset($user->partner_email2) || isset($user->partner_email3)));
+        $editProfileForm->email_threshold = $user->email_threshold;
+        $editProfileForm->partner_email1 = $user->partner_email1;
+        $editProfileForm->partner_email2 = $user->partner_email2;
+        $editProfileForm->partner_email3 = $user->partner_email3;
 
-        if ($model->load(Yii::$app->request->post())) {
-            $saved_user = $model->saveProfile();
+        if ($editProfileForm->load(Yii::$app->request->post())) {
+            $saved_user = $editProfileForm->saveProfile();
             if($saved_user) {
             	Yii::$app->getSession()->setFlash('success', 'New profile data saved!');
             }
         }
 
+      $deleteAccountForm = new DeleteAccountForm();
         return $this->render('profile', [
-            'model' => $model,
+            'profile' => $editProfileForm,
+            'delete' => $deleteAccountForm
         ]);
+    }
+
+    public function actionDeleteAccount()
+    {
+      $model = new DeleteAccountForm();
+      //var_dump(Yii::$app->request->post()); exit();
+
+      if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if($model->deleteAccount()) {
+          $this->redirect(['site/index']);
+        } else {
+          Yii::$app->getSession()->setFlash('error', 'Wrong password!');
+        }
+      } else {
+        Yii::$app->getSession()->setFlash('error', 'Request must be a POST.');
+      }
+
+      $this->redirect(Yii::$app->request->getReferrer());
     }
 
     public function actionPrivacy()

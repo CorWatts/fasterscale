@@ -299,6 +299,33 @@ class User extends ActiveRecord implements IdentityInterface
             ->send();
     }
 
+    public function sendDeleteNotificationEmail() {
+      Yii::$app->mailer->compose('userDeleteNotification', [ 'user' => $this ])
+        ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+        ->setReplyTo($this->email)
+        ->setSubject($this->username." has delete their The Faster Scale App account")
+        ->setTo($this->email)
+        ->send();
+
+      if(!is_null($this->email_threshold) && !$this->partner_email1 && !$this->partner_email2 && !$this->partner_email3)
+        return false; // they don't have their partner emails set
+
+        $messages = [];
+        foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
+          if($email) {
+            $messages[] = Yii::$app->mailer->compose('partnerDeleteNotification', [
+              'user' => $this,
+              'email' => $email
+            ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+            ->setReplyTo($this->email)
+            ->setSubject($this->username." has delete their The Faster Scale App account")
+            ->setTo($email);
+          }
+        }
+
+        return Yii::$app->mailer->sendMultiple($messages);
+    }
+
 	  public static function getUserQuestions($local_date) {
       if(is_null($local_date))
           $local_date = User::getLocalDate();
