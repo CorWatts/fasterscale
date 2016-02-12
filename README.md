@@ -14,7 +14,7 @@ An online version of The Faster Scale
 ## Roadmap
 #### Pressing needs
 * Create reminder functionality detailed in [issue #13](https://github.com/CorWatts/fasterscale/issues/13)
-* Add ability to delete your account detailed in [issue #12](https://github.com/CorWatts/fasterscale/issues/12)
+* ~~Add ability to delete your account detailed in [issue #12](https://github.com/CorWatts/fasterscale/issues/12)~~
 
 #### Lesser needs
 * Make it a lot easier to install locally in a development environment
