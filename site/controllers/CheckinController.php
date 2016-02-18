@@ -46,25 +46,27 @@ class CheckinController extends \yii\web\Controller
             $options = array_filter($options); // strip out false values
 			$form->compiled_options = $options;
 
-            if(sizeof($form->compiled_options) > 0) {
-                $date = User::getLocalDate();
-                $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
-                $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
-                UserOption::deleteAll("user_id=:user_id 
-                    AND date > :start_date 
-                    AND date < :end_date", 
-                    [
-                        "user_id" => Yii::$app->user->id, 
-                        ':start_date' => $utc_start_time, 
-                        ":end_date" => $utc_end_time
-                    ]
-                );
+            if(sizeof($form->compiled_options) === 0) {
+              return $this->redirect(['checkin/view'], 200);
             }
-    
-            // delete cached scores
-            Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
 
-			$form->save();
+           $date = User::getLocalDate();
+           $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
+           $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+           UserOption::deleteAll("user_id=:user_id 
+               AND date > :start_date 
+               AND date < :end_date", 
+               [
+                   "user_id" => Yii::$app->user->id, 
+                   ':start_date' => $utc_start_time, 
+                   ":end_date" => $utc_end_time
+               ]
+             );
+
+           $form->save();
+
+           // delete cached scores
+           Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
 
             Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
             return $this->redirect(['checkin/questions'], 200);
