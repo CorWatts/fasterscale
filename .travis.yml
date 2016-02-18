@@ -1,0 +1,36 @@
+language: php
+
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+#  - hhvm
+
+# faster builds on new travis setup not using sudo
+sudo: false
+
+# cache vendor dirs
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+install:
+  - travis_retry composer self-update && composer --version
+  - travis_retry composer global require "fxp/composer-asset-plugin:~1.1.0"
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - travis_retry composer install --dev --prefer-dist --no-interaction
+# codeception
+  - travis_retry composer global require "codeception/codeception=2.1.*" "codeception/specify=*" "codeception/verify=*"
+# setup application:
+  - |
+    ./init --env=Development
+    sed -i s/root/travis/ common/config/main-local.php
+    sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" frontend/config/main.php
+    sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" backend/config/main.php
+    cd tests/codeception/common && codecept build
+    cd ../../../
+
+script:
+  - |
+    cd tests/codeception/common
+    codecept run --ansi unit components/TimeTest.php

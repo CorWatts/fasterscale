@@ -1,7 +1,7 @@
-composer.lock
-.ruby-gemset
-.ruby-version
-vendor
-components
-!common/components
-node_modules
+/composer.lock
+/.ruby-gemset
+/.ruby-version
+/vendor
+/components
+!/common/components
+/node_modules

@@ -7,7 +7,6 @@ use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\web\IdentityInterface;
 use common\components\Time;
-use \DateTimeZone;
 
 /**
  * User model

@@ -11,8 +11,14 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'console\controllers',
-    'modules' => [],
-    'components' => [
+		'modules' => [
+			'controllerMap' => [
+				'fixture' => [
+					'class' => 'yii\faker\FixtureController',
+				],
+			],
+		],
+		'components' => [
         'log' => [
             'targets' => [
                 [
