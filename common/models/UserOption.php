@@ -210,10 +210,12 @@ class UserOption extends \yii\db\ActiveRecord
 		  'grid_colour'       => '#666',    'label_colour'       => '#000',
 		  'pad_right'         => 20,        'pad_left'           => 20,
 		  'link_base'         => '/',       'link_target'        => '_top',
-		  'fill_under'        => array(true, false),
+		  'fill_under'        => true,
+      'fill_opacity'      => 0.5,
 		  'marker_size'       => 3,			'auto_fit'			 => true,
 		  'marker_type'       => array('circle', 'square'),
-		  'marker_colour'     => array('blue')
+		  'marker_colour'     => array('blue'),
+      'show_grid'         => true
 		);
 		 
 		 

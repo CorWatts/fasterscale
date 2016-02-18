@@ -27,7 +27,7 @@
         "bower-asset/punycode": "@stable",
 		"twbs/bootstrap-sass": "@stable",
 		"moment/moment": "dev-master",
-		"mld/svg-graph": "dev-master"
+		"goat1000/svggraph": "^2.20"
 	},
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",

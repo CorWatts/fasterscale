@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f1bf50d478dc45730dee89e04d8b2bec",
-    "content-hash": "ec7b97c6ca90e04a43ac23fbbf75a3a0",
+    "hash": "bb24e451e340c8ca76d59111a7b38974",
+    "content-hash": "2bf1c2ce6185ab75979c951af1c331cc",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -444,6 +444,38 @@
             "time": "2014-10-12 13:06:07"
         },
         {
+            "name": "goat1000/svggraph",
+            "version": "2.20.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/goat1000/SVGGraph.git",
+                "reference": "79b4b4c2d79f8caeef883ae99eaeab73ae3e9616"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/goat1000/SVGGraph/zipball/79b4b4c2d79f8caeef883ae99eaeab73ae3e9616",
+                "reference": "79b4b4c2d79f8caeef883ae99eaeab73ae3e9616",
+                "shasum": ""
+            },
+            "require": {
+                "lib-pcre": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "SVGGraph.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Generates SVG graphs",
+            "homepage": "http://www.goat1000.com/svggraph.php",
+            "time": "2016-01-19 12:44:41"
+        },
+        {
             "name": "kriswallsmith/assetic",
             "version": "v1.3.2",
             "source": {
@@ -521,55 +553,6 @@
             "time": "2015-11-12 13:51:40"
         },
         {
-            "name": "mld/svg-graph",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mld/SVGGraph.git",
-                "reference": "28c9e1c053336dcfb37d275ef6600e9f8922b9e5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mld/SVGGraph/zipball/28c9e1c053336dcfb37d275ef6600e9f8922b9e5",
-                "reference": "28c9e1c053336dcfb37d275ef6600e9f8922b9e5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL3"
-            ],
-            "authors": [
-                {
-                    "name": "Graham Breach",
-                    "email": "graham@goat1000.com",
-                    "homepage": "http://www.goat1000.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Mikael Löfstrand",
-                    "homepage": "http://fluffigt.com",
-                    "role": "Contributor"
-                }
-            ],
-            "description": "SVG Graphs for PHP 5.3",
-            "homepage": "http://github.com/mld/SVGGraph",
-            "keywords": [
-                "graph",
-                "svg"
-            ],
-            "abandoned": "goat1000/svggraph",
-            "time": "2015-07-10 09:26:36"
-        },
-        {
             "name": "moment/moment",
             "version": "dev-master",
             "source": {
@@ -579,7 +562,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/f3fbef9d9875bbff340b527dbe3f1c447a942f69",
+                "url": "https://api.github.com/repos/moment/moment/zipball/dd9cff0104c0dc3f114f54107397c59920e764cc",
                 "reference": "f3fbef9d9875bbff340b527dbe3f1c447a942f69",
                 "shasum": ""
             },
@@ -1425,8 +1408,7 @@
         "bower-asset/jquery.inputmask": 0,
         "bower-asset/punycode": 0,
         "twbs/bootstrap-sass": 0,
-        "moment/moment": 20,
-        "mld/svg-graph": 20
+        "moment/moment": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
