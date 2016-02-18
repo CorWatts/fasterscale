@@ -192,16 +192,7 @@ class SiteController extends Controller
 			Yii::$app->response->format = 'json';
 			return \yii\widgets\ActiveForm::validate($editProfileForm);
 		}
-
-        $user = User::findOne(Yii::$app->user->id);
-        $editProfileForm->username = $user->username;
-        $editProfileForm->email = $user->email;
-        $editProfileForm->timezone = $user->timezone;
-        $editProfileForm->send_email = (isset($user->email_threshold) && (isset($user->partner_email1) || isset($user->partner_email2) || isset($user->partner_email3)));
-        $editProfileForm->email_threshold = $user->email_threshold;
-        $editProfileForm->partner_email1 = $user->partner_email1;
-        $editProfileForm->partner_email2 = $user->partner_email2;
-        $editProfileForm->partner_email3 = $user->partner_email3;
+        $editProfileForm->loadUser();
 
         if ($editProfileForm->load(Yii::$app->request->post())) {
             $saved_user = $editProfileForm->saveProfile();

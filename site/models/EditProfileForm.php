@@ -75,6 +75,7 @@ class EditProfileForm extends Model
     {
         if ($this->validate()) {
             $user = User::findOne(Yii::$app->user->id);
+
             if($this->username)
             	$user->username = $this->username;
             if($this->email)
@@ -82,25 +83,36 @@ class EditProfileForm extends Model
             if($this->password)
             	$user->setPassword($this->password);
             if($this->timezone)
-	    	$user->timezone = $this->timezone;
+	    	      $user->timezone = $this->timezone;
             if($this->send_email) {
-                $user->email_threshold = $this->email_threshold;
-                $user->partner_email1 = $this->partner_email1;
-                $user->partner_email2 = $this->partner_email2;
-                $user->partner_email3 = $this->partner_email3;
+              $user->email_threshold = $this->email_threshold;
+              $user->partner_email1 = $this->partner_email1;
+              $user->partner_email2 = $this->partner_email2;
+              $user->partner_email3 = $this->partner_email3;
             } else {
-                $user->email_threshold = null;
-                $user->partner_email1 = null;
-                $user->partner_email2 = null;
-                $user->partner_email3 = null;
+              $user->email_threshold = null;
+              $user->partner_email1 = null;
+              $user->partner_email2 = null;
+              $user->partner_email3 = null;
             }
             $user->save();
-
-            //Yii::$app->user->setIdentity($user); // update user identity session
 
             return $user;
         }
 
         return null;
+    }
+
+    public function loadUser() {
+        $user = User::findOne(Yii::$app->user->id);
+
+        $this->username = $user->username;
+        $this->email = $user->email;
+        $this->timezone = $user->timezone;
+        $this->email_threshold = $user->email_threshold;
+        $this->partner_email1 = $user->partner_email1;
+        $this->partner_email2 = $user->partner_email2;
+        $this->partner_email3 = $user->partner_email3;
+        $this->send_email = (isset($user->email_threshold) && (isset($user->partner_email1) || isset($user->partner_email2) || isset($user->partner_email3)));
     }
 }
