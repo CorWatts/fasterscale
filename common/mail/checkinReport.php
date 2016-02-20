@@ -3,9 +3,9 @@ use yii\helpers\Html;
 use common\models\UserOption;
 
 /**
-* @var yii\web\View $this
-* @var common\models\User $user
-*/
+ * @var yii\web\View $this
+ * @var common\models\User $user
+ */
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -857,9 +857,9 @@ body.outlook p {
                   </tr>
                 </table>
                 <h3 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 32px;">Questions:</h3>
-                <?php 
-                  if($questions)  {
-                    foreach($questions as $option_id => $option_questions) { ?>
+<?php 
+if($questions)  {
+  foreach($questions as $option_id => $option_questions) { ?>
                       <h5 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 24px;"><?= $option_questions['question']['title'] ?></h5>
                       <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;display: block;">
                         <tr style="padding: 0;vertical-align: top;text-align: left;">
@@ -878,8 +878,8 @@ body.outlook p {
                       <?php } ?>
                       </tr>
                     </table>
-                    <?php }
-                    } ?>
+<?php }
+} ?>
 
                 <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;">
                   <tr style="padding: 0;vertical-align: top;text-align: left;">
@@ -889,8 +889,8 @@ body.outlook p {
                           <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><b><?= $user_option['category_name'] ?></b></p>
                           <?php foreach($user_option['options'] as $option) { ?>
                             <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><?= $option['name'] ?>
-                        <?php }
-                        } ?>
+<?php }
+  } ?>
                     </p></td>
                   </tr>
                 </table>

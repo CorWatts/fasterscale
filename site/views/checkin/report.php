@@ -9,46 +9,46 @@ use yii\web\JsExpression;
 $this->title = "Checkin Report";
 
 $pie_colors = [
-    [
-        "color" => "#277553",
-        "highlight" => "#499272"
-    ],
-    [
-        "color" => "#29506D",
-        "highlight" => "#496D89"
-    ],
-    [
-        "color" => "AA5939",
-        "highlight" => "D4886A"
-    ],
-    [
-        "color" => "#AA7939",
-        "highlight" => "#D4A76A"
-    ],
-    [
-        "color" => "#277553",
-        "highlight" => "#499272"
-    ],
-    [
-        "color" => "#29506D",
-        "highlight" => "#496D89"
-    ],
-    [
-        "color" => "AA5939",
-        "highlight" => "D4886A"
-    ]
+  [
+    "color" => "#277553",
+    "highlight" => "#499272"
+  ],
+  [
+    "color" => "#29506D",
+    "highlight" => "#496D89"
+  ],
+  [
+    "color" => "AA5939",
+    "highlight" => "D4886A"
+  ],
+  [
+    "color" => "#AA7939",
+    "highlight" => "#D4A76A"
+  ],
+  [
+    "color" => "#277553",
+    "highlight" => "#499272"
+  ],
+  [
+    "color" => "#29506D",
+    "highlight" => "#496D89"
+  ],
+  [
+    "color" => "AA5939",
+    "highlight" => "D4886A"
+  ]
 ];
 
 
 $pie_data = [];
 foreach($answer_pie as $key => $category) {
-    $json = [
-        "value" => (int)$category['count'],
-        "color" => $pie_colors[$key]["color"],
-        "highlight" => $pie_colors[$key]["highlight"],
-        "label" => $category['name']
-    ];
-    $pie_data[] = $json;
+  $json = [
+    "value" => (int)$category['count'],
+    "color" => $pie_colors[$key]["color"],
+    "highlight" => $pie_colors[$key]["highlight"],
+    "label" => $category['name']
+  ];
+  $pie_data[] = $json;
 }
 ?>
 <h1>Checkin Report</h1>
@@ -68,17 +68,17 @@ foreach($answer_pie as $key => $category) {
                 <th>Option</th>
                 <th>Count</th>
             </tr>
-        <?php foreach($top_options as $key => $row) {
-            $num = $key + 1;
-            print "<tr>".
-                "<td>".$num."</td>".
-                "<td>{$row['category']}</td>".
-                "<td>{$row['name']}</td>".
-                "<td>{$row['count']}</td>".
-            "</tr>";
+<?php foreach($top_options as $key => $row) {
+$num = $key + 1;
+print "<tr>".
+  "<td>".$num."</td>".
+  "<td>{$row['category']}</td>".
+  "<td>{$row['name']}</td>".
+  "<td>{$row['count']}</td>".
+  "</tr>";
 
-        }
-        ?>
+}
+?>
         </table>
     </div>
 </div>
@@ -91,7 +91,7 @@ foreach($answer_pie as $key => $category) {
 <?php
 $this->registerJs('
     var pie_chart_options = {};
-    
+
     var pie_chart_ctx = document.getElementById("category-pie-chart").getContext("2d");
     var myPieChart = new Chart(pie_chart_ctx).Pie('.json_encode($pie_data).', pie_chart_options);
 

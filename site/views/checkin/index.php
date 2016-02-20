@@ -9,32 +9,32 @@ use yii\bootstrap\Button;
 $this->title = "Check In";
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
-    return Html::checkbox
-        (
-            $name,
-            $checked,
-            [
-                'value' => $value,
-                'label' => $label,
-                'container' => false,
-                'labelOptions' =>
-                [
-                    'class' => $checked ? 'btn btn-default active' : 'btn btn-default',
-                ],
-            ]
-        );
+  return Html::checkbox
+    (
+      $name,
+      $checked,
+      [
+        'value' => $value,
+        'label' => $label,
+        'container' => false,
+        'labelOptions' =>
+        [
+          'class' => $checked ? 'btn btn-default active' : 'btn btn-default',
+        ],
+      ]
+    );
 }
 ?>
 <h1>Check In</h1>
 <p>Click all the options below that apply to your current emotional state. Once finished, click the submit button at the bottom.</p>
 <?php
 $form = ActiveForm::begin([
-    'id' => 'checkin-form',
-    'options' => ['class' => 'form-horizontal'],
+  'id' => 'checkin-form',
+  'options' => ['class' => 'form-horizontal'],
 ]);
 
 foreach($categories as $category) {
-    print $form->field($model, "options{$category['id']}")->checkboxList($optionsList[$category['id']], ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]);
+  print $form->field($model, "options{$category['id']}")->checkboxList($optionsList[$category['id']], ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]);
 }
 print Html::submitButton('Submit', ['class' => 'btn btn-success']); 
 ActiveForm::end();

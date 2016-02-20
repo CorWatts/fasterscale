@@ -21,218 +21,218 @@ use yii\filters\AccessControl;
  */
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'captcha', 'contact'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['login', 'signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout', 'welcome', 'delete-account', 'profile'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                    'deleteAccount' => ['post'],
-                ],
-            ],
-        ];
+  /**
+   * @inheritdoc
+   */
+  public function behaviors()
+  {
+    return [
+      'access' => [
+        'class' => AccessControl::className(),
+        'rules' => [
+          [
+            'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'captcha', 'contact'],
+            'allow' => true,
+          ],
+          [
+            'actions' => ['login', 'signup'],
+            'allow' => true,
+            'roles' => ['?'],
+          ],
+          [
+            'actions' => ['logout', 'welcome', 'delete-account', 'profile'],
+            'allow' => true,
+            'roles' => ['@'],
+          ],
+        ],
+      ],
+      'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+          'logout' => ['post'],
+          'deleteAccount' => ['post'],
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function actions()
+  {
+    return [
+      'error' => [
+        'class' => 'yii\web\ErrorAction',
+      ],
+      'captcha' => [
+        'class' => 'yii\captcha\CaptchaAction',
+      ],
+    ];
+  }
+
+  public function actionIndex()
+  {
+    return $this->render('index');
+  }
+
+  public function actionLogin()
+  {
+    if (!\Yii::$app->user->isGuest) {
+      return $this->goHome();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-            ],
-        ];
+    $model = new LoginForm();
+    if ($model->load(Yii::$app->request->post()) && $model->login()) {
+      return $this->goBack();
+    } else {
+      return $this->render('login', [
+        'model' => $model,
+      ]);
     }
+  }
 
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
+  public function actionLogout()
+  {
+    Yii::$app->user->logout();
 
-    public function actionLogin()
-    {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+    return $this->goHome();
+  }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
-    
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending email.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-
-    public function actionWelcome()
-    {
-        return $this->render('welcome');
-    }
-
-    public function actionSignup()
-    {
-        $model = new SignupForm();
-
-        if ($model->load(Yii::$app->request->post())) {
-            $user = $model->signup();
-            if ($user) {
-                $user->sendSignupNotificationEmail();
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->redirect('/welcome',302);
-                }
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionRequestPasswordReset()
-    {
-        $model = new PasswordResetRequestForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
-            } else {
-                Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
-            }
-        }
-
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionResetPassword($token)
-    {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->getSession()->setFlash('success', 'New password was saved.');
-
-            return $this->goHome();
-        }
-
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionProfile()
-    {
-        $editProfileForm = new EditProfileForm();
-
-		if (Yii::$app->request->isAjax && $editProfileForm->load($_POST))
-		{
-			Yii::$app->response->format = 'json';
-			return \yii\widgets\ActiveForm::validate($editProfileForm);
-		}
-        $editProfileForm->loadUser();
-
-        if ($editProfileForm->load(Yii::$app->request->post())) {
-            $saved_user = $editProfileForm->saveProfile();
-            if($saved_user) {
-            	Yii::$app->getSession()->setFlash('success', 'New profile data saved!');
-            }
-        }
-
-      $deleteAccountForm = new DeleteAccountForm();
-        return $this->render('profile', [
-            'profile' => $editProfileForm,
-            'delete' => $deleteAccountForm
-        ]);
-    }
-
-    public function actionDeleteAccount()
-    {
-      $model = new DeleteAccountForm();
-      //var_dump(Yii::$app->request->post()); exit();
-
-      if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-        if($model->deleteAccount()) {
-          $this->redirect(['site/index']);
-        } else {
-          Yii::$app->getSession()->setFlash('error', 'Wrong password!');
-        }
+  public function actionContact()
+  {
+    $model = new ContactForm();
+    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+      if($model->sendEmail(Yii::$app->params['adminEmail'])) {
+        Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
       } else {
-        Yii::$app->getSession()->setFlash('error', 'Request must be a POST.');
+        Yii::$app->session->setFlash('error', 'There was an error sending email.');
       }
 
-      $this->redirect(Yii::$app->request->getReferrer());
+      return $this->refresh();
+    } else {
+      return $this->render('contact', [
+        'model' => $model,
+      ]);
+    }
+  }
+
+  public function actionAbout()
+  {
+    return $this->render('about');
+  }
+
+  public function actionWelcome()
+  {
+    return $this->render('welcome');
+  }
+
+  public function actionSignup()
+  {
+    $model = new SignupForm();
+
+    if ($model->load(Yii::$app->request->post())) {
+      $user = $model->signup();
+      if ($user) {
+        $user->sendSignupNotificationEmail();
+        if (Yii::$app->getUser()->login($user)) {
+          return $this->redirect('/welcome',302);
+        }
+      }
     }
 
-    public function actionPrivacy()
-    {
-      return $this->render('privacy');
+    return $this->render('signup', [
+      'model' => $model,
+    ]);
+  }
+
+  public function actionRequestPasswordReset()
+  {
+    $model = new PasswordResetRequestForm();
+    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+      if ($model->sendEmail()) {
+        Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
+
+        return $this->goHome();
+      } else {
+        Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+      }
     }
 
-    public function actionTerms()
-    {
-      return $this->render('terms');
+    return $this->render('requestPasswordResetToken', [
+      'model' => $model,
+    ]);
+  }
+
+  public function actionResetPassword($token)
+  {
+    try {
+      $model = new ResetPasswordForm($token);
+    } catch (InvalidParamException $e) {
+      throw new BadRequestHttpException($e->getMessage());
     }
+
+    if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+      Yii::$app->getSession()->setFlash('success', 'New password was saved.');
+
+      return $this->goHome();
+    }
+
+    return $this->render('resetPassword', [
+      'model' => $model,
+    ]);
+  }
+
+  public function actionProfile()
+  {
+    $editProfileForm = new EditProfileForm();
+
+    if (Yii::$app->request->isAjax && $editProfileForm->load($_POST))
+    {
+      Yii::$app->response->format = 'json';
+      return \yii\widgets\ActiveForm::validate($editProfileForm);
+    }
+    $editProfileForm->loadUser();
+
+    if ($editProfileForm->load(Yii::$app->request->post())) {
+      $saved_user = $editProfileForm->saveProfile();
+      if($saved_user) {
+        Yii::$app->getSession()->setFlash('success', 'New profile data saved!');
+      }
+    }
+
+    $deleteAccountForm = new DeleteAccountForm();
+    return $this->render('profile', [
+      'profile' => $editProfileForm,
+      'delete' => $deleteAccountForm
+    ]);
+  }
+
+  public function actionDeleteAccount()
+  {
+    $model = new DeleteAccountForm();
+    //var_dump(Yii::$app->request->post()); exit();
+
+    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+      if($model->deleteAccount()) {
+        $this->redirect(['site/index']);
+      } else {
+        Yii::$app->getSession()->setFlash('error', 'Wrong password!');
+      }
+    } else {
+      Yii::$app->getSession()->setFlash('error', 'Request must be a POST.');
+    }
+
+    $this->redirect(Yii::$app->request->getReferrer());
+  }
+
+  public function actionPrivacy()
+  {
+    return $this->render('privacy');
+  }
+
+  public function actionTerms()
+  {
+    return $this->render('terms');
+  }
 }

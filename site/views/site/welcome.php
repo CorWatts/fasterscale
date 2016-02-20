@@ -8,8 +8,8 @@ use yii\jui\DatePicker;
 $this->title = 'Welcome';
 ?>
 <div class="site-welcome">
-    <h1><?= Html::encode($this->title) ?> to the Faster Scale App!</h1>
-    <p>Thanks for signing up!</p>
+  <h1><?= Html::encode($this->title) ?> to the Faster Scale App!</h1>
+  <p>Thanks for signing up!</p>
 
   <h2>Next Steps</h2>
   <h3>Do a Check In</h3>
