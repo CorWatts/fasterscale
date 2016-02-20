@@ -26,7 +26,7 @@ $timezones = DateTimeZone::listIdentifiers();
 			]); ?>
                 <?= $form->field($model, 'username') ?>
                 <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>'])->input('email') ?>
-                <?= $form->field($model, 'password')->passwordInput() ?>
+                <?= $form->field($model, 'password') ?>
                 <?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
                 <?= $form->field($model, 'captcha')->widget(Captcha::className(), [
                   'template' => '<div class="row"><div class="col-md-5">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
