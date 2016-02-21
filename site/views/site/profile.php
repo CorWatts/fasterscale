@@ -49,7 +49,7 @@ $timezones = \DateTimeZone::listIdentifiers();
     ]); ?>
     <?= $form->field($delete, 'password')->passwordInput() ?>
     <div class="form-group">
-    <?= Html::submitButton('Save', ['class' => 'btn btn-danger', 'name' => 'delete-account-button']) ?>
+    <?= Html::submitButton('Delete', ['class' => 'btn btn-danger', 'name' => 'delete-account-button']) ?>
     </div>
     <?php ActiveForm::end(); ?>
   </div>
