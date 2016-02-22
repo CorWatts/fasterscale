@@ -23,7 +23,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 <?= yii\jui\DatePicker::widget([
   'name' => 'attributeName', 
   'value' => $utc_date,
-  'options' => ['class'=> 'btn btn-default'],
+  'options' => ['class'=> 'btn btn-default datepicker'],
   'dateFormat' => 'yyyy-MM-dd', 
   'clientOptions' => [
     'defaultDate' => $actual_date,

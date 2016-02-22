@@ -53,6 +53,9 @@ return [
         'class' => 'yii\web\AssetConverter',
       ],
     ],
+    'view' => [
+      'class' => 'site\classes\View'
+    ]
   ],
   'params' => $params,
 ];

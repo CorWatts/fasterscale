@@ -16,7 +16,7 @@ $this->title = 'The Faster Scale App';
 			<div class="col-md-4">
 				<div class="thumbnail">
 				  <h3>Useful Analytics & Alerts</h3>
-					<canvas id='example-scores-line-chart' width='275' height='175'></canvas>
+					<canvas id='example-scores-line-chart'></canvas>
 					<div class="caption">
 						<p>Everyone loves analytics. View beautiful charts and graphs to gain additional insights to your emotional tendencies. Your daily checkin answers are stored so you can go back to any point in history and view what you were experiencing at that time. You can also choose to send a report to your friends if you score above a certain threshold, which opens up avenues for conversation.</p>
 					</div>
@@ -58,7 +58,6 @@ $data = json_encode([
 ]);
 
 $this->registerJs('
-
 var ctx = document.getElementById("example-scores-line-chart").getContext("2d");
     
     var gradient = ctx.createLinearGradient(0, 0, 0, 200);
@@ -70,7 +69,7 @@ var ctx = document.getElementById("example-scores-line-chart").getContext("2d");
         labels : ["January","February","March","April","May"],
         datasets : [
             {
-                label: "My Second dataset",
+                label: "Example Scores Chart",
                 fillColor : gradient,
                 strokeColor : "rgba(151,187,205,1)",
                 pointColor : "rgba(151,187,205,1)",
@@ -83,9 +82,5 @@ var ctx = document.getElementById("example-scores-line-chart").getContext("2d");
 
     }
     
-    new Chart(ctx).Line(lineChartData, {scaleBeginAtZero: true})
-
-
-
-');
+    new Chart(ctx).Line(lineChartData, {responsive: true, scaleBeginAtZero: true})');
 ?>

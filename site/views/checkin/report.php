@@ -89,36 +89,7 @@ print "<tr>".
     </div>
 </div>
 <?php
-$this->registerJs('
-    var pie_chart_options = {};
-
-    var pie_chart_ctx = document.getElementById("category-pie-chart").getContext("2d");
-    var myPieChart = new Chart(pie_chart_ctx).Pie('.json_encode($pie_data).', pie_chart_options);
-
-    Chart.defaults.global.responsive = true;
-    Chart.defaults.global.scaleBeginAtZero = true;
-
-');
-
-
-
-$data = json_encode([
-    "labels" => array_keys($scores),
-    "datasets" => [
-        [
-            "fillColor" => "rgba(72,108,136,0.4)",
-            "strokeColor" => "rgba(41,79,109,1)",
-            "pointColor" => "rgba(41,79,109,1)",
-            "pointStrokeColor" => "#fff",
-            "pointHighlightFill" => "rgba(112,141,164,1)",
-            "pointHighlightStroke" => "#fff",
-            "data" => array_values($scores)
-        ]
-    ]
-]);
-$this->registerJs("
-    var line_chart_options = {};
-
-    var line_chart_ctx = document.getElementById('scores-line-chart').getContext('2d');
-    var scores_line_chart = new Chart(line_chart_ctx).Line($data, {});");
-?>
+$this->registerJsFile('/js/report.js', ['depends' => [\site\assets\AppAsset::className()]]);
+$this->registerJson($pie_data, "chart_pie_data");
+$this->registerJson(array_keys($scores), 'chart_scores_keys_json');
+$this->registerJson(array_values($scores), 'chart_scores_values_json');
