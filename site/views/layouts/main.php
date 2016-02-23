@@ -71,7 +71,7 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; <a href="http://corwatts.com">Corey Watts</a> <?= date('Y') ?> | <a href="<?=Url::to(['site/privacy'])?>">Privacy</a> | <a href="<?=Url::to(['site/terms'])?>">Terms</a></p>
+        <p class="pull-left">&copy; <a href="https://corwatts.com">Corey Watts</a> <?= date('Y') ?> | <a href="<?=Url::to(['site/privacy'])?>">Privacy</a> | <a href="<?=Url::to(['site/terms'])?>">Terms</a></p>
         <p class="pull-right">Powered by <a href="http://yiiframework.com">Yii</a>, written in <a href="http://www.vim.org">Vim</a></p>
         </div>
     </footer>
