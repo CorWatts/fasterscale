@@ -7,6 +7,7 @@ use yii\web\JsExpression;
  */
 
 $this->title = "Checkin Report";
+$this->registerJsFile('/js/report.js', ['depends' => [\site\assets\AppAsset::className()]]);
 
 $pie_colors = [
   [
@@ -89,7 +90,6 @@ print "<tr>".
     </div>
 </div>
 <?php
-$this->registerJsFile('/js/report.js', ['depends' => [\site\assets\AppAsset::className()]]);
 $this->registerJson($pie_data, "chart_pie_data");
 $this->registerJson(array_keys($scores), 'chart_scores_keys_json');
 $this->registerJson(array_values($scores), 'chart_scores_values_json');

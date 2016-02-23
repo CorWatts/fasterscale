@@ -3,6 +3,7 @@
  * @var yii\web\View $this
  */
 $this->title = 'The Faster Scale App';
+$this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset::className()]]);
 ?>
 <div class="site-index">
 	<div class="jumbotron">
@@ -41,46 +42,3 @@ $this->title = 'The Faster Scale App';
 		</div>
 	</div>
 </div>
-<?php
-$data = json_encode([
-		"labels" => ['2016-01-01', '2016-01-02', '2016-01-03', '2016-01-04', '2016-01-05'],
-		"datasets" => [
-				[
-						//"fillColor" => "rgba(72,108,136,0.4)",
-            "strokeColor" => "rgba(151,187,205,1)",
-            "pointColor" => "rgba(151,187,205,1)",
-            "pointStrokeColor" => "#fff",
-            "pointHighlightFill" => "#fff",
-            "pointHighlightStroke" => "rgba(151,187,205,1)",
-						"data" => [65, 20, 80, 81, 56]
-				]
-		]
-]);
-
-$this->registerJs('
-var ctx = document.getElementById("example-scores-line-chart").getContext("2d");
-    
-    var gradient = ctx.createLinearGradient(0, 0, 0, 200);
-    gradient.addColorStop(0, "rgba(151,187,205,0.7)");   
-    gradient.addColorStop(1, "rgba(151,187,205,0)");
-    
-    var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-    var lineChartData = {
-        labels : ["January","February","March","April","May"],
-        datasets : [
-            {
-                label: "Example Scores Chart",
-                fillColor : gradient,
-                strokeColor : "rgba(151,187,205,1)",
-                pointColor : "rgba(151,187,205,1)",
-                pointStrokeColor : "#fff",
-                pointHighlightFill : "#fff",
-                pointHighlightStroke : "rgba(151,187,205,1)",
-                data : [15, 20, 64, 43, 25]
-            }
-        ]
-
-    }
-    
-    new Chart(ctx).Line(lineChartData, {responsive: true, scaleBeginAtZero: true})');
-?>
