@@ -96,6 +96,10 @@ a.desc:after {
 #ui-datepicker-div {z-index: 1050 !important;}
 #spinner {text-align: center;}
 
+.caption h3 {
+  margin-top: 0px;
+}
+
 .navbar-brand h1 {
   font-size: inherit;
   margin: inherit;
