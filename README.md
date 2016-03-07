@@ -20,5 +20,6 @@ An online version of The Faster Scale
 * the UI needs tons of work. Pretty darn ugly right now
 
 #### 10000" view
+* MOBILE APP
 * Move away from bootstrap (to material design?)
 * move to Single Page App with one backend api and a frontend framework (Angular?)
