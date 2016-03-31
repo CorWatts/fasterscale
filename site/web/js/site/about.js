@@ -10,9 +10,35 @@ type: 'GET',
         "<td class='text-nowrap'>"+moment(commit.commit.committer.date).fromNow()+"</td>"+
         "<td><a href='"+commit.html_url+"'>Commit</a></td>"+
         "<td><a href='"+commit.author.html_url+"'>"+commit.author.login+"</a></td>"+
-        "<td>"+commit.commit.message+"</td>"+
+        "<td>"+escape(commit.commit.message)+"</td>"+
         "</tr>");
         });
     }
 });
 })(jQuery, moment)
+
+// Stole this HTML escaping code from the UnderscoreJS source
+var escapeMap = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#x27;',
+  '`': '&#x60;'
+};
+
+var createEscaper = function(map) {
+  var escaper = function(match) {
+    return map[match];
+  };
+
+  var source = '(?:' + Object.keys(escapeMap).join('|') + ')';
+  var testRegexp = RegExp(source);
+  var replaceRegexp = RegExp(source, 'g');
+  return function(string) {
+    string = string == null ? '' : '' + string;
+    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
+  };
+};
+
+var escape = createEscaper(escapeMap);
