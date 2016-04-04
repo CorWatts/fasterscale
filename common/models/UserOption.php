@@ -185,13 +185,24 @@ class UserOption extends \yii\db\ActiveRecord
   }
 
   public static function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
+    $utc_start_time = User::convertLocalTimeToUTC($checkin_date." 00:00:00");
+    $utc_end_time = User::convertLocalTimeToUTC($checkin_date." 23:59:59");
+
     $query = new Query;
     $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
       ->from('user_option_link l')
       ->innerJoin('option o', 'l.option_id=o.id')
       ->innerJoin('category c', 'o.category_id=c.id')
       ->orderBy('c.id')
-      ->where(['l.user_id' => Yii::$app->user->id, 'date(l.date)' => $checkin_date]);
+      ->where("l.user_id=:user_id
+          AND l.date > :start_date
+          AND l.date < :end_date",
+      [
+        ":user_id" => Yii::$app->user->id, 
+        ":start_date" => $utc_start_time, 
+        ":end_date" => $utc_end_time
+      ]);
+
     if($exclude_1s)
       $query->andWhere("c.id <> 1");
 

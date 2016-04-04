@@ -261,8 +261,6 @@ class User extends ActiveRecord implements IdentityInterface
 
     $questions = User::getUserQuestions($date);
     $user_options = User::getUserOptions($date);
-    //var_dump($user_options[1]); exit();
-
 
     $categories = Category::find()->asArray()->all();
 
