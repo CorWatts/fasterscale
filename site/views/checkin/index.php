@@ -6,7 +6,7 @@ use yii\bootstrap\Button;
  * @var yii\web\View $this
  */
 
-$this->title = "Check In";
+$this->title = "Check-In";
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
   return Html::checkbox
@@ -25,7 +25,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
     );
 }
 ?>
-<h1>Check In</h1>
+<h1>Check-In</h1>
 <p>Click all the options below that apply to your current emotional state. Once finished, click the submit button at the bottom.</p>
 <?php
 $form = ActiveForm::begin([

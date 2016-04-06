@@ -6,7 +6,7 @@ use yii\web\JsExpression;
  * @var yii\web\View $this
  */
 
-$this->title = "Checkin Report";
+$this->title = "Check-in Report";
 $this->registerJsFile('/js/checkin/report.js', ['depends' => [\site\assets\AppAsset::className()]]);
 
 $pie_colors = [
@@ -52,7 +52,7 @@ foreach($answer_pie as $key => $category) {
   $pie_data[] = $json;
 }
 ?>
-<h1>Checkin Report</h1>
+<h1>Check-in Report</h1>
 
 
 <div class='row'>

@@ -9,14 +9,14 @@ use common\models\Question;
  * @var yii\web\View $this
  */
 
-$this->title = "Past Checkins";
+$this->title = "Past Check-ins";
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
   $checked_val = ($checked) ? "btn-primary" : "";
   return "<button class='btn btn-default $checked_val' data-toggle='button' disabled='disabled' name='$name' value='$value'>$label</button>";
 }
 ?>
-<h1>View Past Checkins</h1>
+<h1>View Past Check-ins</h1>
 <div id='past-checkin-nav' class='btn-group'>
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>User::alterLocalDate($actual_date, "-1 week")]); ?>">&lt;&lt;</a> 
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>User::alterLocalDate($actual_date, "-1 day")]); ?>">&lt;</a> 
