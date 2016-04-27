@@ -47,7 +47,7 @@ class CheckinController extends \yii\web\Controller
       $form->compiled_options = $options;
 
       if(sizeof($form->compiled_options) === 0) {
-        return $this->redirect(['checkin/view'], 200);
+        return $this->redirect(['view'], 302);
       }
 
       $date = User::getLocalDate();
@@ -56,20 +56,21 @@ class CheckinController extends \yii\web\Controller
       UserOption::deleteAll("user_id=:user_id 
         AND date > :start_date 
         AND date < :end_date", 
-[
-  "user_id" => Yii::$app->user->id, 
-  ':start_date' => $utc_start_time, 
-  ":end_date" => $utc_end_time
-]
-             );
+        [
+          "user_id" => Yii::$app->user->id, 
+          ':start_date' => $utc_start_time, 
+          ":end_date" => $utc_end_time
+        ]
+      );
 
-$form->save();
+      $form->save();
 
-// delete cached scores
-Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
+      // delete cached scores
+      Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
 
-Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
-return $this->redirect(['checkin/questions'], 200);
+      Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
+      return $this->redirect(['questions'], 302);
+
     } else {
       $categories = Category::find()->asArray()->all();
       $options = Option::find()->asArray()->all();
@@ -116,7 +117,7 @@ return $this->redirect(['checkin/questions'], 200);
       }
       
       if($result) {
-        return $this->redirect(['checkin/view'], 200);
+        return $this->redirect(['view'], 302);
       }
     }
 

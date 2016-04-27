@@ -3,6 +3,7 @@ namespace site\controllers;
 
 use Yii;
 use common\models\LoginForm;
+use common\models\Question;
 use site\models\PasswordResetRequestForm;
 use site\models\ResetPasswordForm;
 use site\models\SignupForm;
@@ -15,6 +16,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use League\Csv\Writer;
 
 /**
  * Site controller
@@ -40,7 +42,7 @@ class SiteController extends Controller
             'roles' => ['?'],
           ],
           [
-            'actions' => ['logout', 'welcome', 'delete-account', 'profile'],
+            'actions' => ['logout', 'welcome', 'delete-account', 'profile', 'export'],
             'allow' => true,
             'roles' => ['@'],
           ],
@@ -234,5 +236,35 @@ class SiteController extends Controller
   public function actionTerms()
   {
     return $this->render('terms');
+  }
+
+  public function actionExport()
+  {
+    //we create the CSV into memory
+    $csv = Writer::createFromFileObject(new \SplTempFileObject());
+
+    $data = Yii::$app->user->identity->getExportData();
+    //
+    //we insert the CSV header
+    $csv->insertOne([
+			'Date'
+			, 'Option'
+			, 'Category'
+			, Question::$QUESTIONS[1]
+			, Question::$QUESTIONS[2]
+			, Question::$QUESTIONS[3]
+		]);
+
+    // The PDOStatement Object implements the Traversable Interface
+    // that's why Writer::insertAll can directly insert
+    // the data into the CSV
+    $csv->insertAll($data);
+
+    // Because you are providing the filename you don't have to
+    // set the HTTP headers Writer::output can
+    // directly set them for you
+    // The file is downloadable
+    $csv->output('fsa-data-export-' . Yii::$app->user->identity->username . '.csv');
+    die;
   }
 }

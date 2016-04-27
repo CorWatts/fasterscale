@@ -4,6 +4,7 @@ namespace common\models;
 use yii;
 use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 use yii\web\IdentityInterface;
 use \DateTime;
 use \DateTimeZone;
@@ -287,6 +288,88 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     return Yii::$app->mailer->sendMultiple($messages);
+  }
+
+  public function getExportData() {
+   $query = new Query;
+    $query->select(
+			'l.date  AS "date",
+			 o.name  AS "option",
+			 c.name  AS "category", 
+       (SELECT q1.answer
+        FROM question q1
+        WHERE q1.question = 1
+          AND q1.user_option_id = l.id) AS "question1",
+       (SELECT q1.answer
+        FROM question q1
+        WHERE q1.question = 2
+          AND q1.user_option_id = l.id) AS "question2",
+       (SELECT q1.answer
+        FROM question q1
+        WHERE q1.question = 3
+          AND q1.user_option_id = l.id) AS "question3"')
+      ->from('user_option_link l')
+      ->join("INNER JOIN", "option o", "l.option_id = o.id")
+      ->join("INNER JOIN", "category c", "o.category_id = c.id")
+      ->join("LEFT JOIN", "question q", "l.id = q.user_option_id")
+			->where('l.user_id=:user_id', ["user_id" => Yii::$app->user->id])
+			->groupBy('l.id,
+          l.date,
+          o.name,
+          c.name,
+          "question1",
+          "question2",
+          "question3"')
+      ->orderBy('l.date');
+    $data = $query->all();
+
+		array_map(
+			function($row) { return $row['date'] = User::convertLocalTimeToUTC($row['date']); }, 
+			$data
+		);
+
+		return $data;
+
+/* Plaintext Query
+SELECT l.id,
+       l.DATE  AS "date",
+       o.name  AS "option",
+       c.name  AS "category",
+       1       AS "Question1",
+       (SELECT q1.answer
+        FROM question q1
+        WHERE q1.question = 1
+          AND q1.user_option_id = l.id) AS "Answer1",
+       2       AS "Question2",
+       (SELECT q1.answer
+        FROM question q1
+        WHERE q1.question = 2
+          AND q1.user_option_id = l.id) AS "Answer2",
+       3       AS "Question3",
+       (SELECT q1.answer
+        FROM question q1
+        WHERE q1.question = 3
+          AND q1.user_option_id = l.id) AS "Answer3"
+FROM   user_option_link l
+       join OPTION o
+         ON l.option_id = o.id
+       join category c
+         ON o.category_id = c.id
+       join question q
+         ON l.id = q.user_option_id
+WHERE  l.user_id = 1
+GROUP  BY l.id,
+          l.date,
+          o.name,
+          c.name,
+          "Question1",
+          "Answer1",
+          "Question2",
+          "Answer2",
+          "Question3",
+          "Answer3"
+ORDER  BY l.DATE DESC;
+*/
   }
 
   public function sendSignupNotificationEmail() {

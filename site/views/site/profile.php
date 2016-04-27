@@ -45,22 +45,31 @@ $timezones = \DateTimeZone::listIdentifiers();
   <hr />
 
   <div class="row">
-  <div class="col-md-5 bg-danger">
+    <div class="col-md-6 col-md-push-6 bg-success">
+      <h4>Export Your Check-In Data</h4>
+      <p>Simply click on this button!</p>
+    
+      <div class="form-group">
+        <?= Html::a('Export', ['/site/export'], ['class'=>'btn btn-success']) ?>
+      </div>
+    </div>
+
+    <div class="col-md-6 bg-danger col-md-pull-6">
     <h4>Delete your account?</h4>
     <p>Aww shucks, we're sorry to see you go! If you're really sure about this, please enter your password below and click the Delete button. Your account and all your stored data will be deleted, and a notification email will be sent to you and your partners.</p>
-    <?php $form = ActiveForm::begin([
-    'id' => 'form-delete-account',
-    'action' => ['site/delete-account'],
-    'method' => 'post',
-    'enableClientValidation' => true,
-    'options' => ['validateOnSubmit' => true]
-    ]); ?>
+<?php $form = ActiveForm::begin([
+  'id' => 'form-delete-account',
+  'action' => ['site/delete-account'],
+  'method' => 'post',
+  'enableClientValidation' => true,
+  'options' => ['validateOnSubmit' => true]
+]); ?>
     <?= $form->field($delete, 'password')->passwordInput() ?>
     <div class="form-group">
     <?= Html::submitButton('Delete', ['class' => 'btn btn-danger', 'name' => 'delete-account-button']) ?>
     </div>
     <?php ActiveForm::end(); ?>
-  </div>
+    </div>
   </div>
 </div>
 
