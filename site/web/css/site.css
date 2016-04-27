@@ -107,5 +107,8 @@ a.desc:after {
   margin-bottom: inherit;
   font-weight: inherit;
   font-height: inherit;
+}
 
+#profile-button {
+  width: 100px;
 }
