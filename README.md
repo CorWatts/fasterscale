@@ -4,6 +4,7 @@ An online version of The Faster Scale
 ## Installation
 1. Install PHP >= 5.5
 1. Install some kind of SQL. I use PostgreSQL but the Yii2 ORM supports other DBMSes as well. I also took a bit of care to make the SQL db agnostic.
+2. ```composer install && composer global require "fxp/composer-asset-plugin:1.0.0"```
 1. Clone repo, customize config files, setup database user and password
 1. run all yii2 db migrations
 1. signup a new user
