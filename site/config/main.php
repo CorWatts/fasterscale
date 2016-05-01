@@ -32,6 +32,7 @@ return [
       'enablePrettyUrl' => true,
       'showScriptName' => false,
       'rules' => [
+        '' => 'site/index',
         '<action:(index|about|contact|signup|login|logout|welcome|profile|privacy|terms|request-password-reset|reset-password|delete-account)>' => 'site/<action>',
         'checkin/view/<date:\d{4}-\d{2}-\d{2}>' => 'checkin/view',
         'report/view/<date:\d{4}-\d{2}-\d{2}>' => 'report/view',

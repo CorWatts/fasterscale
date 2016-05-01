@@ -223,10 +223,14 @@ class User extends ActiveRecord implements IdentityInterface
     return $timestamp->format("Y-m-d H:i:s");
   }
 
-  public static function convertUTCToLocalDate($utc_timestamp) {
+  public static function convertUTCToLocalDate($utc_timestamp, $inc_time = false) {
+    $fmt = "Y-m-d";
+    if($inc_time)
+      $fmt = "Y-m-d H:i:s";
+
     $timestamp = new DateTime($utc_timestamp, new DateTimeZone("UTC"));
     $timestamp->setTimeZone(new DateTimeZone(Yii::$app->user->identity->timezone));
-    return $timestamp->format("Y-m-d");
+    return $timestamp->format($fmt);
   }
 
   public static function getLocalTime($timezone = null) {
@@ -323,10 +327,13 @@ class User extends ActiveRecord implements IdentityInterface
       ->orderBy('l.date');
     $data = $query->all();
 
-		array_map(
-			function($row) { return $row['date'] = User::convertLocalTimeToUTC($row['date']); }, 
-			$data
-		);
+    $data = array_map(
+      function($row) {
+        $row['date'] = User::convertUTCToLocalDate($row['date'], true);
+        return $row;
+      }, 
+      $data
+    );
 
 		return $data;
 
