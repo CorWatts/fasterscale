@@ -1,4 +1,5 @@
 components
+composer.lock
 .ruby-gemset
 .ruby-version
 vendor

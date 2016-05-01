@@ -28,16 +28,15 @@
     "twbs/bootstrap-sass": "@stable",
     "moment/moment": "dev-master",
     "goat1000/svggraph": "^2.20",
-    "codeception/codeception": "^2.0",
-    "codeception/specify": "*",
-    "codeception/verify": "*",
-    "league/csv": "^8.0"
+    "league/csv": "8.0"
   },
   "require-dev": {
-    "yiisoft/yii2-codeception": "*",
     "yiisoft/yii2-debug": "*",
     "yiisoft/yii2-gii": "*",
-    "yiisoft/yii2-faker": "*"
+    "yiisoft/yii2-faker": "*",
+    "codeception/codeception": "^2.0",
+    "codeception/specify": "*",
+    "codeception/verify": "*"
   },
   "scripts": {
     "post-create-project-cmd": [
