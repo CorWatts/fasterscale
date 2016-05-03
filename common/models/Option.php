@@ -66,7 +66,10 @@ class Option extends \yii\db\ActiveRecord
 
   public static function getAllOptionsByCategory() {
     $query = new Query;
-    $query->select("c.id as category_id, c.name as name, c.weight as weight, COUNT(o.id) as option_count")
+    $query->select("c.id AS category_id
+        , c.name AS name
+        , c.weight AS weight
+        , COUNT(o.id) AS option_count")
       ->from('category c')
       ->join("INNER JOIN", "option o", "o.category_id = c.id")
       ->groupBy('c.id, c.name, c.weight')

@@ -66,6 +66,14 @@ class User extends ActiveRecord implements IdentityInterface
     ];
   }
 
+  public function getPartnerEmails() {
+    return [
+      $this->partner_email1
+      , $this->partner_email2
+      , $this->partner_email3
+    ];
+  }
+
   /**
    * @inheritdoc
    */
@@ -102,7 +110,14 @@ class User extends ActiveRecord implements IdentityInterface
   public static function findByUsernameOrEmail($username_or_email)
   {
     return static::find()
-      ->where("(username=:username_or_email OR email=:username_or_email) AND status=:status", ['username_or_email' => $username_or_email, 'status' => self::STATUS_ACTIVE])
+      ->where("
+        (
+          username=:username_or_email 
+          OR email=:username_or_email
+        ) AND status=:status", [
+          'username_or_email' => $username_or_email,
+          'status' => self::STATUS_ACTIVE
+        ])
       ->one();
   }
   /**
@@ -163,7 +178,9 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public function validatePassword($password)
   {
-    return Yii::$app->getSecurity()->validatePassword($password, $this->password_hash);
+    return Yii::$app
+      ->getSecurity()
+      ->validatePassword($password, $this->password_hash);
   }
 
   /**
@@ -173,7 +190,9 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public function setPassword($password)
   {
-    $this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+    $this->password_hash = Yii::$app
+      ->getSecurity()
+      ->generatePasswordHash($password);
   }
 
   /**
@@ -181,7 +200,9 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public function generateAuthKey()
   {
-    $this->auth_key = Yii::$app->getSecurity()->generateRandomString();
+    $this->auth_key = Yii::$app
+      ->getSecurity()
+      ->generateRandomString();
   }
 
   /**
@@ -189,7 +210,9 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public function generatePasswordResetToken()
   {
-    $this->password_reset_token = Yii::$app->getSecurity()->generateRandomString() . '_' . time();
+    $this->password_reset_token = Yii::$app
+      ->getSecurity()
+      ->generateRandomString() . '_' . time();
   }
 
   /**
@@ -217,8 +240,8 @@ class User extends ActiveRecord implements IdentityInterface
     $this->password_reset_token = null;
   }
 
-  public static function convertLocalTimeToUTC($local_timestamp) {
-    $timestamp = new DateTime($local_timestamp, new DateTimeZone(Yii::$app->user->identity->timezone));
+  public static function convertLocalTimeToUTC($local) {
+    $timestamp = new DateTime($local, new DateTimeZone(Yii::$app->user->identity->timezone));
     $timestamp->setTimeZone(new DateTimeZone("UTC"));
     return $timestamp->format("Y-m-d H:i:s");
   }
@@ -254,15 +277,25 @@ class User extends ActiveRecord implements IdentityInterface
     return $new_date->format("Y-m-d");
   }
 
+  private function isPartnerEnabled() {
+    if(!is_null($this->email_threshold)
+      && !$this->partner_email1
+      && !$this->partner_email2
+      && !$this->partner_email3)
+      return false;
+
+    return true;
+  }
+
   public function sendEmailReport($date) {
-    $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
-    $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+    list($start, $end) = User::getUTCBookends($date);
+
     $utc_date = User::convertLocalTimeToUTC($date);
 
-    if(!is_null($this->email_threshold) && !$this->partner_email1 && !$this->partner_email2 && !$this->partner_email3)
+    if($this->isPartnerEnabled())
       return false; // they don't have their partner emails set
 
-    $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
+    $score = UserOption::calculateScoreByUTCRange($start, $end);
 
     $questions = User::getUserQuestions($date);
     $user_options = User::getUserOptions($date);
@@ -297,9 +330,9 @@ class User extends ActiveRecord implements IdentityInterface
   public function getExportData() {
    $query = new Query;
     $query->select(
-			'l.date  AS "date",
-			 o.name  AS "option",
-			 c.name  AS "category", 
+      'l.date  AS "date",
+       o.name  AS "option",
+       c.name  AS "category", 
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 1
@@ -316,15 +349,15 @@ class User extends ActiveRecord implements IdentityInterface
       ->join("INNER JOIN", "option o", "l.option_id = o.id")
       ->join("INNER JOIN", "category c", "o.category_id = c.id")
       ->join("LEFT JOIN", "question q", "l.id = q.user_option_id")
-			->where('l.user_id=:user_id', ["user_id" => Yii::$app->user->id])
-			->groupBy('l.id,
+      ->where('l.user_id=:user_id', ["user_id" => Yii::$app->user->id])
+      ->groupBy('l.id,
           l.date,
           o.name,
           c.name,
           "question1",
           "question2",
           "question3"')
-      ->orderBy('l.date');
+      ->orderBy('l.date DESC');
     $data = $query->all();
 
     $data = array_map(
@@ -335,7 +368,7 @@ class User extends ActiveRecord implements IdentityInterface
       $data
     );
 
-		return $data;
+    return $data;
 
 /* Plaintext Query
 SELECT l.id,
@@ -375,7 +408,7 @@ GROUP  BY l.id,
           "Answer2",
           "Question3",
           "Answer3"
-ORDER  BY l.DATE DESC;
+ORDER  BY l.date DESC;
 */
   }
 
@@ -395,7 +428,7 @@ ORDER  BY l.DATE DESC;
       ->setTo($this->email)
       ->send();
 
-    if(!is_null($this->email_threshold) && !$this->partner_email1 && !$this->partner_email2 && !$this->partner_email3)
+    if($this->isPartnerEnabled())
       return false; // they don't have their partner emails set
 
     $messages = [];
@@ -418,74 +451,88 @@ ORDER  BY l.DATE DESC;
     if(is_null($local_date))
       $local_date = User::getLocalDate();
 
-    $utc_start_time = User::convertLocalTimeToUTC($local_date." 00:00:00");
-    $utc_end_time = User::convertLocalTimeToUTC($local_date." 23:59:59");
+    list($start, $end) = User::getUTCBookends($local_date);
+
     $utc_date = User::convertLocalTimeToUTC($local_date);
 
     $questions = Question::find()
       ->where("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
-[
-  "user_id" => Yii::$app->user->id, 
-  ':start_date' => $utc_start_time, 
-  ":end_date" => $utc_end_time
-])
-->with('option')
-->all();
+    [
+      "user_id" => Yii::$app->user->id, 
+      ':start_date' => $start, 
+      ":end_date" => $end
+    ])
+    ->with('option')
+    ->all();
 
-if($questions) {
-  $organized_question_answers = [];
-  foreach($questions as $question) {
-    $question_data = [
-      "id" => $question->option->id,
-      "title" => $question->option->name
-    ];
+    if($questions) {
+      $organized_question_answers = [];
+      foreach($questions as $question) {
+        $question_data = [
+          "id" => $question->option->id,
+          "title" => $question->option->name
+        ];
 
-    $question_answer = [
-      "title" => Question::$QUESTIONS[$question->question],
-      "answer" => $question->answer
-    ];
+        $question_answer = [
+          "title" => Question::$QUESTIONS[$question->question],
+          "answer" => $question->answer
+        ];
 
-    $organized_question_answers[$question->option->id]['question'] = $question_data;
-    $organized_question_answers[$question->option->id]["answers"][] = $question_answer;
-  }
-  return $organized_question_answers;
-}
+        $organized_question_answers[$question->option->id]['question'] = $question_data;
+        $organized_question_answers[$question->option->id]["answers"][] = $question_answer;
+      }
+      return $organized_question_answers;
+    }
 
-return [];
+    return [];
   }
 
   public static function getUserOptions($local_date) {
     if(is_null($local_date))
       $local_date = User::getLocalDate();
 
-    $utc_start_time = User::convertLocalTimeToUTC($local_date." 00:00:00");
-    $utc_end_time = User::convertLocalTimeToUTC($local_date." 23:59:59");
+    list($start, $end) = User::getUTCBookends($local_date);
     $utc_date = User::convertLocalTimeToUTC($local_date);
 
     $user_options = UserOption::find()
       ->where("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
-[
-  "user_id" => Yii::$app->user->id, 
-  ':start_date' => $utc_start_time, 
-  ":end_date" => $utc_end_time
-])
-->with('option', 'option.category')
-->asArray()
-->all();
+    [
+      "user_id" => Yii::$app->user->id, 
+      ':start_date' => $start, 
+      ":end_date" => $end
+    ])
+    ->with('option', 'option.category')
+    ->asArray()
+    ->all();
 
-if($user_options) {
-  foreach($user_options as $option) {
-    $user_options_by_category[$option['option']['category_id']]['category_name'] = $option['option']['category']['name'];
-    $user_options_by_category[$option['option']['category_id']]['options'][] = ["id" => $option['option_id'], "name"=>$option['option']['name']];
+    if($user_options) {
+      foreach($user_options as $option) {
+        $user_options_by_category[$option['option']['category_id']]['category_name'] = $option['option']['category']['name'];
+        $user_options_by_category[$option['option']['category_id']]['options'][] = ["id" => $option['option_id'], "name"=>$option['option']['name']];
+      }
+
+      return $user_options_by_category;
+    }
+
+    return [];
   }
 
-  return $user_options_by_category;
-}
+  public static function getUTCBookends($local) {
+    $local = trim($local);
+    if(strpos($local, " ")) {
+      return false;
+    }
 
-return [];
+    $start = $local . " 00:00:00";
+    $end   = $local . "23:59:59";
+
+    $front = User::convertLocalTimeToUTC($start);
+    $back  = User::convertLocalTimeToUTC($end);
+
+    return [$front, $back];
   }
 }
