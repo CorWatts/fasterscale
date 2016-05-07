@@ -50,15 +50,14 @@ class CheckinController extends \yii\web\Controller
       }
 
       $date = Time::getLocalDate();
-      $utc_start_time = Time::convertLocalTimeToUTC($date." 00:00:00");
-      $utc_end_time = Time::convertLocalTimeToUTC($date." 23:59:59");
+      list($start, $end) = Time::getUTCBookends($date);
       UserOption::deleteAll("user_id=:user_id 
         AND date > :start_date 
         AND date < :end_date", 
         [
           "user_id" => Yii::$app->user->id, 
-          ':start_date' => $utc_start_time, 
-          ":end_date" => $utc_end_time
+          ':start_date' => $start, 
+          ":end_date" => $end
         ]
       );
 
@@ -89,15 +88,14 @@ class CheckinController extends \yii\web\Controller
     $form = new QuestionForm();
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
       $date = Time::getLocalDate();
-      $utc_start_time = Time::convertLocalTimeToUTC($date." 00:00:00");
-      $utc_end_time = Time::convertLocalTimeToUTC($date." 23:59:59");
+      list($start, $end) = Time::getUTCBookends($date);
       Question::deleteAll("user_id=:user_id 
         AND date > :start_date 
         AND date < :end_date", 
         [
           ":user_id" => Yii::$app->user->id, 
-          ':start_date' => $utc_start_time, 
-          ":end_date" => $utc_end_time
+          ':start_date' => $start, 
+          ":end_date" => $end
         ]
       );
 
@@ -107,7 +105,7 @@ class CheckinController extends \yii\web\Controller
         'status' => User::STATUS_ACTIVE,
         'email' => Yii::$app->user->identity->email,
       ]);
-      $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
+      $score = UserOption::calculateScoreByUTCRange($start, $end);
       if(!is_null($user->email_threshold) && $score > $user->email_threshold) {
         $user->sendEmailReport(Time::getLocalDate());
         Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
@@ -150,10 +148,10 @@ class CheckinController extends \yii\web\Controller
     $options = Option::find()->asArray()->all();
     $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
-    $utc_start_time = Time::convertLocalTimeToUTC($date." 00:00:00");
-    $utc_end_time = Time::convertLocalTimeToUTC($date." 23:59:59");
-    $utc_date = Time::convertLocalTimeToUTC($date);
-    $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
+    $date = Time::getLocalDate();
+    list($start, $end) = Time::getUTCBookends($date);
+    $utc_date = Time::convertLocalToUTC($date);
+    $score = UserOption::calculateScoreByUTCRange($start, $end);
 
     return $this->render('view', [
       'model' => $form,

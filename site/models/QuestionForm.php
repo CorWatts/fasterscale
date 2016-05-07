@@ -7,7 +7,6 @@ use common\models\Question;
 use common\models\UserOption;
 use yii\base\Model;
 use yii\db\Expression;
-use \DateTimeZone;
 
 /**
  * Question form

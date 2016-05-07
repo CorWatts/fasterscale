@@ -253,7 +253,7 @@ class User extends ActiveRecord implements IdentityInterface
   public function sendEmailReport($date) {
     list($start, $end) = Time::getUTCBookends($date);
 
-    $utc_date = Time::convertLocalTimeToUTC($date);
+    $utc_date = Time::convertLocalToUTC($date);
 
     if($this->isPartnerEnabled())
       return false; // they don't have their partner emails set
@@ -325,7 +325,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     $data = array_map(
       function($row) {
-        $row['date'] = Time::convertUTCToLocalDate($row['date'], true);
+        $row['date'] = Time::convertUTCToLocal($row['date'], true);
         return $row;
       }, 
       $data
@@ -416,7 +416,7 @@ ORDER  BY l.date DESC;
 
     list($start, $end) = Time::getUTCBookends($local_date);
 
-    $utc_date = Time::convertLocalTimeToUTC($local_date);
+    $utc_date = Time::convertLocalToUTC($local_date);
 
     $questions = Question::find()
       ->where("user_id=:user_id 
@@ -457,7 +457,7 @@ ORDER  BY l.date DESC;
       $local_date = Time::getLocalDate();
 
     list($start, $end) = Time::getUTCBookends($local_date);
-    $utc_date = Time::convertLocalTimeToUTC($local_date);
+    $utc_date = Time::convertLocalToUTC($local_date);
 
     $user_options = UserOption::find()
       ->where("user_id=:user_id 
