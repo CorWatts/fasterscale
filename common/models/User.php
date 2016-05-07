@@ -6,7 +6,7 @@ use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\web\IdentityInterface;
-use \DateTime;
+use common\components\Time;
 use \DateTimeZone;
 
 /**
@@ -240,43 +240,6 @@ class User extends ActiveRecord implements IdentityInterface
     $this->password_reset_token = null;
   }
 
-  public static function convertLocalTimeToUTC($local) {
-    $timestamp = new DateTime($local, new DateTimeZone(Yii::$app->user->identity->timezone));
-    $timestamp->setTimeZone(new DateTimeZone("UTC"));
-    return $timestamp->format("Y-m-d H:i:s");
-  }
-
-  public static function convertUTCToLocalDate($utc_timestamp, $inc_time = false) {
-    $fmt = "Y-m-d";
-    if($inc_time)
-      $fmt = "Y-m-d H:i:s";
-
-    $timestamp = new DateTime($utc_timestamp, new DateTimeZone("UTC"));
-    $timestamp->setTimeZone(new DateTimeZone(Yii::$app->user->identity->timezone));
-    return $timestamp->format($fmt);
-  }
-
-  public static function getLocalTime($timezone = null) {
-    if($timezone === null)
-      $timezone = Yii::$app->user->identity->timezone;
-
-    $timestamp = new DateTime("now", new DateTimeZone($timezone));
-    return $timestamp->format("Y-m-d H:i:s");
-  }
-
-  public static function getLocalDate($timezone = null) {
-    if($timezone === null)
-      $timezone = Yii::$app->user->identity->timezone;
-
-    $timestamp = new DateTime("now", new DateTimeZone($timezone));
-    return $timestamp->format("Y-m-d");
-  }
-
-  public static function alterLocalDate($date, $modifier) {
-    $new_date = new DateTime("$date $modifier", new DateTimeZone(Yii::$app->user->identity->timezone));
-    return $new_date->format("Y-m-d");
-  }
-
   private function isPartnerEnabled() {
     if(!is_null($this->email_threshold)
       && !$this->partner_email1
@@ -288,9 +251,9 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   public function sendEmailReport($date) {
-    list($start, $end) = User::getUTCBookends($date);
+    list($start, $end) = Time::getUTCBookends($date);
 
-    $utc_date = User::convertLocalTimeToUTC($date);
+    $utc_date = Time::convertLocalTimeToUTC($date);
 
     if($this->isPartnerEnabled())
       return false; // they don't have their partner emails set
@@ -362,7 +325,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     $data = array_map(
       function($row) {
-        $row['date'] = User::convertUTCToLocalDate($row['date'], true);
+        $row['date'] = Time::convertUTCToLocalDate($row['date'], true);
         return $row;
       }, 
       $data
@@ -449,11 +412,11 @@ ORDER  BY l.date DESC;
 
   public static function getUserQuestions($local_date) {
     if(is_null($local_date))
-      $local_date = User::getLocalDate();
+      $local_date = Time::getLocalDate();
 
-    list($start, $end) = User::getUTCBookends($local_date);
+    list($start, $end) = Time::getUTCBookends($local_date);
 
-    $utc_date = User::convertLocalTimeToUTC($local_date);
+    $utc_date = Time::convertLocalTimeToUTC($local_date);
 
     $questions = Question::find()
       ->where("user_id=:user_id 
@@ -491,10 +454,10 @@ ORDER  BY l.date DESC;
 
   public static function getUserOptions($local_date) {
     if(is_null($local_date))
-      $local_date = User::getLocalDate();
+      $local_date = Time::getLocalDate();
 
-    list($start, $end) = User::getUTCBookends($local_date);
-    $utc_date = User::convertLocalTimeToUTC($local_date);
+    list($start, $end) = Time::getUTCBookends($local_date);
+    $utc_date = Time::convertLocalTimeToUTC($local_date);
 
     $user_options = UserOption::find()
       ->where("user_id=:user_id 
@@ -519,20 +482,5 @@ ORDER  BY l.date DESC;
     }
 
     return [];
-  }
-
-  public static function getUTCBookends($local) {
-    $local = trim($local);
-    if(strpos($local, " ")) {
-      return false;
-    }
-
-    $start = $local . " 00:00:00";
-    $end   = $local . "23:59:59";
-
-    $front = User::convertLocalTimeToUTC($start);
-    $back  = User::convertLocalTimeToUTC($end);
-
-    return [$front, $back];
   }
 }
