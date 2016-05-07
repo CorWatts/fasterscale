@@ -10,7 +10,7 @@ $this->title = 'Privacy';
 ?>
 <div class="site-privacy">
   <h1><?= Html::encode($this->title) ?></h1>
-  <p>This Privacy Policy governs the manner in which The Faster Scale App collects, uses, maintains and discloses information collected from users (each, a "User") of the http://fasterscaleapp.com website ("Site").</p>
+  <p>This Privacy Policy governs the manner in which The Faster Scale App collects, uses, maintains and discloses information collected from users (each, a "User") of the https://fasterscaleapp.com website ("Site").</p>
   
   <h3>Personal identification information</h3>
   <p>We may collect personal identification information from Users in a variety of ways, including, but not limited to, when Users visit our site, register on the site, fill out a form, and in connection with other activities, services, features or resources we make available on our Site.Users may be asked for, as appropriate, email address. We will collect personal identification information from Users only if they voluntarily submit such information to us. Users can always refuse to supply personally identification information, except that it may prevent them from engaging in certain Site related activities.</p>
@@ -53,10 +53,7 @@ $this->title = 'Privacy';
   <p>We do not sell, trade, or rent Users personal identification information to others. We may share generic aggregated demographic information not linked to any personal identification information regarding visitors and users with our business partners, trusted affiliates and advertisers for the purposes outlined above. We may use third party service providers to help us operate our business and the Site or administer activities on our behalf, such as sending out newsletters or surveys. We may share your information with these third parties for those limited purposes provided that you have given us your permission.</p>
   
   <h3>Electronic newsletters</h3>
-  <p>If User decides to opt-in to our mailing list, they will receive emails that may include company news, updates, related product or service information, etc. We may use third party service providers to help us operate our business and the Site or administer activities on our behalf, such as sending out newsletters or surveys. We may share your information with these third parties for those limited purposes provided that you have given us your permission.</p>
-  
-  <h3>Third party websites</h3>
-  <p>Users may find advertising or other content on our Site that link to the sites and services of our partners, suppliers, advertisers, sponsors, licencors and other third parties. We do not control the content or links that appear on these sites and are not responsible for the practices employed by websites linked to or from our Site. In addition, these sites or services, including their content and links, may be constantly changing. These sites and services may have their own privacy policies and customer service policies. Browsing and interaction on any other website, including websites which have a link to our Site, is subject to that website's own terms and policies.</p>
+  <p>Unless a user decides to opt-out of our mailing list, they will receive emails that may include company news, updates, related product or service information, etc. We may use third party service providers to help us operate our business and the Site or administer activities on our behalf, such as sending out newsletters or surveys. We may share your information with these third parties for those limited purposes provided that you have given us your permission.</p>
   
   <h3>Changes to this privacy policy</h3>
   <p>The Faster Scale App has the discretion to update this privacy policy at any time. When we do, we will post a notification on the main page of our Site. We encourage Users to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications.</p>
