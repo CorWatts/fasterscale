@@ -22,9 +22,14 @@ $this->title = 'Contact';
         <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>'])->input('email') ?>
         <?= $form->field($model, 'subject') ?>
         <?= $form->field($model, 'body')->textArea(['rows' => 6]) ?>
-        <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-          'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-        ]) ?>
+
+        <?php if(Yii::$app->user->isGuest) {
+          // only show captcha if user is not logged in
+          print $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+            'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+          ]);
+        } ?>
+
         <div class="form-group">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
         </div>
