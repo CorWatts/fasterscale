@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use common\models\UserOption;
 use common\models\User;
+use common\components\Time;
 use yii\db\Query;
 use \DateTime;
 use \DateTimeZone;
@@ -114,7 +115,7 @@ class UserOption extends \yii\db\ActiveRecord
   }
 
   public static function calculateScoresOfLastMonth() {
-    $key = "scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate();
+    $key = "scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate();
     $scoresByMonth = Yii::$app->cache->get($key);
     if($scoresByMonth === false) {
       $scoresByMonth = [];
@@ -128,7 +129,7 @@ class UserOption extends \yii\db\ActiveRecord
 
       $options_by_date = [];
       foreach($user_options as $user_option) {
-        $options_by_date[\common\models\User::convertUTCToLocalDate($user_option['date'])][] = $user_option['option'];
+        $options_by_date[Time::convertUTCToLocal($user_option['date'])][] = $user_option['option'];
       }
 
       $category_options = Option::getAllOptionsByCategory();
@@ -178,15 +179,14 @@ class UserOption extends \yii\db\ActiveRecord
       ->having('user_id = :user_id');
     $temp_dates = $query->all();
     foreach($temp_dates as $temp_date) {
-      $past_checkin_dates[] = User::convertUTCToLocalDate($temp_date['date']);
+      $past_checkin_dates[] = Time::convertUTCToLocal($temp_date['date']);
     }
 
     return $past_checkin_dates;
   }
 
   public static function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
-    $utc_start_time = User::convertLocalTimeToUTC($checkin_date." 00:00:00");
-    $utc_end_time = User::convertLocalTimeToUTC($checkin_date." 23:59:59");
+    list($start, $end) = Time::getUTCBookends($date);
 
     $query = new Query;
     $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
@@ -199,8 +199,8 @@ class UserOption extends \yii\db\ActiveRecord
           AND l.date < :end_date",
       [
         ":user_id" => Yii::$app->user->id, 
-        ":start_date" => $utc_start_time, 
-        ":end_date" => $utc_end_time
+        ":start_date" => $start, 
+        ":end_date" => $end
       ]);
 
     if($exclude_1s)

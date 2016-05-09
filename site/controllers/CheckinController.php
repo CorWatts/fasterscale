@@ -8,6 +8,7 @@ use common\models\Option;
 use common\models\User;
 use common\models\UserOption;
 use common\models\Question;
+use common\components\Time;
 use site\models\CheckinForm;
 use site\models\QuestionForm;
 use yii\base\InvalidParamException;
@@ -16,8 +17,6 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\db\Query;
-use \DateTime;
-use \DateTimeZone;
 
 class CheckinController extends \yii\web\Controller
 {
@@ -50,23 +49,22 @@ class CheckinController extends \yii\web\Controller
         return $this->redirect(['view'], 302);
       }
 
-      $date = User::getLocalDate();
-      $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
-      $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+      $date = Time::getLocalDate();
+      list($start, $end) = Time::getUTCBookends($date);
       UserOption::deleteAll("user_id=:user_id 
         AND date > :start_date 
         AND date < :end_date", 
         [
           "user_id" => Yii::$app->user->id, 
-          ':start_date' => $utc_start_time, 
-          ":end_date" => $utc_end_time
+          ':start_date' => $start, 
+          ":end_date" => $end
         ]
       );
 
       $form->save();
 
       // delete cached scores
-      Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".User::getLocalDate());
+      Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate());
 
       Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
       return $this->redirect(['questions'], 302);
@@ -85,20 +83,19 @@ class CheckinController extends \yii\web\Controller
 
   public function actionQuestions()
   {
-    $user_options = UserOption::getUserOptionsWithCategory(User::getLocalDate(), true);
+    $user_options = UserOption::getUserOptionsWithCategory(Time::getLocalDate(), true);
 
     $form = new QuestionForm();
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-      $date = User::getLocalDate();
-      $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
-      $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
+      $date = Time::getLocalDate();
+      list($start, $end) = Time::getUTCBookends($date);
       Question::deleteAll("user_id=:user_id 
         AND date > :start_date 
         AND date < :end_date", 
         [
           ":user_id" => Yii::$app->user->id, 
-          ':start_date' => $utc_start_time, 
-          ":end_date" => $utc_end_time
+          ':start_date' => $start, 
+          ":end_date" => $end
         ]
       );
 
@@ -108,9 +105,9 @@ class CheckinController extends \yii\web\Controller
         'status' => User::STATUS_ACTIVE,
         'email' => Yii::$app->user->identity->email,
       ]);
-      $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
+      $score = UserOption::calculateScoreByUTCRange($start, $end);
       if(!is_null($user->email_threshold) && $score > $user->email_threshold) {
-        $user->sendEmailReport($user->getLocalDate());
+        $user->sendEmailReport(Time::getLocalDate());
         Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
       } else {
         Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
@@ -131,7 +128,7 @@ class CheckinController extends \yii\web\Controller
   public function actionView($date = null)
   {
     if(is_null($date))
-      $date = User::getLocalDate();
+      $date = Time::getLocalDate();
 
     $past_checkin_dates = UserOption::getPastCheckinDates();
     $questions = User::getUserQuestions($date);
@@ -151,10 +148,10 @@ class CheckinController extends \yii\web\Controller
     $options = Option::find()->asArray()->all();
     $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
-    $utc_start_time = User::convertLocalTimeToUTC($date." 00:00:00");
-    $utc_end_time = User::convertLocalTimeToUTC($date." 23:59:59");
-    $utc_date = User::convertLocalTimeToUTC($date);
-    $score = UserOption::calculateScoreByUTCRange($utc_start_time, $utc_end_time);
+    $date = Time::getLocalDate();
+    list($start, $end) = Time::getUTCBookends($date);
+    $utc_date = Time::convertLocalToUTC($date);
+    $score = UserOption::calculateScoreByUTCRange($start, $end);
 
     return $this->render('view', [
       'model' => $form,
