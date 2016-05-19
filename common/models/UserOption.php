@@ -179,14 +179,14 @@ class UserOption extends \yii\db\ActiveRecord
       ->having('user_id = :user_id');
     $temp_dates = $query->all();
     foreach($temp_dates as $temp_date) {
-      $past_checkin_dates[] = Time::convertUTCToLocal($temp_date['date']);
+      $past_checkin_dates[] = Time::convertUTCToLocal($temp_date['date'], false);
     }
 
     return $past_checkin_dates;
   }
 
   public static function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
-    list($start, $end) = Time::getUTCBookends($date);
+    list($start, $end) = Time::getUTCBookends($checkin_date);
 
     $query = new Query;
     $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
