@@ -4,3 +4,4 @@ composer.lock
 vendor
 components
 !common/components
+node_modules
