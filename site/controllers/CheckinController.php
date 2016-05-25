@@ -148,7 +148,6 @@ class CheckinController extends \yii\web\Controller
     $options = Option::find()->asArray()->all();
     $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
-    $date = Time::getLocalDate();
     list($start, $end) = Time::getUTCBookends($date);
     $utc_date = Time::convertLocalToUTC($date);
     $score = UserOption::calculateScoreByUTCRange($start, $end);
