@@ -5,11 +5,15 @@ use yii\jui\DatePicker;
 /**
  * @var yii\web\View $this
  */
-$this->title = 'About';
+$this->title = 'The Faster Scale App | About';
+$this->registerMetaTag([
+  'name' => 'description',
+  'content' => Html::encode("The Faster Scale App is a totally free, online version of Michael Dye's relapse awareness scale. Look here for recent updates.")
+]);
 $this->registerJsFile('/js/site/about.js', ['depends' => [\site\assets\AppAsset::className()]]);
 ?>
 <div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>What is the Faster Scale App?</h1>
     <p>Hopefully you've heard of Michael Dye's emotional check-in tool called the Faster Scale. We have found the Faster Scale helpful in our personal lives as we've tried to become more emotionally mindful. This aims to be an electronic version of the paper questionaire. It stores a history of your check-ins so you can visually see your emotional state change over time. This app has been a personal project for the last several years -- it is very much a work in progress!</p>
 
     <h2>Free as in Beer AND Speech</h2>

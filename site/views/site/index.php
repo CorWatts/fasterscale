@@ -2,12 +2,16 @@
 /**
  * @var yii\web\View $this
  */
-$this->title = 'The Faster Scale App';
+$this->title = 'The Faster Scale App | Welcome';
+$this->registerMetaTag([
+  'name' => 'description',
+  'content' => 'A totally free, online version of the Faster Scale. Increase your self-awareness and practice emotional mindfulness by signing up or logging in today.'
+]);
 $this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset::className()]]);
 ?>
 <div class="site-index">
 	<div class="jumbotron">
-		<h1>Got emotional mindfulness?</h1>
+		<h1>Welcome to the Faster Scale App</h1>
 		<p class="lead">Learn to be aware of your emotional state to see temptation coming before it hits.</p>
 	</div>
 

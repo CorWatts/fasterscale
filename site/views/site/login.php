@@ -7,10 +7,10 @@ use yii\widgets\ActiveForm;
  * @var yii\widgets\ActiveForm $form
  * @var \common\models\LoginForm $model
  */
-$this->title = 'Login';
+$this->title = 'The Faster Scale App | Login';
 ?>
 <div class="site-login">
-  <h1><?= Html::encode($this->title) ?></h1>
+  <h1>Login</h1>
   <p>Please fill out the following fields to login:</p>
 
   <div class="row">
