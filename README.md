@@ -1,5 +1,7 @@
-# The Faster Scale App
-An online version of The Faster Scale
+# The Faster Scale App 
+An online version of The Faster Scale 
+
+[![Build Status](https://travis-ci.org/CorWatts/fasterscale.svg?branch=master)](https://travis-ci.org/CorWatts/fasterscale)
 
 ## Installation
 1. Install PHP >= 5.5
