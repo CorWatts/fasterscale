@@ -20,14 +20,12 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
     ];
-    public $js = [
-        'js/chart.js',
-    ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\web\JqueryAsset',
         'yii\bootstrap\BootstrapAsset',
         'site\assets\JuiAsset',
         'site\assets\MomentAsset',
+        'site\assets\ChartjsAsset',
     ];
 }
