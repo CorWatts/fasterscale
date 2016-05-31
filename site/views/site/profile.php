@@ -26,7 +26,7 @@ $timezones = \DateTimeZone::listIdentifiers();
     <div class="col-md-6">
         <?= $form->field($profile, 'send_email')->checkbox() ?>
         <div id='email_threshold_fields' <?php if(!$profile->send_email) { ?>style="display: none;"<?php } ?>>
-          <?= $form->field($profile, 'email_threshold')->textInput(['class'=>'form-control', 'style'=>'width: 50px;']) ?>
+          <?= $form->field($profile, 'email_threshold')->textInput(['class'=>'form-control', 'style'=>'width: 50px;'])->input('number', ['min' => 0, 'max' => 1000]) ?>
           <?= $form->field($profile, 'partner_email1')->input('email'); ?>
           <?= $form->field($profile, 'partner_email2')->input('email'); ?>
           <?= $form->field($profile, 'partner_email3')->input('email'); ?>
