@@ -8,12 +8,16 @@ use yii\captcha\Captcha;
  * @var yii\widgets\ActiveForm $form
  * @var \site\models\ContactForm $model
  */
-$this->title = 'Contact';
+$this->title = 'The Faster Scale App | Contact Us';
+$this->registerMetaTag([
+  'name' => 'description',
+  'content' => 'The Faster Scale App is a totally free, online version of Michael Dye\'s relapse awareness scale. Please send us comments, questions, or suggestions here.'
+]);
 ?>
 <div class="site-contact">
-  <h1><?= Html::encode($this->title) ?></h1>
+  <h1>Contact Us</h1>
   
-  <p>Thanks for using this tool! If you have any comments, questions, or feedback please drop me a message using this form. Thanks!</p>
+  <p>Thanks for using this tool! If you have any comments, questions, or feedback please drop us a message using this form. Thanks!</p>
   
   <div class="row">
     <div class="col-lg-5">

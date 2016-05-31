@@ -28,7 +28,7 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => '<h1>The Faster Scale App</h1>',
+                'brandLabel' => 'The Faster Scale App',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',

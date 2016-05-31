@@ -2,12 +2,16 @@
 /**
  * @var yii\web\View $this
  */
-$this->title = 'The Faster Scale App';
+$this->title = 'The Faster Scale App | Welcome';
+$this->registerMetaTag([
+  'name' => 'description',
+  'content' => 'A totally free, online version of the Faster Scale. Increase your self-awareness and practice emotional mindfulness by signing up or logging in today.'
+]);
 $this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset::className()]]);
 ?>
 <div class="site-index">
 	<div class="jumbotron">
-		<h1>Got emotional mindfulness?</h1>
+		<h1>The Faster Scale App</h1>
 		<p class="lead">Learn to be aware of your emotional state to see temptation coming before it hits.</p>
 	</div>
 
@@ -27,8 +31,9 @@ $this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset:
 			<div class="col-md-4">
 				<div class="thumbnail" style="border: none;">
 					<div class="caption">
-				<h3>The Faster Scale</h3>
-				<p>Use Michael Dye's popular and proven relapse prevention tool: The Faster Scale. Log the emotions you are experiencing in order to see how vulnerable to temptation you are in the moment. Do a check-in daily to see the progress of your emotions over time.</p>
+				    <h3>What is this?</h3>
+            <p>Contrary to what many addicts might believe, relapse is not an event that randomly appears. Rather, there are many biological, psychological, and social changes that precede it.</p>
+            <p>By using Michael Dye's popular and proven relapse prevention tool "The Faster Scale", a person can train themselves to notice these "warning signs" before relapse occurs and take evasive action. Log the emotions you are experiencing in order to see how vulnerable to temptation you are in the moment. Do a check-in daily to see the progress of your emotions over time.</p>
 					</div>
 				</div>
 			</div>

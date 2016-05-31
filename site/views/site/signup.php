@@ -8,11 +8,16 @@ use yii\captcha\Captcha;
  * @var yii\widgets\ActiveForm $form
  * @var \site\models\SignupForm $model
  */
-$this->title = 'Signup';
+$this->title = 'The Faster Scale App | Signup';
 $timezones = DateTimeZone::listIdentifiers();
+
+$this->registerMetaTag([
+  'name' => 'description',
+  'content' => 'Sign up here for the Faster Scale App, the online version of the popular emotional mindfulness questionnaire. Sign up is easy and always completely free!'
+]);
 ?>
 <div class="site-signup">
-  <h1><?= Html::encode($this->title) ?></h1>
+  <h1>Signup</h1>
   <p>Please fill out the following fields to signup:</p>
 
   <div class="row">
