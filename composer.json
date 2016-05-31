@@ -1,4 +1,7 @@
 {
+  "name": "corwatts/fasterscale",
+  "description": "An online version of the Faster Scale -- a relapse awareness tool",
+  "license": "MIT",
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.5",
