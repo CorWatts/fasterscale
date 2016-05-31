@@ -30,6 +30,9 @@ install:
     cd tests/codeception/common && codecept build
     cd ../../../
 
+before_script:
+    - phpenv config-rm xdebug.ini
+
 script:
   - |
     cd tests/codeception/common
