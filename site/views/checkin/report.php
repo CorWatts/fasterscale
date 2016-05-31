@@ -19,8 +19,8 @@ $pie_colors = [
     "highlight" => "#496D89"
   ],
   [
-    "color" => "AA5939",
-    "highlight" => "D4886A"
+    "color" => "#AA5939",
+    "highlight" => "#D4886A"
   ],
   [
     "color" => "#AA7939",
@@ -35,13 +35,12 @@ $pie_colors = [
     "highlight" => "#496D89"
   ],
   [
-    "color" => "AA5939",
-    "highlight" => "D4886A"
+    "color" => "#AA5939",
+    "highlight" => "#D4886A"
   ]
 ];
 
-
-$pie_data = [];
+$tmp_pie = [];
 foreach($answer_pie as $key => $category) {
   $json = [
     "value" => (int)$category['count'],
@@ -49,8 +48,20 @@ foreach($answer_pie as $key => $category) {
     "highlight" => $pie_colors[$key]["highlight"],
     "label" => $category['name']
   ];
-  $pie_data[] = $json;
+  $tmp_pie[] = $json;
 }
+
+$labels     = array_column($tmp_pie, "label");
+$values     = array_column($tmp_pie, "value");
+$highlights = array_column($tmp_pie, "highlight");
+$colors     = array_column($tmp_pie, "color");
+
+$pie_data = [
+  "labels" => $labels,
+  "datasets" => [
+    ["data" => $values, "backgroundColor" => $colors, "hoverBackgroundColor" => $highlights]
+  ]
+];
 ?>
 <h1>Check-in Report</h1>
 
@@ -90,6 +101,11 @@ print "<tr>".
     </div>
 </div>
 <?php
-$this->registerJson($pie_data, "chart_pie_data");
-$this->registerJson(array_keys($scores), 'chart_scores_keys_json');
+$line_keys = array_map(function($date) {
+  $timestamp = new \DateTime($date);
+  return $timestamp->format('Y-m-d');
+}, array_keys($scores));
+
+$this->registerJson($pie_data, "pie_data");
+$this->registerJson($line_keys, 'chart_scores_keys_json');
 $this->registerJson(array_values($scores), 'chart_scores_values_json');

@@ -187,7 +187,10 @@ class CheckinController extends \yii\web\Controller
       ->having('l.user_id = :user_id');
     $answer_pie = $query2->all();
 
-    $scores = UserOption::calculateScoresOfLastMonth();
+    $scores = Yii::$app->cache->get("scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate());
+    if(!$scores) {
+      $scores = UserOption::calculateScoresOfLastMonth();
+    }
 
     return $this->render('report', [
       'top_options' => $user_rows,
