@@ -38,5 +38,5 @@ $config = [
 
 #### 10000" view
 * MOBILE APP
-* Move away from bootstrap (to material design?)
+* Move away from bootstrap (to material design?) in [issue #43](https://github.com/CorWatts/fasterscale/issues/43)
 * move to Single Page App with one backend api and a frontend framework (Angular?)
