@@ -34,7 +34,7 @@ $config = [
 
 #### Lesser needs
 * ~~Make it a lot easier to install locally in a development environment~~
-* the UI needs tons of work. Pretty darn ugly right now
+* the UI needs tons of work. Pretty darn ugly right now in [issue #43](https://github.com/CorWatts/fasterscale/issues/43)
 
 #### 10000" view
 * MOBILE APP
