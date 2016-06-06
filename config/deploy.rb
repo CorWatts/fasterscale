@@ -1,11 +1,16 @@
+# Load DSL and Setup Up Stages
+require 'capistrano/setup'
+set :staging, :production
+#set :default_stage, "staging"
+
 set :application, 'Checkin'
 set :repo_url, 'ssh://git@github.com/CorWatts/emotionalcheckin.git'
 
 # Default branch is :master
-set :branch, 'master'
+#set :branch, 'master'
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/var/www/vhosts/fasterscaleapp.com'
+#set :deploy_to, '/var/www/vhosts/fasterscaleapp.com'
 
 # Default value for :scm is :git
 set :scm, :git
