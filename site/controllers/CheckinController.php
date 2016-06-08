@@ -46,7 +46,7 @@ class CheckinController extends \yii\web\Controller
       $form->compiled_options = $options;
 
       if(sizeof($form->compiled_options) === 0) {
-        return $this->redirect(['view'], 302);
+        return $this->redirect(['view']);
       }
 
       $date = Time::getLocalDate();
@@ -67,7 +67,7 @@ class CheckinController extends \yii\web\Controller
       Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate());
 
       Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
-      return $this->redirect(['questions'], 302);
+      return $this->redirect(['questions']);
 
     } else {
       $categories = Category::find()->asArray()->all();
@@ -84,6 +84,10 @@ class CheckinController extends \yii\web\Controller
   public function actionQuestions()
   {
     $user_options = UserOption::getUserOptionsWithCategory(Time::getLocalDate(), true);
+    if(count($user_options) === 0) {
+      return $this->redirect(['view']);
+
+    }
 
     $form = new QuestionForm();
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
@@ -99,22 +103,20 @@ class CheckinController extends \yii\web\Controller
         ]
       );
 
-      $result = $form->saveAnswers();
-      
-      $user = User::findOne([
-        'status' => User::STATUS_ACTIVE,
-        'email' => Yii::$app->user->identity->email,
-      ]);
-      $score = UserOption::calculateScoreByUTCRange($start, $end);
-      if(!is_null($user->email_threshold) && $score > $user->email_threshold) {
-        $user->sendEmailReport(Time::getLocalDate());
-        Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
-      } else {
-        Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
-      }
-      
-      if($result) {
-        return $this->redirect(['view'], 302);
+      if($result = $form->saveAnswers()) {
+        $user = User::findOne([
+          'status' => User::STATUS_ACTIVE,
+          'email' => Yii::$app->user->identity->email,
+        ]);
+        $score = UserOption::calculateScoreByUTCRange($start, $end);
+        if(!is_null($user->email_threshold) && $score > $user->email_threshold) {
+          $user->sendEmailReport(Time::getLocalDate());
+          Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
+        } else {
+          Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
+        }
+
+        return $this->redirect(['view']);
       }
     }
 
