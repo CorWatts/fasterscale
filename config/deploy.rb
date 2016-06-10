@@ -28,7 +28,7 @@ namespace :deploy do
   desc 'Restarting application'
   task :restart do
     on roles(:app) do
-      execute "sudo service php5-fpm restart"
+      execute "sudo service php7.0-fpm restart"
     end
   end
 
