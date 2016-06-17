@@ -1,11 +1,9 @@
+# Load DSL and Setup Up Stages
+require 'capistrano/setup'
+set :staging, :production
+
 set :application, 'Checkin'
 set :repo_url, 'ssh://git@github.com/CorWatts/emotionalcheckin.git'
-
-# Default branch is :master
-set :branch, 'master'
-
-# Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/var/www/vhosts/fasterscaleapp.com'
 
 # Default value for :scm is :git
 set :scm, :git
@@ -23,7 +21,7 @@ namespace :deploy do
   desc 'Restarting application'
   task :restart do
     on roles(:app) do
-      execute "sudo service php5-fpm restart"
+      execute "sudo service php7.0-fpm restart"
     end
   end
 
