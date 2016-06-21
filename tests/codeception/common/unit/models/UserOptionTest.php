@@ -17,6 +17,58 @@ class UserOptionTest extends TestCase
 {
     use Specify;
 
+    public $allBehaviors = array (
+  1 => 
+  array (
+    'category_id' => 1,
+    'name' => 'Restoration',
+    'weight' => 0,
+    'option_count' => 10,
+  ),
+  2 => 
+  array (
+    'category_id' => 2,
+    'name' => 'Forgetting Priorities',
+    'weight' => 1,
+    'option_count' => 17,
+  ),
+  3 => 
+  array (
+    'category_id' => 3,
+    'name' => 'Anxiety',
+    'weight' => 2,
+    'option_count' => 17,
+  ),
+  4 => 
+  array (
+    'category_id' => 4,
+    'name' => 'Speeding Up',
+    'weight' => 4,
+    'option_count' => 23,
+  ),
+  5 => 
+  array (
+    'category_id' => 5,
+    'name' => 'Ticked Off',
+    'weight' => 6,
+    'option_count' => 24,
+  ),
+  6 => 
+  array (
+    'category_id' => 6,
+    'name' => 'Exhausted',
+    'weight' => 8,
+    'option_count' => 28,
+  ),
+  7 => 
+  array (
+    'category_id' => 7,
+    'name' => 'Relapse/Moral Failure',
+    'weight' => 10,
+    'option_count' => 11,
+  ),
+);
+
 		public $singleSimpleBehaviors = [
 			[
 				'id' => 396,
@@ -284,8 +336,8 @@ class UserOptionTest extends TestCase
     public function testCalculateScore()
     {
       $this->specify('calculateScore should function correctly', function () {
-        expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals(UserOption::calculateScore($this->singleSimpleBehaviors), ['2016-06-16 21:12:43' => 29]));
-        expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals(UserOption::calculateScore($this->singleComplexBehaviors), ['2016-06-20 21:08:36' => 233]));
+        expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals(UserOption::calculateScore($this->singleSimpleBehaviors, $this->allBehaviors), ['2016-06-16 21:12:43' => 29]));
+        expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals(UserOption::calculateScore($this->singleComplexBehaviors, $this->allBehaviors), ['2016-06-20 21:08:36' => 233]));
       });
     }
 }

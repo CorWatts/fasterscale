@@ -128,11 +128,6 @@ class UserOption extends \yii\db\ActiveRecord
       return [];
     }
 
-    //print "<pre>";
-    //print_r($selected_opts);
-    //print "</pre>";
-    //exit();
-
     $local_opts = [];
     foreach($selected_opts as $user_option) {
       $local_opts[Time::convertUTCToLocal($user_option['date'])][] = $user_option['option'];
