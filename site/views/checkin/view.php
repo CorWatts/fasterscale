@@ -18,13 +18,16 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 }
 ?>
 <h1>View Past Check-ins</h1>
-<div id='past-checkin-nav' class='btn-group'>
+<div id='past-checkin-nav' role='toolbar' class='btn-toolbar'>
+  <div class='btn-group' role='group'>
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "-1 week")]); ?>">&lt;&lt;</a> 
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "-1 day")]); ?>">&lt;</a> 
+  </div>
+  <div class='btn-group' role='group'>
 <?= yii\jui\DatePicker::widget([
   'name' => 'attributeName', 
   'value' => $utc_date,
-  'options' => ['class'=> 'btn btn-default datepicker'],
+  'options' => ['class'=> 'btn btn-default datepicker', 'readonly' => true],
   'dateFormat' => 'yyyy-MM-dd', 
   'clientOptions' => [
     'defaultDate' => $actual_date,
@@ -36,8 +39,11 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
                 }")
               ]
             ]) ?>
+  </div>
+  <div class='btn-group' role='group'>
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "+1 day")]); ?>">&gt;</a> 
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "+1 week")]); ?>">&gt;&gt;</a> 
+  </div>
 </div>
 
 <?php
