@@ -19,7 +19,7 @@ if($code === 404):
 
   <h1>Hmm, that's not quite right.</h1>
   <div class="alert alert-danger"><?= nl2br(Html::encode($name)) ?></div>
-  <p>We've got no current secrets and we're being open....we honestly have no idea what page you're trying to find. If you landed on this page from a link on The Faster Scale App, please send us a message on our <a href="<?=Url::to(['site/contact'])?>">contact form</a>.</p>
+  <p>We've got no current secrets and we're being open....we honestly have no idea what page you're trying to find. If you landed on this page from a link on The Faster Scale App please send us a message on our <a href="<?=Url::to(['site/contact'])?>">contact form</a>.</p>
   <p>Otherwise, please ensure your attempted url is correct.</p>
 
 <?php
