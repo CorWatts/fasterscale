@@ -25,10 +25,10 @@ class CheckinController extends \yii\web\Controller
     return [
       'access' => [
         'class' => AccessControl::className(),
-        'only' => ['index', 'view', 'questions'],
+        'only' => ['index', 'view', 'questions', 'report'],
         'rules' => [
           [
-            'actions' => ['index', 'view', 'questions'],
+            'actions' => ['index', 'view', 'questions', 'report'],
             'allow' => true,
             'roles' => ['@'],
           ],
