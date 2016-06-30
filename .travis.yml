@@ -36,3 +36,6 @@ script:
   - |
     cd tests/codeception/common
     codecept run --ansi unit components/TimeTest.php
+    
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
