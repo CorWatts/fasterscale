@@ -16,6 +16,6 @@ coverage:
   enabled: true
   whitelist:
     include:
-      - ../../site/models/*
-      - ../../common/models/*
-      - ../../common/components/*
+      - ../../../site/models/*
+      - ../../../common/models/*
+      - ../../../common/components/*
