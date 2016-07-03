@@ -2,6 +2,8 @@
 An online version of The Faster Scale 
 
 [![Build Status](https://travis-ci.org/CorWatts/fasterscale.svg?branch=master)](https://travis-ci.org/CorWatts/fasterscale)
+[![codecov](https://codecov.io/gh/CorWatts/fasterscale/branch/master/graph/badge.svg)](https://codecov.io/gh/CorWatts/fasterscale)
+
 
 ## Installation
 1. Install PHP >= 5.6
