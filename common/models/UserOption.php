@@ -73,6 +73,48 @@ class UserOption extends \yii\db\ActiveRecord
     return $this->hasOne(Option::className(), ['id' => 'option_id']);
   }
 
+  public static function getPastCheckinDates()
+  {
+    $past_checkin_dates = [];
+    $query = new Query;
+    $query->params = [":user_id" => Yii::$app->user->id];
+    $query->select("date")
+      ->from('user_option_link l')
+      ->groupBy('date, user_id')
+      ->having('user_id = :user_id');
+    $temp_dates = $query->all();
+    foreach($temp_dates as $temp_date) {
+      $past_checkin_dates[] = Time::convertUTCToLocal($temp_date['date'], false);
+    }
+
+    return $past_checkin_dates;
+  }
+
+  public static function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
+    list($start, $end) = Time::getUTCBookends($checkin_date);
+
+    $query = new Query;
+    $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
+      ->from('user_option_link l')
+      ->innerJoin('option o', 'l.option_id=o.id')
+      ->innerJoin('category c', 'o.category_id=c.id')
+      ->orderBy('c.id')
+      ->where("l.user_id=:user_id
+          AND l.date > :start_date
+          AND l.date < :end_date",
+      [
+        ":user_id" => Yii::$app->user->id, 
+        ":start_date" => $start, 
+        ":end_date" => $end
+      ]);
+
+    if($exclude_1s)
+      $query->andWhere("c.id <> 1");
+
+    $user_options = $query->all();
+    return $user_options;
+  }
+
   public static function getBehaviorsByDate($start, $end) {
 
       $user_options = UserOption::find()
@@ -140,10 +182,11 @@ class UserOption extends \yii\db\ActiveRecord
       }
 
       foreach($all_opts as $options) {
-        if(array_key_exists($options['category_id'], $options_by_category))
-          $stats[$options['category_id']] = $all_opts[$options['category_id']]['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
-        else
+        if(array_key_exists($options['category_id'], $options_by_category)) {
+          $stats[$options['category_id']] = $options['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
+        } else {
           $stats[$options['category_id']] = 0;
+        }
       }
 
       $sum = 0;
@@ -164,48 +207,6 @@ class UserOption extends \yii\db\ActiveRecord
     }
 
     return $scores;
-  }
-
-  public static function getPastCheckinDates()
-  {
-    $past_checkin_dates = [];
-    $query = new Query;
-    $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("date")
-      ->from('user_option_link l')
-      ->groupBy('date, user_id')
-      ->having('user_id = :user_id');
-    $temp_dates = $query->all();
-    foreach($temp_dates as $temp_date) {
-      $past_checkin_dates[] = Time::convertUTCToLocal($temp_date['date'], false);
-    }
-
-    return $past_checkin_dates;
-  }
-
-  public static function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
-    list($start, $end) = Time::getUTCBookends($checkin_date);
-
-    $query = new Query;
-    $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
-      ->from('user_option_link l')
-      ->innerJoin('option o', 'l.option_id=o.id')
-      ->innerJoin('category c', 'o.category_id=c.id')
-      ->orderBy('c.id')
-      ->where("l.user_id=:user_id
-          AND l.date > :start_date
-          AND l.date < :end_date",
-      [
-        ":user_id" => Yii::$app->user->id, 
-        ":start_date" => $start, 
-        ":end_date" => $end
-      ]);
-
-    if($exclude_1s)
-      $query->andWhere("c.id <> 1");
-
-    $user_options = $query->all();
-    return $user_options;
   }
 
   public static function generateScoresGraph() {
