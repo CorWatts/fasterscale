@@ -73,6 +73,11 @@
             time: {
               unit: "day" // only show 'day' units on the scale
             }
+          }],
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
           }]
         }
       }
