@@ -162,12 +162,12 @@ class UserOption extends \yii\db\ActiveRecord
   }
 
   public static function calculateScore($selected_opts, $all_opts = null) {
-    if(!!!$all_opts) {
-      $all_opts = Option::getAllOptionsByCategory();
-    }
-
     if(!!!$selected_opts) {
       return [];
+    }
+
+    if(!!!$all_opts) {
+      $all_opts = Option::getAllOptionsByCategory();
     }
 
     $local_opts = [];

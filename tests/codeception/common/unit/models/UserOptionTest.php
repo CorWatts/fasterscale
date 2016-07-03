@@ -318,6 +318,10 @@ class UserOptionTest extends TestCase {
 
   public function testCalculateScore() {
     $this->specify('calculateScore should function correctly', function () {
+      expect('calculateScore should return the empty set when null is passed', $this->assertEmpty(UserOption::calculateScore(null, $this->allBehaviors)));
+
+      expect('calculateScore should return the empty set with no selected options', $this->assertEmpty(UserOption::calculateScore([], $this->allBehaviors)));
+      
       expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals(UserOption::calculateScore($this->singleSimpleBehaviors, $this->allBehaviors), ['2016-06-16 21:12:43' => 29]));
       
       expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals(UserOption::calculateScore($this->singleComplexBehaviors, $this->allBehaviors), ['2016-06-20 21:08:36' => 233]));
