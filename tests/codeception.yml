@@ -8,3 +8,12 @@ paths:
 
 settings:
   colors: true
+
+coverage:
+  enabled: true
+  whitelist:
+    include:
+      - ../site/models/*
+      - ../common/models/*
+      - ../common/components/*
+
