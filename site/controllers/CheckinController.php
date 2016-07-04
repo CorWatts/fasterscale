@@ -152,7 +152,8 @@ class CheckinController extends \yii\web\Controller
 
     list($start, $end) = Time::getUTCBookends($date);
     $utc_date = Time::convertLocalToUTC($date);
-    $score = UserOption::calculateScoreByUTCRange($start, $end);
+    $score_arr = UserOption::calculateScoreByUTCRange($start, $end);
+    $score = reset($score_arr) ?: 0; // get first element value or 0
 
     return $this->render('view', [
       'model' => $form,
@@ -189,10 +190,7 @@ class CheckinController extends \yii\web\Controller
       ->having('l.user_id = :user_id');
     $answer_pie = $query2->all();
 
-    $scores = Yii::$app->cache->get("scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate());
-    if(!$scores) {
-      $scores = UserOption::calculateScoresOfLastMonth();
-    }
+    $scores = UserOption::calculateScoresOfLastMonth();
 
     return $this->render('report', [
       'top_options' => $user_rows,

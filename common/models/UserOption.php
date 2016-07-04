@@ -73,101 +73,6 @@ class UserOption extends \yii\db\ActiveRecord
     return $this->hasOne(Option::className(), ['id' => 'option_id']);
   }
 
-  /**
-   * @date date string in yyyy-mm-dd format
-   * @return int score
-   */
-  public static function calculateScoreByUTCRange($start, $end)
-  {
-    $user_options = UserOption::find()->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->with('option')->asArray()->all();
-
-    $score = 0;
-
-    if($user_options) {
-      foreach($user_options as $option) {
-        $user_options_by_category[$option['option']['category_id']][] = $option['option_id'];
-      }
-
-      $category_options = Option::getAllOptionsByCategory();
-
-      foreach($category_options as $options) {
-        if(array_key_exists($options['category_id'], $user_options_by_category))
-          $stats[$options['category_id']] = $category_options[$options['category_id']]['weight'] * (count($user_options_by_category[$options['category_id']]) / $options['option_count']);
-        else
-          $stats[$options['category_id']] = 0;
-      }
-
-      $sum = 0;
-      $count = 0;
-      foreach($stats as $stat) {
-        $sum += $stat;
-
-        if($stat > 0)
-          $count += 1;
-      }
-
-      $avg = ($count > 0) ? $sum / $count : 0;
-
-      $score = round($avg * 100);
-    }
-
-    return $score;
-  }
-
-  public static function calculateScoresOfLastMonth() {
-    $key = "scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate();
-    $scoresByMonth = Yii::$app->cache->get($key);
-    if($scoresByMonth === false) {
-      $scoresByMonth = [];
-
-      $start = new DateTime("now - 1 month", new DateTimeZone("UTC"));
-      $start = $start->format("Y-m-d H:i:s");
-      $end = new DateTime("now", new DateTimeZone("UTC"));
-      $end = $end->format("Y-m-d H:i:s");
-
-      $user_options = UserOption::find()->select(['id', 'user_id', 'option_id', 'date'])->where("user_id=:user_id AND date > :start_date AND date < :end_date", ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end])->orderBy('date')->with('option')->asArray()->all();
-
-      $options_by_date = [];
-      foreach($user_options as $user_option) {
-        $options_by_date[Time::convertUTCToLocal($user_option['date'])][] = $user_option['option'];
-      }
-
-      $category_options = Option::getAllOptionsByCategory();
-
-      foreach($options_by_date as $date => $options) {
-        foreach($options as $option) {
-          $options_by_category[$option['category_id']][] = $option['id'];
-        }
-
-        foreach($category_options as $options) {
-          if(array_key_exists($options['category_id'], $options_by_category))
-            $stats[$options['category_id']] = $category_options[$options['category_id']]['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
-          else
-            $stats[$options['category_id']] = 0;
-        }
-
-        $sum = 0;
-        $count = 0;
-        foreach($stats as $stat) {
-          $sum += $stat;
-
-          if($stat > 0)
-            $count += 1;
-        }
-
-        unset($stats);
-        unset($options_by_category);
-
-        $avg = ($count > 0) ? $sum / $count : 0;
-
-        $scoresByMonth[$date] = round($avg * 100);
-      }
-      Yii::$app->cache->set($key, $scoresByMonth, 60*60*24);
-    }
-
-    return $scoresByMonth;
-  }
-
   public static function getPastCheckinDates()
   {
     $past_checkin_dates = [];
@@ -208,6 +113,100 @@ class UserOption extends \yii\db\ActiveRecord
 
     $user_options = $query->all();
     return $user_options;
+  }
+
+  public static function getBehaviorsByDate($start, $end) {
+
+      $user_options = UserOption::find()
+        ->select(['id', 'user_id', 'option_id', 'date'])
+        ->where(
+          "user_id=:user_id AND date > :start_date AND date < :end_date",
+          ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end]
+        )
+        ->orderBy('date')
+        ->with('option')
+        ->asArray()
+        ->all();
+
+      return $user_options;
+  }
+
+  /**
+   * @date date string in yyyy-mm-dd format
+   * @return int score
+   */
+  public static function calculateScoreByUTCRange($start, $end) {
+    $behaviors = self::getBehaviorsByDate($start, $end);
+    $scores = self::calculateScore($behaviors);
+
+    return $scores;
+  }
+
+  public static function calculateScoresOfLastMonth() {
+    $key = "scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate();
+    $scores = Yii::$app->cache->get($key);
+    if($scores === false) {
+      $scores = [];
+
+      $dt = new DateTime("now", new DateTimeZone("UTC"));
+      $end = $dt->format("Y-m-d H:i:s");
+      $start = $dt->modify("-1 month")->format("Y-m-d H:i:s");
+
+      $behaviors = self::getBehaviorsByDate($start, $end);
+      $scores = self::calculateScore($behaviors);
+
+      Yii::$app->cache->set($key, $scores, 60*60*24);
+    }
+
+    return $scores;
+  }
+
+  public static function calculateScore($selected_opts, $all_opts = null) {
+    if(!!!$selected_opts) {
+      return [];
+    }
+
+    if(!!!$all_opts) {
+      $all_opts = Option::getAllOptionsByCategory();
+    }
+
+    $local_opts = [];
+    foreach($selected_opts as $user_option) {
+      $local_opts[Time::convertUTCToLocal($user_option['date'])][] = $user_option['option'];
+    }
+
+    $scores = [];
+    foreach($local_opts as $date => $options) {
+      foreach($options as $option) {
+        $options_by_category[$option['category_id']][] = $option['id'];
+      }
+
+      foreach($all_opts as $options) {
+        if(array_key_exists($options['category_id'], $options_by_category)) {
+          $stats[$options['category_id']] = $options['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
+        } else {
+          $stats[$options['category_id']] = 0;
+        }
+      }
+
+      $sum = 0;
+      $count = 0;
+      foreach($stats as $stat) {
+        $sum += $stat;
+
+        if($stat > 0)
+          $count += 1;
+      }
+
+      unset($stats);
+      unset($options_by_category);
+
+      $avg = ($count > 0) ? $sum / $count : 0;
+
+      $scores[$date] = round($avg * 100);
+    }
+
+    return $scores;
   }
 
   public static function generateScoresGraph() {
