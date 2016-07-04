@@ -4,7 +4,7 @@ An online version of The Faster Scale
 [![Build Status](https://travis-ci.org/CorWatts/fasterscale.svg?branch=master)](https://travis-ci.org/CorWatts/fasterscale)
 
 ## Installation
-1. Install PHP >= 5.5
+1. Install PHP >= 5.6
 1. Install some kind of SQL. I use PostgreSQL but the Yii2 ORM supports other DBMSes as well. I also took a bit of care to make the SQL db agnostic.
 1. Clone repo
 1. ```composer global require "fxp/composer-asset-plugin:~1.1.1" && composer install --dev```
