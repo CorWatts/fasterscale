@@ -5,7 +5,12 @@ return [
   'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
   'components' => [
     'cache' => [
-      'class' => 'yii\caching\DummyCache', // OR USE MEMCACHE OR SOMETHING
+      'class' => 'yii\caching\FileCache', // OR USE MEMCACHE OR SOMETHING
+    ],
+    'mailer' => [
+      'class' => 'yii\swiftmailer\Mailer',
+      'viewPath' => '@common/mail',
+      'useFileTransport' => true,
     ],
   ],
 ];
