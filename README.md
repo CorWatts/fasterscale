@@ -6,6 +6,7 @@
 
 
 ## Getting Started
+These instructions will help you get a local installation set up for development and testing purposes. See the deployment instructions for how to deploy this to a live system.
 ### Prerequisites
 * PHP >= 5.6
 * Composer
@@ -45,17 +46,27 @@ return [
 1. visit [http://localhost:8080/signup](http://localhost:8080/signup) and create a new user
 1. log in, start working
 
+## Running the Tests
+Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. To run them, ensure you're in the correct directory and execute:
+```bash
+cd tests/codeception/common
+./../../../vendor/bin/codecept run --ansi
+```
+To generate code coverage, add the appropriate flags:  
+    ```./../../../vendor/bin/codecept run --coverage --coverage-xml --coverage-html --ansi```
+
+## Deployment
+This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.
+
+## License
+This application is under the MIT license. See [LICENSE.md](https://github.com/CorWatts/fasterscale/blob/master/LICENSE.md) for details.
 
 ## Roadmap
 #### Pressing needs
 * Create reminder functionality detailed in [issue #13](https://github.com/CorWatts/fasterscale/issues/13)
-* ~~Add ability to delete your account detailed in [issue #12](https://github.com/CorWatts/fasterscale/issues/12)~~
-
-#### Lesser needs
-* ~~Make it a lot easier to install locally in a development environment~~
 * the UI needs tons of work. Pretty darn ugly right now in [issue #43](https://github.com/CorWatts/fasterscale/issues/43)
+* ~~Add ability to delete your account detailed in [issue #12](https://github.com/CorWatts/fasterscale/issues/12)~~
 
 #### 10000" view
 * MOBILE APP
 * Move away from bootstrap (to material design?) in [issue #43](https://github.com/CorWatts/fasterscale/issues/43)
-* move to Single Page App with one backend api and a frontend framework (Angular?)
