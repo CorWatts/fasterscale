@@ -72,7 +72,7 @@ namespace :deploy do
   desc "Link REVISION file to web root"
   task :link_revision_file do
     on roles(:web) do
-      within release_path do
+      within "#{release_path}/site/web" do
         execute 'ln', '-s', '../../REVISION', 'REVISION;'
       end
     end
