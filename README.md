@@ -1,15 +1,24 @@
 # The Faster Scale App 
-An online version of The Faster Scale 
+> An online version of The Faster Scale 
 
 [![Build Status](https://travis-ci.org/CorWatts/fasterscale.svg?branch=master)](https://travis-ci.org/CorWatts/fasterscale)
 [![codecov](https://codecov.io/gh/CorWatts/fasterscale/branch/master/graph/badge.svg)](https://codecov.io/gh/CorWatts/fasterscale)
 
 
-## Installation
-1. Install PHP >= 5.6
-1. Install some kind of SQL. I use PostgreSQL but the Yii2 ORM supports other DBMSes as well. I also took a bit of care to make the SQL db agnostic.
-1. Clone repo
-1. ```composer global require "fxp/composer-asset-plugin:~1.1.1" && composer install --dev```
+## Getting Started
+### Prerequisites
+* PHP >= 5.6
+* Composer
+* A type of SQL compatible with Yii2's ActiveRecord:
+  * MySQL 4.1 or later
+  * PostgreSQL 7.3 or later
+  * SQLite 2 and 3
+  * Microsoft SQL Server 2008 or later
+  * Oracle
+
+### Installation
+1. Clone this repo
+1. Install necessary dependencies with ```composer global require "fxp/composer-asset-plugin:~1.1.1" && composer install --dev```
 1. execute the init file and choose the Development option: ```./init```
 1. Add a cookie validation key to ```site/config/main-local.php```  
 ```php
