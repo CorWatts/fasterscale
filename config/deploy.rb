@@ -69,4 +69,15 @@ namespace :deploy do
 
   after :migrate, 'deploy:do_assets'
 
+  desc "Link REVISION file to web root"
+  task :link_revision_file do
+    on roles(:web) do
+      within "#{release_path}/site/web" do
+        execute 'ln', '-s', '../../REVISION', 'REVISION;'
+      end
+    end
+  end
+
+  after :migrate, 'deploy:link_revision_file'
+
 end

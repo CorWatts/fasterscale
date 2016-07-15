@@ -6,12 +6,18 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use site\assets\AppAsset;
 use site\widgets\Alert;
+use common\components\Utility;
 
 /**
  * @var \yii\web\View $this
  * @var string $content
  */
 AppAsset::register($this);
+
+if($hash = Utility::getRevHash()) {
+  $rev_link = '<a href="'.Utility::getGithubRevUrl().'">'.Utility::getRevHash().'</a>';
+} else $rev_link = 'DEVELOPMENT';
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -72,7 +78,7 @@ AppAsset::register($this);
     <footer class="footer">
         <div class="container">
         <p class="pull-left">&copy; <a href="https://corwatts.com">Corey Watts</a> <?= date('Y') ?> | <a href="<?=Url::to(['site/privacy'])?>">Privacy</a> | <a href="<?=Url::to(['site/terms'])?>">Terms</a></p>
-        <p class="pull-right">Powered by <a href="http://yiiframework.com">Yii</a>, written in <a href="http://www.vim.org">Vim</a></p>
+        <p class="pull-right">FSA rev. <?=$rev_link?> is powered by <a href="http://yiiframework.com">Yii</a>, written in <a href="http://www.vim.org">Vim</a></p>
         </div>
     </footer>
 
