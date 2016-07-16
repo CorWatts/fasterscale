@@ -239,14 +239,15 @@ class User extends ActiveRecord implements IdentityInterface
     $this->password_reset_token = null;
   }
 
-  private function isPartnerEnabled() {
-    if(!is_null($this->email_threshold)
-      && !$this->partner_email1
-      && !$this->partner_email2
-      && !$this->partner_email3)
-      return false;
-
-    return true;
+  public function isPartnerEnabled() {
+    if((is_integer($this->email_threshold)
+       && $this->email_threshold >= 0)
+         && ($this->partner_email1
+           || $this->partner_email2
+           || $this->partner_email3)) {
+      return true;
+    }
+    return false;
   }
 
   public function sendEmailReport($date) {
@@ -254,8 +255,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     $utc_date = Time::convertLocalToUTC($date);
 
-    if($this->isPartnerEnabled())
-      return false; // they don't have their partner emails set
+    if(!$this->isPartnerEnabled()) return false; // they don't have their partner emails set
 
     $score = UserOption::calculateScoreByUTCRange($start, $end);
 
