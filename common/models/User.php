@@ -35,9 +35,28 @@ class User extends ActiveRecord implements IdentityInterface
 
   const ROLE_USER = 10;
 
+  public $decorator;
+
   /**
    * @inheritdoc
    */
+
+  public function __call($name, $args) {
+    if(is_object($this->decorator)) {
+      return $this->decorator->$name($this, $args);
+    }
+    throw new NotSupportedException("'$name' is not implemented.");
+  }
+
+  public function __construct($decorator = null) {
+    $decorator = $decorator ?: new \common\components\UserTrim($this);
+    $this->decorate($decorator);
+  }
+
+  public function decorate($decorator) {
+    $this->decorator = $decorator;
+  }
+
   public function behaviors()
   {
     return [
@@ -239,23 +258,12 @@ class User extends ActiveRecord implements IdentityInterface
     $this->password_reset_token = null;
   }
 
-  private function isPartnerEnabled() {
-    if(!is_null($this->email_threshold)
-      && !$this->partner_email1
-      && !$this->partner_email2
-      && !$this->partner_email3)
-      return false;
-
-    return true;
-  }
-
   public function sendEmailReport($date) {
     list($start, $end) = Time::getUTCBookends($date);
 
     $utc_date = Time::convertLocalToUTC($date);
 
-    if($this->isPartnerEnabled())
-      return false; // they don't have their partner emails set
+    if(!$this->isPartnerEnabled()) return false; // they don't have their partner emails set
 
     $score = UserOption::calculateScoreByUTCRange($start, $end);
 
