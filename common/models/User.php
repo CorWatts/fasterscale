@@ -51,6 +51,7 @@ class User extends ActiveRecord implements IdentityInterface
   public function __construct($decorator = null) {
     $decorator = $decorator ?: new \common\components\UserTrim($this);
     $this->decorate($decorator);
+    parent::__construct();
   }
 
   public function decorate($decorator) {
