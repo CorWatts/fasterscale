@@ -35,9 +35,28 @@ class User extends ActiveRecord implements IdentityInterface
 
   const ROLE_USER = 10;
 
+  public $decorator;
+
   /**
    * @inheritdoc
    */
+
+  public function __call($name, $args) {
+    if(is_object($this->decorator)) {
+      return $this->decorator->$name($this, $args);
+    }
+    throw new NotSupportedException("'$name' is not implemented.");
+  }
+
+  public function __construct($decorator = null) {
+    $decorator = $decorator ?: new \common\components\UserTrim($this);
+    $this->decorate($decorator);
+  }
+
+  public function decorate($decorator) {
+    $this->decorator = $decorator;
+  }
+
   public function behaviors()
   {
     return [
@@ -237,17 +256,6 @@ class User extends ActiveRecord implements IdentityInterface
   public function removePasswordResetToken()
   {
     $this->password_reset_token = null;
-  }
-
-  public function isPartnerEnabled() {
-    if((is_integer($this->email_threshold)
-       && $this->email_threshold >= 0)
-         && ($this->partner_email1
-           || $this->partner_email2
-           || $this->partner_email3)) {
-      return true;
-    }
-    return false;
   }
 
   public function sendEmailReport($date) {
