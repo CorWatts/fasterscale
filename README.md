@@ -59,7 +59,9 @@ To generate code coverage, add the appropriate flags:
 This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.
 
 ## License
-This application is under the MIT license. See [LICENSE.md](https://github.com/CorWatts/fasterscale/blob/master/LICENSE.md) for details.
+This application is under the BSD-3 license. See [LICENSE.md](https://github.com/CorWatts/fasterscale/blob/master/LICENSE.md) for details.
+
+The _FASTER Relapse Awareness Scale_ is copyrighted by Michael Dye and Patricia Fancher. We have been granted permission to use it.
 
 ## Roadmap
 #### Pressing needs
@@ -67,6 +69,6 @@ This application is under the MIT license. See [LICENSE.md](https://github.com/C
 * the UI needs tons of work. Pretty darn ugly right now in [issue #43](https://github.com/CorWatts/fasterscale/issues/43)
 * ~~Add ability to delete your account detailed in [issue #12](https://github.com/CorWatts/fasterscale/issues/12)~~
 
-#### 10000" view
+#### 10000' view
 * MOBILE APP
 * Move away from bootstrap (to material design?) in [issue #43](https://github.com/CorWatts/fasterscale/issues/43)
