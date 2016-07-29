@@ -76,6 +76,7 @@ $imgRef = $message->embedContent($chart_content, [
                                                          </tr>
                                                       </tbody>
                                                    </table>
+                                                   <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left"><strong>Note: The scoring formula has been updated. <a style="color:#2199e8;" href="<?=Url::to(['site/index'], true)?>#new_check_in_score_formula">Please read here</a>.</strong></p>
                                                    <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">Hello there! <?=$email?> has set you as one of their report recipients. These reports are sent out when <?=$email?> scores above <strong><?= Html::encode($user->email_threshold) ?></strong> in their check-in. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</p>
                                                 </th>
                                                 <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
@@ -107,7 +108,7 @@ $imgRef = $message->embedContent($chart_content, [
                                           <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
                                              <tr style="padding:0;text-align:left;vertical-align:top">
                                                 <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
-                                                   <h2 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Lato,Helvetica,Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:24px 8px 8px 8px;text-align:left;word-wrap:normal"><?=$email?>'s Responses:</h2>
+                                                   <h2 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Lato,Helvetica,Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:24px 8px 8px 8px;text-align:left;word-wrap:normal">Question Responses:</h2>
                                                 </th>
                                                 <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
                                              </tr>

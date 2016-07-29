@@ -8,6 +8,8 @@ return [
       'common\interfaces\UserInterface' => '\common\models\User',
       'common\interfaces\UserOptionInterface' => '\common\models\UserOption',
       'common\interfaces\QuestionInterface' => '\common\models\Question',
+      'common\interfaces\OptionInterface' => '\common\models\Option',
+      'common\interfaces\CategoryInterface' => '\common\models\Category',
       'common\interfaces\TimeInterface' => function () {
         if(Yii::$app->user->getIsGuest()) {
           return new \common\components\Time('UTC');

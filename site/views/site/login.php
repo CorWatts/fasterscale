@@ -11,9 +11,6 @@ $this->title = 'The Faster Scale App | Login';
 ?>
 <div class="site-login">
   <h1>Login</h1>
-  <p><strong>NOTE: Log in via username has now been removed. Please log in using your email address.</strong></p>
-  <p>Please fill out the following fields to login:</p>
-
   <div class="row">
     <div class="col-lg-5">
       <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>

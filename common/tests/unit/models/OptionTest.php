@@ -15,10 +15,10 @@ date_default_timezone_set('UTC');
 class OptionTest extends \Codeception\Test\Unit {
   use Specify;
 
-  public function testGetAllOptionsByCategory() {
-    $options = Option::getAllOptionsByCategory();
+  public function testGetCategories() {
+    $options = Option::getCategories();
 
-    expect('getAllOptionsByCategory should return an array of 7 categories', $this->assertEquals(count($options), 7));
+    expect('getCategories should return an array of 7 categories', $this->assertEquals(count($options), 7));
 
     foreach($options as $option) {
       expect('this option to have a "name" key', $this->assertArrayHasKey('name', $option));
