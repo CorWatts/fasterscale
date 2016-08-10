@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use yii\jui\DatePicker;
 
 $this->title = 'The Faster Scale App | FAQ';
 $this->registerMetaTag([
@@ -10,9 +9,30 @@ $this->registerMetaTag([
 ?>
 
 <div class="site-faq">
-  <h1>FAQ</h1>
+  <h1>Frequently Asked Questions</h1>
+
   <div>
-    <strong>Question?</strong>
+    <strong>Is this free?</strong>
+    <p class="indent">Answer.</p>
+  </div>
+
+  <div>
+    <strong>Do you have ads on FSA?</strong>
+    <p class="indent">Answer.</p>
+  </div>
+
+  <div>
+    <strong>What do you do with my data?</strong>
+    <p class="indent">Answer.</p>
+  </div>
+
+  <div>
+    <strong>How do I always send a partner email, regardless of score?</strong>
+    <p class="indent">Answer.</p>
+  </div>
+
+  <div>
+    <strong>How can I contribute?</strong>
     <p class="indent">Answer.</p>
   </div>
 
