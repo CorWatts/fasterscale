@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use yii\jui\DatePicker;
+use yii\helpers\Url;
 
 /**
  * @var yii\web\View $this
@@ -18,6 +18,9 @@ $this->registerJsFile('/js/site/about.js', ['depends' => [\site\assets\AppAsset:
 
     <h2>Free as in Beer AND Speech</h2>
     <p><strong>This all free.</strong> We don't change anything to use this. The code is <a href="https://github.com/CorWatts/fasterscale">freely available</a>, and if you like you can download it and run this app yourself! Your data is available to you at any time as a CSV export, available on your profile page.</p>
+
+    <h3>Questions?</h3>
+    <p>If you have a question, please take a look at our <?=Html::a("Frequently Asked Questions page", Url::to(['site/faq']))?>.
 
     <h2>The Code</h2>
     <p>If you're interested in peeking beneath the hood, or maybe even helping me with some code contributions, you can find the repo at <a href='https://github.com/CorWatts/fasterscale'>Github</a>.</p>

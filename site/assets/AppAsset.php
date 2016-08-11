@@ -15,11 +15,14 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $sourcePath = '@assets';
+    //public $basePath = '@webroot';
+    //public $baseUrl = '@web';
+
     public $css = [
-        'css/site.css',
+        'css/app.scss',
     ];
+
     public $depends = [
         'yii\web\YiiAsset',
         'yii\web\JqueryAsset',

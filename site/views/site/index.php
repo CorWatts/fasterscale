@@ -1,4 +1,6 @@
 <?php
+use yii\helpers\Html;
+use yii\helpers\Url;
 /**
  * @var yii\web\View $this
  */
@@ -34,6 +36,7 @@ $this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset:
 				    <h3>What is this?</h3>
             <p>Contrary to what many addicts might believe, relapse is not an event that randomly appears. Rather, there are many biological, psychological, and social changes that precede it.</p>
             <p>By using Michael Dye's popular and proven relapse prevention tool "The Faster Scale", a person can train themselves to notice these "warning signs" before relapse occurs and take evasive action. Log the emotions you are experiencing in order to see how vulnerable to temptation you are in the moment. Do a check-in daily to see the progress of your emotions over time.</p>
+            <p>Any more questions? Please take a look at <?=Html::a("FAQ page", Url::to(['site/faq']))?>.</p>
 					</div>
 				</div>
 			</div>

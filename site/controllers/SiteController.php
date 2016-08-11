@@ -33,7 +33,7 @@ class SiteController extends Controller
         'class' => AccessControl::className(),
         'rules' => [
           [
-            'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'captcha', 'contact'],
+            'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'captcha', 'contact', 'faq'],
             'allow' => true,
           ],
           [
@@ -122,6 +122,11 @@ class SiteController extends Controller
   public function actionAbout()
   {
     return $this->render('about');
+  }
+
+  public function actionFaq()
+  {
+    return $this->render('faq');
   }
 
   public function actionWelcome()
