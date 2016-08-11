@@ -393,18 +393,11 @@ ORDER  BY l.date DESC;
   }
 
   public function sendDeleteNotificationEmail() {
-    Yii::$app->mailer->compose('userDeleteNotification', [ 'user' => $this ])
-      ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-      ->setReplyTo($this->email)
-      ->setSubject($this->username." has delete their The Faster Scale App account")
-      ->setTo($this->email)
-      ->send();
-
     if($this->isPartnerEnabled())
       return false; // they don't have their partner emails set
 
     $messages = [];
-    foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
+    foreach([$this->email, $this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('partnerDeleteNotification', [
           'user' => $this,

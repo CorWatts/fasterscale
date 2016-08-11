@@ -27,7 +27,17 @@ class CheckinForm extends Model
   {
     return [
       // username and password are both required
-      [['options1', 'options2', 'options3', 'options4', 'options5', 'options6', 'options7'], 'validateOptions'],
+      [
+        [
+          'options1',
+          'options2',
+          'options3',
+          'options4',
+          'options5',
+          'options6',
+          'options7'
+        ],
+        'validateOptions'],
     ];
   }
 
@@ -47,18 +57,29 @@ class CheckinForm extends Model
   {
     if (!$this->hasErrors()) {
       foreach($this->$attribute as $option) {
-        if(!is_numeric($option))
+        if(!is_numeric($option)) {
           $this->addError($attribute, 'One of your options is not an integer!');
+        }
       }
     }
   }
 
+  public function compileOptions() {
+    $options = array_merge((array)$this->options1,
+                           (array)$this->options2,
+                           (array)$this->options3,
+                           (array)$this->options4,
+                           (array)$this->options5,
+                           (array)$this->options6,
+                           (array)$this->options7);
+
+    return array_filter($options); // strip out false values
+  }
+
   public function save() {
     if(empty($this->compiled_options)) {
-      $options = array_merge((array)$this->options1, (array)$this->options2, (array)$this->options3, (array)$this->options4, (array)$this->options5, (array)$this->options6, (array)$this->options7);
-      $this->compiled_options = array_filter($options); // strip out false values
+      $this->commpiled_options = $this->compileOptions();
     }
-
 
     $rows = [];
     foreach($this->compiled_options as $option_id) {
@@ -70,6 +91,13 @@ class CheckinForm extends Model
       $rows[] = $temp;
     }
 
-    Yii::$app->db->createCommand()->batchInsert(UserOption::tableName(), ['user_id', 'option_id', 'date'], $rows)->execute();
+    Yii::$app
+      ->db
+      ->createCommand()
+      ->batchInsert(
+        UserOption::tableName(),
+        ['user_id', 'option_id', 'date'],
+        $rows
+      )->execute();
   }
 }

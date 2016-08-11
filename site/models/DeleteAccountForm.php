@@ -36,8 +36,16 @@ class DeleteAccountForm extends Model
   public function deleteAccount()
   {
     if ($this->validate() && Yii::$app->user->identity->validatePassword($this->password)) {
-      Yii::$app->user->identity->sendDeleteNotificationEmail();
-      Yii::$app->user->identity->delete();
+      Yii::$app
+        ->user
+        ->identity
+        ->sendDeleteNotificationEmail();
+
+      Yii::$app
+        ->user
+        ->identity
+        ->delete();
+
       return true;
     }
 

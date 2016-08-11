@@ -28,7 +28,14 @@ class EditProfileForm extends Model
   {
     return [
       ['username', 'filter', 'filter' => 'trim'],
-      ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.', 'filter' => "id <> ".Yii::$app->user->id],
+      [
+        'username',
+        'unique',
+        'targetClass' => '\common\models\User',
+        'message' => 'This
+        username has already been taken.',
+        'filter' => "id <> ".Yii::$app->user->id
+      ],
       ['username', 'string', 'min' => 2, 'max' => 255],
       ['username', 'required'],
 
