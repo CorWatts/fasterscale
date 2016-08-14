@@ -1,6 +1,9 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+$graph = \common\models\UserOption::generateScoresGraph();
+//var_dump( $graph);
+//exit();
 /**
  * @var yii\web\View $this
  */
@@ -13,8 +16,7 @@ $this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset:
 ?>
 <div class="site-index">
 	<div class="jumbotron">
-		<h1>The Faster Scale App</h1>
-		<p class="lead">Learn to be aware of your emotional state to see temptation coming before it hits.</p>
+  <img src="data:image/png;base64,<?=$graph?>"></img>
 	</div>
 
 	<div class="body-content">

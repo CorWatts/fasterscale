@@ -4,9 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5d7c64ba7771a527241dbf4f8e60a465",
-    "content-hash": "4418c7284f0f34cf58342ef6c441f3b0",
+    "hash": "45f885ccb0ba4504b251aefc45427c33",
+    "content-hash": "0a53c3b2077ad3f98b18257ea60dc087",
     "packages": [
+        {
+            "name": "amenadiel/jpgraph",
+            "version": "3.6.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HuasoFoundries/jpgraph.git",
+                "reference": "d7c76bc0ecdcdc41affb41db75a797ac9400811e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HuasoFoundries/jpgraph/zipball/d7c76bc0ecdcdc41affb41db75a797ac9400811e",
+                "reference": "d7c76bc0ecdcdc41affb41db75a797ac9400811e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amenadiel\\JpGraph\\": "src/",
+                    "Amenadiel\\JpGraph\\Graph\\": "src/graph",
+                    "Amenadiel\\JpGraph\\Image\\": "src/image",
+                    "Amenadiel\\JpGraph\\Plot\\": "src/plot",
+                    "Amenadiel\\JpGraph\\Text\\": "src/text",
+                    "Amenadiel\\JpGraph\\Themes\\": "src/themes",
+                    "Amenadiel\\JpGraph\\Util\\": "src/util"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "QPL 1.0"
+            ],
+            "description": "jpGraph, library to make graphs and charts",
+            "homepage": "http://jpgraph.net/",
+            "keywords": [
+                "chart",
+                "data",
+                "graph",
+                "jpgraph",
+                "pie"
+            ],
+            "time": "2016-06-10 13:13:54"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.3.5",

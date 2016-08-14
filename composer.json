@@ -18,7 +18,8 @@
     "goat1000/svggraph": "^2.20",
     "league/csv": "8.0",
     "spacedealer/yii2-loggly": "*",
-    "bower-asset/chartjs": "^2.1"
+    "bower-asset/chartjs": "^2.1",
+    "amenadiel/jpgraph": "^3.6"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "*",
