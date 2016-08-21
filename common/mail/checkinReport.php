@@ -2,921 +2,235 @@
 use yii\helpers\Html;
 use common\models\UserOption;
 
-/**
- * @var yii\web\View $this
- * @var common\models\User $user
- */
-
+$username = Html::encode($user->username);
+$date = str_replace('-', '', $date);
+$imgRef = $message->embedContent($chartContent, [
+  'fileName'       => "$username-scores-$date.png",
+  'contentType'    => 'image/png',
+  'setDisposition' => 'inline'
+]);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>The Faster Scale App -- Email Report</title>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-    <style>
-/**********************************************
-* Ink v1.0.5 - Copyright 2013 ZURB Inc        *
-**********************************************/
-
-/* Client-specific Styles & Reset */
-
-#outlook a { 
-  padding:0; 
-} 
-
-body{ 
-  width:100% !important; 
-  min-width: 100%;
-  -webkit-text-size-adjust:100%; 
-  -ms-text-size-adjust:100%; 
-  margin:0; 
-  padding:0;
-}
-
-.ExternalClass { 
-  width:100%;
-} 
-
-.ExternalClass, 
-.ExternalClass p, 
-.ExternalClass span, 
-.ExternalClass font, 
-.ExternalClass td, 
-.ExternalClass div { 
-  line-height: 100%; 
-} 
-
-#backgroundTable { 
-  margin:0; 
-  padding:0; 
-  width:100% !important; 
-  line-height: 100% !important; 
-}
-
-img { 
-  outline:none; 
-  text-decoration:none; 
-  -ms-interpolation-mode: bicubic;
-  width: auto;
-  max-width: 100%; 
-  float: left; 
-  clear: both; 
-  display: block;
-}
-
-center {
-  width: 100%;
-  min-width: 580px;
-}
-
-a img { 
-  border: none;
-}
-
-p {
-  margin: 0 0 0 10px;
-}
-
-table {
-  border-spacing: 0;
-  border-collapse: collapse;
-}
-
-td { 
-  word-break: break-word;
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  hyphens: auto;
-  border-collapse: collapse !important; 
-}
-
-table, tr, td {
-  padding: 0;
-  vertical-align: top;
-  text-align: left;
-}
-
-hr {
-  color: #d9d9d9; 
-  background-color: #d9d9d9; 
-  height: 1px; 
-  border: none;
-}
-
-/* Responsive Grid */
-
-table.body {
-  height: 100%;
-  width: 100%;
-}
-
-table.container {
-  width: 580px;
-  margin: 0 auto;
-  text-align: inherit;
-}
-
-table.row { 
-  padding: 0px; 
-  width: 100%;
-  position: relative;
-}
-
-table.container table.row {
-  display: block;
-}
-
-td.wrapper {
-  padding: 10px 20px 0px 0px;
-  position: relative;
-}
-
-table.columns,
-table.column {
-  margin: 0 auto;
-}
-
-table.columns td,
-table.column td {
-  padding: 0px 0px 10px; 
-}
-
-table.columns td.sub-columns,
-table.column td.sub-columns,
-table.columns td.sub-column,
-table.column td.sub-column {
-  padding-right: 10px;
-}
-
-td.sub-column, td.sub-columns {
-  min-width: 0px;
-}
-
-table.row td.last,
-table.container td.last {
-  padding-right: 0px;
-}
-
-table.one { width: 30px; }
-table.two { width: 80px; }
-table.three { width: 130px; }
-table.four { width: 180px; }
-table.five { width: 230px; }
-table.six { width: 280px; }
-table.seven { width: 330px; }
-table.eight { width: 380px; }
-table.nine { width: 430px; }
-table.ten { width: 480px; }
-table.eleven { width: 530px; }
-table.twelve { width: 580px; }
-
-table.one center { min-width: 30px; }
-table.two center { min-width: 80px; }
-table.three center { min-width: 130px; }
-table.four center { min-width: 180px; }
-table.five center { min-width: 230px; }
-table.six center { min-width: 280px; }
-table.seven center { min-width: 330px; }
-table.eight center { min-width: 380px; }
-table.nine center { min-width: 430px; }
-table.ten center { min-width: 480px; }
-table.eleven center { min-width: 530px; }
-table.twelve center { min-width: 580px; }
-
-table.one .panel center { min-width: 10px; }
-table.two .panel center { min-width: 60px; }
-table.three .panel center { min-width: 110px; }
-table.four .panel center { min-width: 160px; }
-table.five .panel center { min-width: 210px; }
-table.six .panel center { min-width: 260px; }
-table.seven .panel center { min-width: 310px; }
-table.eight .panel center { min-width: 360px; }
-table.nine .panel center { min-width: 410px; }
-table.ten .panel center { min-width: 460px; }
-table.eleven .panel center { min-width: 510px; }
-table.twelve .panel center { min-width: 560px; }
-
-.body .columns td.one,
-.body .column td.one { width: 8.333333%; }
-.body .columns td.two,
-.body .column td.two { width: 16.666666%; }
-.body .columns td.three,
-.body .column td.three { width: 25%; }
-.body .columns td.four,
-.body .column td.four { width: 33.333333%; }
-.body .columns td.five,
-.body .column td.five { width: 41.666666%; }
-.body .columns td.six,
-.body .column td.six { width: 50%; }
-.body .columns td.seven,
-.body .column td.seven { width: 58.333333%; }
-.body .columns td.eight,
-.body .column td.eight { width: 66.666666%; }
-.body .columns td.nine,
-.body .column td.nine { width: 75%; }
-.body .columns td.ten,
-.body .column td.ten { width: 83.333333%; }
-.body .columns td.eleven,
-.body .column td.eleven { width: 91.666666%; }
-.body .columns td.twelve,
-.body .column td.twelve { width: 100%; }
-
-td.offset-by-one { padding-left: 50px; }
-td.offset-by-two { padding-left: 100px; }
-td.offset-by-three { padding-left: 150px; }
-td.offset-by-four { padding-left: 200px; }
-td.offset-by-five { padding-left: 250px; }
-td.offset-by-six { padding-left: 300px; }
-td.offset-by-seven { padding-left: 350px; }
-td.offset-by-eight { padding-left: 400px; }
-td.offset-by-nine { padding-left: 450px; }
-td.offset-by-ten { padding-left: 500px; }
-td.offset-by-eleven { padding-left: 550px; }
-
-td.expander {
-  visibility: hidden;
-  width: 0px;
-  padding: 0 !important;
-}
-
-table.columns .text-pad,
-table.column .text-pad {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-table.columns .left-text-pad,
-table.columns .text-pad-left,
-table.column .left-text-pad,
-table.column .text-pad-left {
-  padding-left: 10px;
-}
-
-table.columns .right-text-pad,
-table.columns .text-pad-right,
-table.column .right-text-pad,
-table.column .text-pad-right {
-  padding-right: 10px;
-}
-
-/* Block Grid */
-
-.block-grid {
-  width: 100%;
-  max-width: 580px;
-}
-
-.block-grid td {
-  display: inline-block;
-  padding:10px;
-}
-
-.two-up td {
-  width:270px;
-}
-
-.three-up td {
-  width:173px;
-}
-
-.four-up td {
-  width:125px;
-}
-
-.five-up td {
-  width:96px;
-}
-
-.six-up td {
-  width:76px;
-}
-
-.seven-up td {
-  width:62px;
-}
-
-.eight-up td {
-  width:52px;
-}
-
-/* Alignment & Visibility Classes */
-
-table.center, td.center {
-  text-align: center;
-}
-
-h1.center,
-h2.center,
-h3.center,
-h4.center,
-h5.center,
-h6.center {
-  text-align: center;
-}
-
-span.center {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
-img.center {
-  margin: 0 auto;
-  float: none;
-}
-
-.show-for-small,
-.hide-for-desktop {
-  display: none;
-}
-
-/* Typography */
-
-body, table.body, h1, h2, h3, h4, h5, h6, p, td { 
-  color: #222222;
-  font-family: "Helvetica", "Arial", sans-serif; 
-  font-weight: normal; 
-  padding:0; 
-  margin: 0;
-  text-align: left; 
-  line-height: 1.3;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  word-break: normal;
-}
-
-h1 {font-size: 40px;}
-h2 {font-size: 36px;}
-h3 {font-size: 32px;}
-h4 {font-size: 28px;}
-h5 {font-size: 24px;}
-h6 {font-size: 20px;}
-body, table.body, p, td {font-size: 14px;line-height:19px;}
-
-p.lead, p.lede, p.leed {
-  font-size: 18px;
-  line-height:21px;
-}
-
-p { 
-  margin-bottom: 10px;
-}
-
-small {
-  font-size: 10px;
-}
-
-a {
-  color: #2ba6cb; 
-  text-decoration: none;
-}
-
-a:hover { 
-  color: #2795b6 !important;
-}
-
-a:active { 
-  color: #2795b6 !important;
-}
-
-a:visited { 
-  color: #2ba6cb !important;
-}
-
-h1 a, 
-h2 a, 
-h3 a, 
-h4 a, 
-h5 a, 
-h6 a {
-  color: #2ba6cb;
-}
-
-h1 a:active, 
-h2 a:active,  
-h3 a:active, 
-h4 a:active, 
-h5 a:active, 
-h6 a:active { 
-  color: #2ba6cb !important; 
-} 
-
-h1 a:visited, 
-h2 a:visited,  
-h3 a:visited, 
-h4 a:visited, 
-h5 a:visited, 
-h6 a:visited { 
-  color: #2ba6cb !important; 
-} 
-
-/* Panels */
-
-.panel {
-  background: #f2f2f2;
-  border: 1px solid #d9d9d9;
-  padding: 10px !important;
-}
-
-.sub-grid table {
-  width: 100%;
-}
-
-.sub-grid td.sub-columns {
-  padding-bottom: 0;
-}
-
-/* Buttons */
-
-table.button,
-table.tiny-button,
-table.small-button,
-table.medium-button,
-table.large-button {
-  width: 100%;
-  overflow: hidden;
-}
-
-table.button td,
-table.tiny-button td,
-table.small-button td,
-table.medium-button td,
-table.large-button td {
-  display: block;
-  width: auto !important;
-  text-align: center;
-  background: #2ba6cb;
-  border: 1px solid #2284a1;
-  color: #ffffff;
-  padding: 8px 0;
-}
-
-table.tiny-button td {
-  padding: 5px 0 4px;
-}
-
-table.small-button td {
-  padding: 8px 0 7px;
-}
-
-table.medium-button td {
-  padding: 12px 0 10px;
-}
-
-table.large-button td {
-  padding: 21px 0 18px;
-}
-
-table.button td a,
-table.tiny-button td a,
-table.small-button td a,
-table.medium-button td a,
-table.large-button td a {
-  font-weight: bold;
-  text-decoration: none;
-  font-family: Helvetica, Arial, sans-serif;
-  color: #ffffff;
-  font-size: 16px;
-}
-
-table.tiny-button td a {
-  font-size: 12px;
-  font-weight: normal;
-}
-
-table.small-button td a {
-  font-size: 16px;
-}
-
-table.medium-button td a {
-  font-size: 20px;
-}
-
-table.large-button td a {
-  font-size: 24px;
-}
-
-table.button:hover td,
-table.button:visited td,
-table.button:active td {
-  background: #2795b6 !important;
-}
-
-table.button:hover td a,
-table.button:visited td a,
-table.button:active td a {
-  color: #fff !important;
-}
-
-table.button:hover td,
-table.tiny-button:hover td,
-table.small-button:hover td,
-table.medium-button:hover td,
-table.large-button:hover td {
-  background: #2795b6 !important;
-}
-
-table.button:hover td a,
-table.button:active td a,
-table.button td a:visited,
-table.tiny-button:hover td a,
-table.tiny-button:active td a,
-table.tiny-button td a:visited,
-table.small-button:hover td a,
-table.small-button:active td a,
-table.small-button td a:visited,
-table.medium-button:hover td a,
-table.medium-button:active td a,
-table.medium-button td a:visited,
-table.large-button:hover td a,
-table.large-button:active td a,
-table.large-button td a:visited {
-  color: #ffffff !important; 
-}
-
-table.secondary td {
-  background: #e9e9e9;
-  border-color: #d0d0d0;
-  color: #555;
-}
-
-table.secondary td a {
-  color: #555;
-}
-
-table.secondary:hover td {
-  background: #d0d0d0 !important;
-  color: #555;
-}
-
-table.secondary:hover td a,
-table.secondary td a:visited,
-table.secondary:active td a {
-  color: #555 !important;
-}
-
-table.success td {
-  background: #5da423;
-  border-color: #457a1a;
-}
-
-table.success:hover td {
-  background: #457a1a !important;
-}
-
-table.alert td {
-  background: #c60f13;
-  border-color: #970b0e;
-}
-
-table.alert:hover td {
-  background: #970b0e !important;
-}
-
-table.radius td {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-
-table.round td {
-  -webkit-border-radius: 500px;
-  -moz-border-radius: 500px;
-  border-radius: 500px;
-}
-
-/* Outlook First */
-
-body.outlook p {
-  display: inline !important;
-}
-
-/*  Media Queries */
-
-@media only screen and (max-width: 600px) {
-
-  table[class="body"] img {
-    width: auto !important;
-    height: auto !important;
-  }
-
-  table[class="body"] center {
-    min-width: 0 !important;
-  }
-
-  table[class="body"] .container {
-    width: 95% !important;
-  }
-
-  table[class="body"] .row {
-    width: 100% !important;
-    display: block !important;
-  }
-
-  table[class="body"] .wrapper {
-    display: block !important;
-    padding-right: 0 !important;
-  }
-
-  table[class="body"] .columns,
-  table[class="body"] .column {
-    table-layout: fixed !important;
-    float: none !important;
-    width: 100% !important;
-    padding-right: 0px !important;
-    padding-left: 0px !important;
-    display: block !important;
-  }
-
-  table[class="body"] .wrapper.first .columns,
-  table[class="body"] .wrapper.first .column {
-    display: table !important;
-  }
-
-  table[class="body"] table.columns td,
-  table[class="body"] table.column td {
-    width: 100% !important;
-  }
-
-  table[class="body"] .columns td.one,
-  table[class="body"] .column td.one { width: 8.333333% !important; }
-  table[class="body"] .columns td.two,
-  table[class="body"] .column td.two { width: 16.666666% !important; }
-  table[class="body"] .columns td.three,
-  table[class="body"] .column td.three { width: 25% !important; }
-  table[class="body"] .columns td.four,
-  table[class="body"] .column td.four { width: 33.333333% !important; }
-  table[class="body"] .columns td.five,
-  table[class="body"] .column td.five { width: 41.666666% !important; }
-  table[class="body"] .columns td.six,
-  table[class="body"] .column td.six { width: 50% !important; }
-  table[class="body"] .columns td.seven,
-  table[class="body"] .column td.seven { width: 58.333333% !important; }
-  table[class="body"] .columns td.eight,
-  table[class="body"] .column td.eight { width: 66.666666% !important; }
-  table[class="body"] .columns td.nine,
-  table[class="body"] .column td.nine { width: 75% !important; }
-  table[class="body"] .columns td.ten,
-  table[class="body"] .column td.ten { width: 83.333333% !important; }
-  table[class="body"] .columns td.eleven,
-  table[class="body"] .column td.eleven { width: 91.666666% !important; }
-  table[class="body"] .columns td.twelve,
-  table[class="body"] .column td.twelve { width: 100% !important; }
-
-  table[class="body"] td.offset-by-one,
-  table[class="body"] td.offset-by-two,
-  table[class="body"] td.offset-by-three,
-  table[class="body"] td.offset-by-four,
-  table[class="body"] td.offset-by-five,
-  table[class="body"] td.offset-by-six,
-  table[class="body"] td.offset-by-seven,
-  table[class="body"] td.offset-by-eight,
-  table[class="body"] td.offset-by-nine,
-  table[class="body"] td.offset-by-ten,
-  table[class="body"] td.offset-by-eleven {
-    padding-left: 0 !important;
-  }
-
-  table[class="body"] table.columns td.expander {
-    width: 1px !important;
-  }
-
-  table[class="body"] .right-text-pad,
-  table[class="body"] .text-pad-right {
-    padding-left: 10px !important;
-  }
-
-  table[class="body"] .left-text-pad,
-  table[class="body"] .text-pad-left {
-    padding-right: 10px !important;
-  }
-
-  table[class="body"] .hide-for-small,
-  table[class="body"] .show-for-desktop {
-    display: none !important;
-  }
-
-  table[class="body"] .show-for-small,
-  table[class="body"] .hide-for-desktop {
-    display: inherit !important;
-  }
-}
-
-  </style>
-  <style>
-
-    table.facebook td {
-      background: #3b5998;
-      border-color: #2d4473;
-    }
-
-    table.facebook:hover td {
-      background: #2d4473 !important;
-    }
-
-    table.twitter td {
-      background: #00acee;
-      border-color: #0087bb;
-    }
-
-    table.twitter:hover td {
-      background: #0087bb !important;
-    }
-
-    table.google-plus td {
-      background-color: #DB4A39;
-      border-color: #CC0000;
-    }
-
-    table.google-plus:hover td {
-      background: #CC0000 !important;
-    }
-
-    .template-label {
-      color: #ffffff;
-      font-weight: bold;
-      font-size: 11px;
-    }
-
-    .callout .panel {
-      background: #ECF8FF;
-      border-color: #b9e5ff;
-    }
-
-    .header {
-      background: #999999;
-    }
-
-    .footer .wrapper {
-      background: #ebebeb;
-    }
-
-    .footer h5 {
-      padding-bottom: 10px;
-    }
-
-    table.columns .text-pad {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-
-    table.columns .left-text-pad {
-      padding-left: 10px;
-    }
-
-    table.columns .right-text-pad {
-      padding-right: 10px;
-    }
-
-    @media only screen and (max-width: 600px) {
-
-      table[class="body"] .right-text-pad {
-        padding-left: 10px !important;
-      }
-
-      table[class="body"] .left-text-pad {
-        padding-right: 10px !important;
-      }
-    }
-
-  </style>
-</head>
-<body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;text-align: left;line-height: 19px;font-size: 14px;width: 100% !important;">
-    <table class="body" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;height: 100%;width: 100%;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;">
-        <tr style="padding: 0;vertical-align: top;text-align: left;">
-            <td class="center" align="center" valign="top" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: center;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-        <center style="width: 100%;min-width: 580px;">
-
-
-          <table class="row header" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;background: #999999;width: 100%;position: relative;">
-            <tr style="padding: 0;vertical-align: top;text-align: left;">
-              <td class="center" align="center" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: center;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                <center style="width: 100%;min-width: 580px;">
-
-                  <table class="container" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: inherit;width: 580px;margin: 0 auto;">
-                    <tr style="padding: 0;vertical-align: top;text-align: left;">
-                      <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
-
-                        <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 580px;">
-                          <tr style="padding: 0;vertical-align: top;text-align: left;">
-
-                            <td class="six sub-columns" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;min-width: 0px;padding-right: 10px;width: 50%;border-collapse: collapse !important;">
-                              <h1 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 40px;">The Faster Scale App</h1>
-                            </td>
-                            <td class="six sub-columns last" align="right" style="text-align: right;vertical-align: middle;word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;min-width: 0px;padding-right: 0px;width: 50%;border-collapse: collapse !important;">
-                              <span class="template-label" style="color: #ffffff;font-weight: bold;font-size: 11px;">The Faster Scale App</span>
-                            </td>
-                            <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
-
-                          </tr>
-                        </table>
-
-                      </td>
-                    </tr>
-                  </table>
-
-                </center>
-              </td>
-            </tr>
-          </table>
-          <br>
-
-          <table class="container" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: inherit;width: 580px;margin: 0 auto;">
-            <tr style="padding: 0;vertical-align: top;text-align: left;">
-              <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-
-                <!-- content start -->
-                <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;display: block;">
-                  <tr style="padding: 0;vertical-align: top;text-align: left;">
-                    <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
-                      <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 580px;">
-                        <tr style="padding: 0;vertical-align: top;text-align: left;">
-                          <td class="panel" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;background: #f2f2f2;border: 1px solid #d9d9d9;border-collapse: collapse !important;">
-                            <?= UserOption::generateScoresGraph() ?>
-                          </td>
-                          <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-                <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;display: block;">
-                  <tr style="padding: 0;vertical-align: top;text-align: left;">
-                    <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
-                      <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 580px;">
-                        <tr style="padding: 0;vertical-align: top;text-align: left;">
-                          <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                            <p class="lead" style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 21px;font-size: 18px;">Hello there! <?= Html::encode($user->username) ?> has set you as one of their report recipients. These reports are sent out when <?= Html::encode($user->username) ?> scores above <?= Html::encode($user->email_threshold) ?> in their checkin. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</p>
-                          </td>
-                          <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-                <h3 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 32px;">Questions:</h3>
-<?php 
-if($questions)  {
-  foreach($questions as $option_id => $option_questions) { ?>
-                      <h5 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 24px;"><?= $option_questions['question']['title'] ?></h5>
-                      <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;display: block;">
-                        <tr style="padding: 0;vertical-align: top;text-align: left;">
-                          <?php foreach($option_questions['answers'] as $key => $question) {  ?>
-                          <td class="wrapper<?php if($key === 2) { echo " last"; } ?>" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                            <table class="four columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 180px;">
-                              <tr style="padding: 0;vertical-align: top;text-align: left;">
-                                <td style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                                  <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><b><?= $question['title'] ?></b></p>
-                                  <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><?= $question['answer'] ?></p>
-                                </td>
-                                <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
+    <title>Faster Scale App Report</title>
+  </head>
+  <body style="-moz-box-sizing:border-box;-ms-text-size-adjust:100%;-webkit-box-sizing:border-box;-webkit-text-size-adjust:100%;Margin:0;box-sizing:border-box;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;min-width:100%;padding:0;text-align:left;width:100%!important">
+    <style>@media only screen{html{min-height:100%;background:#CCC}}@media only screen and (max-width:596px){.small-float-center{margin:0 auto!important;float:none!important;text-align:center!important}.small-text-center{text-align:center!important}.small-text-left{text-align:left!important}.small-text-right{text-align:right!important}}@media only screen and (max-width:596px){.hide-for-large{display:block!important;width:auto!important;overflow:visible!important;max-height:none!important;font-size:inherit!important;line-height:inherit!important}}@media only screen and (max-width:596px){table.body table.container .hide-for-large,table.body table.container .row.hide-for-large{display:table!important;width:100%!important}}@media only screen and (max-width:596px){table.body table.container .callout-inner.hide-for-large{display:table-cell!important;width:100%!important}}@media only screen and (max-width:596px){table.body table.container .show-for-large{display:none!important;width:0;mso-hide:all;overflow:hidden}}@media only screen and (max-width:596px){table.body img{width:auto;height:auto}table.body center{min-width:0!important}table.body .container{width:95%!important}table.body .column,table.body .columns{height:auto!important;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;padding-left:16px!important;padding-right:16px!important}table.body .column .column,table.body .column .columns,table.body .columns .column,table.body .columns .columns{padding-left:0!important;padding-right:0!important}table.body .collapse .column,table.body .collapse .columns{padding-left:0!important;padding-right:0!important}td.small-1,th.small-1{display:inline-block!important;width:8.33333%!important}td.small-2,th.small-2{display:inline-block!important;width:16.66667%!important}td.small-3,th.small-3{display:inline-block!important;width:25%!important}td.small-4,th.small-4{display:inline-block!important;width:33.33333%!important}td.small-5,th.small-5{display:inline-block!important;width:41.66667%!important}td.small-6,th.small-6{display:inline-block!important;width:50%!important}td.small-7,th.small-7{display:inline-block!important;width:58.33333%!important}td.small-8,th.small-8{display:inline-block!important;width:66.66667%!important}td.small-9,th.small-9{display:inline-block!important;width:75%!important}td.small-10,th.small-10{display:inline-block!important;width:83.33333%!important}td.small-11,th.small-11{display:inline-block!important;width:91.66667%!important}td.small-12,th.small-12{display:inline-block!important;width:100%!important}.column td.small-12,.column th.small-12,.columns td.small-12,.columns th.small-12{display:block!important;width:100%!important}table.body td.small-offset-1,table.body th.small-offset-1{margin-left:8.33333%!important;Margin-left:8.33333%!important}table.body td.small-offset-2,table.body th.small-offset-2{margin-left:16.66667%!important;Margin-left:16.66667%!important}table.body td.small-offset-3,table.body th.small-offset-3{margin-left:25%!important;Margin-left:25%!important}table.body td.small-offset-4,table.body th.small-offset-4{margin-left:33.33333%!important;Margin-left:33.33333%!important}table.body td.small-offset-5,table.body th.small-offset-5{margin-left:41.66667%!important;Margin-left:41.66667%!important}table.body td.small-offset-6,table.body th.small-offset-6{margin-left:50%!important;Margin-left:50%!important}table.body td.small-offset-7,table.body th.small-offset-7{margin-left:58.33333%!important;Margin-left:58.33333%!important}table.body td.small-offset-8,table.body th.small-offset-8{margin-left:66.66667%!important;Margin-left:66.66667%!important}table.body td.small-offset-9,table.body th.small-offset-9{margin-left:75%!important;Margin-left:75%!important}table.body td.small-offset-10,table.body th.small-offset-10{margin-left:83.33333%!important;Margin-left:83.33333%!important}table.body td.small-offset-11,table.body th.small-offset-11{margin-left:91.66667%!important;Margin-left:91.66667%!important}table.body table.columns td.expander,table.body table.columns th.expander{display:none!important}table.body .right-text-pad,table.body .text-pad-right{padding-left:10px!important}table.body .left-text-pad,table.body .text-pad-left{padding-right:10px!important}table.menu{width:100%!important}table.menu td,table.menu th{width:auto!important;display:inline-block!important}table.menu.small-vertical td,table.menu.small-vertical th,table.menu.vertical td,table.menu.vertical th{display:block!important}table.menu[align=center]{width:auto!important}table.button.small-expand,table.button.small-expanded{width:100%!important}table.button.small-expand table,table.button.small-expanded table{width:100%}table.button.small-expand table a,table.button.small-expanded table a{text-align:center!important;width:100%!important;padding-left:0!important;padding-right:0!important}table.button.small-expand center,table.button.small-expanded center{min-width:0}}</style>
+    <span class="preheader" style="color:#CCC;display:none!important;font-size:1px;line-height:1px;max-height:0;max-width:0;mso-hide:all!important;opacity:0;overflow:hidden;visibility:hidden"></span>
+    <table class="body" style="Margin:0;background:#CCC;border-collapse:collapse;border-spacing:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;height:100%;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;width:100%">
+      <tr style="padding:0;text-align:left;vertical-align:top">
+        <td class="center" align="center" valign="top" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+          <center data-parsed="" style="min-width:580px;width:100%">
+            <table class="spacer float-center" style="Margin:0 auto;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:100%">
+              <tbody>
+                <tr style="padding:0;text-align:left;vertical-align:top">
+                  <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">&#xA0;</td>
+                </tr>
+              </tbody>
+            </table>
+            <table align="center" class="container header float-center" style="Margin:0 auto;background:#fefefe;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:580px">
+              <tbody>
+                <tr style="padding:0;text-align:left;vertical-align:top">
+                  <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                      <tbody>
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                          <th class="small-12 large-12 columns first last" valign="middle" style="Margin:0 auto;background-color:#1FC28F;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                            <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                              <tr style="padding:0;text-align:left;vertical-align:top">
+                                <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                  <h1 class="text-center" style="Margin:0;Margin-bottom:10px;color:#fefefe;font-family:Lato,Helvetica,Arial,sans-serif;font-size:34px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:16px;text-align:center;text-transform:uppercase;word-wrap:normal">Faster Scale App Report</h1>
+                                </th>
+                                <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
                               </tr>
                             </table>
-                          </td>
-                      <?php } ?>
-                      </tr>
-                    </table>
-<?php }
-} ?>
-
-                <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;">
-                  <tr style="padding: 0;vertical-align: top;text-align: left;">
-                    <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
-                      <h3 style="color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-break: normal;font-size: 32px;">Selected Emotions:</h3>
-                        <?php foreach($user_options as $user_option) { ?>
-                          <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><b><?= $user_option['category_name'] ?></b></p>
-                          <?php foreach($user_option['options'] as $option) { ?>
-                            <p style="margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 14px;"><?= $option['name'] ?>
-<?php }
-  } ?>
-                    </p></td>
-                  </tr>
-                </table>
-
-                <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0px;vertical-align: top;text-align: left;width: 100%;position: relative;">
-                  <tr style="padding: 0;vertical-align: top;text-align: left;">
-                    <td class="wrapper last" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 10px 20px 0px 0px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;position: relative;padding-right: 0px;border-collapse: collapse !important;">
-
-                      <table class="twelve columns" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;margin: 0 auto;width: 580px;">
-                        <tr style="padding: 0;vertical-align: top;text-align: left;">
-                          <td align="center" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0px 0px 10px;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;border-collapse: collapse !important;">
-                            <center style="width: 100%;min-width: 580px;">
-                            <p style="text-align: center;margin: 0;margin-bottom: 10px;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;padding: 0;line-height: 19px;font-size: 14px;"><a href="http://fasterscaleapp.com/terms" style="color: #2ba6cb;text-decoration: none;">Terms</a> | <a href="http://fasterscaleapp.com/privacy" style="color: #2ba6cb;text-decoration: none;">Privacy</a></p>
-                            </center>
-                          </td>
-                          <td class="expander" style="word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0 !important;vertical-align: top;text-align: left;color: #222222;font-family: 'Helvetica', 'Arial', sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 14px;visibility: hidden;width: 0px;border-collapse: collapse !important;"></td>
+                          </th>
                         </tr>
-                      </table>
+                      </tbody>
+                    </table>
+                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                      <tbody>
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                          <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                            <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                              <tr style="padding:0;text-align:left;vertical-align:top">
+                                <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
 
-                    </td>
-                  </tr>
-                </table>
+                                  <center><img src="<?=$imgRef?>"></img></center>
 
-                <!-- container end below -->
-              </center></td>
-            </tr>
-          </table>
-</body>
+                                  <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:8px 32px;text-align:left">Hello there! <?=$username?> has set you as one of their report recipients. These reports are sent out when <?=$username?> scores above <strong><?= Html::encode($user->email_threshold) ?></strong> in their check-in. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</p>
+                                </th>
+                                <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
+                              </tr>
+                            </table>
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="spacer float-center" style="Margin:0 auto;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:100%">
+              <tbody>
+                <tr style="padding:0;text-align:left;vertical-align:top">
+                  <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">&#xA0;</td>
+                </tr>
+              </tbody>
+            </table>
+            <table align="center" class="container questions float-center" style="Margin:0 auto;background:#fefefe;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:580px">
+              <tbody>
+                <tr style="padding:0;text-align:left;vertical-align:top">
+                  <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                      <tbody>
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                          <th class="small-12 large-12 columns first last" valign="middle" style="Margin:0 auto;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                            <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                              <tr style="padding:0;text-align:left;vertical-align:top">
+                                <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                  <h2 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Lato,Helvetica,Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:0;text-align:left;word-wrap:normal"><?=$username?>'s Responses:</h2>
+                                </th>
+                                <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
+                              </tr>
+                            </table>
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                      <tbody>
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                          <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                            <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                              <tr style="padding:0;text-align:left;vertical-align:top">
+                                <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+<?php
+if($questions) {
+  foreach($questions as $behavior_id => $behavior_questions) {
+?>
+  <h4 style="Margin:0;Margin-bottom:10px;color:#1FC28F;font-family:Lato,Helvetica,Arial,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal"><?= $behavior_questions['question']['title'] ?></h4>
+<?php
+    foreach($behavior_questions['answers'] as $key => $question) {  ?>
+      <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:8px 32px;text-align:left"><strong><?=$question['title']?></strong> <?=$question['answer']?></p>
+<?php
+    }
+  } 
+  // don't close if yet
+?>
+                                </th>
+                                <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
+                              </tr>
+                            </table>
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="spacer float-center" style="Margin:0 auto;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:100%">
+              <tbody>
+                <tr style="padding:0;text-align:left;vertical-align:top">
+                  <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">&#xA0;</td>
+                </tr>
+              </tbody>
+            </table>
+            <table align="center" class="container behaviors float-center" style="Margin:0 auto;background:#fefefe;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:580px">
+              <tbody>
+                <tr style="padding:0;text-align:left;vertical-align:top">
+                  <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                      <tbody>
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                          <th class="small-12 large-12 columns first last" valign="middle" style="Margin:0 auto;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                            <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                              <tr style="padding:0;text-align:left;vertical-align:top">
+                                <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                  <h2 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Lato,Helvetica,Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:0;text-align:left;word-wrap:normal">Selected Emotions:</h2>
+                                </th>
+                                <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
+                              </tr>
+                            </table>
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                      <tbody>
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                          <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                            <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                              <tr style="padding:0;text-align:left;vertical-align:top">
+                                <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+
+<?php foreach($user_options as $user_option) { ?>
+                                  <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:8px 32px;text-align:left">
+                                    <strong style="color:#1FC28F"><?= $user_option['category_name'] ?></strong>
+<?php foreach($user_option['options'] as $option) { ?>
+                                    <br><?= $option['name'] ?>
+<?php
+    }
+  }
+}
+?>
+</p>
+                                </th>
+                                <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
+                              </tr>
+                            </table>
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table> <table class="spacer float-center" style="Margin:0 auto;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:100%">
+              <tbody>
+                <tr style="padding:0;text-align:left;vertical-align:top">
+                  <td height="8px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:8px;font-weight:400;hyphens:auto;line-height:8px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">&#xA0;</td>
+                </tr>
+              </tbody>
+            </table>
+            <table align="center" class="container footer float-center" style="Margin:0 auto;background:#fefefe;background-color:#CCC;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:580px">
+              <tbody>
+                <tr style="padding:0;text-align:left;vertical-align:top">
+                  <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                      <tbody>
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                          <th class="small-12 large-12 columns first last" valign="middle" style="Margin:0 auto;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                            <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                              <tr style="padding:0;text-align:left;vertical-align:top">
+                                <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                  <center data-parsed="" style="min-width:532px;width:100%">
+                                    <p class="text-center float-center" align="center" style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:8px 32px;text-align:center"><a href="https://fasterscaleapp.com/privacy" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:underline">Privacy</a> | <a href="https://fasterscaleapp.com/terms" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:underline">Terms</a></p>
+                                  </center>
+                                </th>
+                                <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
+                              </tr>
+                            </table>
+                          </th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </center>
+        </td>
+      </tr>
+    </table>
+    <!-- prevent Gmail on iOS font size manipulation -->
+    <div style="display:none;white-space:nowrap;font:15px courier;line-height:0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>
+  </body>
 </html>
