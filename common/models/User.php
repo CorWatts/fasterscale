@@ -279,7 +279,7 @@ class User extends ActiveRecord implements IdentityInterface
     $messages = [];
     foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
       if($email) {
-        $messages[] = Yii::$app->mailer->compose('checkinReport2', [
+        $messages[] = Yii::$app->mailer->compose('checkinReport', [
           'user' => $this,
           'categories' => $categories, 
           'options_list' => $options_list, 
