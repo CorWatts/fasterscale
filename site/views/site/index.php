@@ -2,8 +2,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 $graph = \common\models\UserOption::generateScoresGraph();
-//var_dump( $graph);
-//exit();
 /**
  * @var yii\web\View $this
  */

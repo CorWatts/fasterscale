@@ -110,8 +110,6 @@ class CheckinController extends \yii\web\Controller
         ]);
         $score = UserOption::calculateScoreByUTCRange($start, $end);
         if(!is_null($user->email_threshold) && $score > $user->email_threshold) {
-          var_dump($user->sendEmailReport(Time::getLocalDate()));
-          exit();
           Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
         } else {
           Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
@@ -136,7 +134,6 @@ class CheckinController extends \yii\web\Controller
     $past_checkin_dates = UserOption::getPastCheckinDates();
     $questions = User::getUserQuestions($date);
     $user_options = User::getUserOptions($date);
-    //var_dump($user_options); exit();
 
     $form = new CheckinForm();
     foreach($user_options as $category_id => $category_data) {
