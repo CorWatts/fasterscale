@@ -214,35 +214,40 @@ class UserOption extends \yii\db\ActiveRecord
     $values = UserOption::calculateScoresOfLastMonth();
     $scores = array_values($values);
     $dates = array_map(function($date) {
-      return (new \DateTime($date))->format('F j, Y');
+      return (new \DateTime($date))->format('M j, Y');
     }, array_keys($values));
 
-    $graph = new Graph\Graph(400, 300);
-    $graph->SetImgFormat('jpeg',60);
-    $graph->img->SetMargin(30, 30, 30, 120);
+    $graph = new Graph\Graph(800, 600);
+    //$graph->SetImgFormat('jpeg',0);
+    $graph->SetImgFormat('png');
+    //$graph->SetScale('textlin',0,100);
+    $graph->img->SetImgFormat('png');
+    $graph->img->SetMargin(60, 60, 40, 160);
     $graph->img->SetAntiAliasing();
     $graph->SetScale("textlin");
     $graph->SetShadow();
     $graph->title->Set(Yii::$app->user->identity->username . "'s Scores for the last month");
-    $graph->title->SetFont(FF_FONT1, FS_BOLD);
+    $graph->title->SetFont(FF_ARIAL, FS_BOLD, 20);
     // Use 20% "grace" to get slightly larger scale then min/max of data
-     $graph->yscale->SetGrace(20);
+    $graph->yscale->SetGrace(10); // remove when new score formula is released
     // Set the angle for the labels to 90 degrees
-     $graph->xaxis->SetLabelAngle(45);
-     $graph->xaxis->SetTickLabels($dates);
-     $p1 = new Plot\LinePlot($scores);
-     $p1->SetColor("#1FC28F");
-     $p1->SetFillColor("#53FECA");
-     $p1->mark->SetWidth(4);
-     $p1->SetCenter();
-     $graph->Add($p1);
-     $img = $graph->Stroke(_IMG_HANDLER);
+    $graph->xaxis->SetLabelAngle(45);
+    $graph->xaxis->SetTickLabels($dates);
+    $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
+    $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
+    $p1 = new Plot\LinePlot($scores);
+    $p1->SetColor("#1FC28F");
+    $p1->SetFillColor("#53FECA");
+    $p1->mark->SetWidth(8);
+    $p1->SetCenter();
+    $graph->Add($p1);
+    $img = $graph->Stroke(_IMG_HANDLER);
 
-     ob_start();
-     imagepng($img);
-     $img_data = ob_get_clean();
+    ob_start();
+    imagepng($img);
+    $img_data = ob_get_clean();
 
 
-     return $img_data;
+    return $img_data;
   }
 }

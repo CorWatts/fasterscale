@@ -15,7 +15,6 @@
     "bower-asset/jquery.inputmask": "@stable",
     "bower-asset/punycode": "@stable",
     "moment/moment": "dev-master",
-    "goat1000/svggraph": "^2.20",
     "league/csv": "8.0",
     "spacedealer/yii2-loggly": "*",
     "bower-asset/chartjs": "^2.1",
