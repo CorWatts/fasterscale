@@ -122,7 +122,7 @@ if($questions) {
 <?php
     foreach($behavior_questions['answers'] as $key => $question) {  ?>
 <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 32px 4px 32px;text-align:left">
-<?=$question['title']?></strong> <?=$question['answer']?>
+<strong><?=$question['title']?></strong> <?=$question['answer']?>
 <?php
     }
   } 
