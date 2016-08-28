@@ -157,7 +157,7 @@ if($questions) {
                <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
                 <tbody>
                  <tr style="padding:0;text-align:left;vertical-align:top">
-                  <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left"><h2 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Lato,Helvetica,Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:24px 16px 8px 16px;text-align:left;word-wrap:normal">Selected Emotions:</h2></th>
+                  <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left"><h2 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Lato,Helvetica,Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:24px 16px 8px 16px;text-align:left;word-wrap:normal">Selected Behaviors:</h2></th>
                   <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
                  </tr>
                 </tbody>
