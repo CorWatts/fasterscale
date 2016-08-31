@@ -136,7 +136,7 @@ if($questions) {
       <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left"><strong><?=$question['title']?></strong> <?=$question['answer']?></p>
 <?php
     }
-  } 
+  }
   // don't close if yet
 ?>
 
@@ -230,7 +230,11 @@ if($questions) {
                                              <tr style="padding:0;text-align:left;vertical-align:top">
                                                 <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
                                                    <center data-parsed="" style="min-width:532px;width:100%">
-                                                   <p class="text-center float-center" align="center" style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:center"><a href="<?=Url::to(['site/privacy'])?>" style="Margin:0;color:#2199e8;font-family:Lato,Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Privacy</a> | <a href="<?=Url::to(['site/terms'])?>" style="Margin:0;color:#2199e8;font-family:Lato,Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Terms</a></p>
+                                                   <p class="text-center float-center" align="center" style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:center">
+                                                     <a href="<?=Url::to(['site/privacy'], true)?>" style="Margin:0;color:#2199e8;font-family:Lato,Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Privacy</a> |
+                                                     <a href="<?=Url::to(['site/terms'], true)?>" style="Margin:0;color:#2199e8;font-family:Lato,Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Terms</a> |
+                                                     <a href="%unsubscribe_url%" style="Margin:0;color:#2199e8;font-family:Lato,Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Unsubscribe</a>
+</p>
                                                    </center>
                                                 </th>
                                                 <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
