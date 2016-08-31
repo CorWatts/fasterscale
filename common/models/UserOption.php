@@ -236,8 +236,8 @@ class UserOption extends \yii\db\ActiveRecord
     $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
     $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
     $p1 = new Plot\LinePlot($scores);
-    $p1->SetColor("#1FC28F");
-    $p1->SetFillColor("#53FECA");
+    $p1->SetColor("#37b98f");
+    $p1->SetFillColor("#92d1b5");
     $p1->mark->SetWidth(8);
     $p1->SetCenter();
     $graph->Add($p1);
