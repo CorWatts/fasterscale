@@ -135,7 +135,6 @@ class CheckinController extends \yii\web\Controller
     $past_checkin_dates = UserOption::getPastCheckinDates();
     $questions = User::getUserQuestions($date);
     $user_options = User::getUserOptions($date);
-    //var_dump($user_options); exit();
 
     $form = new CheckinForm();
     foreach($user_options as $category_id => $category_data) {

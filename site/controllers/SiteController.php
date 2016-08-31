@@ -218,7 +218,6 @@ class SiteController extends Controller
   public function actionDeleteAccount()
   {
     $model = new DeleteAccountForm();
-    //var_dump(Yii::$app->request->post()); exit();
 
     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
       if($model->deleteAccount()) {

@@ -10,7 +10,8 @@ use yii\db\Query;
 use \DateTime;
 use \DateTimeZone;
 use yii\db\Expression;
-use \SVGGraph;
+use Amenadiel\JpGraph\Graph;
+use Amenadiel\JpGraph\Plot;
 
 /**
  * This is the model class for table "user_option_link".
@@ -211,27 +212,42 @@ class UserOption extends \yii\db\ActiveRecord
 
   public static function generateScoresGraph() {
     $values = UserOption::calculateScoresOfLastMonth();
+    $scores = array_values($values);
+    $dates = array_map(function($date) {
+      return (new \DateTime($date))->format('M j, Y');
+    }, array_keys($values));
 
-    $settings = array(
-      'back_colour'       => '#fff',    'stroke_colour'      => 'blue',
-      'back_stroke_width' => 0,         'back_stroke_colour' => '#eee',
-      'axis_colour'       => '#333',    'axis_overlap'       => 2,
-      'axis_font'         => 'Georgia', 'axis_font_size'     => 10,
-      'grid_colour'       => '#666',    'label_colour'       => '#000',
-      'pad_right'         => 20,        'pad_left'           => 20,
-      'link_base'         => '/',       'link_target'        => '_top',
-      'fill_under'        => true,
-      'fill_opacity'      => 0.5,
-      'marker_size'       => 3,			'auto_fit'			 => true,
-      'marker_type'       => array('circle', 'square'),
-      'marker_colour'     => array('blue'),
-      'show_grid'         => true
-    );
+    $graph = new Graph\Graph(800, 600);
+    //$graph->SetImgFormat('jpeg',0);
+    $graph->SetImgFormat('png');
+    //$graph->SetScale('textlin',0,100);
+    $graph->img->SetImgFormat('png');
+    $graph->img->SetMargin(60, 60, 40, 160);
+    $graph->img->SetAntiAliasing();
+    $graph->SetScale("textlin");
+    $graph->SetShadow();
+    $graph->title->Set(Yii::$app->user->identity->username . "'s Scores for the last month");
+    $graph->title->SetFont(FF_ARIAL, FS_BOLD, 20);
+    // Use 20% "grace" to get slightly larger scale then min/max of data
+    $graph->yscale->SetGrace(10); // remove when new score formula is released
+    // Set the angle for the labels to 90 degrees
+    $graph->xaxis->SetLabelAngle(45);
+    $graph->xaxis->SetTickLabels($dates);
+    $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
+    $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
+    $p1 = new Plot\LinePlot($scores);
+    $p1->SetColor("#37b98f");
+    $p1->SetFillColor("#92d1b5");
+    $p1->mark->SetWidth(8);
+    $p1->SetCenter();
+    $graph->Add($p1);
+    $img = $graph->Stroke(_IMG_HANDLER);
+
+    ob_start();
+    imagepng($img);
+    $img_data = ob_get_clean();
 
 
-    $graph = new SVGGraph(600, 300, $settings);
-
-    $graph->Values($values);
-    return $graph->Fetch('LineGraph');
+    return $img_data;
   }
 }
