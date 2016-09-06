@@ -137,8 +137,9 @@ if($questions) {
 <?php
     }
   }
-  // don't close if yet
-?>
+} else { ?>
+      <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">None of the processing questions were answered.</p>
+<?php } ?>
 
                                                 </th>
                                                 <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
@@ -187,11 +188,14 @@ if($questions) {
                                              <tr style="padding:0;text-align:left;vertical-align:top">
                                                 <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
 
-<?php foreach($user_options as $user_option) { ?>
+<?php
+if($user_options) {
+  foreach($user_options as $user_option) { ?>
         <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">
           <strong style="color:#37b98f"><?= $user_option['category_name'] ?></strong>
-<?php foreach($user_option['options'] as $option) { ?>
-      <br><?= $option['name'] ?>
+<?php
+    foreach($user_option['options'] as $option) { ?>
+        <br><?= $option['name'] ?>
 <?php
     }
   }
