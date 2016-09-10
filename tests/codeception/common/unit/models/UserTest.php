@@ -129,6 +129,265 @@ public $userQuestions = [
 	],
 ];
 
+public $optionData = [
+	[
+		'id' => 820,
+		'user_id' => 2,
+		'option_id' => 7,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 7,
+			'name' => 'making eye contact',
+			'category_id' => 1,
+			'category' => [
+				'id' => 1,
+				'name' => 'Restoration',
+				'weight' => '0',
+			],
+		],
+	], [
+		'id' => 821,
+		'user_id' => 2,
+		'option_id' => 13,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 13,
+			'name' => 'less time/energy for God, meetings, and church',
+			'category_id' => 2,
+			'category' => [
+				'id' => 2,
+				'name' => 'Forgetting Priorities',
+				'weight' => '0.016',
+			],
+		],
+	], [
+		'id' => 822,
+		'user_id' => 2,
+		'option_id' => 18,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 18,
+			'name' => 'changes in goals',
+			'category_id' => 2,
+			'category' => [
+				'id' => 2,
+				'name' => 'Forgetting Priorities',
+				'weight' => '0.016',
+			],
+		],
+	], [
+		'id' => 823,
+		'user_id' => 2,
+		'option_id' => 29,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 29,
+			'name' => 'using profanity',
+			'category_id' => 3,
+			'category' => [
+				'id' => 3,
+				'name' => 'Anxiety',
+				'weight' => '0.032',
+			],
+		],
+	], [
+		'id' => 824,
+		'user_id' => 2,
+		'option_id' => 41,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 41,
+			'name' => 'co-dependent rescuing',
+			'category_id' => 3,
+			'category' => [
+				'id' => 3,
+				'name' => 'Anxiety',
+				'weight' => '0.032',
+			],
+		],
+	], [
+		'id' => 825,
+		'user_id' => 2,
+		'option_id' => 48,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 48,
+			'name' => 'workaholic',
+			'category_id' => 4,
+			'category' => [
+				'id' => 4,
+				'name' => 'Speeding Up',
+				'weight' => '0.064',
+			],
+		],
+	], [
+		'id' => 826,
+		'user_id' => 2,
+		'option_id' => 72,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 72,
+			'name' => 'black and white, all or nothing thinking',
+			'category_id' => 5,
+			'category' => [
+				'id' => 5,
+				'name' => 'Ticked Off',
+				'weight' => '0.128',
+			],
+		],
+	], [
+		'id' => 827,
+		'user_id' => 2,
+		'option_id' => 79,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 79,
+			'name' => 'blaming',
+			'category_id' => 5,
+			'category' => [
+				'id' => 5,
+				'name' => 'Ticked Off',
+				'weight' => '0.128',
+			],
+		],
+	], [
+		'id' => 828,
+		'user_id' => 2,
+		'option_id' => 89,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 89,
+			'name' => 'obsessive (stuck] thoughts',
+			'category_id' => 5,
+			'category' => [
+				'id' => 5,
+				'name' => 'Ticked Off',
+				'weight' => '0.128',
+			],
+		],
+	], [
+		'id' => 829,
+		'user_id' => 2,
+		'option_id' => 111,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 111,
+			'name' => 'seeking out old unhealthy people and places',
+			'category_id' => 6,
+			'category' => [
+				'id' => 6,
+				'name' => 'Exhausted',
+				'weight' => '0.256',
+			],
+		],
+	], [
+		'id' => 830,
+		'user_id' => 2,
+		'option_id' => 118,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 118,
+			'name' => 'not returning phone calls',
+			'category_id' => 6,
+			'category' => [
+				'id' => 6,
+				'name' => 'Exhausted',
+				'weight' => '0.256',
+			],
+		],
+	], [
+		'id' => 831,
+		'user_id' => 2,
+		'option_id' => 122,
+		'date' => '2016-09-10 19:26:04',
+		'option' => [
+			'id' => 122,
+			'name' => 'returning to the place you swore you would never go again',
+			'category_id' => 7,
+			'category' => [
+				'id' => 7,
+				'name' => 'Relapse/Moral Failure',
+				'weight' => '0.512',
+			],
+		],
+	],
+];
+
+public $userOptions = [
+	[
+		'category_name' => 'Restoration',
+		'options' => [
+			[
+				'id' => 7,
+				'name' => 'making eye contact',
+			],
+		],
+	], [
+		'category_name' => 'Forgetting Priorities',
+		'options' => [
+			[
+				'id' => 13,
+				'name' => 'less time/energy for God, meetings, and church',
+			], [
+				'id' => 18,
+				'name' => 'changes in goals',
+			],
+		],
+	], [
+		'category_name' => 'Anxiety',
+		'options' => [
+			[
+				'id' => 29,
+				'name' => 'using profanity',
+			], [
+				'id' => 41,
+				'name' => 'co-dependent rescuing',
+			],
+		],
+	], [
+		'category_name' => 'Speeding Up',
+		'options' => [
+			[
+				'id' => 48,
+				'name' => 'workaholic',
+			],
+		],
+	], [
+		'category_name' => 'Ticked Off',
+		'options' => [
+			[
+				'id' => 72,
+				'name' => 'black and white, all or nothing thinking',
+			], [
+				'id' => 79,
+				'name' => 'blaming',
+			], [
+				'id' => 89,
+				'name' => 'obsessive (stuck] thoughts',
+			],
+		],
+	], [
+		'category_name' => 'Exhausted',
+		'options' => [
+			[
+				'id' => 111,
+				'name' => 'seeking out old unhealthy people and places',
+			], [
+				'id' => 118,
+				'name' => 'not returning phone calls',
+			],
+		],
+	], [
+		'category_name' => 'Relapse/Moral Failure',
+		'options' => [
+			[
+				'id' => 122,
+				'name' => 'returning to the place you swore you would never go again',
+			],
+		],
+	],
+];
+
   public function setUp() {
     parent::setUp();
 
@@ -143,6 +402,13 @@ public $userQuestions = [
     $this->specify('getUserQuestions should function correctly', function () {
       expect('getUserQuestions should return the correct structure with expected data', $this->assertEquals(User::getUserQuestions('2016-09-10', $this->questionData), $this->userQuestions));
       expect('getUserQuestions should return empty with the empty set', $this->assertEmpty(User::getUserQuestions('2016-09-10', [])));
+    });
+  }
+
+  public function testGetUserOptions() {
+    $this->specify('getUserOptions should function correctly', function () {
+      expect('getUserOptions should return the correct structure with expected data', $this->assertEquals(User::getUserOptions('2016-09-10', $this->optionData), $this->userOptions));
+      expect('getUserOptions should return empty with the empty set', $this->assertEmpty(User::getUserOptions('2016-09-10', [])));
     });
   }
 }

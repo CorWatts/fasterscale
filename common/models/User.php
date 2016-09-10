@@ -277,7 +277,7 @@ class User extends ActiveRecord implements IdentityInterface
     $options_list = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
     $messages = [];
-    foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
+    foreach($this->getPartnerEmails() as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('checkinReport', [
           'user' => $this,
@@ -397,7 +397,7 @@ ORDER  BY l.date DESC;
       return false; // they don't have their partner emails set
 
     $messages = [];
-    foreach([$this->email, $this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
+    foreach(array_merge($this->email, $this->getPartnerEmails()) as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('partnerDeleteNotification', [
           'user' => $this,
@@ -455,14 +455,10 @@ ORDER  BY l.date DESC;
     return $question_answers;
   }
 
-  public static function getUserOptions($local_date) {
-    if(is_null($local_date))
-      $local_date = Time::getLocalDate();
-
+  public static function getOptionData($local_date) {
     list($start, $end) = Time::getUTCBookends($local_date);
-    $utc_date = Time::convertLocalToUTC($local_date);
 
-    $user_options = UserOption::find()
+    return UserOption::find()
       ->where("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
@@ -474,16 +470,44 @@ ORDER  BY l.date DESC;
     ->with('option', 'option.category')
     ->asArray()
     ->all();
+  }
 
-    if($user_options) {
-      foreach($user_options as $option) {
-        $user_options_by_category[$option['option']['category_id']]['category_name'] = $option['option']['category']['name'];
-        $user_options_by_category[$option['option']['category_id']]['options'][] = ["id" => $option['option_id'], "name"=>$option['option']['name']];
-      }
+  public static function getUserOptions($local_date = null, $options = null) {
+    if(is_null($options)) {
+      if(is_null($local_date)) $local_date = Time::getLocalDate();
+      $options = self::getOptionData($local_date);
+    }
+    if(!$options) return [];
 
-      return $user_options_by_category;
+    foreach($options as $option) {
+      $user_options_by_category[$option['option']['category_id']]['category_name'] = $option['option']['category']['name'];
+      $user_options_by_category[$option['option']['category_id']]['options'][] = ["id" => $option['option_id'], "name"=>$option['option']['name']];
     }
 
-    return [];
+
+
+    return $user_options_by_category;
   }
+
+  /* IN PROGRESS
+  public static function getUserOptions($local_date = null, $options = null) {
+    if(is_null($options)) {
+      if(is_null($local_date)) $local_date = Time::getLocalDate();
+      $options = self::getOptionData($local_date);
+    }
+    if(!$options) return [];
+
+    $opts_by_cat = [];
+    foreach($options as $option) {
+      $this_option = $opts_by_cat[$option['option']['category_id']];
+
+      $this_option['category_name'] = $option['option']['category']['name'];
+      $this_option['options'][] = [
+        "id" => $option['option_id'],
+        "name"=>$option['option']['name']];
+    }
+
+    return $opts_by_cat;
+  }
+   */
 }
