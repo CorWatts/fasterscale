@@ -412,13 +412,8 @@ ORDER  BY l.date DESC;
     return Yii::$app->mailer->sendMultiple($messages);
   }
 
-  public static function getUserQuestions($local_date) {
-    if(is_null($local_date))
-      $local_date = Time::getLocalDate();
-
+  public static function getQuestionData($local_date) {
     list($start, $end) = Time::getUTCBookends($local_date);
-
-    $utc_date = Time::convertLocalToUTC($local_date);
 
     $questions = Question::find()
       ->where("user_id=:user_id 
@@ -432,6 +427,17 @@ ORDER  BY l.date DESC;
     ->with('option')
     ->all();
 
+    return $questions;
+  }
+
+  public static function getUserQuestions($local_date = null, $questions = null) {
+    if(is_null($questions)) {
+      if(is_null($local_date)) { 
+        $local_date = Time::getLocalDate();
+      }
+      $questions  = self::getQuestionData($local_date);
+    }
+
     if($questions) {
       $organized_question_answers = [];
       foreach($questions as $question) {
@@ -441,7 +447,7 @@ ORDER  BY l.date DESC;
         ];
 
         $question_answer = [
-          "title" => Question::$QUESTIONS[$question->question],
+          "title" => $question->question_text,
           "answer" => $question->answer
         ];
 
