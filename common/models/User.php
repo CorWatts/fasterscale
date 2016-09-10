@@ -432,32 +432,27 @@ ORDER  BY l.date DESC;
 
   public static function getUserQuestions($local_date = null, $questions = null) {
     if(is_null($questions)) {
-      if(is_null($local_date)) { 
-        $local_date = Time::getLocalDate();
-      }
-      $questions  = self::getQuestionData($local_date);
+      if(is_null($local_date)) $local_date = Time::getLocalDate();
+      $questions = self::getQuestionData($local_date);
+    }
+    if(!$questions) return [];
+
+    $question_answers = [];
+    foreach($questions as $question) {
+      $option = $question->option;
+
+      $question_answers[$option->id]['question'] = [
+        "id" => $option->id,
+        "title" => $option->name
+      ];
+
+      $question_answers[$option->id]["answers"][] = [
+        "title" => $question->question_text,
+        "answer" => $question->answer
+      ];
     }
 
-    if($questions) {
-      $organized_question_answers = [];
-      foreach($questions as $question) {
-        $question_data = [
-          "id" => $question->option->id,
-          "title" => $question->option->name
-        ];
-
-        $question_answer = [
-          "title" => $question->question_text,
-          "answer" => $question->answer
-        ];
-
-        $organized_question_answers[$question->option->id]['question'] = $question_data;
-        $organized_question_answers[$question->option->id]["answers"][] = $question_answer;
-      }
-      return $organized_question_answers;
-    }
-
-    return [];
+    return $question_answers;
   }
 
   public static function getUserOptions($local_date) {

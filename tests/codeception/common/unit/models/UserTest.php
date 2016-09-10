@@ -140,8 +140,9 @@ public $userQuestions = [
   }
 
   public function testGetUserQuestions() {
-    $this->specify('calculateScore should function correctly', function () {
-      expect('calculateScore should return the empty set when null is passed', $this->assertEquals(User::getUserQuestions('2016-09-10', $this->questionData), $this->userQuestions));
+    $this->specify('getUserQuestions should function correctly', function () {
+      expect('getUserQuestions should return the correct structure with expected data', $this->assertEquals(User::getUserQuestions('2016-09-10', $this->questionData), $this->userQuestions));
+      expect('getUserQuestions should return empty with the empty set', $this->assertEmpty(User::getUserQuestions('2016-09-10', [])));
     });
   }
 }
