@@ -1,7 +1,7 @@
 include:
   - codeception/common
-  - codeception/console
-  - codeception/site
+  #- codeception/console
+  #- codeception/site
 
 paths:
   log: codeception/_output

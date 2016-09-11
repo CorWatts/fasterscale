@@ -30,7 +30,7 @@ install:
 
 script:
   - |
-    cd tests/codeception/common
+    cd tests/
     codecept run --coverage --coverage-xml --coverage-html --ansi
     
 after_success:
