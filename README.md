@@ -49,11 +49,11 @@ return [
 ## Running the Tests
 Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. To run them, ensure you're in the correct directory and execute:
 ```bash
-cd tests/codeception/common
-./../../../vendor/bin/codecept run --ansi
+cd tests/
+./../vendor/bin/codecept run --ansi
 ```
 To generate code coverage, add the appropriate flags:  
-    ```./../../../vendor/bin/codecept run --coverage --coverage-xml --coverage-html --ansi```
+    ```./../vendor/bin/codecept run --coverage --coverage-xml --coverage-html --ansi```
 
 ## Deployment
 This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.
