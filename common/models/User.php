@@ -479,35 +479,16 @@ ORDER  BY l.date DESC;
     }
     if(!$options) return [];
 
-    foreach($options as $option) {
-      $user_options_by_category[$option['option']['category_id']]['category_name'] = $option['option']['category']['name'];
-      $user_options_by_category[$option['option']['category_id']]['options'][] = ["id" => $option['option_id'], "name"=>$option['option']['name']];
-    }
-
-
-
-    return $user_options_by_category;
-  }
-
-  /* IN PROGRESS
-  public static function getUserOptions($local_date = null, $options = null) {
-    if(is_null($options)) {
-      if(is_null($local_date)) $local_date = Time::getLocalDate();
-      $options = self::getOptionData($local_date);
-    }
-    if(!$options) return [];
-
     $opts_by_cat = [];
     foreach($options as $option) {
-      $this_option = $opts_by_cat[$option['option']['category_id']];
+      $indx = $option['option']['category_id'];
 
-      $this_option['category_name'] = $option['option']['category']['name'];
-      $this_option['options'][] = [
+      $opts_by_cat[$indx]['category_name'] = $option['option']['category']['name'];
+      $opts_by_cat[$indx]['options'][] = [
         "id" => $option['option_id'],
         "name"=>$option['option']['name']];
     }
 
-    return $opts_by_cat;
+    return array_values($opts_by_cat);
   }
-   */
 }
