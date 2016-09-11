@@ -425,6 +425,7 @@ ORDER  BY l.date DESC;
       ":end_date" => $end
     ])
     ->with('option')
+    ->asArray()
     ->all();
 
     return $questions;
@@ -439,16 +440,16 @@ ORDER  BY l.date DESC;
 
     $question_answers = [];
     foreach($questions as $question) {
-      $option = $question->option;
+      $option = $question['option'];
 
-      $question_answers[$option->id]['question'] = [
-        "id" => $option->id,
-        "title" => $option->name
+      $question_answers[$option['id']]['question'] = [
+        "id" => $option['id'],
+        "title" => $option['name']
       ];
 
-      $question_answers[$option->id]["answers"][] = [
-        "title" => $question->question_text,
-        "answer" => $question->answer
+      $question_answers[$option['id']]["answers"][] = [
+        "title" => Question::$QUESTIONS[$question['question']],
+        "answer" => $question['answer']
       ];
     }
 
@@ -489,6 +490,6 @@ ORDER  BY l.date DESC;
         "name"=>$option['option']['name']];
     }
 
-    return array_values($opts_by_cat);
+    return $opts_by_cat;
   }
 }
