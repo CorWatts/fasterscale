@@ -6,6 +6,7 @@ use Yii;
 use tests\codeception\common\unit\TestCase;
 use Codeception\Specify;
 use common\components\UserTrim;
+use common\components\Time;
 
 /**
  * Time test
@@ -16,6 +17,20 @@ class UserTrimTest extends TestCase {
 
   public function setUp() {
     parent::setUp();
+
+    Yii::configure(Yii::$app, [
+      'components' => [
+        'user' => [
+          'class' => 'yii\web\User',
+          'identityClass' => 'tests\codeception\common\unit\FakeUser',
+        ],
+      ],
+    ]);
+    $identity = new \tests\codeception\common\unit\FakeUser();
+    $identity->timezone = "America/Los_Angeles";
+
+    // logs in the user 
+    Yii::$app->user->setIdentity($identity);
   }
 
   protected function tearDown() {
@@ -51,6 +66,27 @@ class UserTrimTest extends TestCase {
 
       $mock->email_threshold = -7;
       expect('isPartnerEnabled should return false when two partners are set and email_threshold is a negative number', $this->assertFalse($user->isPartnerEnabled()));
+    });
+  }
+
+  public function testIsOverThreshold() {
+    $mock = new \stdClass();
+    $mock->email_threshold = null;
+    $mock->partner_email1 = null;
+    $mock->partner_email2 = null;
+    $mock->partner_email3 = null;
+    $user = new UserTrim($mock);
+
+    $this->specify('isOverThreshold should function correctly', function () use ($user, $mock) {
+      expect('isOverThreshold should return false with no partners enabled', $this->assertFalse($user->isOverThreshold()));
+
+      $mock->email_threshold = 10;
+      $mock->partner_email1 = 'hello@hello.com';
+      $score = 5;
+      expect('isOverThreshold should return false if partners enabled but not over threshold', $this->assertFalse($user->isOverThreshold($score)));
+
+      $score = 15;
+      expect('isOverThreshold should return false if partners enabled but not over threshold', $this->assertTrue($user->isOverThreshold($score)));
     });
   }
 }

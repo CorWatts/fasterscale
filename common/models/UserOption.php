@@ -117,8 +117,7 @@ class UserOption extends \yii\db\ActiveRecord
   }
 
   public static function getBehaviorsByDate($start, $end) {
-
-      $user_options = UserOption::find()
+      return UserOption::find()
         ->select(['id', 'user_id', 'option_id', 'date'])
         ->where(
           "user_id=:user_id AND date > :start_date AND date < :end_date",
@@ -128,8 +127,6 @@ class UserOption extends \yii\db\ActiveRecord
         ->with('option')
         ->asArray()
         ->all();
-
-      return $user_options;
   }
 
   /**
