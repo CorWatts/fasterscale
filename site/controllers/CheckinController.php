@@ -108,7 +108,10 @@ class CheckinController extends \yii\web\Controller
           'status' => User::STATUS_ACTIVE,
           'email' => Yii::$app->user->identity->email,
         ]);
+
         $score = UserOption::calculateScoreByUTCRange($start, $end);
+        $score = reset($score); // get first array item
+
         if(!is_null($user->email_threshold) && $score > $user->email_threshold) {
           $user->sendEmailReport(Time::getLocalDate());
           Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
