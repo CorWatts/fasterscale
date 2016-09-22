@@ -247,4 +247,30 @@ class UserOption extends \yii\db\ActiveRecord
 
     return $img_data;
   }
+
+  public static function getTopBehaviors($limit = 5) {
+    $query = new Query;
+    $query->params = [":user_id" => Yii::$app->user->id];
+    $query->select("o.id as id, o.name as name, c.name as category, COUNT(o.id) as count")
+      ->from('user_option_link l')
+      ->join("INNER JOIN", "option o", "l.option_id = o.id")
+      ->join("INNER JOIN", "category c", "o.category_id = c.id")
+      ->groupBy('o.id, l.user_id, c.name')
+      ->having('l.user_id = :user_id')
+      ->orderBy('count DESC')
+      ->limit($limit);
+     return $query->all();
+  }
+
+  public static function getBehaviorsByCategory() {
+    $query = new Query;
+    $query->params = [":user_id" => Yii::$app->user->id];
+    $query->select("c.name as name, COUNT(o.id) as count")
+      ->from('user_option_link l')
+      ->join("INNER JOIN", "option o", "l.option_id = o.id")
+      ->join("INNER JOIN", "category c", "o.category_id = c.id")
+      ->groupBy('c.id, c.name, l.user_id')
+      ->having('l.user_id = :user_id');
+    return $query->all();
+  }
 }

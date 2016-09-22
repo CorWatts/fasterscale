@@ -72,6 +72,19 @@ class QuestionForm extends Model
     ];
   }
 
+  public function deleteToday() {
+    list($start, $end) = Time::getUTCBookends($date);
+    Question::deleteAll("user_id=:user_id 
+      AND date > :start_date 
+      AND date < :end_date", 
+      [
+        ":user_id" => Yii::$app->user->id, 
+        ':start_date' => $start, 
+        ":end_date" => $end
+      ]
+    );
+  }
+
   public function saveAnswers() {
     $result = true;
     for($i = 2; $i < 8; $i ++) {

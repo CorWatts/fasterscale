@@ -36,36 +36,21 @@ class CheckinController extends \yii\web\Controller
       ],
     ];
   }
-  public function actionIndex()
-  {
+  public function actionIndex() {
     $form = new CheckinForm();
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-      // delete the old data, we only store one data set per day
-      $options = array_merge((array)$form->options1, (array)$form->options2, (array)$form->options3, (array)$form->options4, (array)$form->options5, (array)$form->options6, (array)$form->options7);
-      $options = array_filter($options); // strip out false values
-      $form->compiled_options = $options;
+      $form->compiled_options = $form->compileOptions();
 
       if(sizeof($form->compiled_options) === 0) {
         return $this->redirect(['view']);
       }
 
-      $date = Time::getLocalDate();
-      list($start, $end) = Time::getUTCBookends($date);
-      UserOption::deleteAll("user_id=:user_id 
-        AND date > :start_date 
-        AND date < :end_date", 
-        [
-          "user_id" => Yii::$app->user->id, 
-          ':start_date' => $start, 
-          ":end_date" => $end
-        ]
-      );
-
+      // we only store one data set per day, so wipe out previously saved ones
+      $form->deleteToday();
       $form->save();
 
       // delete cached scores
       Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate());
-
       Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
       return $this->redirect(['questions']);
 
@@ -73,6 +58,7 @@ class CheckinController extends \yii\web\Controller
       $categories = Category::find()->asArray()->all();
       $options = Option::find()->asArray()->all();
       $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
+
       return $this->render('index', [
         'categories' => $categories,
         'model' => $form,
@@ -86,22 +72,13 @@ class CheckinController extends \yii\web\Controller
     $user_options = UserOption::getUserOptionsWithCategory(Time::getLocalDate(), true);
     if(count($user_options) === 0) {
       return $this->redirect(['view']);
-
     }
 
     $form = new QuestionForm();
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
       $date = Time::getLocalDate();
-      list($start, $end) = Time::getUTCBookends($date);
-      Question::deleteAll("user_id=:user_id 
-        AND date > :start_date 
-        AND date < :end_date", 
-        [
-          ":user_id" => Yii::$app->user->id, 
-          ':start_date' => $start, 
-          ":end_date" => $end
-        ]
-      );
+      // we only store one data set per day so clear out any previously saved ones
+      $form->deleteToday();
 
       if($result = $form->saveAnswers()) {
         $user = User::findOne([
@@ -137,15 +114,10 @@ class CheckinController extends \yii\web\Controller
     $user_options = User::getUserOptions($date);
 
     $form = new CheckinForm();
-    foreach($user_options as $category_id => $category_data) {
-      foreach($category_data['options'] as $option) {
-        $attribute = "options$category_id";
-        $form->{$attribute}[] = $option['id'];
-      }
-    }   
+    $form->setOptions($user_options);
 
+    // can move this into a function?
     $categories = Category::find()->asArray()->all();
-
     $options = Option::find()->asArray()->all();
     $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
@@ -167,27 +139,8 @@ class CheckinController extends \yii\web\Controller
   }
 
   public function actionReport() {
-    $query = new Query;
-    $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("o.id as id, o.name as name, c.name as category, COUNT(o.id) as count")
-      ->from('user_option_link l')
-      ->join("INNER JOIN", "option o", "l.option_id = o.id")
-      ->join("INNER JOIN", "category c", "o.category_id = c.id")
-      ->groupBy('o.id, l.user_id, c.name')
-      ->having('l.user_id = :user_id')
-      ->orderBy('count DESC')
-      ->limit(5);
-    $user_rows = $query->all();
-
-    $query2 = new Query;
-    $query2->params = [":user_id" => Yii::$app->user->id];
-    $query2->select("c.name as name, COUNT(o.id) as count")
-      ->from('user_option_link l')
-      ->join("INNER JOIN", "option o", "l.option_id = o.id")
-      ->join("INNER JOIN", "category c", "o.category_id = c.id")
-      ->groupBy('c.id, c.name, l.user_id')
-      ->having('l.user_id = :user_id');
-    $answer_pie = $query2->all();
+    $user_rows = UserOption::getTopBehaviors();
+    $answer_pie = UserOption::getBehaviorsByCategory();
 
     $scores = UserOption::calculateScoresOfLastMonth();
 

@@ -5,6 +5,7 @@ use Yii;
 use yii\base\Model;
 use yii\db\Expression;
 use common\models\UserOption;
+use common\components\Time;
 
 /**
  * Checkin form
@@ -53,8 +54,16 @@ class CheckinForm extends Model
     ];
   }
 
-  public function validateOptions($attribute, $params)
-  {
+  public function setOptions($options) {
+    foreach($options as $category_id => $category_data) {
+      foreach($category_data['options'] as $option) {
+        $attribute = "options$category_id";
+        $this->{$attribute}[] = $option['id'];
+      }
+    }   
+  }
+
+  public function validateOptions($attribute, $params) {
     if (!$this->hasErrors()) {
       foreach($this->$attribute as $option) {
         if(!is_numeric($option)) {
@@ -74,6 +83,20 @@ class CheckinForm extends Model
                            (array)$this->options7);
 
     return array_filter($options); // strip out false values
+  }
+
+  public function deleteToday() {
+    $date = Time::getLocalDate();
+    list($start, $end) = Time::getUTCBookends($date);
+    UserOption::deleteAll("user_id=:user_id 
+      AND date > :start_date 
+      AND date < :end_date", 
+      [
+        "user_id" => Yii::$app->user->id, 
+        ':start_date' => $start, 
+        ":end_date" => $end
+      ]
+    );
   }
 
   public function save() {
