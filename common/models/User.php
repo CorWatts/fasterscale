@@ -43,7 +43,11 @@ class User extends ActiveRecord implements IdentityInterface
 
   public function __call($name, $args) {
     if(is_object($this->decorator)) {
-      return $this->decorator->$name($this, $args);
+      if($args) {
+        return $this->decorator->$name($args);
+      } else {
+        return $this->decorator->$name();
+      }
     }
     throw new NotSupportedException("'$name' is not implemented.");
   }

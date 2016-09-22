@@ -2,6 +2,8 @@
 
 namespace common\components;
 
+use common\models\UserOption;
+
 class UserTrim {
   public $user;
 
