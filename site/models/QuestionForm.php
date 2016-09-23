@@ -73,6 +73,7 @@ class QuestionForm extends Model
   }
 
   public function deleteToday() {
+    $date = Time::getLocalDate();
     list($start, $end) = Time::getUTCBookends($date);
     Question::deleteAll("user_id=:user_id 
       AND date > :start_date 
