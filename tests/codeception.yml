@@ -1,8 +1,8 @@
 namespace: tests\codeception
 include:
   - codeception/common
+  - codeception/site
   #- codeception/console
-  #- codeception/site
 
 paths:
     tests: ./codeception
