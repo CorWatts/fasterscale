@@ -22,17 +22,8 @@ class UserTrim {
     return false;
   }
 
-  public function isOverThreshold($score = null) {
+  public function isOverThreshold($score) {
     if(!$this->isPartnerEnabled()) return false;
-
-    // not really great...
-    if(is_null($score)) {
-      $date = Time::getLocalDate();
-      list($start, $end) = Time::getUTCBookends($date);
-
-      $score = UserOption::calculateScoreByUTCRange($start, $end);
-      $score = reset($score); // get first array item
-    }
 
     $threshold = $this->user->email_threshold;
 

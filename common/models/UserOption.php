@@ -116,6 +116,15 @@ class UserOption extends \yii\db\ActiveRecord
     return $user_options;
   }
 
+  public static function getDailyScore($date = null) {
+    // default to today's score
+    if(is_null($date)) $date = Time::getLocalDate();
+
+    list($start, $end) = Time::getUTCBookends($date);
+    $score = UserOption::calculateScoreByUTCRange($start, $end);
+    return reset($score) ?: 0; // get first array item
+  }
+
   public static function getBehaviorsByDate($start, $end) {
       return UserOption::find()
         ->select(['id', 'user_id', 'option_id', 'date'])

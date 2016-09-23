@@ -672,17 +672,17 @@ public $userOptions = [
     parent::tearDown();
   }
 
-  public function testGetUserQuestions() {
-    $this->specify('getUserQuestions should function correctly', function () {
-      expect('getUserQuestions should return the correct structure with expected data', $this->assertEquals(User::getUserQuestions('2016-09-10', $this->questionData), $this->userQuestions));
-      expect('getUserQuestions should return empty with the empty set', $this->assertEmpty(User::getUserQuestions('2016-09-10', [])));
+  public function testParseQuestionData() {
+    $this->specify('parseQuestionData should function correctly', function () {
+      expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals(User::parseQuestionData($this->questionData), $this->userQuestions));
+      expect('parseQuestionData should return empty with the empty set', $this->assertEmpty(User::parseQuestionData([])));
     });
   }
 
-  public function testGetUserOptions() {
-    $this->specify('getUserOptions should function correctly', function () {
-      expect('getUserOptions should return the correct structure with expected data', $this->assertEquals(User::getUserOptions('2016-09-10', $this->optionData), $this->userOptions));
-      expect('getUserOptions should return empty with the empty set', $this->assertEmpty(User::getUserOptions('2016-09-10', [])));
+  public function testParseOptionData() {
+    $this->specify('parseOptionData should function correctly', function () {
+      expect('parseOptionData should return the correct structure with expected data', $this->assertEquals(User::parseOptionData($this->optionData), $this->userOptions));
+      expect('parseOptionData should return empty with the empty set', $this->assertEmpty(User::parseOptionData([])));
     });
   }
 }

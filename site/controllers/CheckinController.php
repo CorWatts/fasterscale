@@ -69,14 +69,14 @@ class CheckinController extends \yii\web\Controller
 
   public function actionQuestions()
   {
-    $user_options = UserOption::getUserOptionsWithCategory(Time::getLocalDate(), true);
+    $date = Time::getLocalDate();
+    $user_options = UserOption::getUserOptionsWithCategory($date, true);
     if(count($user_options) === 0) {
       return $this->redirect(['view']);
     }
 
     $form = new QuestionForm();
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-      $date = Time::getLocalDate();
       // we only store one data set per day so clear out any previously saved ones
       $form->deleteToday();
 
@@ -86,8 +86,9 @@ class CheckinController extends \yii\web\Controller
           'email' => Yii::$app->user->identity->email,
         ]);
 
-        if($user->isOverThreshold()) {
-          $user->sendEmailReport(Time::getLocalDate());
+        $score = UserOption::getDailyScore();
+        if($user->isOverThreshold($score)) {
+          $user->sendEmailReport($date);
           Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
         } else {
           Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
@@ -121,10 +122,7 @@ class CheckinController extends \yii\web\Controller
     $options = Option::find()->asArray()->all();
     $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
-    list($start, $end) = Time::getUTCBookends($date);
-    $utc_date = Time::convertLocalToUTC($date);
-    $score_arr = UserOption::calculateScoreByUTCRange($start, $end);
-    $score = reset($score_arr) ?: 0; // get first element value or 0
+    $score = UserOption::getDailyScore($date);
 
     return $this->render('view', [
       'model' => $form,

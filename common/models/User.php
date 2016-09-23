@@ -416,30 +416,20 @@ ORDER  BY l.date DESC;
     return Yii::$app->mailer->sendMultiple($messages);
   }
 
-  public static function getQuestionData($local_date) {
-    list($start, $end) = Time::getUTCBookends($local_date);
-
-    $questions = Question::find()
-      ->where("user_id=:user_id 
-      AND date > :start_date 
-      AND date < :end_date", 
-    [
-      "user_id" => Yii::$app->user->id, 
-      ':start_date' => $start, 
-      ":end_date" => $end
-    ])
-    ->with('option')
-    ->asArray()
-    ->all();
-
-    return $questions;
+  public static function getUserQuestions($local_date = null) {
+    if(is_null($local_date)) $local_date = Time::getLocalDate();
+    $questions = self::getQuestionData($local_date);
+    return self::parseQuestionData($questions);
   }
 
-  public static function getUserQuestions($local_date = null, $questions = null) {
-    if(is_null($questions)) {
-      if(is_null($local_date)) $local_date = Time::getLocalDate();
-      $questions = self::getQuestionData($local_date);
-    }
+  public static function getUserOptions($local_date = null) {
+    if(is_null($local_date)) $local_date = Time::getLocalDate();
+
+    $options = self::getOptionData($local_date);
+    return self::parseOptionData($options);
+  }
+
+  public static function parseQuestionData($questions) {
     if(!$questions) return [];
 
     $question_answers = [];
@@ -459,6 +449,41 @@ ORDER  BY l.date DESC;
 
     return $question_answers;
   }
+ 
+  public static function parseOptionData($options) {
+    if(!$options) return [];
+
+    $opts_by_cat = [];
+    foreach($options as $option) {
+      $indx = $option['option']['category_id'];
+
+      $opts_by_cat[$indx]['category_name'] = $option['option']['category']['name'];
+      $opts_by_cat[$indx]['options'][] = [
+        "id" => $option['option_id'],
+        "name"=>$option['option']['name']];
+    }
+
+    return $opts_by_cat;
+  }
+
+  public static function getQuestionData($local_date) {
+    list($start, $end) = Time::getUTCBookends($local_date);
+
+    $questions = Question::find()
+      ->where("user_id=:user_id 
+      AND date > :start_date 
+      AND date < :end_date", 
+    [
+      "user_id" => Yii::$app->user->id, 
+      ':start_date' => $start, 
+      ":end_date" => $end
+    ])
+    ->with('option')
+    ->asArray()
+    ->all();
+
+    return $questions;
+  }
 
   public static function getOptionData($local_date) {
     list($start, $end) = Time::getUTCBookends($local_date);
@@ -475,25 +500,5 @@ ORDER  BY l.date DESC;
     ->with('option', 'option.category')
     ->asArray()
     ->all();
-  }
-
-  public static function getUserOptions($local_date = null, $options = null) {
-    if(is_null($options)) {
-      if(is_null($local_date)) $local_date = Time::getLocalDate();
-      $options = self::getOptionData($local_date);
-    }
-    if(!$options) return [];
-
-    $opts_by_cat = [];
-    foreach($options as $option) {
-      $indx = $option['option']['category_id'];
-
-      $opts_by_cat[$indx]['category_name'] = $option['option']['category']['name'];
-      $opts_by_cat[$indx]['options'][] = [
-        "id" => $option['option_id'],
-        "name"=>$option['option']['name']];
-    }
-
-    return $opts_by_cat;
   }
 }

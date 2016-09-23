@@ -120,6 +120,6 @@ class EditProfileForm extends Model
     $this->partner_email1 = $user->partner_email1;
     $this->partner_email2 = $user->partner_email2;
     $this->partner_email3 = $user->partner_email3;
-    $this->send_email = (isset($user->email_threshold) && (isset($user->partner_email1) || isset($user->partner_email2) || isset($user->partner_email3)));
+    $this->send_email = (isset($user->email_threshold) && array_filter($user->getPartnerEmails));
   }
 }

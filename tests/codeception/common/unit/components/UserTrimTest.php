@@ -78,15 +78,13 @@ class UserTrimTest extends TestCase {
     $user = new UserTrim($mock);
 
     $this->specify('isOverThreshold should function correctly', function () use ($user, $mock) {
-      expect('isOverThreshold should return false with no partners enabled', $this->assertFalse($user->isOverThreshold()));
+      expect('isOverThreshold should return false with no partners enabled', $this->assertFalse($user->isOverThreshold(5)));
 
       $mock->email_threshold = 10;
       $mock->partner_email1 = 'hello@hello.com';
-      $score = 5;
-      expect('isOverThreshold should return false if partners enabled but not over threshold', $this->assertFalse($user->isOverThreshold($score)));
+      expect('isOverThreshold should return false if partners enabled but not over threshold', $this->assertFalse($user->isOverThreshold(5)));
 
-      $score = 15;
-      expect('isOverThreshold should return false if partners enabled but not over threshold', $this->assertTrue($user->isOverThreshold($score)));
+      expect('isOverThreshold should return false if partners enabled but not over threshold', $this->assertTrue($user->isOverThreshold(15)));
     });
   }
 }
