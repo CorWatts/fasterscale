@@ -56,8 +56,9 @@ class CheckinForm extends Model
 
   public function setOptions($options) {
     foreach($options as $category_id => $category_data) {
+      $attribute = "options$category_id";
+			$this->$attribute = [];
       foreach($category_data['options'] as $option) {
-        $attribute = "options$category_id";
         $this->{$attribute}[] = $option['id'];
       }
     }   

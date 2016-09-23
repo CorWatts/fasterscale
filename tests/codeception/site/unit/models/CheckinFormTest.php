@@ -127,28 +127,21 @@ class CheckinFormTest extends TestCase
 					$model->setOptions($this->options);
 
           expect('options1 should be correct', $this->assertEquals($model->options1, [ 0 => 7 ]));
-          expect('options2 should be correct', $this->assertEquals($model->options2, [
-																																										   0 => 12,
-																																										   1 => 13,
-																																										   2 => 17,
-																																										   3 => 18,
-																																										 ]));
-          expect('options3 should be correct', $this->assertEquals($model->options3, [
-																																										   0 => 28,
-																																										   1 => 38,
-																																										   2 => 46,
-																																										 ]));
-          expect('options4 should be correct', $this->assertEquals($model->options4, [
-																																										   0 => 47,
-																																										   1 => 56,
-																																										   2 => 62,
-																																										 ]));
-          expect('options5 should be correct', $this->assertEquals($model->options5, [
-																																										   0 => 78,
-																																										   1 => 79,
-																																										 ]));
+          expect('options2 should be correct', $this->assertEquals($model->options2, [ 0 => 12, 1 => 13, 2 => 17, 3 => 18 ]));
+          expect('options3 should be correct', $this->assertEquals($model->options3, [ 0 => 28, 1 => 38, 2 => 46 ]));
+          expect('options4 should be correct', $this->assertEquals($model->options4, [ 0 => 47, 1 => 56, 2 => 62 ]));
+          expect('options5 should be correct', $this->assertEquals($model->options5, [ 0 => 78, 1 => 79 ]));
           expect('options6 should be correct', $this->assertEquals($model->options6, [ 0 => 104 ]));
           expect('options7 should be correct', $this->assertEquals($model->options7, [ 0 => 128 ]));
+
+					$model->setOptions($this->options);
+          expect('setOptions should not append options to existing ones', $this->assertEquals($model->options1, [ 0 => 7 ]));
+          expect('setOptions should not append options to existing ones', $this->assertEquals($model->options2, [ 0 => 12, 1 => 13, 2 => 17, 3 => 18 ]));
+          expect('setOptions should not append options to existing ones', $this->assertEquals($model->options3, [ 0 => 28, 1 => 38, 2 => 46 ]));
+          expect('setOptions should not append options to existing ones', $this->assertEquals($model->options4, [ 0 => 47, 1 => 56, 2 => 62 ]));
+          expect('setOptions should not append options to existing ones', $this->assertEquals($model->options5, [ 0 => 78, 1 => 79 ]));
+          expect('setOptions should not append options to existing ones', $this->assertEquals($model->options6, [ 0 => 104 ]));
+          expect('setOptions should not append options to existing ones', $this->assertEquals($model->options7, [ 0 => 128 ]));
         });
     }
 
@@ -161,6 +154,55 @@ class CheckinFormTest extends TestCase
 
           $model->options1[0] = 'bad';
           expect('validation should be bad', $this->assertFalse($model->validate()));
+        });
+		}
+
+		public function testCompileOptions()
+		{
+        $this->specify('compileOptions should function properly', function () {
+        	$model = new CheckinForm();
+					$model->setOptions($this->options);
+          expect('compiling options should be return a correct array', $this->assertEquals($model->compileOptions(), [
+											  	0 => 7,
+											  	1 => 12,
+											  	2 => 13,
+											  	3 => 17,
+											  	4 => 18,
+											  	5 => 28,
+											  	6 => 38,
+											  	7 => 46,
+											  	8 => 47,
+											  	9 => 56,
+											  	10 => 62,
+											  	11 => 78,
+											  	12 => 79,
+											  	13 => 104,
+											  	14 => 128,
+											  ]));
+
+        	$model = new CheckinForm();
+					$model->setOptions($this->options);
+          $model->options1[0] = null;
+          $model->options2[0] = null;
+          $model->options3[0] = null;
+          expect('compiling options should strip out any falsy values', $this->assertEquals($model->compileOptions(), [
+											  	2 => 13,
+											  	3 => 17,
+											  	4 => 18,
+											  	6 => 38,
+											  	7 => 46,
+											  	8 => 47,
+											  	9 => 56,
+											  	10 => 62,
+											  	11 => 78,
+											  	12 => 79,
+											  	13 => 104,
+											  	14 => 128,
+											  ]));
+
+        	$model = new CheckinForm();
+					$model->setOptions([]);
+          expect('compiling options should return an empty array when no options are set', $this->assertEmpty($model->compileOptions()));
         });
 		}
 }
