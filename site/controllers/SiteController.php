@@ -159,7 +159,6 @@ class SiteController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
       if ($model->sendEmail()) {
         Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
-
         return $this->goHome();
       } else {
         Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
@@ -179,9 +178,10 @@ class SiteController extends Controller
       throw new BadRequestHttpException($e->getMessage());
     }
 
-    if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+    if ($model->load(Yii::$app->request->post())
+        && $model->validate()
+        && $model->resetPassword()) {
       Yii::$app->getSession()->setFlash('success', 'New password was saved.');
-
       return $this->goHome();
     }
 
@@ -244,11 +244,11 @@ class SiteController extends Controller
 
   public function actionExport()
   {
-    //we create the CSV into memory
+    //we create the CSV
     $csv = Writer::createFromFileObject(new \SplTempFileObject());
 
     $data = Yii::$app->user->identity->getExportData();
-    //
+    
     //we insert the CSV header
     $csv->insertOne([
 			'Date'
@@ -259,15 +259,7 @@ class SiteController extends Controller
 			, Question::$QUESTIONS[3]
 		]);
 
-    // The PDOStatement Object implements the Traversable Interface
-    // that's why Writer::insertAll can directly insert
-    // the data into the CSV
     $csv->insertAll($data);
-
-    // Because you are providing the filename you don't have to
-    // set the HTTP headers Writer::output can
-    // directly set them for you
-    // The file is downloadable
     $csv->output('fsa-data-export-' . Yii::$app->user->identity->username . '.csv');
     die;
   }

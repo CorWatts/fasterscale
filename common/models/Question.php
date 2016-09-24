@@ -61,13 +61,13 @@ class Question extends \yii\db\ActiveRecord
   public function attributeLabels()
   {
     return [
-      'id' => 'ID',
-      'user_id' => 'User ID',
-      'option_id' => 'Option ID',
+      'id'             => 'ID',
+      'user_id'        => 'User ID',
+      'option_id'      => 'Option ID',
       'user_option_id' => 'User Option ID',
-      'question' => 'Question',
-      'answer' => 'Answer',
-      'date' => 'Date',
+      'question'       => 'Question',
+      'answer'         => 'Answer',
+      'date'           => 'Date',
     ];
   }
 

@@ -1,13 +1,20 @@
+namespace: tests\codeception
 include:
   - codeception/common
+  - codeception/site
   #- codeception/console
-  #- codeception/site
 
 paths:
-  log: codeception/_output
-
+    tests: ./codeception
+    log: ./codeception/_output
+    data: ./codeception/_data
+    helpers: ./codeception/_support
 settings:
-  colors: true
+    bootstrap: ./codeception/bin/_bootstrap.php
+    suite_class: \PHPUnit_Framework_TestSuite
+    colors: true
+    memory_limit: 1024M
+    log: true
 
 coverage:
   enabled: true

@@ -51,10 +51,10 @@ class UserOption extends \yii\db\ActiveRecord
   public function attributeLabels()
   {
     return [
-      'id' => 'ID',
-      'user_id' => 'User ID',
+      'id'        => 'ID',
+      'date'      => 'Date',
+      'user_id'   => 'User ID',
       'option_id' => 'Option ID',
-      'date' => 'Date',
     ];
   }
 
@@ -116,9 +116,17 @@ class UserOption extends \yii\db\ActiveRecord
     return $user_options;
   }
 
-  public static function getBehaviorsByDate($start, $end) {
+  public static function getDailyScore($date = null) {
+    // default to today's score
+    if(is_null($date)) $date = Time::getLocalDate();
 
-      $user_options = UserOption::find()
+    list($start, $end) = Time::getUTCBookends($date);
+    $score = UserOption::calculateScoreByUTCRange($start, $end);
+    return reset($score) ?: 0; // get first array item
+  }
+
+  public static function getBehaviorsByDate($start, $end) {
+      return UserOption::find()
         ->select(['id', 'user_id', 'option_id', 'date'])
         ->where(
           "user_id=:user_id AND date > :start_date AND date < :end_date",
@@ -128,8 +136,6 @@ class UserOption extends \yii\db\ActiveRecord
         ->with('option')
         ->asArray()
         ->all();
-
-      return $user_options;
   }
 
   /**
@@ -249,5 +255,31 @@ class UserOption extends \yii\db\ActiveRecord
 
 
     return $img_data;
+  }
+
+  public static function getTopBehaviors($limit = 5) {
+    $query = new Query;
+    $query->params = [":user_id" => Yii::$app->user->id];
+    $query->select("o.id as id, o.name as name, c.name as category, COUNT(o.id) as count")
+      ->from('user_option_link l')
+      ->join("INNER JOIN", "option o", "l.option_id = o.id")
+      ->join("INNER JOIN", "category c", "o.category_id = c.id")
+      ->groupBy('o.id, l.user_id, c.name')
+      ->having('l.user_id = :user_id')
+      ->orderBy('count DESC')
+      ->limit($limit);
+     return $query->all();
+  }
+
+  public static function getBehaviorsByCategory() {
+    $query = new Query;
+    $query->params = [":user_id" => Yii::$app->user->id];
+    $query->select("c.name as name, COUNT(o.id) as count")
+      ->from('user_option_link l')
+      ->join("INNER JOIN", "option o", "l.option_id = o.id")
+      ->join("INNER JOIN", "category c", "o.category_id = c.id")
+      ->groupBy('c.id, c.name, l.user_id')
+      ->having('l.user_id = :user_id');
+    return $query->all();
   }
 }

@@ -2,6 +2,8 @@
 
 namespace common\components;
 
+use common\models\UserOption;
+
 class UserTrim {
   public $user;
 
@@ -18,5 +20,15 @@ class UserTrim {
       return true;
     }
     return false;
+  }
+
+  public function isOverThreshold($score) {
+    if(!$this->isPartnerEnabled()) return false;
+
+    $threshold = $this->user->email_threshold;
+
+    return (!is_null($threshold) && $score > $threshold)
+            ? true
+            : false;
   }
 }

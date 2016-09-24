@@ -28,7 +28,13 @@ class EditProfileForm extends Model
   {
     return [
       ['username', 'filter', 'filter' => 'trim'],
-      ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.', 'filter' => "id <> ".Yii::$app->user->id],
+      [
+        'username',
+        'unique',
+        'message'     => 'This username has already been taken.',
+        'filter'      => "id <> ".Yii::$app->user->id,
+        'targetClass' => '\common\models\User',
+      ],
       ['username', 'string', 'min' => 2, 'max' => 255],
       ['username', 'required'],
 
@@ -62,7 +68,7 @@ class EditProfileForm extends Model
       'partner_email1' => "Partner Email #1",
       'partner_email2' => "Partner Email #2",
       'partner_email3' => "Partner Email #3",
-      'send_email' => 'Send an email when I score above a certain threshold'
+      'send_email'     => 'Send an email when I score above a certain threshold'
     ];
   }
 
@@ -86,14 +92,14 @@ class EditProfileForm extends Model
         $user->timezone = $this->timezone;
       if($this->send_email) {
         $user->email_threshold = $this->email_threshold;
-        $user->partner_email1 = $this->partner_email1;
-        $user->partner_email2 = $this->partner_email2;
-        $user->partner_email3 = $this->partner_email3;
+        $user->partner_email1  = $this->partner_email1;
+        $user->partner_email2  = $this->partner_email2;
+        $user->partner_email3  = $this->partner_email3;
       } else {
         $user->email_threshold = null;
-        $user->partner_email1 = null;
-        $user->partner_email2 = null;
-        $user->partner_email3 = null;
+        $user->partner_email1  = null;
+        $user->partner_email2  = null;
+        $user->partner_email3  = null;
       }
       $user->save();
 
@@ -104,15 +110,14 @@ class EditProfileForm extends Model
   }
 
   public function loadUser() {
-    $user = User::findOne(Yii::$app->user->id);
-
-    $this->username = $user->username;
-    $this->email = $user->email;
-    $this->timezone = $user->timezone;
+    $user                  = User::findOne(Yii::$app->user->id);
+    $this->username        = $user->username;
+    $this->email           = $user->email;
+    $this->timezone        = $user->timezone;
     $this->email_threshold = $user->email_threshold;
-    $this->partner_email1 = $user->partner_email1;
-    $this->partner_email2 = $user->partner_email2;
-    $this->partner_email3 = $user->partner_email3;
-    $this->send_email = (isset($user->email_threshold) && (isset($user->partner_email1) || isset($user->partner_email2) || isset($user->partner_email3)));
+    $this->partner_email1  = $user->partner_email1;
+    $this->partner_email2  = $user->partner_email2;
+    $this->partner_email3  = $user->partner_email3;
+    $this->send_email      = (isset($user->email_threshold) && array_filter($user->getPartnerEmails()));
   }
 }

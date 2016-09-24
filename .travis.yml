@@ -24,9 +24,14 @@ install:
   - |
     ./init --env=Development
     sed -i s/root/travis/ common/config/main-local.php
-    sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'/" site/config/main.php
-    cd tests/codeception/common && codecept build
-    cd ../../../
+    sed -i "s/'cookieValidationKey' => ''/'cookieValidationKey' => 'testkey'//" site/config/main.php
+    sed -i "/'class' => 'yii\db\Connection',//" site/config/main.php
+    sed -i "/'dsn' => 'mysql:host=localhost;dbname=yii2advanced',//" site/config/main.php
+    sed -i "/'username' => 'root',//" site/config/main.php
+    sed -i "/'password' => '',//" site/config/main.php
+    sed -i "/'charset' => 'utf8',//" site/config/main.php
+    cd tests/codeception/common && codecept build && cd ../../../
+    cd tests/codeception/site && codecept build && cd ../../../
 
 script:
   - |

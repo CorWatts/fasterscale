@@ -6,6 +6,8 @@ use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\web\IdentityInterface;
+use common\models\Option;
+use common\models\UserOption;
 use common\components\Time;
 
 /**
@@ -43,7 +45,11 @@ class User extends ActiveRecord implements IdentityInterface
 
   public function __call($name, $args) {
     if(is_object($this->decorator)) {
-      return $this->decorator->$name($this, $args);
+      if($args) {
+        return $this->decorator->$name($args);
+      } else {
+        return $this->decorator->$name();
+      }
     }
     throw new NotSupportedException("'$name' is not implemented.");
   }
@@ -87,9 +93,9 @@ class User extends ActiveRecord implements IdentityInterface
 
   public function getPartnerEmails() {
     return [
-      $this->partner_email1
-      , $this->partner_email2
-      , $this->partner_email3
+      $this->partner_email1,
+      $this->partner_email2,
+      $this->partner_email3,
     ];
   }
 
@@ -260,35 +266,23 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   public function sendEmailReport($date) {
+    if(!$this->isPartnerEnabled()) return false; // no partner emails set
+
     list($start, $end) = Time::getUTCBookends($date);
 
-    $utc_date = Time::convertLocalToUTC($date);
-
-    if(!$this->isPartnerEnabled()) return false; // they don't have their partner emails set
-
-    $score = UserOption::calculateScoreByUTCRange($start, $end);
-
-    $questions = User::getUserQuestions($date);
-    $user_options = User::getUserOptions($date);
-
-    $categories = Category::find()->asArray()->all();
-
-    $options = Option::find()->asArray()->all();
-    $options_list = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
-
     $messages = [];
-    foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
+    foreach($this->getPartnerEmails() as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('checkinReport', [
-          'user' => $this,
-          'categories' => $categories, 
-          'options_list' => $options_list, 
-          'user_options' => $user_options,
-          'date' => $date, 
-          'score' => $score, 
-          'questions' => $questions,
-          'email' => $email,
-          'chartContent' => UserOption::generateScoresGraph()
+          'user'          => $this,
+          'email'         => $email,
+          'date'          => $date,
+          'user_options'  => User::getUserOptions($date),
+          'questions'     => User::getUserQuestions($date),
+          'chart_content' => UserOption::generateScoresGraph(),
+          'categories'    => Category::find()->asArray()->all(),
+          'score'         => UserOption::calculateScoreByUTCRange($start, $end),
+          'options_list'  => Option::getAllOptions(),
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
         ->setSubject($this->username." has scored high in The Faster Scale App")
@@ -393,18 +387,10 @@ ORDER  BY l.date DESC;
   }
 
   public function sendDeleteNotificationEmail() {
-    Yii::$app->mailer->compose('userDeleteNotification', [ 'user' => $this ])
-      ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-      ->setReplyTo($this->email)
-      ->setSubject($this->username." has delete their The Faster Scale App account")
-      ->setTo($this->email)
-      ->send();
-
-    if($this->isPartnerEnabled())
-      return false; // they don't have their partner emails set
+    if($this->isPartnerEnabled()) return false; // no partner emails set
 
     $messages = [];
-    foreach([$this->partner_email1, $this->partner_email2, $this->partner_email3] as $email) {
+    foreach(array_merge($this->email, $this->getPartnerEmails()) as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('partnerDeleteNotification', [
           'user' => $this,
@@ -419,13 +405,58 @@ ORDER  BY l.date DESC;
     return Yii::$app->mailer->sendMultiple($messages);
   }
 
-  public static function getUserQuestions($local_date) {
-    if(is_null($local_date))
-      $local_date = Time::getLocalDate();
+  public static function getUserQuestions($local_date = null) {
+    if(is_null($local_date)) $local_date = Time::getLocalDate();
+    $questions = self::getQuestionData($local_date);
+    return self::parseQuestionData($questions);
+  }
 
+  public static function getUserOptions($local_date = null) {
+    if(is_null($local_date)) $local_date = Time::getLocalDate();
+
+    $options = self::getOptionData($local_date);
+    return self::parseOptionData($options);
+  }
+
+  public static function parseQuestionData($questions) {
+    if(!$questions) return [];
+
+    $question_answers = [];
+    foreach($questions as $question) {
+      $option = $question['option'];
+
+      $question_answers[$option['id']]['question'] = [
+        "id" => $option['id'],
+        "title" => $option['name']
+      ];
+
+      $question_answers[$option['id']]["answers"][] = [
+        "title" => Question::$QUESTIONS[$question['question']],
+        "answer" => $question['answer']
+      ];
+    }
+
+    return $question_answers;
+  }
+ 
+  public static function parseOptionData($options) {
+    if(!$options) return [];
+
+    $opts_by_cat = [];
+    foreach($options as $option) {
+      $indx = $option['option']['category_id'];
+
+      $opts_by_cat[$indx]['category_name'] = $option['option']['category']['name'];
+      $opts_by_cat[$indx]['options'][] = [
+        "id" => $option['option_id'],
+        "name"=>$option['option']['name']];
+    }
+
+    return $opts_by_cat;
+  }
+
+  public static function getQuestionData($local_date) {
     list($start, $end) = Time::getUTCBookends($local_date);
-
-    $utc_date = Time::convertLocalToUTC($local_date);
 
     $questions = Question::find()
       ->where("user_id=:user_id 
@@ -437,38 +468,16 @@ ORDER  BY l.date DESC;
       ":end_date" => $end
     ])
     ->with('option')
+    ->asArray()
     ->all();
 
-    if($questions) {
-      $organized_question_answers = [];
-      foreach($questions as $question) {
-        $question_data = [
-          "id" => $question->option->id,
-          "title" => $question->option->name
-        ];
-
-        $question_answer = [
-          "title" => Question::$QUESTIONS[$question->question],
-          "answer" => $question->answer
-        ];
-
-        $organized_question_answers[$question->option->id]['question'] = $question_data;
-        $organized_question_answers[$question->option->id]["answers"][] = $question_answer;
-      }
-      return $organized_question_answers;
-    }
-
-    return [];
+    return $questions;
   }
 
-  public static function getUserOptions($local_date) {
-    if(is_null($local_date))
-      $local_date = Time::getLocalDate();
-
+  public static function getOptionData($local_date) {
     list($start, $end) = Time::getUTCBookends($local_date);
-    $utc_date = Time::convertLocalToUTC($local_date);
 
-    $user_options = UserOption::find()
+    return UserOption::find()
       ->where("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
@@ -480,16 +489,5 @@ ORDER  BY l.date DESC;
     ->with('option', 'option.category')
     ->asArray()
     ->all();
-
-    if($user_options) {
-      foreach($user_options as $option) {
-        $user_options_by_category[$option['option']['category_id']]['category_name'] = $option['option']['category']['name'];
-        $user_options_by_category[$option['option']['category_id']]['options'][] = ["id" => $option['option_id'], "name"=>$option['option']['name']];
-      }
-
-      return $user_options_by_category;
-    }
-
-    return [];
   }
 }

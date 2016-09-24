@@ -5,6 +5,7 @@ use Yii;
 use common\models\User;
 use common\models\Question;
 use common\models\UserOption;
+use common\components\Time;
 use yii\base\Model;
 use yii\db\Expression;
 
@@ -70,6 +71,20 @@ class QuestionForm extends Model
       'user_option_id6' => 'Exhausted',
       'user_option_id7' => 'Relapsed/Moral Failure'
     ];
+  }
+
+  public function deleteToday() {
+    $date = Time::getLocalDate();
+    list($start, $end) = Time::getUTCBookends($date);
+    Question::deleteAll("user_id=:user_id 
+      AND date > :start_date 
+      AND date < :end_date", 
+      [
+        ":user_id" => Yii::$app->user->id, 
+        ':start_date' => $start, 
+        ":end_date" => $end
+      ]
+    );
   }
 
   public function saveAnswers() {
