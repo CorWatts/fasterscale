@@ -51,10 +51,10 @@ class UserOption extends \yii\db\ActiveRecord
   public function attributeLabels()
   {
     return [
-      'id' => 'ID',
-      'user_id' => 'User ID',
+      'id'        => 'ID',
+      'date'      => 'Date',
+      'user_id'   => 'User ID',
       'option_id' => 'Option ID',
-      'date' => 'Date',
     ];
   }
 

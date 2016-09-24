@@ -6,6 +6,8 @@ use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\web\IdentityInterface;
+use common\models\Option;
+use common\models\UserOption;
 use common\components\Time;
 
 /**
@@ -91,9 +93,9 @@ class User extends ActiveRecord implements IdentityInterface
 
   public function getPartnerEmails() {
     return [
-      $this->partner_email1
-      , $this->partner_email2
-      , $this->partner_email3
+      $this->partner_email1,
+      $this->partner_email2,
+      $this->partner_email3,
     ];
   }
 
@@ -267,21 +269,20 @@ class User extends ActiveRecord implements IdentityInterface
     if(!$this->isPartnerEnabled()) return false; // no partner emails set
 
     list($start, $end) = Time::getUTCBookends($date);
-    $options = Option::find()->asArray()->all();
 
     $messages = [];
     foreach($this->getPartnerEmails() as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('checkinReport', [
-          'user'         => $this,
-          'email'        => $email,
-          'date'         => $date,
-          'user_options' => User::getUserOptions($date),
-          'questions'    => User::getUserQuestions($date),
+          'user'          => $this,
+          'email'         => $email,
+          'date'          => $date,
+          'user_options'  => User::getUserOptions($date),
+          'questions'     => User::getUserQuestions($date),
           'chart_content' => UserOption::generateScoresGraph(),
-          'categories'   => Category::find()->asArray()->all(),
-          'score'        => UserOption::calculateScoreByUTCRange($start, $end),
-          'options_list' => \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id"),
+          'categories'    => Category::find()->asArray()->all(),
+          'score'         => UserOption::calculateScoreByUTCRange($start, $end),
+          'options_list'  => Option::getAllOptions(),
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
         ->setSubject($this->username." has scored high in The Faster Scale App")

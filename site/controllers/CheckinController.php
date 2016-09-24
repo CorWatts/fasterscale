@@ -56,13 +56,11 @@ class CheckinController extends \yii\web\Controller
 
     } else {
       $categories = Category::find()->asArray()->all();
-      $options = Option::find()->asArray()->all();
-      $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
       return $this->render('index', [
         'categories' => $categories,
         'model' => $form,
-        'optionsList' => $optionsList
+        'optionsList' =>  Option::getAllOptions(),
       ]);
     }
   }
@@ -110,29 +108,21 @@ class CheckinController extends \yii\web\Controller
     if(is_null($date))
       $date = Time::getLocalDate();
 
-    $past_checkin_dates = UserOption::getPastCheckinDates();
-    $questions = User::getUserQuestions($date);
-    $user_options = User::getUserOptions($date);
+    list($start, $end) = Time::getUTCBookends($date);
+    $utc_date = Time::convertLocalToUTC($date);
 
     $form = new CheckinForm();
-    $form->setOptions($user_options);
-
-    // can move this into a function?
-    $categories = Category::find()->asArray()->all();
-    $options = Option::find()->asArray()->all();
-    $optionsList = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
-
-    $score = UserOption::getDailyScore($date);
+    $form->setOptions(User::getUserOptions($date));
 
     return $this->render('view', [
-      'model' => $form,
-      'categories' => $categories, 
-      'optionsList' => $optionsList, 
-      'actual_date' => $date, 
-      'utc_date' => $utc_date, 
-      'score' => $score, 
-      'past_checkin_dates' => $past_checkin_dates,
-      'questions' => $questions
+      'model'              => $form,
+      'actual_date'        => $date,
+      'utc_date'           => $utc_date,
+      'categories'         => Category::find()->asArray()->all(),
+      'optionsList'        => Option::getAllOptions(),
+      'score'              => UserOption::getDailyScore($date),
+      'past_checkin_dates' => UserOption::getPastCheckinDates(),
+      'questions'          => User::getUserQuestions($date),
     ]);
   }
 

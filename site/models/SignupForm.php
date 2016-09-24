@@ -90,9 +90,9 @@ class SignupForm extends Model
 
       if($this->send_email) {
         $user->email_threshold = $this->email_threshold;
-        $user->partner_email1 = $this->partner_email1;
-        $user->partner_email2 = $this->partner_email2;
-        $user->partner_email3 = $this->partner_email3;
+        $user->partner_email1  = $this->partner_email1;
+        $user->partner_email2  = $this->partner_email2;
+        $user->partner_email3  = $this->partner_email3;
       }
       $user->save();
       return $user;

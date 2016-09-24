@@ -42,8 +42,8 @@ class Option extends \yii\db\ActiveRecord
   public function attributeLabels()
   {
     return [
-      'id' => 'ID',
-      'name' => 'Name',
+      'id'          => 'ID',
+      'name'        => 'Name',
       'category_id' => 'Category ID',
     ];
   }
@@ -76,5 +76,10 @@ class Option extends \yii\db\ActiveRecord
       ->orderBy('c.id')
       ->indexBy('category_id');
     return $query->all();
+  }
+
+  public static function getAllOptions() {
+    $options = Option::find()->asArray()->all();
+    return \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
   }
 }
