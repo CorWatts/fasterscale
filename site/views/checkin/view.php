@@ -82,7 +82,7 @@ foreach($questions as $option_id => $option_questions) {
   foreach($option_questions['answers'] as $question) { 
     print "<div class='col-md-4'>";
     print "<p><strong>{$question['title']}</strong></p>";
-    print "<p>{$question['answer']}</p>";
+    print "<p>".Html::encode($question['answer'])."</p>";
     print "</div>";
   }
   print "</div></div>";
