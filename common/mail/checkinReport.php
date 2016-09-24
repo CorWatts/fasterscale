@@ -5,7 +5,7 @@ use common\models\UserOption;
 
 $username = Html::encode($user->username);
 $date = str_replace('-', '', $date);
-$imgRef = $message->embedContent($chartContent, [
+$imgRef = $message->embedContent($chart_content, [
   'fileName'       => "$username-scores-$date.png",
   'contentType'    => 'image/png',
   'setDisposition' => 'inline'

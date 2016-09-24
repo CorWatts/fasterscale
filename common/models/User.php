@@ -264,35 +264,24 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   public function sendEmailReport($date) {
+    if(!$this->isPartnerEnabled()) return false; // no partner emails set
+
     list($start, $end) = Time::getUTCBookends($date);
-
-    $utc_date = Time::convertLocalToUTC($date);
-
-    if(!$this->isPartnerEnabled()) return false; // they don't have their partner emails set
-
-    $score = UserOption::calculateScoreByUTCRange($start, $end);
-
-    $questions = User::getUserQuestions($date);
-    $user_options = User::getUserOptions($date);
-
-    $categories = Category::find()->asArray()->all();
-
     $options = Option::find()->asArray()->all();
-    $options_list = \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id");
 
     $messages = [];
     foreach($this->getPartnerEmails() as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('checkinReport', [
-          'user' => $this,
-          'categories' => $categories, 
-          'options_list' => $options_list, 
-          'user_options' => $user_options,
-          'date' => $date, 
-          'score' => $score, 
-          'questions' => $questions,
-          'email' => $email,
-          'chartContent' => UserOption::generateScoresGraph()
+          'user'         => $this,
+          'email'        => $email,
+          'date'         => $date,
+          'user_options' => User::getUserOptions($date),
+          'questions'    => User::getUserQuestions($date),
+          'chart_content' => UserOption::generateScoresGraph(),
+          'categories'   => Category::find()->asArray()->all(),
+          'score'        => UserOption::calculateScoreByUTCRange($start, $end),
+          'options_list' => \yii\helpers\ArrayHelper::map($options, "id", "name", "category_id"),
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
         ->setSubject($this->username." has scored high in The Faster Scale App")
@@ -397,8 +386,7 @@ ORDER  BY l.date DESC;
   }
 
   public function sendDeleteNotificationEmail() {
-    if($this->isPartnerEnabled())
-      return false; // they don't have their partner emails set
+    if($this->isPartnerEnabled()) return false; // no partner emails set
 
     $messages = [];
     foreach(array_merge($this->email, $this->getPartnerEmails()) as $email) {
