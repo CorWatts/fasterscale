@@ -46,7 +46,7 @@ class User extends ActiveRecord implements IdentityInterface
   public function __call($name, $args) {
     if(is_object($this->decorator)) {
       if($args) {
-        return $this->decorator->$name($args);
+        return call_user_func_array([$this->decorator, $name], $args);
       } else {
         return $this->decorator->$name();
       }
