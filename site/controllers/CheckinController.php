@@ -109,7 +109,6 @@ class CheckinController extends \yii\web\Controller
       $date = Time::getLocalDate();
 
     list($start, $end) = Time::getUTCBookends($date);
-    $utc_date = Time::convertLocalToUTC($date);
 
     $form = new CheckinForm();
     $form->setOptions(User::getUserOptions($date));
@@ -117,7 +116,6 @@ class CheckinController extends \yii\web\Controller
     return $this->render('view', [
       'model'              => $form,
       'actual_date'        => $date,
-      'utc_date'           => $utc_date,
       'categories'         => Category::find()->asArray()->all(),
       'optionsList'        => Option::getAllOptions(),
       'score'              => UserOption::getDailyScore($date),
