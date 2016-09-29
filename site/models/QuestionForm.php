@@ -57,6 +57,21 @@ class QuestionForm extends Model
   {
     return [
       [['user_option_id1', 'user_option_id2', 'user_option_id3', 'user_option_id4', 'user_option_id5', 'user_option_id6', 'user_option_id7'], 'integer'],
+      [['user_option_id1', 'user_option_id2', 'user_option_id3', 'user_option_id4', 'user_option_id5', 'user_option_id6', 'user_option_id7'], 'required',
+      'when' => function($model, $attribute) {
+        $attrNum = substr($attribute, 14, 1);
+        $answerA = "answer_{$attrNum}a";
+        $answerB = "answer_{$attrNum}b";
+        $answerC = "answer_{$attrNum}c";
+        if(!!$this->$answerA || !!$this->$answerB || !!$this->$answerC) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      'whenClient' => "function(attribute, value) { return false; }",
+      "message" => "You must select a behavior your responses apply to."],
+
       [['answer_1a','answer_1b','answer_1c','answer_2a','answer_2b','answer_2c','answer_3a','answer_3b','answer_3c','answer_4a','answer_4b','answer_4c','answer_5a', 'answer_5b','answer_5c','answer_6a', 'answer_6b','answer_6c','answer_7a','answer_7b','answer_7c'], 'safe']
     ];
   }
