@@ -3,24 +3,12 @@
 namespace tests\codeception\site\unit\models;
 
 use Yii;
-use tests\codeception\site\unit\TestCase;
-use site\models\QuestionForm;
+use \tests\codeception\site\unit\TestCase;
+use \site\models\QuestionForm;
 
 class QuestionFormTest extends TestCase
 {
   use \Codeception\Specify;
-
-  /*
-  protected function setUp()
-  {
-    parent::setUp();
-  }
-
-  protected function tearDown()
-  {
-    parent::tearDown();
-  }
-  */
 
   public function testGetBhvrValidator()
   {
