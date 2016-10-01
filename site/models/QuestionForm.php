@@ -57,6 +57,13 @@ class QuestionForm extends Model
   {
     return [
       [['user_option_id1', 'user_option_id2', 'user_option_id3', 'user_option_id4', 'user_option_id5', 'user_option_id6', 'user_option_id7'], 'integer'],
+
+      [['user_option_id1', 'user_option_id2', 'user_option_id3', 'user_option_id4', 'user_option_id5', 'user_option_id6', 'user_option_id7'],
+        'required',
+        'when' => self::getBhvrValidator(),
+        'whenClient' => "function(attribute, value) { return false; }", // lame, but acceptable
+        "message" => "You must select a behavior your responses apply to."],
+
       [['answer_1a','answer_1b','answer_1c','answer_2a','answer_2b','answer_2c','answer_3a','answer_3b','answer_3c','answer_4a','answer_4b','answer_4c','answer_5a', 'answer_5b','answer_5c','answer_6a', 'answer_6b','answer_6c','answer_7a','answer_7b','answer_7c'], 'safe']
     ];
   }
@@ -71,6 +78,17 @@ class QuestionForm extends Model
       'user_option_id6' => 'Exhausted',
       'user_option_id7' => 'Relapsed/Moral Failure'
     ];
+  }
+
+  public static function getBhvrValidator() {
+    return function($model, $attr) {
+      $attrNum = $attr[strlen($attr)-1];
+      foreach(['a', 'b', 'c'] as $l) {
+        $attr = "answer_{$attrNum}{$l}";
+        if($model->$attr) return true;
+      }
+      return false;
+    };
   }
 
   public function deleteToday() {
