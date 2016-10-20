@@ -10,6 +10,22 @@ class QuestionFormTest extends TestCase
 {
   use \Codeception\Specify;
 
+  public function testAttributeLabels()
+  {
+    $this->specify('setOptions should function properly', function () {
+      $model = new QuestionForm();
+      expect('attributeLabels should be correct', $this->assertEquals($model->attributeLabels(), [
+        'user_option_id1' => 'Restoration',
+        'user_option_id2' => 'Forgetting Priorities',
+        'user_option_id3' => 'Anxiety',
+        'user_option_id4' => 'Speeding Up',
+        'user_option_id5' => 'Ticked Off',
+        'user_option_id6' => 'Exhausted',
+        'user_option_id7' => 'Relapsed/Moral Failure'
+      ]));
+    });
+  }
+
   public function testGetBhvrValidator()
   {
     $model = new QuestionForm();

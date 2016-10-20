@@ -120,6 +120,22 @@ class CheckinFormTest extends TestCase
         parent::tearDown();
     }
 
+		public function testAttributeLabels()
+		{
+        $this->specify('setOptions should function properly', function () {
+        	$model = new CheckinForm();
+          expect('attributeLabels should be correct', $this->assertEquals($model->attributeLabels(), [
+            'options1' => 'Restoration',
+            'options2' => 'Forgetting Priorities',
+            'options3' => 'Anxiety',
+            'options4' => 'Speeding Up',
+            'options5' => 'Ticked Off',
+            'options6' => 'Exhausted',
+            'options7' => 'Relapsed/Moral Failure'
+          ]));
+        });
+    }
+
     public function testSetOptions()
     {
         $this->specify('setOptions should function properly', function () {
