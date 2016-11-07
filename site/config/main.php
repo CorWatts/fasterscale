@@ -45,9 +45,6 @@ return [
       'enableCookieValidation' => true,
       'enableCsrfValidation' => true
     ],
-    'session' => [
-      'class'=> 'yii\web\CacheSession',
-    ],
     'assetManager' => [
       'linkAssets' => true,
       'converter' => [

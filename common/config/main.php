@@ -7,6 +7,9 @@ return [
     'cache' => [
       'class' => 'yii\caching\FileCache', // OR USE MEMCACHE OR SOMETHING
     ],
+    'session' => [
+      'class'=> 'yii\web\CacheSession',
+    ],
     'mailer' => [
       'class' => 'yii\swiftmailer\Mailer',
       'messageClass' => '\common\components\Message',
