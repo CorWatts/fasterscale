@@ -4,8 +4,8 @@ namespace common\tests\unit\components;
 
 use Yii;
 use Codeception\Specify;
-use common\tests\components\UserTrim;
-use common\tests\components\Time;
+use common\components\UserTrim;
+use common\components\Time;
 
 /**
  * Time test

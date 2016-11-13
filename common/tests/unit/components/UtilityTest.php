@@ -4,7 +4,7 @@ namespace common\tests\unit\components;
 
 use Yii;
 use Codeception\Specify;
-use common\tests\components\Utility;
+use common\components\Utility;
 
 /**
  * Utility test

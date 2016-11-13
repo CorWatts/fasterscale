@@ -1,12 +1,11 @@
 <?php
 
-namespace tests\codeception\site\unit\models;
+namespace site\tests\unit\models;
 
 use Yii;
-use \tests\codeception\site\unit\TestCase;
 use \site\models\QuestionForm;
 
-class QuestionFormTest extends TestCase
+class QuestionFormTest extends \Codeception\Test\Unit
 {
   use \Codeception\Specify;
 

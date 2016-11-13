@@ -6,8 +6,8 @@
   "require": {
     "php": ">=5.5",
     "yiisoft/yii2": ">=2.0.6",
-    "yiisoft/yii2-bootstrap": "*",
-    "yiisoft/yii2-swiftmailer": "*",
+    "yiisoft/yii2-bootstrap": "~2.0.0",
+    "yiisoft/yii2-swiftmailer": "~2.0.0",
     "yiisoft/yii2-jui": "*",
     "bower-asset/jquery": "@stable",
     "bower-asset/bootstrap-sass": "@stable",
@@ -16,15 +16,16 @@
     "bower-asset/punycode": "@stable",
     "moment/moment": "dev-master",
     "league/csv": "8.0",
-    "spacedealer/yii2-loggly": "*",
+    "spacedealer/yii2-loggly": ">=0.2.0",
     "bower-asset/chartjs": "^2.1",
     "amenadiel/jpgraph": "^3.6"
   },
   "require-dev": {
-    "yiisoft/yii2-debug": "*",
-    "yiisoft/yii2-gii": "*",
-    "yiisoft/yii2-faker": "*",
-    "codeception/codeception": "2.2.*",
+    "yiisoft/yii2-debug": "~2.0.0",
+    "yiisoft/yii2-gii": "~2.0.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+
+    "codeception/base": "^2.2.3",
     "codeception/specify": "*",
     "codeception/verify": "*"
   },

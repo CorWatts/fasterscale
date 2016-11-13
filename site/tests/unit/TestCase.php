@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\codeception\site\unit;
+namespace site\tests\unit;
 
 /**
  * @inheritdoc

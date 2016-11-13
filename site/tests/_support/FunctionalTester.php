@@ -1,5 +1,5 @@
 <?php
-namespace tests\codeception\site;
+namespace site\tests;
 
 /**
  * Inherited Methods

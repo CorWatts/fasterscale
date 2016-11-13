@@ -6,7 +6,7 @@ use \DateTime;
 use \DateTimeZone;
 use Yii;
 use Codeception\Specify;
-use common\tests\components\Time;
+use common\components\Time;
 
 date_default_timezone_set('UTC');
 
@@ -46,7 +46,7 @@ class TimeTest extends \Codeception\Test\Unit
     public function testGetLocalTime()
     {
       $this->specify('getLocalTime should function correctly', function () {
-        expect('getLocalTime should work with user\'s set time', $this->assertEquals(Time::getLocalTime(), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s")));
+        expect("getLocalTime should work with user's set time", $this->assertEquals(Time::getLocalTime(), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s")));
         expect('getLocalTime should work with a custom timezone', $this->assertEquals(Time::getLocalTime("UTC"), (new DateTime("now"))->format("Y-m-d H:i:s")));
       });
     }

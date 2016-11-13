@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "45f885ccb0ba4504b251aefc45427c33",
-    "content-hash": "0a53c3b2077ad3f98b18257ea60dc087",
+    "hash": "f205b19acf3ddb1d0e530091bd07c355",
+    "content-hash": "b95053b4ba27d39a36995fe6b41316f8",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -440,38 +440,6 @@
                 "html"
             ],
             "time": "2015-08-05 01:03:42"
-        },
-        {
-            "name": "goat1000/svggraph",
-            "version": "2.23.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/goat1000/SVGGraph.git",
-                "reference": "2661a960639187ce178eb8e772d5245c933d7437"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/goat1000/SVGGraph/zipball/2661a960639187ce178eb8e772d5245c933d7437",
-                "reference": "2661a960639187ce178eb8e772d5245c933d7437",
-                "shasum": ""
-            },
-            "require": {
-                "lib-pcre": "*",
-                "php": ">=5.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "SVGGraph.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0"
-            ],
-            "description": "Generates SVG graphs",
-            "homepage": "http://www.goat1000.com/svggraph.php",
-            "time": "2016-06-22 10:40:41"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1237,6 +1205,95 @@
             }
         },
         {
+            "name": "codeception/base",
+            "version": "2.2.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/base.git",
+                "reference": "f70c77fe9941c41f567fe62b1e96e1ed33235ac7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/base/zipball/f70c77fe9941c41f567fe62b1e96e1ed33235ac7",
+                "reference": "f70c77fe9941c41f567fe62b1e96e1ed33235ac7",
+                "shasum": ""
+            },
+            "require": {
+                "behat/gherkin": "~4.4.0",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/psr7": "~1.0",
+                "php": ">=5.4.0 <8.0",
+                "phpunit/php-code-coverage": ">=2.1.3 <5.0",
+                "phpunit/phpunit": ">4.8.20 <6.0",
+                "sebastian/comparator": "~1.1",
+                "sebastian/diff": "^1.4",
+                "symfony/browser-kit": ">=2.7 <4.0",
+                "symfony/console": ">=2.7 <4.0",
+                "symfony/css-selector": ">=2.7 <4.0",
+                "symfony/dom-crawler": ">=2.7 <4.0",
+                "symfony/event-dispatcher": ">=2.7 <4.0",
+                "symfony/finder": ">=2.7 <4.0",
+                "symfony/yaml": ">=2.7 <4.0"
+            },
+            "require-dev": {
+                "codeception/specify": "~0.3",
+                "facebook/graph-sdk": "~5.3",
+                "flow/jsonpath": "~0.2",
+                "league/factory-muffin": "^3.0",
+                "league/factory-muffin-faker": "^1.0",
+                "mongodb/mongodb": "^1.0",
+                "monolog/monolog": "~1.8",
+                "pda/pheanstalk": "~3.0",
+                "php-amqplib/php-amqplib": "~2.4",
+                "predis/predis": "^1.0",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "suggest": {
+                "codeception/specify": "BDD-style code blocks",
+                "codeception/verify": "BDD-style assertions",
+                "flow/jsonpath": "For using JSONPath in REST module",
+                "league/factory-muffin": "For DataFactory module",
+                "league/factory-muffin-faker": "For Faker support in DataFactory module",
+                "phpseclib/phpseclib": "for SFTP option in FTP Module",
+                "symfony/phpunit-bridge": "For phpunit-bridge support"
+            },
+            "bin": [
+                "codecept"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": []
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeception\\": "src\\Codeception",
+                    "Codeception\\Extension\\": "ext"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Bodnarchuk",
+                    "email": "davert@mail.ua",
+                    "homepage": "http://codegyre.com"
+                }
+            ],
+            "description": "BDD-style testing framework",
+            "homepage": "http://codeception.com/",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "acceptance testing",
+                "functional testing",
+                "unit testing"
+            ],
+            "time": "2016-10-27 00:07:01"
+        },
+        {
             "name": "codeception/codeception",
             "version": "2.2.x-dev",
             "source": {
@@ -1544,6 +1601,38 @@
                 "fixtures"
             ],
             "time": "2016-07-01 12:18:29"
+        },
+        {
+            "name": "goat1000/svggraph",
+            "version": "2.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/goat1000/SVGGraph.git",
+                "reference": "2661a960639187ce178eb8e772d5245c933d7437"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/goat1000/SVGGraph/zipball/2661a960639187ce178eb8e772d5245c933d7437",
+                "reference": "2661a960639187ce178eb8e772d5245c933d7437",
+                "shasum": ""
+            },
+            "require": {
+                "lib-pcre": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "SVGGraph.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Generates SVG graphs",
+            "homepage": "http://www.goat1000.com/svggraph.php",
+            "time": "2016-06-22 10:40:41"
         },
         {
             "name": "guzzlehttp/guzzle",

@@ -1,14 +1,12 @@
 <?php
 
-namespace tests\codeception\site\unit\models;
+namespace site\tests\unit\models;
 
 use Yii;
-use tests\codeception\site\unit\TestCase;
 use site\models\CheckinForm;
 
-class CheckinFormTest extends TestCase
+class CheckinFormTest extends \Codeception\Test\Unit
 {
-
     use \Codeception\Specify;
 
 		public $options = [
