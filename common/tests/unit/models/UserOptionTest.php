@@ -299,12 +299,12 @@ class UserOptionTest extends \Codeception\Test\Unit {
       'components' => [
         'user' => [
           'class' => 'yii\web\User',
-          'identityClass' => 'common\unit\FakeUser',
+          'identityClass' => '\common\tests\unit\FakeUser',
         ],
       ],
     ]);
 
-    $identity = new \common\unit\FakeUser();
+    $identity = new \common\tests\unit\FakeUser();
     $identity->timezone = "America/Los_Angeles";
 
     // logs in the user 

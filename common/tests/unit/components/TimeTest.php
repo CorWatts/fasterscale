@@ -5,7 +5,6 @@ namespace common\tests\unit\components;
 use \DateTime;
 use \DateTimeZone;
 use Yii;
-use Codeception\Specify;
 use common\components\Time;
 
 date_default_timezone_set('UTC');
@@ -16,7 +15,7 @@ date_default_timezone_set('UTC');
 
 class TimeTest extends \Codeception\Test\Unit
 {
-    use Specify;
+    use \Codeception\Specify;
 
     public function setUp()
     {
