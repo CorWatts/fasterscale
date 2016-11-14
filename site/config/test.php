@@ -1,10 +1,5 @@
 <?php
 return [
-  'id' => 'app-frontend-tests',
-  'components' => [
-    'user' => [
-      'class' => 'yii\web\User',
-      'identityClass' => 'common\models\User',
-    ],
-  ],
+  'id' => 'app-site-tests',
+  'basePath' => dirname(__DIR__),
 ];
