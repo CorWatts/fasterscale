@@ -22,11 +22,11 @@ These instructions will help you get a local installation set up for development
     ```git clone git@github.com:CorWatts/fasterscale.git && cd fasterscale```
 1. Install necessary dependencies with:  
     ```composer global require "fxp/composer-asset-plugin:~1.1.1" && composer install --dev```
-1. execute the init file ```./init``` and choose the **Development** option
-1. Create ```site/config/main-local.php``` and add a cookie validation key and database connection information (replacing the strings enclosed by [])
+1. execute the init file ```./init --env=Development``` with the environment set to **Development** option
+1. Edit ```site/config/main-local.php``` and add a cookie validation key and database connection information in the $config variable
 ```php
 <?php
-return [ 
+$config = [ 
   'components' => [
     'request' => [
       'cookieValidationKey' => 'devcookiekey'
@@ -47,13 +47,13 @@ return [
 1. log in, start working
 
 ## Running the Tests
-Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. To run them, ensure you're in the correct directory and execute:
+Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. To run them, ensure you're in base directory of this repository and execute:
 ```bash
-cd tests/
-./../vendor/bin/codecept run --ansi
+composer exec codecept build
+composer exec codecept run
 ```
-To generate code coverage, add the appropriate flags:  
-    ```./../vendor/bin/codecept run --coverage --coverage-xml --coverage-html --ansi```
+To generate code coverage ensure you have Xdebug installed and run the codecept again with the appropriate flags:  
+    ```composer exec codecept run --coverage --coverage-xml --coverage-html --ansi```
 
 ## Deployment
 This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.
@@ -63,12 +63,5 @@ This application is under the BSD-3 license. See [LICENSE.md](https://github.com
 
 The _FASTER Relapse Awareness Scale_ is copyrighted by Michael Dye and Patricia Fancher. We have been granted permission to use it.
 
-## Roadmap
-#### Pressing needs
-* Create reminder functionality detailed in [issue #13](https://github.com/CorWatts/fasterscale/issues/13)
-* the UI needs tons of work. Pretty darn ugly right now in [issue #43](https://github.com/CorWatts/fasterscale/issues/43)
-* ~~Add ability to delete your account detailed in [issue #12](https://github.com/CorWatts/fasterscale/issues/12)~~
-
-#### 10000' view
-* MOBILE APP
-* Move away from bootstrap (to material design?) in [issue #43](https://github.com/CorWatts/fasterscale/issues/43)
+## Contributions
+Want to contribute? Wonderful! We're excited to hear any and every idea you have about the Faster Scale App. If you're struggling to come up with a task of your own to work on, take a look at our issues list and feel free to tackle any of the unassigned issues.

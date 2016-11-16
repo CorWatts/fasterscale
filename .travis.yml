@@ -30,12 +30,10 @@ install:
     sed -i "s/'username' => 'root',//" site/config/main.php
     sed -i "s/'password' => '',//" site/config/main.php
     sed -i "s/'charset' => 'utf8',//" site/config/main.php
-    cd tests/codeception/common && codecept build && cd ../../../
-    cd tests/codeception/site && codecept build && cd ../../../
+    codecept build
 
 script:
   - |
-    cd tests/
     codecept run --coverage --coverage-xml --coverage-html --ansi
     
 after_success:

@@ -1,0 +1,9 @@
+include:
+  - common
+  - site
+paths:
+  log: console/runtime/logs
+settings:
+  colors: true
+  memory_limit: 1024M
+  log: true
