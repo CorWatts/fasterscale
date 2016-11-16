@@ -85,7 +85,7 @@ class UserOption extends ActiveRecord implements UserOptionInterface
       ->having('user_id = :user_id');
     $temp_dates = $query->all();
     foreach($temp_dates as $temp_date) {
-      $past_checkin_dates[] = $this->time->convertUTCToLocal($temp_date['date'], false);
+      $past_checkin_dates[] = $this->time->convertUTCToLocal($temp_date['date']);
     }
 
     return $past_checkin_dates;

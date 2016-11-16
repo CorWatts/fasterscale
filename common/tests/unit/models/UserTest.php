@@ -892,36 +892,36 @@ public $exportData = [
     // logs in the user 
     Yii::$app->user->setIdentity($identity);
 
-    expect('cleanExportData should clean and mutate the queried data to be suitable for downloading', $this->assertEquals($this->user->cleanExportData($this->exportData), [
+    expect('cleanExportData should clean and mutate the queried data to be suitable for downloading', $this->assertEquals([
       [
-        'date' => '2017-07-29 03:40:29',
+        'date' => '2017-07-29T03:40:29-07:00',
         'option' => 'repetitive, negative thoughts',
         'category' => 'Speeding Up',
         'question1' => 'q1',
         'question2' => 'q2',
         'question3' => 'q3',
       ], [
-        'date' => '2017-07-29 03:40:29',
+        'date' => '2017-07-29T03:40:29-07:00',
         'option' => 'tired',
         'category' => 'Exhausted',
         'question1' => 'q1',
         'question2' => 'q2',
         'question3' => 'q3',
       ], [
-        'date' => '2017-07-29 03:40:29',
+        'date' => '2017-07-29T03:40:29-07:00',
         'option' => 'out of control',
         'category' => 'Relapse/Moral Failure',
         'question1' => 'q1',
         'question2' => 'q2',
         'question3' => 'q3',
       ], [
-        'date' => '2017-07-29 03:40:29',
+        'date' => '2017-07-29T03:40:29-07:00',
         'option' => 'obsessive (stuck) thoughts',
         'category' => 'Ticked Off',
         'question1' => 'q1',
         'question2' => 'q2',
         'question3' => 'q3',
       ]
-    ]));
+    ], $this->user->cleanExportData($this->exportData)));
   }
 }

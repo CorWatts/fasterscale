@@ -63,12 +63,7 @@ return [
       'converter' => [
         'class' => 'yii\web\AssetConverter',
         'commands' => [
-					'less' => ['css', 'lessc {from} {to} --no-color --source-map'],
-					'scss' => ['css', 'sass -I "../../vendor/bower/bootstrap-sass/assets/stylesheets" {from} {to}'],
-					'sass' => ['css', 'sass {from} {to}'],
-					'styl' => ['css', 'stylus < {from} > {to}'],
-					'coffee' => ['js', 'coffee -p {from} > {to}'],
-					'ts' => ['js', 'tsc --out {to} {from}'],
+					'scss' => ['css', 'node-sass --include-path "../../vendor/bower-asset/pickadate/lib/themes" --include-path "../../vendor/bower-asset/bootstrap-sass/assets/stylesheets" --output-style compressed {from} > {to}'],
         ],
       ],
       // UNCOMMENT WHEN ASSETS HAVE BEEN COMPRESSED

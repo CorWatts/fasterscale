@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use yii\jui\DatePicker;
 
 /**
  * @var yii\web\View $this

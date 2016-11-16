@@ -1,0 +1,21 @@
+.checkin-view {
+  #past-checkin-nav {
+    #datepicker {
+      width: 100%;
+    }
+    .datepicker-container {
+      width: calc(100% - 160px);
+      max-width: 150px;
+    }
+    .picker__holder {
+      min-width: 275px;
+      left: -71px;
+    }
+  }
+}
+
+/**
+ * These imported datepicker css files are NOT SCSS. They are regular CSS.
+ */
+@import "classic";
+@import "classic.date";

@@ -22,8 +22,8 @@ class Time extends \yii\base\Object implements \common\interfaces\TimeInterface 
     return $timestamp->format($fmt);
   }
 
-  public function convertUTCToLocal($utc, $inc_time = true) {
-    $fmt = $inc_time ? "Y-m-d H:i:s" : "Y-m-d";
+  public function convertUTCToLocal($utc, $iso = true) {
+    $fmt = $iso ? Datetime::ATOM : "Y-m-d";
 
     $timestamp = new DateTime($utc, new DateTimeZone("UTC"));
     $timestamp->setTimeZone(new DateTimeZone($this->timezone));

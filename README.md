@@ -17,7 +17,7 @@ These instructions will help you get a local installation set up for development
 * Clone this repo with:  
     ```git clone git@github.com:CorWatts/fasterscale.git && cd fasterscale```
 * Install necessary dependencies with:  
-    ```composer global require "fxp/composer-asset-plugin:^1.2.0" && composer install --dev```
+    ```composer install --dev```
 * Execute the init file ```./init --env=Development``` with the environment set to **Development** option
 * Edit ```site/config/main-local.php``` and add a cookie validation key in the $config variable
 ```php
