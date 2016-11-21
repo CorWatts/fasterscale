@@ -9,6 +9,7 @@
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
     "yiisoft/yii2-jui": "*",
+    "yiisoft/yii2-redis": "^2.0",
     "bower-asset/jquery": "@stable",
     "bower-asset/bootstrap-sass": "@stable",
     "bower-asset/jquery-ui": "@stable",
@@ -18,8 +19,7 @@
     "league/csv": "8.0",
     "spacedealer/yii2-loggly": ">=0.2.0",
     "bower-asset/chartjs": "^2.1",
-    "amenadiel/jpgraph": "^3.6",
-    "yiisoft/yii2-redis": "^2.0"
+    "amenadiel/jpgraph": "^3.6"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
