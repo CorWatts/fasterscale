@@ -390,7 +390,7 @@ ORDER  BY l.date DESC;
     if($this->isPartnerEnabled()) return false; // no partner emails set
 
     $messages = [];
-    foreach(array_merge($this->email, $this->getPartnerEmails()) as $email) {
+    foreach(array_merge([$this->email], $this->getPartnerEmails()) as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('partnerDeleteNotification', [
           'user' => $this,
