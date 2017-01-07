@@ -26,13 +26,15 @@ $this->registerJsFile('/js/site/about.js', ['depends' => [\site\assets\AppAsset:
     <p>If you're interested in peeking beneath the hood, or maybe even helping me with some code contributions, you can find the repo at <a href='https://github.com/CorWatts/fasterscale'>Github</a>.</p>
 
     <h2>Latest Commits</h2>
-    <table id='commits' class="table table-striped">
-        <tr>
-            <th>When</th>
-            <th>Link</th>
-            <th>Committer</th>
-            <th>Description</th>
-        </tr>
-    </table>
-    <div id="spinner"><img src="/img/spinner.gif" id="spinner-gif" /></div>
+    <div class="table-responsive">
+      <table id='commits' class="table table-striped">
+          <tr>
+              <th>When</th>
+              <th>Link</th>
+              <th>Committer</th>
+              <th>Description</th>
+          </tr>
+      </table>
+      <div id="spinner"><img src="/img/spinner.gif" id="spinner-gif" /></div>
+    </div>
 </div>
