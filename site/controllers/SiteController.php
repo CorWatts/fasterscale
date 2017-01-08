@@ -244,23 +244,27 @@ class SiteController extends Controller
 
   public function actionExport()
   {
-    //we create the CSV
-    $csv = Writer::createFromFileObject(new \SplTempFileObject());
+    header("Content-Type: text/csv");
+    header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->username."-".date('Ymd').".csv");
 
     $data = Yii::$app->user->identity->getExportData();
-    
-    //we insert the CSV header
-    $csv->insertOne([
-			'Date'
-			, 'Option'
-			, 'Category'
-			, Question::$QUESTIONS[1]
-			, Question::$QUESTIONS[2]
-			, Question::$QUESTIONS[3]
-		]);
+    $fp = fopen('php://output', 'w');
 
-    $csv->insertAll($data);
-    $csv->output('fsa-data-export-' . Yii::$app->user->identity->username . '.csv');
+    $header = [
+      'Date',
+      'Option',
+      'Category',
+      Question::$QUESTIONS[1],
+      Question::$QUESTIONS[2],
+      Question::$QUESTIONS[3],
+    ];
+
+    fputcsv($fp, $header);
+    foreach($data as $row) {
+      fputcsv($fp, $row);
+    }
+    fclose($fp);
+
     die;
   }
 }
