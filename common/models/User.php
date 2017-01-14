@@ -43,27 +43,6 @@ class User extends ActiveRecord implements IdentityInterface
    * @inheritdoc
    */
 
-  public function __call($name, $args) {
-    if(is_object($this->decorator)) {
-      if($args) {
-        return call_user_func_array([$this->decorator, $name], $args);
-      } else {
-        return $this->decorator->$name();
-      }
-    }
-    throw new NotSupportedException("'$name' is not implemented.");
-  }
-
-  public function __construct($decorator = null) {
-    $decorator = $decorator ?: new \common\components\UserTrim($this);
-    $this->decorate($decorator);
-    parent::__construct();
-  }
-
-  public function decorate($decorator) {
-    $this->decorator = $decorator;
-  }
-
   public function behaviors()
   {
     return [
@@ -489,5 +468,26 @@ ORDER  BY l.date DESC;
     ->with('option', 'option.category')
     ->asArray()
     ->all();
+  }
+
+  public function isPartnerEnabled() {
+    if((is_integer($this->email_threshold)
+       && $this->email_threshold >= 0)
+         && ($this->partner_email1
+           || $this->partner_email2
+           || $this->partner_email3)) {
+      return true;
+    }
+    return false;
+  }
+
+  public function isOverThreshold($score) {
+    if(!$this->isPartnerEnabled()) return false;
+
+    $threshold = $this->email_threshold;
+
+    return (!is_null($threshold) && $score > $threshold)
+            ? true
+            : false;
   }
 }
