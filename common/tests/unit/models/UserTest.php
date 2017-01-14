@@ -15,6 +15,8 @@ date_default_timezone_set('UTC');
 class UserTest extends \Codeception\Test\Unit {
   use Specify;
 
+  private $user;
+
 	public $questionData = [
 	[
 		'id' => 641,
@@ -664,10 +666,34 @@ public $userOptions = [
 ];
 
   public function setUp() {
+    $this->user = $this->getMockBuilder('\common\models\User')
+      ->setMethods(['save', 'attributes'])
+      ->getMock();
+    $this->user->method('save')->willReturn(true);
+    $this->user->method('attributes')->willReturn([
+      'id',
+      'username',
+      'password_hash',
+      'password_reset_token',
+      'email',
+      'auth_key',
+      'role',
+      'status',
+      'created_at',
+      'updated_at',
+      'password',
+      'timezone',
+      'email_threshold',
+      'partner_email1',
+      'partner_email2',
+      'partner_email3',
+    ]);
+
     parent::setUp();
   }
 
   protected function tearDown() {
+    $this->user = null;
     parent::tearDown();
   }
 
@@ -682,6 +708,44 @@ public $userOptions = [
     $this->specify('parseOptionData should function correctly', function () {
       expect('parseOptionData should return the correct structure with expected data', $this->assertEquals(User::parseOptionData($this->optionData), $this->userOptions));
       expect('parseOptionData should return empty with the empty set', $this->assertEmpty(User::parseOptionData([])));
+    });
+  }
+
+  public function testIsPartnerEnabled() {
+    $this->specify('isPartnerEnabled should function correctly', function () {
+      expect('isPartnerEnabled should return false when no partners are set and email_threshold is null', $this->assertFalse($this->user->isPartnerEnabled()));
+
+      $this->user->email_threshold = 10;
+      expect('isPartnerEnabled should return false when no partners are set and email_threshold is a positive integer', $this->assertFalse($this->user->isPartnerEnabled()));
+
+      $this->user->partner_email3 = 'hello@partner3.com';
+      $this->user->email_threshold = null;
+      expect('isPartnerEnabled should return false when a partner is set and email_threshold is null', $this->assertFalse($this->user->isPartnerEnabled()));
+
+      $this->user->email_threshold = 10;
+      expect('isPartnerEnabled should return true when at one partner is set and email_threshold is a positive integer', $this->assertTrue($this->user->isPartnerEnabled()));
+
+      $this->user->partner_email1 = 'hello@partner1.com';
+      expect('isPartnerEnabled should return true when two partners are set and email_threshold is a positive integer', $this->assertTrue($this->user->isPartnerEnabled()));
+
+      $this->user->email_threshold = 0;
+      expect('isPartnerEnabled should return true when two partners are set and email_threshold is 0', $this->assertTrue($this->user->isPartnerEnabled()));
+
+      $this->user->email_threshold = -7;
+      expect('isPartnerEnabled should return false when two partners are set and email_threshold is a negative number', $this->assertFalse($this->user->isPartnerEnabled()));
+    });
+  }
+
+  public function testIsOverThreshold() {
+    $this->specify('isOverThreshold should function correctly', function () {
+      expect('isOverThreshold should return false with no partners enabled', $this->assertFalse($this->user->isOverThreshold(5)));
+
+      $this->user->email_threshold = 10;
+      $this->user->partner_email1 = 'hello@hello.com';
+      expect('isOverThreshold should return false if partners enabled but not over threshold', $this->assertFalse($this->user->isOverThreshold(5)));
+      expect('isOverThreshold should return false if partners enabled and equal to but not over threshold', $this->assertFalse($this->user->isOverThreshold(10)));
+
+      expect('isOverThreshold should return true if partners enabled and over threshold', $this->assertTrue($this->user->isOverThreshold(15)));
     });
   }
 }
