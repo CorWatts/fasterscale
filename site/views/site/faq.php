@@ -25,7 +25,7 @@ $this->registerMetaTag([
   <div>
     <strong>What do you do with my data?</strong>
     <p class="indent">Nothing. We don't sell it, trade it, barter it, exchange it, or give it away. Only you can download all of your data, at any time, by visiting your profile page and exporting it. You can delete all of your data (and account) on your profile page as well.</p>
-    <p class="indent">NOTE: we might use traffic analytics software (like Google Analytics) to give us better insight into the usage of the Faster Scale App. Additionally, backups of this server and database are taken regularly, encrypted, stored for a relatively short period, and then deleted on a rotating basis.</p>
+    <p class="indent">NOTE: Backups of this server and database are taken regularly, encrypted, stored for a relatively short period, and then deleted on a rotating basis.</p>
   </div>
 
   <div>
