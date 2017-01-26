@@ -10,19 +10,16 @@ These instructions will help you get a local installation set up for development
 ### Prerequisites
 * PHP >= 7.0
 * Composer
-* A type of SQL compatible with Yii2's ActiveRecord:
-  * MySQL 4.1 or later
-  * PostgreSQL 7.3 or later
-  * SQLite 2 and 3
-  * Microsoft SQL Server 2008 or later
-  * Oracle
+* A SASS compiler. We recommend ```sass``` Ruby Gem. Once rubygems is installed on your machine (if you're on MacOS it already is) you should type ```gem install sass```.
+* PostgreSQL 9.1 or later (Theoretically any type of SQL compatible with Yii2's ActiveRecord might work, but we've only tested this on PostgreSQL)
+
+* _If you will be compiling and compressing assets you will also need Closure Compiler and YUI Compressor_
 
 ### Installation
 1. Clone this repo with:  
     ```git clone git@github.com:CorWatts/fasterscale.git && cd fasterscale```
 1. Install necessary dependencies with:  
     ```composer global require "fxp/composer-asset-plugin:^1.2.0" && composer install --dev```
-1. You'll need a sass compiler. the ```sass``` Ruby Gem is recommended. Once rubygems is installed on your machine (if you're on MacOS it already is) yousimply need to type ```gem install sass```.
 1. execute the init file ```./init --env=Development``` with the environment set to **Development** option
 1. Edit ```site/config/main-local.php``` and add a cookie validation key in the $config variable
 ```php
