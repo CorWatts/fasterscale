@@ -12,7 +12,6 @@ These instructions will help you get a local installation set up for development
 * Composer
 * A SASS compiler. We recommend ```sass``` Ruby Gem. Once rubygems is installed on your machine (if you're on MacOS it already is) you should type ```gem install sass```.
 * PostgreSQL 9.1 or later (Theoretically any type of SQL compatible with Yii2's ActiveRecord might work, but we've only tested this on PostgreSQL)
-
 * _If you will be compiling and compressing assets you will also need Closure Compiler and YUI Compressor_
 
 ### Installation
