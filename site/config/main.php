@@ -50,6 +50,9 @@ return [
       'converter' => [
         'class' => 'yii\web\AssetConverter',
       ],
+      // UNCOMMENT WHEN ASSETS HAVE BEEN COMPRESSED
+      //'appendTimestamp' => true,
+      //'bundles' => require(dirname(__DIR__) . '/assets/assets-compressed.php'),
     ],
     'view' => [
       'class' => 'site\classes\View'

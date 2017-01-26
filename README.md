@@ -63,7 +63,15 @@ composer exec -v codecept build
 composer exec -v codecept run
 ```
 To generate code coverage ensure you have Xdebug installed and run the codecept again with the appropriate flags:  
-    ```composer exec -v codecept run --coverage --coverage-xml --coverage-html --ansi```
+```bash
+composer exec -v codecept run --coverage --coverage-xml --coverage-html --ansi
+```
+
+## Assets
+We have built-in support for compilation of JS and CSS/SCSS assets. Ensure you have both Closure Compiler and Yui Compressor installed and ensure you have uncommented the respective lines in ```site/config/main.php``` or overridden them in ```site/config/main-local.php```. Then execute:
+```bash
+./yii asset site/assets/assets.php site/assets/assets-compressed.php
+```
 
 ## Deployment
 This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.
