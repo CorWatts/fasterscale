@@ -5,9 +5,6 @@ set :staging, :production
 set :application, 'Checkin'
 set :repo_url, 'ssh://git@github.com/CorWatts/emotionalcheckin.git'
 
-# Default value for :scm is :git
-set :scm, :git
-
 set :keep_releases, 3
 
 set :linked_files, %w{common/config/main-local.php common/config/params-local.php console/config/main-local.php console/config/params-local.php site/config/main-local.php site/config/params-local.php .ruby-gemset .ruby-version}
@@ -21,7 +18,7 @@ namespace :deploy do
   desc 'Restarting application'
   task :restart do
     on roles(:app) do
-      execute "sudo service php7.0-fpm restart"
+      execute "sudo service php7.1-fpm restart"
     end
   end
 
