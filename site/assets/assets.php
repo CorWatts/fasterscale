@@ -9,9 +9,9 @@
 
 return [
     // Adjust command/callback for JavaScript files compressing:
-    'jsCompressor' => 'closure-compiler --js {from} --js_output_file {to}',
+    'jsCompressor' => 'uglifyjs {from} --compress --mangle --output {to}',
     // Adjust command/callback for CSS files compressing:
-    'cssCompressor' => 'yui-compressor --type css {from} -o {to}',
+    'cssCompressor' => 'uglifycss --debug --ugly-comments {from} > {to}',
     // The list of asset bundles to compress:
     'bundles' => [
         'site\assets\AppAsset',
