@@ -64,7 +64,7 @@ composer exec -v codecept run --coverage --coverage-xml --coverage-html --ansi
 ```
 
 ## Assets
-We have built-in support for compilation of JS and CSS/SCSS assets. Ensure you have both Closure Compiler and Yui Compressor installed and ensure you have uncommented the respective lines in ```site/config/main.php``` or overridden them in ```site/config/main-local.php```. Then execute:
+We have built-in support for minimizing JS and CSS assets. Ensure the npm packages uglifyjs and uglifycss are installed via ```npm install uglifyjs uglifycss -g```. Then uncommented the respective assetManager lines in ```site/config/main.php``` or override them in ```site/config/main-local.php```. Then execute:
 ```bash
 ./yii asset site/assets/assets.php site/assets/assets-compressed.php
 ```
