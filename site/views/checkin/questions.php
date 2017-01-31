@@ -32,7 +32,8 @@ foreach($options as $option) {
 }
 ?>
 <h1>Check-In Questions</h1>
-<p>In each category, select one feeling, then answer the related questions.</p>
+<p>Answer the questions below to compete your check-in.</p>
+<p>In each category, select one feeling. Then answer the related questions.</p>
 <?php
 $form = ActiveForm::begin([
   'id' => 'checkin-form',

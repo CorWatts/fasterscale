@@ -51,7 +51,6 @@ class CheckinController extends \yii\web\Controller
 
       // delete cached scores
       Yii::$app->cache->delete("scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate());
-      Yii::$app->session->setFlash('success', 'Answer the questions below to compete your checkin.');
       return $this->redirect(['questions']);
 
     } else {
@@ -87,9 +86,9 @@ class CheckinController extends \yii\web\Controller
         $score = UserOption::getDailyScore();
         if($user->isOverThreshold($score)) {
           $user->sendEmailReport($date);
-          Yii::$app->session->setFlash('warning', 'Your checkin is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
+          Yii::$app->session->setFlash('warning', 'Your check-in is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
         } else {
-          Yii::$app->session->setFlash('success', 'Your emotions have been logged!');
+          Yii::$app->session->setFlash('success', 'Your behaviors and processing questions have been logged!');
         }
 
         return $this->redirect(['view']);
