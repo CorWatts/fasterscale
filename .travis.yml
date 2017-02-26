@@ -30,11 +30,11 @@ install:
     sed -i "s/'username' => 'root',//" site/config/main.php
     sed -i "s/'password' => '',//" site/config/main.php
     sed -i "s/'charset' => 'utf8',//" site/config/main.php
-    codecept build
+    composer test-scaffold
 
 script:
   - |
-    codecept run --coverage --coverage-xml --coverage-html --ansi
+    composer test-coverage
     
 after_success:
   - bash <(curl -s https://codecov.io/bash)

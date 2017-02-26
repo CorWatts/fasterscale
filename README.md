@@ -15,12 +15,12 @@ These instructions will help you get a local installation set up for development
 * _If you will be compiling and compressing assets you will also need Closure Compiler and YUI Compressor_
 
 ### Installation
-1. Clone this repo with:  
+* Clone this repo with:  
     ```git clone git@github.com:CorWatts/fasterscale.git && cd fasterscale```
-1. Install necessary dependencies with:  
+* Install necessary dependencies with:  
     ```composer global require "fxp/composer-asset-plugin:^1.2.0" && composer install --dev```
-1. execute the init file ```./init --env=Development``` with the environment set to **Development** option
-1. Edit ```site/config/main-local.php``` and add a cookie validation key in the $config variable
+* Execute the init file ```./init --env=Development``` with the environment set to **Development** option
+* Edit ```site/config/main-local.php``` and add a cookie validation key in the $config variable
 ```php
 <?php
 $config = [ 
@@ -32,7 +32,7 @@ $config = [
   ]
 ];
 ```
-1. Edit ```common/config/main-local.php``` and edit the default database connection information in the $config variable
+* Edit ```common/config/main-local.php``` and edit the default database connection information in the $config variable
 ```php
 <?php
 $config = [ 
@@ -47,24 +47,27 @@ $config = [
   }
 };
 ```
-1. run all yii2 db migrations ```./yii migrate```
-1. startup local PHP server with ```cd site/web && php -S localhost:8080 router.php```
-1. visit [http://localhost:8080/signup](http://localhost:8080/signup) and create a new user
-1. log in, start working
+* run all yii2 db migrations ```./yii migrate```
+* startup local PHP server with ```cd site/web && php -S localhost:8080 router.php```
+* visit [http://localhost:8080/signup](http://localhost:8080/signup) and create a new user
+* log in, start working
 
 ## Running the Tests
-Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. To run them, ensure you're in base directory of this repository and execute:
+Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. First, the testing files must be scaffolded by running:
 ```bash
-composer exec -v codecept build
-composer exec -v codecept run
+composer test-scaffold
 ```
-To generate code coverage ensure you have Xdebug installed and run the codecept again with the appropriate flags:  
+To then run them, ensure you're in base directory of this repository and execute:
 ```bash
-composer exec -v codecept run --coverage --coverage-xml --coverage-html --ansi
+composer test
+```
+If you would like to view the code coverage provided by these tests run this command: (XDebug is required for generation of code coverage)
+```bash
+composer test-coverage
 ```
 
 ## Assets
-We have built-in support for minimizing JS and CSS assets. Ensure the npm packages uglifyjs and uglifycss are installed via ```npm install uglifyjs uglifycss -g```. Then uncommented the respective assetManager lines in ```site/config/main.php``` or override them in ```site/config/main-local.php```. Then execute:
+We have built-in support for minimizing JS and CSS assets. Ensure the npm packages uglifyjs and uglifycss are installed via ```npm install uglifyjs uglifycss -g```. Then uncomment the respective assetManager lines in ```site/config/main.php``` or override them in ```site/config/main-local.php``` and execute:
 ```bash
 ./yii asset site/assets/assets.php site/assets/assets-compressed.php
 ```
