@@ -32,7 +32,10 @@
   "scripts": {
     "post-create-project-cmd": [
       "yii\\composer\\Installer::setPermission"
-    ]
+    ],
+    "test": "codecept run",
+    "test-coverage": "codecept run --coverage --coverage-xml --coverage-html --ansi",
+    "test-scaffold": "codecept build"
   },
   "config": {
     "process-timeout": 1800
