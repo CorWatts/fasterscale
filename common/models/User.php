@@ -200,6 +200,16 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   /**
+   * Generates email verification token
+   */
+  public function generateVerifyEmailToken()
+  {
+    $this->verify_email_token = Yii::$app
+      ->getSecurity()
+      ->generateRandomString() . '_' . time();
+  }
+
+  /**
    * Generates "remember me" authentication key
    */
   public function generateAuthKey()
@@ -362,6 +372,14 @@ ORDER  BY l.date DESC;
       ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
       ->setTo(\Yii::$app->params['adminEmail'])
       ->setSubject('A new user has signed up for '.\Yii::$app->name)
+      ->send();
+  }
+
+  public function sendVerifyEmail() {
+    return \Yii::$app->mailer->compose('verifyEmail')
+      ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+      ->setTo($this->email)
+      ->setSubject('Please verify your '.\Yii::$app->name .' account')
       ->send();
   }
 

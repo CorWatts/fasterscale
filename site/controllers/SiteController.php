@@ -142,9 +142,11 @@ class SiteController extends Controller
       $user = $model->signup();
       if ($user) {
         $user->sendSignupNotificationEmail();
-        if (Yii::$app->getUser()->login($user)) {
-          return $this->redirect('/welcome',302);
-        }
+        $user->sendVerifyEmail();
+        return $this->redirect('/welcome',302);
+        //if (Yii::$app->getUser()->login($user)) {
+          //return $this->redirect('/welcome',302);
+        //}
       }
     }
 
@@ -156,13 +158,13 @@ class SiteController extends Controller
   public function actionRequestPasswordReset()
   {
     $model = new PasswordResetRequestForm();
-    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-      if ($model->sendEmail()) {
-        Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
-        return $this->goHome();
-      } else {
-        Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+    if($model->load(Yii::$app->request->post()) && $model->validate()) {
+      if(!$model->sendEmail()) {
+        Yii::warning('[IP ADDR] has tried to reset the password for '. $model->email);
       }
+
+      Yii::$app->getSession()->setFlash('success', 'If there is an account with the submitted email address you will receive further instructions in your email inbox.');
+      return $this->goHome();
     }
 
     return $this->render('requestPasswordResetToken', [

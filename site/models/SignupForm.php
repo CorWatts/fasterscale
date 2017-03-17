@@ -87,6 +87,7 @@ class SignupForm extends Model
       $user->setPassword($this->password);
       $user->timezone = $this->timezone;
       $user->generateAuthKey();
+      $user->generateVerifyEmailToken();
 
       if($this->send_email) {
         $user->email_threshold = $this->email_threshold;
