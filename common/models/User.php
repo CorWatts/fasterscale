@@ -147,6 +147,28 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   /**
+   * Finds user by email verification token
+   *
+   * @param  string      $token email verification token
+   * @return static|null
+   */
+  public static function findByVerifyEmailToken($token)
+  {
+    $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
+    $parts = explode('_', $token);
+    $timestamp = (int) end($parts);
+    if ($timestamp + $expire < time()) {
+      // token expired
+      return null;
+    }
+
+    return static::findOne([
+      'password_reset_token' => $token,
+      'status' => self::STATUS_ACTIVE,
+    ]);
+  }
+
+  /**
    * @inheritdoc
    */
   public function getId()
@@ -207,6 +229,23 @@ class User extends ActiveRecord implements IdentityInterface
     $this->verify_email_token = Yii::$app
       ->getSecurity()
       ->generateRandomString() . '_' . time();
+  }
+
+  /**
+   * Finds out if email verification token is valid
+   *
+   * @param string $token email verification token
+   * @return boolean
+   */
+  public static function isVerifyEmailTokenValid($token)
+  {
+    if (empty($token)) {
+      return false;
+    }
+    $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+    $parts = explode('_', $token);
+    $timestamp = (int) end($parts);
+    return $timestamp + $expire >= time();
   }
 
   /**
@@ -376,7 +415,7 @@ ORDER  BY l.date DESC;
   }
 
   public function sendVerifyEmail() {
-    return \Yii::$app->mailer->compose('verifyEmail')
+    return \Yii::$app->mailer->compose('verifyEmail', ['user' => $this])
       ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
       ->setTo($this->email)
       ->setSubject('Please verify your '.\Yii::$app->name .' account')

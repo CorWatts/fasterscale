@@ -143,7 +143,8 @@ class SiteController extends Controller
       if ($user) {
         $user->sendSignupNotificationEmail();
         $user->sendVerifyEmail();
-        return $this->redirect('/welcome',302);
+        Yii::$app->getSession()->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
+        return $this->redirect('/',302);
         //if (Yii::$app->getUser()->login($user)) {
           //return $this->redirect('/welcome',302);
         //}
@@ -190,6 +191,34 @@ class SiteController extends Controller
     return $this->render('resetPassword', [
       'model' => $model,
     ]);
+  }
+
+  public function actionVerifyEmail($token)
+  {
+    if (empty($token) || !is_string($token)) {
+      throw new InvalidParamException('Email verification token cannot be blank.');
+    }
+    $this->_user = User::findByVerifyEmailToken($token);
+    if (!$this->_user) {
+      throw new InvalidParamException('Wrong email verification token.');
+    }
+    //try {
+      //$model = new ResetPasswordForm($token);
+    //} catch (InvalidParamException $e) {
+      //throw new BadRequestHttpException($e->getMessage());
+    //}
+
+    //if ($model->load(Yii::$app->request->post())
+        //&& $model->validate()
+        //&& $model->resetPassword()) {
+    Yii::$app->getSession()->setFlash('success', 'Your account has been verified. Please continue with your check-in.');
+    return $this->redirect('/welcome',302);
+    //return $this->goHome();
+    //}
+
+    //return $this->render('resetPassword', [
+      //'model' => $model,
+    //]);
   }
 
   public function actionProfile()
