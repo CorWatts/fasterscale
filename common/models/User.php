@@ -113,11 +113,7 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public static function findByPasswordResetToken($token)
   {
-    $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
-    $parts = explode('_', $token);
-    $timestamp = (int) end($parts);
-    if ($timestamp + $expire < time()) {
-      // token expired
+    if(!static::isTokenCurrent($token)) {
       return null;
     }
 
@@ -135,11 +131,7 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public static function findByVerifyEmailToken($token)
   {
-    $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
-    $parts = explode('_', $token);
-    $timestamp = (int) end($parts);
-    if ($timestamp + $expire < time()) {
-      // token expired
+    if(!static::isTokenCurrent($token)) {
       return null;
     }
 
@@ -147,6 +139,24 @@ class User extends ActiveRecord implements IdentityInterface
       'verify_email_token' => $token,
       'status' => self::STATUS_ACTIVE,
     ]);
+  }
+
+  /**
+   * Finds out if a token is current or expired
+   *
+   * @param  string      $token verification token
+   * @param  string      $paramPath Yii app param path
+   * @return boolean
+   */
+  public static function isTokenCurrent($token, $paramPath = 'user.passwordResetTokenExpire') {
+    $expire = \Yii::$app->params[$paramPath];
+    $parts = explode('_', $token);
+    $timestamp = (int) end($parts);
+    if ($timestamp + $expire < time()) {
+      // token expired
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -213,23 +223,6 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   /**
-   * Finds out if email verification token is valid
-   *
-   * @param string $token email verification token
-   * @return boolean
-   */
-  public static function isVerifyEmailTokenValid($token)
-  {
-    if (empty($token)) {
-      return false;
-    }
-    $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-    $parts = explode('_', $token);
-    $timestamp = (int) end($parts);
-    return $timestamp + $expire >= time();
-  }
-
-  /**
    * Generates "remember me" authentication key
    */
   public function generateAuthKey()
@@ -247,23 +240,6 @@ class User extends ActiveRecord implements IdentityInterface
     $this->password_reset_token = Yii::$app
       ->getSecurity()
       ->generateRandomString() . '_' . time();
-  }
-
-  /**
-   * Finds out if password reset token is valid
-   *
-   * @param string $token password reset token
-   * @return boolean
-   */
-  public static function isPasswordResetTokenValid($token)
-  {
-    if (empty($token)) {
-      return false;
-    }
-    $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-    $parts = explode('_', $token);
-    $timestamp = (int) end($parts);
-    return $timestamp + $expire >= time();
   }
 
   /**

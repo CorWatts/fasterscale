@@ -748,4 +748,18 @@ public $userOptions = [
       expect('isOverThreshold should return true if partners enabled and over threshold', $this->assertTrue($this->user->isOverThreshold(15)));
     });
   }
+
+  public function testIsTokenCurrent() {
+    $this->specify('isTokenCurrent should function correctly', function () {
+      $good_token = \Yii::$app
+                      ->getSecurity()
+                      ->generateRandomString() . '_' . time();
+      expect('isTokenCurrent should return true if the token is still current/alive', $this->assertTrue($this->user->isTokenCurrent($good_token)));
+      $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
+      $bad_token = \Yii::$app
+                      ->getSecurity()
+                      ->generateRandomString() . '_' . (time() - $expire - 1); // subtract the expiration time and a little more from the current time
+      expect('isTokenCurrent should return false if the token is expired', $this->assertFalse($this->user->isTokenCurrent($bad_token)));
+    });
+  }
 }
