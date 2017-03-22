@@ -37,7 +37,7 @@ class SiteController extends Controller
             'allow' => true,
           ],
           [
-            'actions' => ['login', 'signup', 'reset-password', 'request-password-reset'],
+            'actions' => ['login', 'signup', 'reset-password', 'request-password-reset', 'verify-email'],
             'allow' => true,
             'roles' => ['?'],
           ],
@@ -80,10 +80,6 @@ class SiteController extends Controller
 
   public function actionLogin()
   {
-    if (!\Yii::$app->user->isGuest) {
-      return $this->goHome();
-    }
-
     $model = new LoginForm();
     if ($model->load(Yii::$app->request->post()) && $model->login()) {
       return $this->goBack();
@@ -97,7 +93,6 @@ class SiteController extends Controller
   public function actionLogout()
   {
     Yii::$app->user->logout();
-
     return $this->goHome();
   }
 
@@ -137,18 +132,10 @@ class SiteController extends Controller
   public function actionSignup()
   {
     $model = new SignupForm();
-
-    if ($model->load(Yii::$app->request->post())) {
+    if($model->load(Yii::$app->request->post())) {
       $user = $model->signup();
-      if ($user) {
-        $user->sendSignupNotificationEmail();
-        $user->sendVerifyEmail();
-        Yii::$app->getSession()->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
-        return $this->redirect('/',302);
-        //if (Yii::$app->getUser()->login($user)) {
-          //return $this->redirect('/welcome',302);
-        //}
-      }
+      Yii::$app->getSession()->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
+      return $this->redirect('/',302);
     }
 
     return $this->render('signup', [
@@ -161,6 +148,7 @@ class SiteController extends Controller
     $model = new PasswordResetRequestForm();
     if($model->load(Yii::$app->request->post()) && $model->validate()) {
       if(!$model->sendEmail()) {
+        // TODO: ADD THE IP ADDRESS IN HERE BEFORE MERGING
         Yii::warning('[IP ADDR] has tried to reset the password for '. $model->email);
       }
 
@@ -198,27 +186,16 @@ class SiteController extends Controller
     if (empty($token) || !is_string($token)) {
       throw new InvalidParamException('Email verification token cannot be blank.');
     }
-    $this->_user = User::findByVerifyEmailToken($token);
-    if (!$this->_user) {
+
+    $user = User::findByVerifyEmailToken($token);
+    if (!$user) {
       throw new InvalidParamException('Wrong email verification token.');
     }
-    //try {
-      //$model = new ResetPasswordForm($token);
-    //} catch (InvalidParamException $e) {
-      //throw new BadRequestHttpException($e->getMessage());
-    //}
 
-    //if ($model->load(Yii::$app->request->post())
-        //&& $model->validate()
-        //&& $model->resetPassword()) {
-    Yii::$app->getSession()->setFlash('success', 'Your account has been verified. Please continue with your check-in.');
-    return $this->redirect('/welcome',302);
-    //return $this->goHome();
-    //}
-
-    //return $this->render('resetPassword', [
-      //'model' => $model,
-    //]);
+    if (Yii::$app->getUser()->login($user)) {
+      Yii::$app->getSession()->setFlash('success', 'Your account has been verified. Please continue with your check-in.');
+      return $this->redirect('/welcome',302);
+    }
   }
 
   public function actionProfile()

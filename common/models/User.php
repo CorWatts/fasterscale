@@ -100,30 +100,11 @@ class User extends ActiveRecord implements IdentityInterface
    * @param  string      $username
    * @return static|null
    */
-  public static function findByUsername($username)
+  public static function findByEmail($email)
   {
-    return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
   }
 
-  /**
-   * Finds user by username or password
-   *
-   * @param  string      $username_or_password
-   * @return static|null
-   */
-  public static function findByUsernameOrEmail($username_or_email)
-  {
-    return static::find()
-      ->where("
-        (
-          username=:username_or_email 
-          OR email=:username_or_email
-        ) AND status=:status", [
-          'username_or_email' => $username_or_email,
-          'status' => self::STATUS_ACTIVE
-        ])
-      ->one();
-  }
   /**
    * Finds user by password reset token
    *
@@ -163,7 +144,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     return static::findOne([
-      'password_reset_token' => $token,
+      'verify_email_token' => $token,
       'status' => self::STATUS_ACTIVE,
     ]);
   }

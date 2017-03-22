@@ -80,7 +80,8 @@ class SignupForm extends Model
    */
   public function signup()
   {
-    if ($this->validate()) {
+    if ($this->validate()
+        && is_null(User::findByEmail($this->email))) {
       $user = new User();
       $user->username = $this->username;
       $user->email = $this->email;
@@ -96,6 +97,10 @@ class SignupForm extends Model
         $user->partner_email3  = $this->partner_email3;
       }
       $user->save();
+
+      $user->sendSignupNotificationEmail();
+      $user->sendVerifyEmail();
+
       return $user;
     }
 
