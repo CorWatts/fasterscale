@@ -54,8 +54,6 @@ class LoginForm extends Model
   {
     if($this->validate()) {
       if(($this->getUser())->isVerified()) {
-        var_dump( 'good here');
-        exit();
         return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
       } else {
         Yii::$app->getSession()->setFlash('warning', 'You must verify your account before you can proceed. Please check your email inbox for a verification email and follow the instructions.');

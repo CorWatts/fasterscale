@@ -7,4 +7,7 @@ return [
   'id' => 'app-common-tests',
   'basePath' => dirname(__DIR__),
   'params' => $params,
+  'components' => [
+    'db' => new \yii\helpers\UnsetArrayValue(),
+  ]
 ];

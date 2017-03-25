@@ -60,17 +60,17 @@ class LoginFormTest extends \Codeception\Test\Unit {
     $this->form = $this->mockForm($this->user);
     parent::setUp();
 
-    //Yii::configure(Yii::$app, [
-      //'components' => [
-        //'user' => [
-          //'class' => 'yii\web\User',
-          //'identityClass' => '\common\tests\unit\FakeUser',
-        //],
-      //],
-    //]);
+    Yii::configure(Yii::$app, [
+      'components' => [
+        'user' => [
+          'class' => '\common\tests\unit\FakeWebUser',
+          'identityClass' => '\common\tests\unit\FakeUser',
+        ],
+      ],
+    ]);
 
-    //$identity = new \common\tests\unit\FakeUser();
-    //$identity->timezone = "America/Los_Angeles";
+    $identity = new \common\tests\unit\FakeUser();
+    $identity->timezone = "America/Los_Angeles";
   }
 
 
@@ -91,11 +91,11 @@ class LoginFormTest extends \Codeception\Test\Unit {
       expect('validatePassword should set errors on the model if something goes wrong', $this->assertNotEmpty($this->form->getErrors('password')));
     });
   }
-  //public function testLogin() {
-    //$this->specify('login should function correctly', function() {
-      //$this->form->email = 'login@email.com';
-      //$this->form->password = 'hunter2';
-      //expect('login should return true if able to log in user', $this->assertTrue($this->form->login()));
-    //});
-  //}
+  public function testLogin() {
+    $this->specify('login should function correctly', function() {
+      $this->form->email = 'login@email.com';
+      $this->form->password = 'hunter2';
+      expect('login should return true if able to log in user', $this->assertTrue($this->form->login()));
+    });
+  }
 }
