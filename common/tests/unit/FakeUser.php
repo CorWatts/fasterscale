@@ -17,5 +17,6 @@ class FakeUser extends Model implements IdentityInterface
   public function getId() {}
   public function getAuthKey() {}
   public function validateAuthKey($authKey) {}
+  public function login($return = true) { return $return; }
 }
 

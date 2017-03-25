@@ -19,4 +19,4 @@ coverage:
 modules:
   config:
     Yii2:
-      configFile: 'config/test.php'
+      configFile: 'config/test-local.php'
