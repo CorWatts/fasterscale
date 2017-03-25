@@ -17,14 +17,22 @@ date_default_timezone_set('UTC');
 class LoginFormTest extends \Codeception\Test\Unit {
   use Specify;
 
-  private function mockUser($validatePassword = true) {
+  private function mockUser($mocks = []) {
+    $defaultMocks = [
+      'validatePassword' => true,
+      'isVerified' => true,
+      'login' => 'LOGGING IN',
+      'save' => true
+    ];
+
     $user = $this->getMockBuilder('\common\models\User')
       ->setMethods(['save', 'login', 'attributes', 'validatePassword', 'isVerified'])
       ->getMock();
-    $user->method('save')->willReturn(true);
-    $user->method('validatePassword')->willReturn($validatePassword);
-    $user->method('login')->willReturn('LOGGING IN');
-    $user->method('isVerified')->willReturn(true);
+
+    $mocks = \yii\helpers\ArrayHelper::merge($defaultMocks, $mocks);
+    foreach($mocks as $name => $val) {
+      $user->method($name)->willReturn($val);
+    }
     $user->method('attributes')->willReturn([
       'id',
       'username',
@@ -85,7 +93,7 @@ class LoginFormTest extends \Codeception\Test\Unit {
       expect('validatePassword should always return null', $this->assertNull($this->form->validatePassword()));
       expect('validatePassword should by default in this test class not set errors', $this->assertEmpty($this->form->getErrors()));
 
-      $this->user = $this->mockUser(false);
+      $this->user = $this->mockUser(['validatePassword' => false]);
       $this->form = $this->mockForm($this->user);
       $this->form->validatePassword();
       expect('validatePassword should set errors on the model if something goes wrong', $this->assertNotEmpty($this->form->getErrors('password')));
@@ -96,6 +104,25 @@ class LoginFormTest extends \Codeception\Test\Unit {
       $this->form->email = 'login@email.com';
       $this->form->password = 'hunter2';
       expect('login should return true if able to log in user', $this->assertTrue($this->form->login()));
+    });
+
+    $this->specify('login should fail if account is not verified', function() {
+      $this->user = $this->mockUser(['isVerified' => false]);
+      $this->form = $this->mockForm($this->user);
+      $this->form->email = 'login@email.com';
+      $this->form->password = 'hunter2';
+
+      expect('login should return false if account is not verified', $this->assertFalse($this->form->login()));
+      expect('login should set a flash message if account is not verified', $this->assertNotEmpty(Yii::$app->getSession()->getFlash('warning', null, true)));
+    });
+
+    $this->specify('login should fail if credentials are not valid', function() {
+      $this->user = $this->mockUser(['validatePassword' => false]);
+      $this->form = $this->mockForm($this->user);
+      $this->form->email = 'login@email.com';
+      $this->form->password = 'hunter2';
+      expect('login should return false credentials are bad', $this->assertFalse($this->form->login()));
+      expect('login should NOT set a flash message if credentials are bad', $this->assertEmpty(Yii::$app->getSession()->getFlash('warning', null, true)));
     });
   }
 }
