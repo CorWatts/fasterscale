@@ -675,6 +675,7 @@ public $userOptions = [
       'username',
       'password_hash',
       'password_reset_token',
+      'verify_email_token',
       'email',
       'auth_key',
       'role',
@@ -760,6 +761,17 @@ public $userOptions = [
                       ->getSecurity()
                       ->generateRandomString() . '_' . (time() - $expire - 1); // subtract the expiration time and a little more from the current time
       expect('isTokenCurrent should return false if the token is expired', $this->assertFalse($this->user->isTokenCurrent($bad_token)));
+    });
+  }
+
+  public function testIsVerified() {
+    $this->specify('isTokenCurrent should function correctly', function () {
+      $this->user->verify_email_token = null;
+      expect('isVerified should return true if the token is null', $this->assertTrue($this->user->isVerified()));
+      $this->user->verify_email_token = '';
+      expect('isVerified should return true if the token is the empty string', $this->assertTrue($this->user->isVerified()));
+      $this->user->verify_email_token = 'this_looks_truthy';
+      expect('isVerified should return false if the token is still present', $this->assertFalse($this->user->isVerified()));
     });
   }
 }

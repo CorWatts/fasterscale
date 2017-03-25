@@ -179,6 +179,10 @@ class User extends ActiveRecord implements IdentityInterface
     return $this->timezone;
   }
 
+  public function isVerified() {
+    return !!!$this->verify_email_token;
+  }
+
   /**
    * @inheritdoc
    */
