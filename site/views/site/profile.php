@@ -46,7 +46,7 @@ $timezones = \DateTimeZone::listIdentifiers();
 
   <div class="row">
     <div class="col-md-6 col-md-push-6 bg-success">
-      <h4>Export Your Check-In Data</h4>
+      <h4>Export Your Check-in Data</h4>
       <p>To export ALL of your check-in data, click this button. You will be redirected to a CSV download that can be opened in any spreadsheet program.</p>
     
       <div class="form-group">
