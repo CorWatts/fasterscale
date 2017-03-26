@@ -10,14 +10,14 @@ use common\components\Time;
  * @var yii\web\View $this
  */
 
-$this->title = "Past Check-ins";
+$this->title = "The Faster Scale App | Previous Check-ins";
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
   $checked_val = ($checked) ? "btn-primary" : "";
   return "<button class='btn btn-default $checked_val' data-toggle='button' disabled='disabled' name='$name' value='$value'>$label</button>";
 }
 ?>
-<h1>View Past Check-ins</h1>
+<h1>View Previous Check-ins</h1>
 <div id='past-checkin-nav' role='toolbar' class='btn-toolbar'>
   <div class='btn-group' role='group'>
     <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "-1 week")]); ?>">&lt;&lt;</a> 

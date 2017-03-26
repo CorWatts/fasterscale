@@ -49,8 +49,8 @@ if($hash = Utility::getRevHash()) {
                 $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
                 $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
-                $menuItems[] = ['label' => 'Check-In', 'url' => ['/checkin/index']];
-                $menuItems[] = ['label' => 'Past Check-Ins', 'url' => ['/checkin/view']];
+                $menuItems[] = ['label' => 'Check-in', 'url' => ['/checkin/index']];
+                $menuItems[] = ['label' => 'Previous Check-ins', 'url' => ['/checkin/view']];
                 $menuItems[] = ['label' => 'Statistics', 'url' => ['/checkin/report']];
                 $menuItems[] = ['label' => Yii::$app->user->identity->username, 'url' => ['/site/profile']];
                 $menuItems[] = [

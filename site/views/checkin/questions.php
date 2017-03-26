@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
  * @var yii\web\View $this
  */
 
-$this->title = "Check-In | Questions";
+$this->title = "The Faster Scale App | Check-in | Questions";
 
 function radioItemTemplate($index, $label, $name, $checked, $value) {
   return Html::radio
@@ -31,7 +31,7 @@ foreach($options as $option) {
   $restructured_options[$option['category_id']][$option['user_option_id']] = $option['option_name'];
 }
 ?>
-<h1>Check-In Questions</h1>
+<h1>Check-in Questions</h1>
 <p>Answer the questions below to compete your check-in.</p>
 <p>In each category, select one feeling. Then answer the related questions.</p>
 <?php
