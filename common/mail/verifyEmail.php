@@ -9,10 +9,9 @@ use yii\helpers\Html;
 $verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/verify-email', 'token' => $user->verify_email_token]);
 ?>
 
-Hello <?= Html::encode($user->username) ?>,
+<p>Hello <?= Html::encode($user->username) ?>,<br/>
+Please follow the link below to verify your account:</p>
 
-Please follow the link below to verify your account:
+<p><?= Html::a(Html::encode($verifyLink), $verifyLink) ?></p>
 
-<?= Html::a(Html::encode($verifyLink), $verifyLink) ?>
-
-You will be unable to sign in and do your first check-in until you do so.
+<p>You will be unable to sign in and do your first check-in until you do so.</p>

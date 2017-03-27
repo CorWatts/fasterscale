@@ -227,6 +227,14 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   /**
+   * Removes email verification token
+   */
+  public function removeVerifyEmailToken()
+  {
+    $this->verify_email_token = null;
+  }
+
+  /**
    * Generates "remember me" authentication key
    */
   public function generateAuthKey()

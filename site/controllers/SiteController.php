@@ -193,6 +193,8 @@ class SiteController extends Controller
     }
 
     if (Yii::$app->getUser()->login($user)) {
+      $user->removeVerifyEmailToken();
+      $user->save();
       Yii::$app->getSession()->setFlash('success', 'Your account has been verified. Please continue with your check-in.');
       return $this->redirect('/welcome',302);
     }
