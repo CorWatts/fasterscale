@@ -79,7 +79,7 @@ class SignupForm extends Model
   public function signup()
   {
     if ($this->validate()
-        && is_null(User::findByEmail($this->email))) {
+        && is_null(User::findByUsername($this->username))) {
       $user = new User();
       $user->username = $this->username;
       $user->email = $this->email;
