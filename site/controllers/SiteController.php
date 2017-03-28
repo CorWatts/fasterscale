@@ -184,12 +184,12 @@ class SiteController extends Controller
   public function actionVerifyEmail($token)
   {
     if (empty($token) || !is_string($token)) {
-      throw new InvalidParamException('Email verification token cannot be blank.');
+      throw new BadRequestHttpException('Email verification token cannot be blank.');
     }
 
     $user = User::findByVerifyEmailToken($token);
     if (!$user) {
-      throw new InvalidParamException('Wrong email verification token.');
+      throw new BadRequestHttpException('Wrong or expired email verification token.');
     }
 
     if (Yii::$app->getUser()->login($user)) {
