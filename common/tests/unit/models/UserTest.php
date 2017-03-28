@@ -774,4 +774,12 @@ public $userOptions = [
       expect('isVerified should return false if the token is still present', $this->assertFalse($this->user->isVerified()));
     });
   }
+
+  public function testRemoveVerifyEmailToken() {
+    $this->specify('removeVerifyEmailToken should function correctly', function () {
+      $this->user->verify_email_token = 'faketoken_1234';
+      $this->user->removeVerifyEmailToken();
+      expect('removeVerifyEmailToken should set the verify_email_token to be null', $this->assertNull($this->user->verify_email_token));
+    });
+  }
 }

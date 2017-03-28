@@ -17,6 +17,7 @@ use common\components\Time;
  * @property string $username
  * @property string $password_hash
  * @property string $password_reset_token
+ * @property string $verify_email_token
  * @property string $email
  * @property string $auth_key
  * @property integer $role
