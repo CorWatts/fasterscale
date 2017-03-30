@@ -35,7 +35,6 @@ class LoginFormTest extends \Codeception\Test\Unit {
     }
     $user->method('attributes')->willReturn([
       'id',
-      'username',
       'password_hash',
       'password_reset_token',
       'verify_email_token',
@@ -101,7 +100,7 @@ class LoginFormTest extends \Codeception\Test\Unit {
   }
   public function testLogin() {
     $this->specify('login should function correctly', function() {
-      $this->form->username = 'hunter2';
+      $this->form->email = 'hunter2@hunter2.com';
       $this->form->password = 'hunter2';
       expect('login should return true if able to log in user', $this->assertTrue($this->form->login()));
     });
@@ -109,7 +108,7 @@ class LoginFormTest extends \Codeception\Test\Unit {
     $this->specify('login should fail if account is not verified', function() {
       $this->user = $this->mockUser(['isVerified' => false]);
       $this->form = $this->mockForm($this->user);
-      $this->form->username = 'hunter2';
+      $this->form->email = 'hunter2@hunter2.com';
       $this->form->password = 'hunter2';
 
       expect('login should return false if account is not verified', $this->assertFalse($this->form->login()));
@@ -119,7 +118,7 @@ class LoginFormTest extends \Codeception\Test\Unit {
     $this->specify('login should fail if credentials are not valid', function() {
       $this->user = $this->mockUser(['validatePassword' => false]);
       $this->form = $this->mockForm($this->user);
-      $this->form->username = 'hunter2';
+      $this->form->email = 'hunter2@hunter2.com';
       $this->form->password = 'hunter2';
       expect('login should return false credentials are bad', $this->assertFalse($this->form->login()));
       expect('login should NOT set a flash message if credentials are bad', $this->assertEmpty(Yii::$app->getSession()->getFlash('warning', null, true)));

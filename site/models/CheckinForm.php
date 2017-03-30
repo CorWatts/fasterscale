@@ -27,7 +27,6 @@ class CheckinForm extends Model
   public function rules()
   {
     return [
-      // username and password are both required
       [
         [
           'options1',

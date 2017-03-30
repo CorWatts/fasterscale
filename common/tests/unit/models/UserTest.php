@@ -672,7 +672,6 @@ public $userOptions = [
     $this->user->method('save')->willReturn(true);
     $this->user->method('attributes')->willReturn([
       'id',
-      'username',
       'password_hash',
       'password_reset_token',
       'verify_email_token',

@@ -3,10 +3,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use common\models\UserOption;
 
-$username = Html::encode($user->username);
+$email = Html::encode($user->email);
 $date = str_replace('-', '', $date);
 $imgRef = $message->embedContent($chart_content, [
-  'fileName'       => "$username-scores-$date.png",
+  'fileName'       => "faster-scale-scores-$date.png",
   'contentType'    => 'image/png',
   'setDisposition' => 'inline'
 ]);
@@ -76,7 +76,7 @@ $imgRef = $message->embedContent($chart_content, [
                                                          </tr>
                                                       </tbody>
                                                    </table>
-                                                   <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">Hello there! <?=$username?> has set you as one of their report recipients. These reports are sent out when <?=$username?> scores above <strong><?= Html::encode($user->email_threshold) ?></strong> in their check-in. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</p>
+                                                   <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">Hello there! <?=$email?> has set you as one of their report recipients. These reports are sent out when <?=$email?> scores above <strong><?= Html::encode($user->email_threshold) ?></strong> in their check-in. This means that they might be struggling emotionally, and you should contact them to see how they are. Their report results are below. You can reply to this email, and it will go directly to your friend.</p>
                                                 </th>
                                                 <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
                                              </tr>
@@ -107,7 +107,7 @@ $imgRef = $message->embedContent($chart_content, [
                                           <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
                                              <tr style="padding:0;text-align:left;vertical-align:top">
                                                 <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
-                                                   <h2 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Lato,Helvetica,Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:24px 8px 8px 8px;text-align:left;word-wrap:normal"><?=$username?>'s Responses:</h2>
+                                                   <h2 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Lato,Helvetica,Arial,sans-serif;font-size:30px;font-weight:400;line-height:1.3;margin:0;margin-bottom:0;padding:24px 8px 8px 8px;text-align:left;word-wrap:normal"><?=$email?>'s Responses:</h2>
                                                 </th>
                                                 <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
                                              </tr>

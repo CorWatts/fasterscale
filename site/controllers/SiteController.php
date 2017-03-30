@@ -255,7 +255,7 @@ class SiteController extends Controller
   public function actionExport()
   {
     header("Content-Type: text/csv");
-    header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->username."-".date('Ymd').".csv");
+    header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->email."-".date('Ymd').".csv");
 
     $data = Yii::$app->user->identity->getExportData();
     $fp = fopen('php://output', 'w');

@@ -23,7 +23,7 @@ $this->title = 'The Faster Scale App | Welcome';
   <p>You can view helpful stats and analytics, such as your "Danger Score" history, by clicking on the "Statistics" link at the top of this page.</p>
 
   <h3>Account Settings</h3>
-  <p>If you need to change any of your account settings, simply go to your settings page by clicking on your username at the very top of this page. You can change email report thesholds, report partners, your password, and other settings there.</p>
+  <p>If you need to change any of your account settings, simply go to your settings page by clicking on your email at the very top of this page. You can change email report thesholds, report partners, your password, and other settings there.</p>
 
   <h3>Finally, do your first Check-in</h3>
     <p>Your next step should be to do a check-in. Use this button to do so:</p>

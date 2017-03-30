@@ -11,7 +11,6 @@ use \DateTimeZone;
  */
 class SignupForm extends Model
 {
-  public $username;
   public $email;
   public $password;
   public $timezone = "America/Los_Angeles"; // default
@@ -28,10 +27,6 @@ class SignupForm extends Model
   public function rules()
   {
     return [
-      ['username', 'filter', 'filter' => 'trim'],
-      ['username', 'required'],
-      ['username', 'string', 'min' => 2, 'max' => 255],
-
       ['email', 'filter', 'filter' => 'trim'],
       ['email', 'required'],
       ['email', 'email'],
@@ -79,9 +74,8 @@ class SignupForm extends Model
   public function signup()
   {
     if ($this->validate()
-        && is_null(User::findByUsername($this->username))) {
+      && is_null(User::findByEmail($this->email))) {
       $user = new User();
-      $user->username = $this->username;
       $user->email = $this->email;
       $user->setPassword($this->password);
       $user->timezone = $this->timezone;
