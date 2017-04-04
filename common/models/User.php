@@ -14,9 +14,9 @@ use common\components\Time;
  * User model
  *
  * @property integer $id
- * @property string $username
  * @property string $password_hash
  * @property string $password_reset_token
+ * @property string $verify_email_token
  * @property string $email
  * @property string $auth_key
  * @property integer $role
@@ -95,35 +95,16 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   /**
-   * Finds user by username
+   * Finds user by email
    *
-   * @param  string      $username
+   * @param  string      $email
    * @return static|null
    */
-  public static function findByUsername($username)
+  public static function findByEmail($email)
   {
-    return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
   }
 
-  /**
-   * Finds user by username or password
-   *
-   * @param  string      $username_or_password
-   * @return static|null
-   */
-  public static function findByUsernameOrEmail($username_or_email)
-  {
-    return static::find()
-      ->where("
-        (
-          username=:username_or_email 
-          OR email=:username_or_email
-        ) AND status=:status", [
-          'username_or_email' => $username_or_email,
-          'status' => self::STATUS_ACTIVE
-        ])
-      ->one();
-  }
   /**
    * Finds user by password reset token
    *
@@ -132,11 +113,7 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public static function findByPasswordResetToken($token)
   {
-    $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
-    $parts = explode('_', $token);
-    $timestamp = (int) end($parts);
-    if ($timestamp + $expire < time()) {
-      // token expired
+    if(!static::isTokenCurrent($token)) {
       return null;
     }
 
@@ -144,6 +121,42 @@ class User extends ActiveRecord implements IdentityInterface
       'password_reset_token' => $token,
       'status' => self::STATUS_ACTIVE,
     ]);
+  }
+
+  /**
+   * Finds user by email verification token
+   *
+   * @param  string      $token email verification token
+   * @return static|null
+   */
+  public static function findByVerifyEmailToken($token)
+  {
+    if(!static::isTokenCurrent($token)) {
+      return null;
+    }
+
+    return static::findOne([
+      'verify_email_token' => $token,
+      'status' => self::STATUS_ACTIVE,
+    ]);
+  }
+
+  /**
+   * Finds out if a token is current or expired
+   *
+   * @param  string      $token verification token
+   * @param  string      $paramPath Yii app param path
+   * @return boolean
+   */
+  public static function isTokenCurrent($token, $paramPath = 'user.passwordResetTokenExpire') {
+    $expire = \Yii::$app->params[$paramPath];
+    $parts = explode('_', $token);
+    $timestamp = (int) end($parts);
+    if ($timestamp + $expire < time()) {
+      // token expired
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -164,6 +177,10 @@ class User extends ActiveRecord implements IdentityInterface
 
   public function getTimezone() {
     return $this->timezone;
+  }
+
+  public function isVerified() {
+    return !!!$this->verify_email_token;
   }
 
   /**
@@ -200,6 +217,24 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   /**
+   * Generates email verification token
+   */
+  public function generateVerifyEmailToken()
+  {
+    $this->verify_email_token = Yii::$app
+      ->getSecurity()
+      ->generateRandomString() . '_' . time();
+  }
+
+  /**
+   * Removes email verification token
+   */
+  public function removeVerifyEmailToken()
+  {
+    $this->verify_email_token = null;
+  }
+
+  /**
    * Generates "remember me" authentication key
    */
   public function generateAuthKey()
@@ -217,23 +252,6 @@ class User extends ActiveRecord implements IdentityInterface
     $this->password_reset_token = Yii::$app
       ->getSecurity()
       ->generateRandomString() . '_' . time();
-  }
-
-  /**
-   * Finds out if password reset token is valid
-   *
-   * @param string $token password reset token
-   * @return boolean
-   */
-  public static function isPasswordResetTokenValid($token)
-  {
-    if (empty($token)) {
-      return false;
-    }
-    $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-    $parts = explode('_', $token);
-    $timestamp = (int) end($parts);
-    return $timestamp + $expire >= time();
   }
 
   /**
@@ -264,7 +282,7 @@ class User extends ActiveRecord implements IdentityInterface
           'options_list'  => Option::getAllOptions(),
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
-        ->setSubject($this->username." has scored high in The Faster Scale App")
+        ->setSubject($this->email." has scored high in The Faster Scale App")
         ->setTo($email);
       }
     }
@@ -365,6 +383,14 @@ ORDER  BY l.date DESC;
       ->send();
   }
 
+  public function sendVerifyEmail() {
+    return \Yii::$app->mailer->compose('verifyEmail', ['user' => $this])
+      ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+      ->setTo($this->email)
+      ->setSubject('Please verify your '.\Yii::$app->name .' account')
+      ->send();
+  }
+
   public function sendDeleteNotificationEmail() {
     if($this->isPartnerEnabled()) return false; // no partner emails set
 
@@ -376,7 +402,7 @@ ORDER  BY l.date DESC;
           'email' => $email
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
-        ->setSubject($this->username." has delete their The Faster Scale App account")
+        ->setSubject($this->email." has delete their The Faster Scale App account")
         ->setTo($email);
       }
     }

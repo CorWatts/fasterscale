@@ -18,7 +18,6 @@ $timezones = \DateTimeZone::listIdentifiers();
 				'enableClientValidation' => true,
 				'options' => ['validateOnSubmit' => true]
 			]); ?>
-        <?= $form->field($profile, 'username') ?>
         <?= $form->field($profile, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>']); ?>
         <?= $form->field($profile, 'password')->passwordInput() ?>
 		    <?= $form->field($profile, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>

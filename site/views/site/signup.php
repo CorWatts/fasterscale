@@ -28,7 +28,6 @@ $this->registerMetaTag([
     'enableAjaxValidation' => false,
 				'options' => ['validateOnSubmit' => true]
 			]); ?>
-        <?= $form->field($model, 'username') ?>
         <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>'])->input('email') ?>
         <?= $form->field($model, 'password') ?>
         <?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>

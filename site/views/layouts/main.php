@@ -52,7 +52,7 @@ if($hash = Utility::getRevHash()) {
                 $menuItems[] = ['label' => 'Check-in', 'url' => ['/checkin/index']];
                 $menuItems[] = ['label' => 'Previous Check-ins', 'url' => ['/checkin/view']];
                 $menuItems[] = ['label' => 'Statistics', 'url' => ['/checkin/report']];
-                $menuItems[] = ['label' => Yii::$app->user->identity->username, 'url' => ['/site/profile']];
+                $menuItems[] = ['label' => Yii::$app->user->identity->email, 'url' => ['/site/profile']];
                 $menuItems[] = [
                     'label' => 'Logout',
                     'url' => ['/site/logout'],

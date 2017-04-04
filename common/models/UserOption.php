@@ -232,7 +232,7 @@ class UserOption extends \yii\db\ActiveRecord
     $graph->img->SetAntiAliasing();
     $graph->SetScale("textlin");
     $graph->SetShadow();
-    $graph->title->Set(Yii::$app->user->identity->username . "'s Scores for the last month");
+    $graph->title->Set(Yii::$app->user->identity->email . "'s scores for the last month");
     $graph->title->SetFont(FF_ARIAL, FS_BOLD, 20);
     // Use 20% "grace" to get slightly larger scale then min/max of data
     $graph->yscale->SetGrace(10); // remove when new score formula is released

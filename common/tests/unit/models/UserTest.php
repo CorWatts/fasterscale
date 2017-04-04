@@ -672,9 +672,9 @@ public $userOptions = [
     $this->user->method('save')->willReturn(true);
     $this->user->method('attributes')->willReturn([
       'id',
-      'username',
       'password_hash',
       'password_reset_token',
+      'verify_email_token',
       'email',
       'auth_key',
       'role',
@@ -746,6 +746,39 @@ public $userOptions = [
       expect('isOverThreshold should return false if partners enabled and equal to but not over threshold', $this->assertFalse($this->user->isOverThreshold(10)));
 
       expect('isOverThreshold should return true if partners enabled and over threshold', $this->assertTrue($this->user->isOverThreshold(15)));
+    });
+  }
+
+  public function testIsTokenCurrent() {
+    $this->specify('isTokenCurrent should function correctly', function () {
+      $good_token = \Yii::$app
+                      ->getSecurity()
+                      ->generateRandomString() . '_' . time();
+      expect('isTokenCurrent should return true if the token is still current/alive', $this->assertTrue($this->user->isTokenCurrent($good_token)));
+      $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
+      $bad_token = \Yii::$app
+                      ->getSecurity()
+                      ->generateRandomString() . '_' . (time() - $expire - 1); // subtract the expiration time and a little more from the current time
+      expect('isTokenCurrent should return false if the token is expired', $this->assertFalse($this->user->isTokenCurrent($bad_token)));
+    });
+  }
+
+  public function testIsVerified() {
+    $this->specify('isTokenCurrent should function correctly', function () {
+      $this->user->verify_email_token = null;
+      expect('isVerified should return true if the token is null', $this->assertTrue($this->user->isVerified()));
+      $this->user->verify_email_token = '';
+      expect('isVerified should return true if the token is the empty string', $this->assertTrue($this->user->isVerified()));
+      $this->user->verify_email_token = 'this_looks_truthy';
+      expect('isVerified should return false if the token is still present', $this->assertFalse($this->user->isVerified()));
+    });
+  }
+
+  public function testRemoveVerifyEmailToken() {
+    $this->specify('removeVerifyEmailToken should function correctly', function () {
+      $this->user->verify_email_token = 'faketoken_1234';
+      $this->user->removeVerifyEmailToken();
+      expect('removeVerifyEmailToken should set the verify_email_token to be null', $this->assertNull($this->user->verify_email_token));
     });
   }
 }

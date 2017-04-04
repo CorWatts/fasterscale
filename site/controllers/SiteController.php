@@ -37,7 +37,7 @@ class SiteController extends Controller
             'allow' => true,
           ],
           [
-            'actions' => ['login', 'signup', 'reset-password', 'request-password-reset'],
+            'actions' => ['login', 'signup', 'reset-password', 'request-password-reset', 'verify-email'],
             'allow' => true,
             'roles' => ['?'],
           ],
@@ -80,10 +80,6 @@ class SiteController extends Controller
 
   public function actionLogin()
   {
-    if (!\Yii::$app->user->isGuest) {
-      return $this->goHome();
-    }
-
     $model = new LoginForm();
     if ($model->load(Yii::$app->request->post()) && $model->login()) {
       return $this->goBack();
@@ -97,7 +93,6 @@ class SiteController extends Controller
   public function actionLogout()
   {
     Yii::$app->user->logout();
-
     return $this->goHome();
   }
 
@@ -137,15 +132,10 @@ class SiteController extends Controller
   public function actionSignup()
   {
     $model = new SignupForm();
-
-    if ($model->load(Yii::$app->request->post())) {
+    if($model->load(Yii::$app->request->post())) {
       $user = $model->signup();
-      if ($user) {
-        $user->sendSignupNotificationEmail();
-        if (Yii::$app->getUser()->login($user)) {
-          return $this->redirect('/welcome',302);
-        }
-      }
+      Yii::$app->getSession()->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
+      return $this->redirect('/',302);
     }
 
     return $this->render('signup', [
@@ -156,13 +146,14 @@ class SiteController extends Controller
   public function actionRequestPasswordReset()
   {
     $model = new PasswordResetRequestForm();
-    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-      if ($model->sendEmail()) {
-        Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
-        return $this->goHome();
-      } else {
-        Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+    if($model->load(Yii::$app->request->post()) && $model->validate()) {
+      if(!$model->sendEmail()) {
+        // TODO: ADD THE IP ADDRESS IN HERE BEFORE MERGING
+        Yii::warning('[IP ADDR] has tried to reset the password for '. $model->email);
       }
+
+      Yii::$app->getSession()->setFlash('success', 'If there is an account with the submitted email address you will receive further instructions in your email inbox.');
+      return $this->goHome();
     }
 
     return $this->render('requestPasswordResetToken', [
@@ -188,6 +179,25 @@ class SiteController extends Controller
     return $this->render('resetPassword', [
       'model' => $model,
     ]);
+  }
+
+  public function actionVerifyEmail($token)
+  {
+    if (empty($token) || !is_string($token)) {
+      throw new BadRequestHttpException('Email verification token cannot be blank.');
+    }
+
+    $user = User::findByVerifyEmailToken($token);
+    if (!$user) {
+      throw new BadRequestHttpException('Wrong or expired email verification token.');
+    }
+
+    if (Yii::$app->getUser()->login($user)) {
+      $user->removeVerifyEmailToken();
+      $user->save();
+      Yii::$app->getSession()->setFlash('success', 'Your account has been verified. Please continue with your check-in.');
+      return $this->redirect('/welcome',302);
+    }
   }
 
   public function actionProfile()
@@ -245,7 +255,7 @@ class SiteController extends Controller
   public function actionExport()
   {
     header("Content-Type: text/csv");
-    header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->username."-".date('Ymd').".csv");
+    header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->email."-".date('Ymd').".csv");
 
     $data = Yii::$app->user->identity->getExportData();
     $fp = fopen('php://output', 'w');
