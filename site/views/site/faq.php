@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = 'The Faster Scale App | FAQ';
 $this->registerMetaTag([
@@ -29,8 +30,8 @@ $this->registerMetaTag([
   </div>
 
   <div>
-    <strong>How do I always send a partner email, regardless of score?</strong>
-    <p class="indent">It's quite easy. Set your Email Threshold to be 0. Then, whenever you complete a check-in a report will be sent to your partners no matter what your score was.</p>
+    <strong>How do I ensure a partner email is always sent, regardless of my score?</strong>
+    <p class="indent">It's as simple as setting your Email Threshold (on the <?=Html::a("/profile", Url::to(['site/profile']))?>) to 0. Then a report will be sent to your partners with each check-in.</p>
   </div>
 
   <div>

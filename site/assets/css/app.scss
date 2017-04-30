@@ -45,6 +45,15 @@ body {
 	margin: 0 0 15px 0;
 }
 
+.site-index {
+  .block {
+    padding-top: 30px;
+    &:first-child {
+      padding-top: 0px;
+    }
+  }
+}
+
 #checkin-form {
   .btn {
     white-space: normal;
@@ -65,12 +74,11 @@ body {
 #ui-datepicker-div {
   z-index: 1050 !important;
 }
+
 #spinner {
   text-align: center;
 }
-.caption h3 {
-  margin-top: 0px;
-}
+
 .navbar-brand h1 {
   font-size: inherit;
   margin: inherit;

@@ -49,6 +49,14 @@ return [
       'linkAssets' => true,
       'converter' => [
         'class' => 'yii\web\AssetConverter',
+        'commands' => [
+					'less' => ['css', 'lessc {from} {to} --no-color --source-map'],
+					'scss' => ['css', 'sass {from} {to}'],
+					'sass' => ['css', 'sass {from} {to}'],
+					'styl' => ['css', 'stylus < {from} > {to}'],
+					'coffee' => ['js', 'coffee -p {from} > {to}'],
+					'ts' => ['js', 'tsc --out {to} {from}'],
+        ],
       ],
       // UNCOMMENT WHEN ASSETS HAVE BEEN COMPRESSED
       //'appendTimestamp' => true,
