@@ -148,8 +148,8 @@ class SiteController extends Controller
     $model = new PasswordResetRequestForm();
     if($model->load(Yii::$app->request->post()) && $model->validate()) {
       if(!$model->sendEmail()) {
-        // TODO: ADD THE IP ADDRESS IN HERE BEFORE MERGING
-        Yii::warning('[IP ADDR] has tried to reset the password for '. $model->email);
+        $ip = Yii::$app->getRequest()->getUserIP() ?: "UNKNOWN";
+        Yii::warning("$ip has tried to reset the password for ".$model->email);
       }
 
       Yii::$app->getSession()->setFlash('success', 'If there is an account with the submitted email address you will receive further instructions in your email inbox.');
