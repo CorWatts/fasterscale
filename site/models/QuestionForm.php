@@ -105,31 +105,69 @@ class QuestionForm extends Model
     );
   }
 
+  public function behaviorToAnswers($bhvr_number) {
+    $prop_names   = array_keys($this->getPrefixProps("answer_$bhvr_number"));
+    $prop_letters = array_map(function($n) { return substr($n, -1, 1); }, $prop_names);
+    $answers = array_map(function($n) { return $this->$n; }, $prop_names);
+ 
+    return array_combine($prop_letters, $answers);
+  }
+
+  public function getPrefixProps($prefix) {
+    return array_filter(get_object_vars($this), function($v, $k) use($prefix) {
+      if(strpos($k, $prefix) === 0 && strlen($v)) {
+        return true;
+      }
+    }, ARRAY_FILTER_USE_BOTH);
+  }
+
+  public function getUserOptions($ids) {
+    return UserOption::findAll($ids);
+  }
+
+  public function getUserBehaviors() {
+    $user_bhvr_props = $this->getPrefixProps('user_option_id');
+    $user_bhvrs = $this->getUserOptions(array_values($user_bhvr_props));
+    return array_combine(array_keys($user_bhvr_props), $user_bhvrs);
+  }
+
+  public function getAnswers() {
+    $answers = [];
+    $user_bhvrs = $this->getUserBehaviors();
+    foreach($user_bhvrs as $property => $user_bhvr) {
+      $behavior_id = intval(substr($property, -1, 1));
+      foreach($this->behaviorToAnswers($behavior_id) as $answer_letter => $answer) {
+        $question_id = Question::$TYPES[$answer_letter];
+        array_push($answers, [
+                               'option_id'    => $user_bhvr->option_id,
+                               'user_bhvr_id' => $user_bhvr->id,
+                               'question_id'  => $question_id,
+                               'answer'       => $answer,
+                             ]);
+      }
+    }
+    return $answers;
+  }
+
   public function saveAnswers() {
     $result = true;
-    for($i = 2; $i < 8; $i ++) {
-      $option_id = "user_option_id".$i;
-      if(!empty($this->$option_id)) {
-        $user_option = UserOption::find()->with("option")->where(['id' => $this->{"user_option_id".$i}])->one();
-        for($j = 1; $j < 4; $j ++) {
-          $answer_prop = "answer_".$i.Question::$TYPES[$j];
-          if(!empty($this->$answer_prop)) {
-            $user_option_prop = "user_option_id".$i;
-            $model = new Question;
-            $model->user_id = Yii::$app->user->id;
-            $model->option_id = $user_option->option->id;
-            $model->user_option_id = $this->$user_option_prop;
-            $model->date = new Expression("now()::timestamp");
-            $model->question = $j;
-            $model->answer = $this->$answer_prop;
-            if(!$model->save()) {
-              $result = false;
-            }
-          }
-        }
+    foreach($this->getAnswers() as $answer_data) {
+      if(!$this->saveModel($answer_data)) {
+        $result = false;
       }
     }
     return $result;
   }
 
+  public function saveModel(Array $answer_data) {
+    extract($answer_data);
+    $model = new Question;
+    $model->user_id = Yii::$app->user->id;
+    $model->option_id = $option_id;
+    $model->user_option_id = $user_bhvr_id;
+    $model->date = new Expression("now()::timestamp");
+    $model->question = $question_id;
+    $model->answer = $answer;
+    return $model->save();
+  }
 }

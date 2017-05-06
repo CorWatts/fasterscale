@@ -22,10 +22,11 @@ use Yii;
 class Question extends \yii\db\ActiveRecord
 {
   public static $TYPES = [
-    1 => "a",
-    2 => "b",
-    3 => "c"
+    'a' => 1,
+    'b' => 2,
+    'c' => 3
   ];
+
   public static $QUESTIONS = [
     1 => "How does it affect me? How do I act and feel?",
     2 => "How does it affect the important people in my life?",
