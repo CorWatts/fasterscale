@@ -67,7 +67,7 @@ class CheckinController extends \yii\web\Controller
   public function actionQuestions()
   {
     $date = Time::getLocalDate();
-    $user_options = UserOption::getUserOptionsWithCategory($date, true);
+    $user_options = UserOption::getUserOptionsWithCategory($date);
     if(count($user_options) === 0) {
       return $this->redirect(['view']);
     }

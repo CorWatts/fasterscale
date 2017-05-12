@@ -46,4 +46,149 @@ class QuestionFormTest extends \Codeception\Test\Unit
       expect('getBhvrValidator should return false when the answers that are set are NOT for this option', $this->assertFalse($validator($model, "user_option_id3")));
     });
   }
+
+  public function testGetPrefixProps()
+  {
+    $model = new QuestionForm();
+
+    $this->specify('getPrefixProps should function properly', function() use($model) {
+      expect('getPrefixProps should strip out all the falsy propeties it finds', $this->assertEmpty($model->getPrefixProps('answer')));
+
+      $model->answer_1a = 'processing emotions';
+      expect('getPrefixProps should return non-falsy properties that have the given prefix', $this->assertEquals($model->getPrefixProps('answer'), ['answer_1a' => 'processing emotions']));
+    });
+  }
+
+  public function testBehaviorToAnswers()
+  {
+    $this->specify('behaviorToAnswers should function properly', function() {
+      $model = new QuestionForm();
+      $model->answer_1a = 'answering question a';
+      $model->answer_1b = 'answering question b';
+      $model->answer_1c = 'answering question c';
+
+      $model->answer_2a = 'answering question a';
+      $model->answer_2b = 'answering question b';
+      $model->answer_2c = 'answering question c';
+
+      expect('behaviorToAnswers should return the answer properties related to the behavior number supplied', $this->assertEquals($model->behaviorToAnswers(1), [
+                                                               'a' => 'answering question a',
+                                                               'b' => 'answering question b',
+                                                               'c' => 'answering question c'
+                                                             ]));
+
+      expect('behaviorToAnswers should return the the empty set when there are no answers associated with the supplied behavior number', $this->assertEmpty($model->behaviorToAnswers(7)));
+    });
+  }
+
+  public function testGetUserBehaviors()
+  {
+    $this->specify('getUserBehaviors should return an empty array when there are no questions or answers set', function() {
+      $model = $this->getMockBuilder('\site\models\QuestionForm')
+        ->setMethods(['getUserOptions'])
+        ->getMock();
+      $model->method('getUserOptions')->willReturn([]);
+      $this->assertEmpty($model->getUserBehaviors());
+    });
+
+    $this->specify('getUserBehaviors should return an array of properties => UserOption models', function() {
+      $model = $this->getMockBuilder('\site\models\QuestionForm')
+        ->setMethods(['getUserOptions'])
+        ->getMock();
+      $model->method('getUserOptions')->willReturn([
+        $this->fakeModel(7, 280),
+        $this->fakeModel(13, 281),
+        $this->fakeModel(28, 284),
+      ]);
+      $model->user_option_id1 = 280;
+      $model->user_option_id2 = 281;
+      $model->user_option_id3 = 284;
+      $this->assertEquals($model->getUserBehaviors(), [
+        'user_option_id1' => $this->fakeModel(7, 280),
+        'user_option_id2' => $this->fakeModel(13, 281),
+        'user_option_id3' => $this->fakeModel(28, 284),
+      ]);
+    });
+  }
+
+  public function testGetAnswers()
+  {
+    $model = $this->getMockBuilder('\site\models\QuestionForm')
+      ->setMethods(['getUserBehaviors', 'saveModel'])
+      ->getMock();
+    $model->method('getUserBehaviors')->willReturn([
+      'user_option_id1' => $this->fakeModel(7, 280),
+      'user_option_id2' => $this->fakeModel(13, 281),
+      'user_option_id3' => $this->fakeModel(28, 284),
+    ]);
+
+    $model->method('saveModel')->willReturn([
+      'data yo'
+    ]);
+
+    $this->specify('getAnswers should function properly', function() use($model) {
+      $model->answer_1a = "processing emotions";
+      $model->answer_1b = "processing emotions";
+      $model->answer_1c = "processing emotions";
+      $model->answer_2a = "processing emotions";
+      $model->answer_2b = "processing emotions";
+      $model->answer_2c = "processing emotions";
+      $model->answer_3a = "processing emotions";
+      $model->answer_3b = "processing emotions";
+      $model->answer_3c = "processing emotions";
+      expect('getAnswers should extract and coerce the data correctly', $this->assertEquals($model->getAnswers(), [ [
+										'option_id' => 280,
+										'user_bhvr_id' => 7,
+										'question_id' => 1,
+										'answer' => 'processing emotions',
+									], [
+										'option_id' => 280,
+										'user_bhvr_id' => 7,
+										'question_id' => 2,
+										'answer' => 'processing emotions',
+									], [
+										'option_id' => 280,
+										'user_bhvr_id' => 7,
+										'question_id' => 3,
+										'answer' => 'processing emotions',
+									], [
+										'option_id' => 281,
+										'user_bhvr_id' => 13,
+										'question_id' => 1,
+										'answer' => 'processing emotions',
+									], [
+										'option_id' => 281,
+										'user_bhvr_id' => 13,
+										'question_id' => 2,
+										'answer' => 'processing emotions',
+									], [
+										'option_id' => 281,
+										'user_bhvr_id' => 13,
+										'question_id' => 3,
+										'answer' => 'processing emotions',
+									], [
+										'option_id' => 284,
+										'user_bhvr_id' => 28,
+										'question_id' => 1,
+										'answer' => 'processing emotions',
+									], [
+										'option_id' => 284,
+										'user_bhvr_id' => 28,
+										'question_id' => 2,
+										'answer' => 'processing emotions',
+									], [
+										'option_id' => 284,
+										'user_bhvr_id' => 28,
+										'question_id' => 3,
+										'answer' => 'processing emotions',
+									]]));
+    });
+  }
+
+  private function fakeModel($id, $option_id) {
+    $class = new \stdClass;
+    $class->id = $id;
+    $class->option_id = $option_id;
+    return $class;
+  }
 }

@@ -8,20 +8,16 @@ use yii\widgets\ActiveForm;
 $this->title = "The Faster Scale App | Check-in | Questions";
 
 function radioItemTemplate($index, $label, $name, $checked, $value) {
-  return Html::radio
-    (
-      $name,
-      $checked,
-      [
-        'value' => $value,
-        'label' => $label,
-        'container' => false,
-        'labelOptions' =>
-        [
-          'class' => $checked ? 'btn btn-info active' : 'btn btn-info',
-        ],
-      ]
-    );
+  return Html::radio(
+    $name,
+    $checked,
+    ['value' => $value,
+     'label' => $label,
+     'container' => false,
+     'labelOptions' => [ 'class' => $checked
+                                     ? 'btn btn-info active'
+                                     : 'btn btn-info'],
+    ]);
 }
 
 $categories = [];
