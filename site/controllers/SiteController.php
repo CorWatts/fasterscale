@@ -189,7 +189,7 @@ class SiteController extends Controller
 
     $user = User::findByVerifyEmailToken($token);
     if (!$user) {
-      throw new BadRequestHttpException('Wrong or expired email verification token.');
+      throw new BadRequestHttpException("Wrong or expired email verification token. If you aren't sure why this error occurs perhaps you've already verified your account. Please try logging in.");
     }
 
     if (Yii::$app->getUser()->login($user)) {
