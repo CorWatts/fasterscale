@@ -8,7 +8,7 @@
 ## Getting Started
 These instructions will help you get a local installation set up for development and testing purposes. See the deployment instructions for how to deploy this to a live system.
 ### Prerequisites
-* PHP >= 5.6
+* PHP >= 7.0
 * Composer
 * A SASS compiler. We recommend the ```sass``` Ruby Gem. Once rubygems is installed on your machine (if you're on MacOS it already is) you should type ```gem install sass```.
 * PostgreSQL 9.1 or later (Theoretically any type of SQL compatible with Yii2's ActiveRecord might work, but we've only tested this on PostgreSQL)
