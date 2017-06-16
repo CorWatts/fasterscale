@@ -131,7 +131,7 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public static function findByVerifyEmailToken($token)
   {
-    if(!static::isTokenCurrent($token)) {
+    if(!static::isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
       return null;
     }
 
