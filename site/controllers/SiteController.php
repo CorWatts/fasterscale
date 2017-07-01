@@ -75,7 +75,17 @@ class SiteController extends Controller
 
   public function actionIndex()
   {
-    return $this->render('index');
+    $key = "index_blog_".\common\components\Time::getLocalDate('UTC');
+    $posts = Yii::$app->cache->get($key);
+    if($posts === false) {
+      $posts = \Yii::$app->getModule('blog')
+                            ->fetch()
+                            ->parse()
+                            ->results;
+    }
+    Yii::$app->cache->set($key, $posts, 60*60*24);
+
+    return $this->render('index', ['posts'=>$posts]);
   }
 
   public function actionLogin()

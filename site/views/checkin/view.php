@@ -60,7 +60,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 
               case ($score < 70):
                 $alert_level = "warning";
-                $alert_msg = "Definite warning signs. You aren't doing well. Take some time out, write out what you're feeling, and discuss it with someone.";
+                $alert_msg = "Definite warning signs. You aren't doing well. Take some time out, write down what you're feeling, and discuss it with someone.";
                 break;
 
               default:

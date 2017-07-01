@@ -1,7 +1,7 @@
 {
   "name": "corwatts/fasterscale",
   "description": "An online version of the Faster Scale -- a relapse awareness tool",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {
@@ -19,7 +19,8 @@
     "moment/moment": "dev-master",
     "spacedealer/yii2-loggly": ">=0.2.0",
     "bower-asset/chartjs": "~2.5",
-    "amenadiel/jpgraph": "~3.6.7"
+    "amenadiel/jpgraph": "~3.6.7",
+    "corwatts/yii2-markdown-files": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

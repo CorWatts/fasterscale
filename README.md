@@ -47,7 +47,7 @@ $config = [
 };
 ```
 * run all yii2 db migrations ```./yii migrate```
-* startup local PHP server with ```cd site/web && php -S localhost:8080 router.php```
+* startup local PHP server with ```./yii serve --docroot='site/web'```
 * visit [http://localhost:8080/signup](http://localhost:8080/signup) and create a new user
 * log in, start working
 
