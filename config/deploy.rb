@@ -3,7 +3,7 @@ require 'capistrano/setup'
 set :staging, :production
 
 set :application, 'Checkin'
-set :repo_url, 'ssh://git@github.com/CorWatts/emotionalcheckin.git'
+set :repo_url, 'ssh://git@github.com/CorWatts/fasterscale.git'
 
 set :keep_releases, 3
 
