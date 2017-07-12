@@ -37,6 +37,8 @@ class User extends ActiveRecord implements IdentityInterface
 
   const ROLE_USER = 10;
 
+  const CONFIRMED_STRING = '_confirmed';
+
   public $decorator;
 
   /**
@@ -131,14 +133,21 @@ class User extends ActiveRecord implements IdentityInterface
    */
   public static function findByVerifyEmailToken($token)
   {
-    if(!static::isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
-      return null;
-    }
+    if(static::isTokenConfirmed($token)) return null;
 
-    return static::findOne([
-      'verify_email_token' => $token,
+    $user = static::findOne([
+      'verify_email_token' => [$token, $token . self::CONFIRMED_STRING],
       'status' => self::STATUS_ACTIVE,
     ]);
+
+    if($user) {
+      if(!static::isTokenConfirmed($token) &&
+         !static::isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
+        return null;
+      }
+    }
+
+    return $user;
   }
 
   /**
@@ -148,7 +157,7 @@ class User extends ActiveRecord implements IdentityInterface
    * @param  string      $paramPath Yii app param path
    * @return boolean
    */
-  public static function isTokenCurrent($token, $paramPath = 'user.passwordResetTokenExpire') {
+  public static function isTokenCurrent($token, String $paramPath = 'user.passwordResetTokenExpire') {
     $expire = \Yii::$app->params[$paramPath];
     $parts = explode('_', $token);
     $timestamp = (int) end($parts);
@@ -157,6 +166,16 @@ class User extends ActiveRecord implements IdentityInterface
       return false;
     }
     return true;
+  }
+
+  /*
+   * Checks if $token ends with the $match string
+   *
+   * @param string    $token verification token (the haystack)
+   * @param string    $match the needle to search for
+   */
+  public static function isTokenConfirmed($token, String $match = self::CONFIRMED_STRING) {
+    return substr($token, -strlen($match)) === $match;
   }
 
   /**
@@ -180,7 +199,13 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   public function isVerified() {
-    return !!!$this->verify_email_token;
+    if(is_null($this->verify_email_token)) {
+      // for old users who verified their accounts before the addition of
+      // '_confirmed' to the token
+      return true;
+    } else {
+      return !!$this->verify_email_token && $this->isTokenConfirmed($this->verify_email_token);
+    }
   }
 
   /**
@@ -224,6 +249,11 @@ class User extends ActiveRecord implements IdentityInterface
     $this->verify_email_token = Yii::$app
       ->getSecurity()
       ->generateRandomString() . '_' . time();
+  }
+
+  public function confirmVerifyEmailToken()
+  {
+    $this->verify_email_token .= self::CONFIRMED_STRING;
   }
 
   /**
