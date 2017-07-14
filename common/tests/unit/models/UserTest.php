@@ -763,12 +763,24 @@ public $userOptions = [
     });
   }
 
+  public function testIsTokenConfirmed() {
+      expect('isTokenConfirmed should return true if the token has been confirmed', $this->assertTrue($this->user->isTokenConfirmed('token123_confirmed')));
+      expect('isTokenConfirmed should return false if the token has not been confirmed', $this->assertFalse($this->user->isTokenConfirmed('token123')));
+      expect('isTokenConfirmed should return false if the token has not been confirmed', $this->assertFalse($this->user->isTokenConfirmed('token123_not_blah')));
+  }
+
+  public function testConfirmVerifyEmailToken() {
+    $this->user->verify_email_token = 'hello_world';
+    $this->user->confirmVerifyEmailToken();
+    expect('confirmVerifyEmailToken should append User::CONFIRMED_STRING to the end of the verify_email_token property', $this->assertEquals($this->user->verify_email_token, 'hello_world'.User::CONFIRMED_STRING));
+  }
+
   public function testIsVerified() {
     $this->specify('isTokenCurrent should function correctly', function () {
       $this->user->verify_email_token = null;
       expect('isVerified should return true if the token is null', $this->assertTrue($this->user->isVerified()));
       $this->user->verify_email_token = '';
-      expect('isVerified should return true if the token is the empty string', $this->assertTrue($this->user->isVerified()));
+      expect('isVerified should return false if the token is the empty string', $this->assertFalse($this->user->isVerified()));
       $this->user->verify_email_token = 'this_looks_truthy';
       expect('isVerified should return false if the token is still present', $this->assertFalse($this->user->isVerified()));
     });
