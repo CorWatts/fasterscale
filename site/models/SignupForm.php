@@ -73,9 +73,48 @@ class SignupForm extends Model
    */
   public function signup()
   {
-    if ($this->validate()
-      && is_null(User::findByEmail($this->email))) {
+    $user = User::findByEmail($this->email);
+    if ($this->validate() && is_null($user)) {
+      // this is a brand new user
       $user = new User();
+      $this->setFields($user);
+      $user->save();
+
+      $user->sendSignupNotificationEmail();
+      $user->sendVerifyEmail();
+
+      return $user;
+    } else if (!is_null($user)) {
+      /*
+       * this is a user that for whatever reason is trying to sign up again
+       * with the same email address.
+       */
+      if(!User::isTokenConfirmed($user->verify_email_token)
+        && !User::isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
+        /*
+         * they've never verified their account and their verification token
+         * is expired. We're resetting their account and resending their
+         * verification email.
+         */
+        $this->setFields($user);
+        $user->save();
+
+        $user->generateVerifyEmailToken();
+        $user->sendVerifyEmail();
+      } else {
+        /*
+         * they've already confirmed their account and are a full user, so skip
+         * all this
+         *   OR
+         * their token is still current and live and they should
+         * click the link in their email.
+         */
+      }
+    }
+    return null;
+  }
+
+  private function setFields($user) {
       $user->email = $this->email;
       $user->setPassword($this->password);
       $user->timezone = $this->timezone;
@@ -88,14 +127,5 @@ class SignupForm extends Model
         $user->partner_email2  = $this->partner_email2;
         $user->partner_email3  = $this->partner_email3;
       }
-      $user->save();
-
-      $user->sendSignupNotificationEmail();
-      $user->sendVerifyEmail();
-
-      return $user;
-    }
-
-    return null;
   }
 }
