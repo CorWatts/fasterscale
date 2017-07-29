@@ -304,12 +304,12 @@ class User extends ActiveRecord implements IdentityInterface
           'user'          => $this,
           'email'         => $email,
           'date'          => $date,
-          'user_options'  => User::getUserOptions($date),
-          'questions'     => User::getUserQuestions($date),
+          'user_options'  => self::getUserOptions($date),
+          'questions'     => self::getUserQuestions($date),
           'chart_content' => UserOption::generateScoresGraph(),
-          'categories'    => Category::find()->asArray()->all(),
+          'categories'    => Category::$categories,
           'score'         => UserOption::calculateScoreByUTCRange($start, $end),
-          'options_list'  => Option::getAllOptions(),
+          'options_list'  => Option::$options,
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
         ->setSubject($this->email." has scored high in The Faster Scale App")
@@ -321,11 +321,11 @@ class User extends ActiveRecord implements IdentityInterface
   }
 
   public function getExportData() {
-   $query = new Query;
-    $query->select(
-      'l.date  AS "date",
-       o.name  AS "option",
-       c.name  AS "category", 
+    $query = (new Query)
+      ->select(
+      'l.id,        
+       l.date      AS "date",
+       l.option_id AS "option_id",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 1
@@ -339,68 +339,42 @@ class User extends ActiveRecord implements IdentityInterface
         WHERE q1.question = 3
           AND q1.user_option_id = l.id) AS "question3"')
       ->from('user_option_link l')
-      ->join("INNER JOIN", "option o", "l.option_id = o.id")
-      ->join("INNER JOIN", "category c", "o.category_id = c.id")
       ->join("LEFT JOIN", "question q", "l.id = q.user_option_id")
       ->where('l.user_id=:user_id', ["user_id" => Yii::$app->user->id])
       ->groupBy('l.id,
           l.date,
-          o.name,
-          c.name,
           "question1",
           "question2",
           "question3"')
       ->orderBy('l.date DESC');
-    $data = $query->all();
-
-    $data = array_map(
-      function($row) {
-        $row['date'] = Time::convertUTCToLocal($row['date'], true);
-        return $row;
-      }, 
-      $data
-    );
-
-    return $data;
+   $data = UserOption::decorateWithCategory($query->all());
+   return $this->cleanExportData($data);
 
 /* Plaintext Query
 SELECT l.id,
-       l.DATE  AS "date",
-       o.name  AS "option",
-       c.name  AS "category",
-       1       AS "Question1",
+       l.date      AS "date",
+       l.option_id AS "option_id",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 1
-          AND q1.user_option_id = l.id) AS "Answer1",
-       2       AS "Question2",
+          AND q1.user_option_id = l.id) AS "question1",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 2
-          AND q1.user_option_id = l.id) AS "Answer2",
-       3       AS "Question3",
+          AND q1.user_option_id = l.id) AS "question2",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 3
-          AND q1.user_option_id = l.id) AS "Answer3"
+          AND q1.user_option_id = l.id) AS "question3"
 FROM   user_option_link l
-       join OPTION o
-         ON l.option_id = o.id
-       join category c
-         ON o.category_id = c.id
-       join question q
+       LEFT JOIN question q
          ON l.id = q.user_option_id
 WHERE  l.user_id = 1
 GROUP  BY l.id,
           l.date,
-          o.name,
-          c.name,
-          "Question1",
-          "Answer1",
-          "Question2",
-          "Answer2",
-          "Question3",
-          "Answer3"
+          "question1",
+          "question2",
+          "question3",
 ORDER  BY l.date DESC;
 */
   }
@@ -450,6 +424,7 @@ ORDER  BY l.date DESC;
     if(is_null($local_date)) $local_date = Time::getLocalDate();
 
     $options = self::getOptionData($local_date);
+    $options = UserOption::decorateWithCategory($options);
     return self::parseOptionData($options);
   }
 
@@ -502,9 +477,10 @@ ORDER  BY l.date DESC;
       ':start_date' => $start, 
       ":end_date" => $end
     ])
-    ->with('option')
     ->asArray()
     ->all();
+
+    $questions = UserOption::decorate($questions);
 
     return $questions;
   }
@@ -521,7 +497,6 @@ ORDER  BY l.date DESC;
       ':start_date' => $start, 
       ":end_date" => $end
     ])
-    ->with('option', 'option.category')
     ->asArray()
     ->all();
   }
@@ -545,5 +520,30 @@ ORDER  BY l.date DESC;
     return (!is_null($threshold) && $score > $threshold)
             ? true
             : false;
+  }
+
+  public function cleanExportData($data) {
+   $order = array_flip(["date", "option", "category", "question1", "question2", "question3"]);
+
+   $ret = array_map(
+     function($row) use ($order) {
+       // change timestamp to local time (for the user)
+       $row['date'] = Time::convertUTCToLocal($row['date'], true);
+       
+       // clean up things we don't need
+       $row['category'] = $row['option']['category']['name'];
+       $row['option'] = $row['option']['name'];
+       unset($row['id']);
+       unset($row['option_id']);
+
+       // sort the array into a sensible order
+       uksort($row, function($a, $b) use ($order) {
+        return $order[$a] <=> $order[$b];
+       });
+       return $row;
+     }, 
+     $data
+   );
+   return $ret;
   }
 }

@@ -7,16 +7,14 @@ use common\models\Category;
 use common\models\Option;
 use common\models\User;
 use common\models\UserOption;
-use common\models\Question;
 use common\components\Time;
 use site\models\CheckinForm;
-use site\models\QuestionForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use common\components\AccessControl;
-use yii\db\Query;
+use yii\helpers\ArrayHelper as AH;
 
 class CheckinController extends \yii\web\Controller
 {
@@ -54,12 +52,10 @@ class CheckinController extends \yii\web\Controller
       return $this->redirect(['questions']);
 
     } else {
-      $categories = Category::find()->asArray()->all();
-
       return $this->render('index', [
-        'categories' => $categories,
-        'model' => $form,
-        'optionsList' =>  Option::getAllOptions(),
+        'categories'  => Category::$categories,
+        'model'       => $form,
+        'optionsList' => AH::index(Option::$options, null, "category_id")
       ]);
     }
   }
@@ -72,7 +68,7 @@ class CheckinController extends \yii\web\Controller
       return $this->redirect(['view']);
     }
 
-    $form = new QuestionForm();
+    $form = new \site\models\QuestionForm();
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
       // we only store one data set per day so clear out any previously saved ones
       $form->deleteToday();
@@ -115,8 +111,8 @@ class CheckinController extends \yii\web\Controller
     return $this->render('view', [
       'model'              => $form,
       'actual_date'        => $date,
-      'categories'         => Category::find()->asArray()->all(),
-      'optionsList'        => Option::getAllOptions(),
+      'categories'         => Category::$categories,
+      'optionsList'        => AH::index(Option::$options, 'name', "category_id"),
       'score'              => UserOption::getDailyScore($date),
       'past_checkin_dates' => UserOption::getPastCheckinDates(),
       'questions'          => User::getUserQuestions($date),
@@ -126,7 +122,6 @@ class CheckinController extends \yii\web\Controller
   public function actionReport() {
     $user_rows = UserOption::getTopBehaviors();
     $answer_pie = UserOption::getBehaviorsByCategory();
-
     $scores = UserOption::calculateScoresOfLastMonth();
 
     return $this->render('report', [

@@ -665,6 +665,78 @@ public $userOptions = [
 	],
 ];
 
+public $exportData = [
+    [
+      'id' => 485,
+      'date' => '2017-07-29 10:40:29',
+      'option_id' => 59,
+      'question1' => 'q1',
+      'question2' => 'q2',
+      'question3' => 'q3',
+      'option' => [
+        'id' => 59,
+        'name' => 'repetitive, negative thoughts',
+        'category_id' => 4,
+        'category' => [
+          'id' => 4,
+          'name' => 'Speeding Up',
+          'weight' => 4,
+        ],
+      ],
+    ], [
+      'id' => 487,
+      'date' => '2017-07-29 10:40:29',
+      'option_id' => 106,
+      'question1' => 'q1',
+      'question2' => 'q2',
+      'question3' => 'q3',
+      'option' => [
+        'id' => 106,
+        'name' => 'tired',
+        'category_id' => 6,
+        'category' => [
+          'id' => 6,
+          'name' => 'Exhausted',
+          'weight' => 8,
+        ],
+      ],
+    ], [
+      'id' => 488,
+      'date' => '2017-07-29 10:40:29',
+      'option_id' => 125,
+      'question1' => 'q1',
+      'question2' => 'q2',
+      'question3' => 'q3',
+      'option' => [
+        'id' => 125,
+        'name' => 'out of control',
+        'category_id' => 7,
+        'category' => [
+          'id' => 7,
+          'name' => 'Relapse/Moral Failure',
+          'weight' => 10,
+        ],
+      ],
+    ], [
+      'id' => 486,
+      'date' => '2017-07-29 10:40:29',
+      'option_id' => 89,
+      'question1' => 'q1',
+      'question2' => 'q2',
+      'question3' => 'q3',
+      'option' => [
+        'id' => 89,
+        'name' => 'obsessive (stuck) thoughts',
+        'category_id' => 5,
+        'category' => [
+          'id' => 5,
+          'name' => 'Ticked Off',
+          'weight' => 6,
+        ],
+      ],
+    ]
+  ];
+
   public function setUp() {
     $this->user = $this->getMockBuilder('\common\models\User')
       ->setMethods(['save', 'attributes'])
@@ -776,21 +848,65 @@ public $userOptions = [
   }
 
   public function testIsVerified() {
-    $this->specify('isTokenCurrent should function correctly', function () {
       $this->user->verify_email_token = null;
       expect('isVerified should return true if the token is null', $this->assertTrue($this->user->isVerified()));
       $this->user->verify_email_token = '';
       expect('isVerified should return false if the token is the empty string', $this->assertFalse($this->user->isVerified()));
       $this->user->verify_email_token = 'this_looks_truthy';
       expect('isVerified should return false if the token is still present', $this->assertFalse($this->user->isVerified()));
-    });
   }
 
   public function testRemoveVerifyEmailToken() {
-    $this->specify('removeVerifyEmailToken should function correctly', function () {
       $this->user->verify_email_token = 'faketoken_1234';
       $this->user->removeVerifyEmailToken();
       expect('removeVerifyEmailToken should set the verify_email_token to be null', $this->assertNull($this->user->verify_email_token));
-    });
+  }
+
+  public function testCleanExportData() {
+    // need this for the convertUTCToLocal call
+    Yii::configure(Yii::$app, [
+      'components' => [
+        'user' => [
+          'class' => 'yii\web\User',
+          'identityClass' => 'common\tests\unit\FakeUser',
+        ],
+      ],
+    ]);
+    $identity = new \common\tests\unit\FakeUser();
+    $identity->timezone = "America/Los_Angeles";
+    // logs in the user 
+    Yii::$app->user->setIdentity($identity);
+
+    expect('cleanExportData should clean and mutate the queried data to be suitable for downloading', $this->assertEquals($this->user->cleanExportData($this->exportData), [
+      [
+        'date' => '2017-07-29 03:40:29',
+        'option' => 'repetitive, negative thoughts',
+        'category' => 'Speeding Up',
+        'question1' => 'q1',
+        'question2' => 'q2',
+        'question3' => 'q3',
+      ], [
+        'date' => '2017-07-29 03:40:29',
+        'option' => 'tired',
+        'category' => 'Exhausted',
+        'question1' => 'q1',
+        'question2' => 'q2',
+        'question3' => 'q3',
+      ], [
+        'date' => '2017-07-29 03:40:29',
+        'option' => 'out of control',
+        'category' => 'Relapse/Moral Failure',
+        'question1' => 'q1',
+        'question2' => 'q2',
+        'question3' => 'q3',
+      ], [
+        'date' => '2017-07-29 03:40:29',
+        'option' => 'obsessive (stuck) thoughts',
+        'category' => 'Ticked Off',
+        'question1' => 'q1',
+        'question2' => 'q2',
+        'question3' => 'q3',
+      ]
+    ]));
   }
 }

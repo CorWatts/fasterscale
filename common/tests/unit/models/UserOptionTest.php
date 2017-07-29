@@ -15,45 +15,6 @@ date_default_timezone_set('UTC');
 class UserOptionTest extends \Codeception\Test\Unit {
   use Specify;
 
-  public $allBehaviors = [
-    [
-      'category_id' => 1,
-      'name' => 'Restoration',
-      'weight' => 0,
-      'option_count' => 10,
-    ], [
-      'category_id' => 2,
-      'name' => 'Forgetting Priorities',
-      'weight' => 1,
-      'option_count' => 17,
-    ], [
-      'category_id' => 3,
-      'name' => 'Anxiety',
-      'weight' => 2,
-      'option_count' => 17,
-    ], [
-      'category_id' => 4,
-      'name' => 'Speeding Up',
-      'weight' => 4,
-      'option_count' => 23,
-    ], [
-      'category_id' => 5,
-      'name' => 'Ticked Off',
-      'weight' => 6,
-      'option_count' => 24,
-    ], [
-      'category_id' => 6,
-      'name' => 'Exhausted',
-      'weight' => 8,
-      'option_count' => 28,
-    ], [
-      'category_id' => 7,
-      'name' => 'Relapse/Moral Failure',
-      'weight' => 10,
-      'option_count' => 11,
-    ]
-  ];
-
   public $singleSimpleBehaviors = [
     [
       'id' => 396,
@@ -292,6 +253,24 @@ class UserOptionTest extends \Codeception\Test\Unit {
     ],
   ];
 
+  public $singleSimpleBehaviorNoOption = [
+    [
+      'id' => 396,
+      'user_id' => 2,
+      'option_id' => 107,
+      'date' => '2016-06-17 04:12:43',
+    ],
+  ]; 
+
+  public $badSingleSimpleBehaviorNoOption = [
+    [
+      'id' => 396,
+      'user_id' => 2,
+      'option_id' => 99999,
+      'date' => '2016-06-17 04:12:43',
+    ],
+  ]; 
+
   public function setUp() {
     parent::setUp();
 
@@ -317,13 +296,54 @@ class UserOptionTest extends \Codeception\Test\Unit {
 
   public function testCalculateScore() {
     $this->specify('calculateScore should function correctly', function () {
-      expect('calculateScore should return the empty set when null is passed', $this->assertEmpty(UserOption::calculateScore(null, $this->allBehaviors)));
+      expect('calculateScore should return the empty set when null is passed', $this->assertEmpty(UserOption::calculateScore(null)));
 
-      expect('calculateScore should return the empty set with no selected options', $this->assertEmpty(UserOption::calculateScore([], $this->allBehaviors)));
+      expect('calculateScore should return the empty set with no selected options', $this->assertEmpty(UserOption::calculateScore([])));
       
-      expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals(UserOption::calculateScore($this->singleSimpleBehaviors, $this->allBehaviors), ['2016-06-16 21:12:43' => 29]));
+      expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals(UserOption::calculateScore($this->singleSimpleBehaviors), ['2016-06-16 21:12:43' => 29]));
       
-      expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals(UserOption::calculateScore($this->singleComplexBehaviors, $this->allBehaviors), ['2016-06-20 21:08:36' => 233]));
+      expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals(UserOption::calculateScore($this->singleComplexBehaviors), ['2016-06-20 21:08:36' => 233]));
     });
+  }
+
+  public function testDecorate() {
+    expect('decorate should add Option data to an array of UserOptions', $this->assertEquals(UserOption::decorate($this->singleSimpleBehaviorNoOption),
+                    [['id' => 396,
+                      'user_id' => 2,
+                      'option_id' => 107,
+                      'date' => '2016-06-17 04:12:43',
+                      'option' => [
+                        'id' => 107,
+                        'name' => 'numb',
+                        'category_id' => 6,
+                      ]]]));
+
+    expect('decorate SHOULD NOT add Option data when the provided option_id is invalid',
+      $this->assertEquals(
+        UserOption::decorate($this->badSingleSimpleBehaviorNoOption),
+        [['id' => 396,
+          'user_id' => 2,
+          'option_id' => 99999,
+          'date' => '2016-06-17 04:12:43']]));
+  }
+
+  public function testDecorateWithCategory() {
+    expect('decorate should add Option data and Category data to an array of UserOptions',
+      $this->assertEquals(
+        UserOption::decorateWithCategory($this->singleSimpleBehaviorNoOption),
+         [['id' => 396,
+           'user_id' => 2,
+           'option_id' => 107,
+           'date' => '2016-06-17 04:12:43',
+           'option' => [
+             'id' => 107,
+             'name' => 'numb',
+             'category_id' => 6,
+             'category' => [
+               'id' => 6,
+               'name' => 'Exhausted',
+               'weight' => 8
+             ]
+           ]]]));
   }
 }

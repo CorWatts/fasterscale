@@ -5,8 +5,6 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "question".
- *
  * @property integer $id
  * @property integer $user_id
  * @property integer $option_id
@@ -83,14 +81,6 @@ class Question extends \yii\db\ActiveRecord
   public function getUser()
   {
     return $this->hasOne(User::className(), ['id' => 'user_id']);
-  }
-
-  /**
-   * @return \yii\db\ActiveQuery
-   */
-  public function getOption()
-  {
-    return $this->hasOne(Option::className(), ['id' => 'option_id']);
   }
 
   /**

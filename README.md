@@ -56,11 +56,11 @@ Testing is provided by Codeception unit tests. The necessary libraries should ha
 ```bash
 composer test-scaffold
 ```
-To then run them, ensure you're in base directory of this repository and execute:
+To run the tests, ensure you're in the base directory of this repository and execute:
 ```bash
 composer test
 ```
-If you would like to view the code coverage provided by these tests run this command: (XDebug is required for generation of code coverage)
+To view the code coverage of these tests run: (XDebug is required for generation of code coverage)
 ```bash
 composer test-coverage
 ```
