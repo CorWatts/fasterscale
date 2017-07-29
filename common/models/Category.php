@@ -3,23 +3,25 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper as AH;
 
 /**
- * This is the model class for table "category".
- *
  * @property integer $id
  * @property string $name
  * @property integer $weight
  */
-class Category extends \yii\db\ActiveRecord
+class Category extends \yii\base\Object
 {
-  /**
-   * @inheritdoc
-   */
-  public static function tableName()
-  {
-    return 'category';
-  }
+
+  public static $categories = [
+    [ "id" => 1, "name" => "Restoration", "weight" => 0],
+    [ "id" => 2, "name" => "Forgetting Priorities", "weight" => 1],
+    [ "id" => 3, "name" => "Anxiety", "weight" => 2],
+    [ "id" => 4, "name" => "Speeding Up", "weight" => 4],
+    [ "id" => 5, "name" => "Ticked Off", "weight" => 6],
+    [ "id" => 6, "name" => "Exhausted", "weight" => 8],
+    [ "id" => 7, "name" => "Relapse/Moral Failure", "weight" => 10]
+  ];
 
   /**
    * @inheritdoc
@@ -45,12 +47,12 @@ class Category extends \yii\db\ActiveRecord
     ];
   }
 
-  /**
-   * @return \yii\db\ActiveQuery
-   */
-  public function getOptions()
-  {
-    return $this->hasMany(Option::className(), ['category_id' => 'id']);
+  public static function getCategories() {
+    return AH::map(\common\models\Category::$categories, 'id', 'name');
+  }
 
+  public static function getCategory($key, $val) {
+    $indexed = AH::index(self::$categories, null, $key);
+    return AH::getValue($indexed, $val, [false])[0];
   }
 }

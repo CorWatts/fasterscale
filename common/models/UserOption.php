@@ -7,6 +7,7 @@ use common\models\UserOption;
 use common\models\User;
 use common\components\Time;
 use yii\db\Query;
+use yii\helpers\ArrayHelper as AH;
 use \DateTime;
 use \DateTimeZone;
 use yii\db\Expression;
@@ -66,14 +67,6 @@ class UserOption extends \yii\db\ActiveRecord
     return $this->hasOne(User::className(), ['id' => 'user_id']);
   }
 
-  /**
-   * @return \yii\db\ActiveQuery
-   */
-  public function getOption()
-  {
-    return $this->hasOne(Option::className(), ['id' => 'option_id']);
-  }
-
   public static function getPastCheckinDates()
   {
     $past_checkin_dates = [];
@@ -91,29 +84,24 @@ class UserOption extends \yii\db\ActiveRecord
     return $past_checkin_dates;
   }
 
-  public static function getUserOptionsWithCategory($checkin_date, $exclude_1s = false) {
+  public static function getUserOptionsWithCategory($checkin_date) {
     list($start, $end) = Time::getUTCBookends($checkin_date);
 
     $query = new Query;
-    $query->select('l.id as user_option_id, c.id as category_id, c.name as category_name, o.id as option_id, o.name as option_name')
-      ->from('user_option_link l')
-      ->innerJoin('option o', 'l.option_id=o.id')
-      ->innerJoin('category c', 'o.category_id=c.id')
-      ->orderBy('c.id')
-      ->where("l.user_id=:user_id
-          AND l.date > :start_date
-          AND l.date < :end_date",
+    $query->select('*')
+      ->from('user_option_link')
+      ->orderBy('option_id')
+      ->where("user_id=:user_id
+          AND date > :start_date
+          AND date < :end_date",
       [
         ":user_id" => Yii::$app->user->id, 
         ":start_date" => $start, 
         ":end_date" => $end
       ]);
 
-    if($exclude_1s)
-      $query->andWhere("c.id <> 1");
-
-    $user_options = $query->all();
-    return $user_options;
+    $user_options = self::decorateWithCategory($query->all());
+    return AH::map($user_options, 'id', function($a) { return $a['option']['name']; }, function($b) {return $b['option']['category_id']; });
   }
 
   public static function getDailyScore($date = null) {
@@ -126,16 +114,17 @@ class UserOption extends \yii\db\ActiveRecord
   }
 
   public static function getBehaviorsByDate($start, $end) {
-      return UserOption::find()
+      $uo = UserOption::find()
         ->select(['id', 'user_id', 'option_id', 'date'])
         ->where(
           "user_id=:user_id AND date > :start_date AND date < :end_date",
           ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end]
         )
         ->orderBy('date')
-        ->with('option')
         ->asArray()
         ->all();
+
+      return self::decorate($uo, false);
   }
 
   /**
@@ -168,13 +157,9 @@ class UserOption extends \yii\db\ActiveRecord
     return $scores;
   }
 
-  public static function calculateScore($selected_opts, $all_opts = null) {
+  public static function calculateScore($selected_opts) {
     if(!!!$selected_opts) {
       return [];
-    }
-
-    if(!!!$all_opts) {
-      $all_opts = Option::getAllOptionsByCategory();
     }
 
     $local_opts = [];
@@ -188,7 +173,7 @@ class UserOption extends \yii\db\ActiveRecord
         $options_by_category[$option['category_id']][] = $option['id'];
       }
 
-      foreach($all_opts as $options) {
+      foreach(Option::getAllOptionsByCategory() as $options) {
         if(array_key_exists($options['category_id'], $options_by_category)) {
           $stats[$options['category_id']] = $options['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
         } else {
@@ -260,26 +245,51 @@ class UserOption extends \yii\db\ActiveRecord
   public static function getTopBehaviors($limit = 5) {
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("o.id as id, o.name as name, c.name as category, COUNT(o.id) as count")
-      ->from('user_option_link l')
-      ->join("INNER JOIN", "option o", "l.option_id = o.id")
-      ->join("INNER JOIN", "category c", "o.category_id = c.id")
-      ->groupBy('o.id, l.user_id, c.name')
-      ->having('l.user_id = :user_id')
+    $query->select("user_id, option_id, COUNT(id) as count")
+      ->from('user_option_link')
+      ->groupBy('option_id, user_id')
+      ->having('user_id = :user_id')
       ->orderBy('count DESC')
       ->limit($limit);
-     return $query->all();
+    return self::decorateWithCategory($query->all(), false);
   }
 
   public static function getBehaviorsByCategory() {
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("c.name as name, COUNT(o.id) as count")
-      ->from('user_option_link l')
-      ->join("INNER JOIN", "option o", "l.option_id = o.id")
-      ->join("INNER JOIN", "category c", "o.category_id = c.id")
-      ->groupBy('c.id, c.name, l.user_id')
-      ->having('l.user_id = :user_id');
-    return $query->all();
+    $query->select("user_id, option_id, COUNT(id) as count")
+      ->from('user_option_link')
+      ->groupBy('option_id, user_id')
+      ->having('user_id = :user_id')
+      ->orderBy('count DESC');
+
+    return array_values(array_reduce(self::decorateWithCategory($query->all(), false), function($acc, $row) {
+      $cat_id = $row['option']['category']['id'];
+      if(array_key_exists($cat_id, $acc)) {
+        $acc[$cat_id]['count'] += $row['count'];
+      } else {
+        $acc[$cat_id] = [
+          'name' => $row['option']['category']['name'],
+          'count' => $row['count'],
+        ];
+      }
+      return $acc;
+    }, []));
+  }
+
+  public static function decorate(Array $uo, $with_category = false) {
+    foreach($uo as &$o) {
+      if($option = Option::getOption('id', $o['option_id'])) {
+        $o['option'] = $option;
+        if($with_category) {
+          $o['option']['category'] = Category::getCategory('id', $o['option']['category_id']);
+        }
+      }
+    }
+    return $uo;
+  }
+
+  public static function decorateWithCategory(Array $uo) {
+    return self::decorate($uo, true);
   }
 }

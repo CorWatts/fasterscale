@@ -3,6 +3,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Button;
+use yii\helpers\ArrayHelper as AH;
+
 use common\models\User;
 use common\models\Question;
 use common\components\Time;
@@ -95,7 +97,11 @@ $form = ActiveForm::begin([
 ]);
 
 foreach($categories as $category) {
-  print $form->field($model, "options{$category['id']}")->checkboxList($optionsList[$category['id']], ['item' => "checkboxItemTemplate"]);
+  $options = AH::map($optionsList[$category['id']], 'id', 'name');
+  print $form
+          ->field($model, "options{$category['id']}")
+          ->checkboxList($options,
+                         ['item' => "checkboxItemTemplate"]);
 }
 ActiveForm::end();
 ?>

@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Button;
+use yii\helpers\ArrayHelper as AH;
 /**
  * @var yii\web\View $this
  */
@@ -34,7 +35,11 @@ $form = ActiveForm::begin([
 ]);
 
 foreach($categories as $category) {
-  print $form->field($model, "options{$category['id']}")->checkboxList($optionsList[$category['id']], ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]);
+  $options = AH::map($optionsList[$category['id']], 'id', 'name');
+  print $form
+          ->field($model, "options{$category['id']}")
+          ->checkboxList($options,
+                         ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]);
 }
 print Html::submitButton('Submit', ['class' => 'btn btn-success']); 
 ActiveForm::end();

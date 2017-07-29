@@ -84,8 +84,8 @@ $pie_data = [
 $num = $key + 1;
 print "<tr>".
   "<td>".$num."</td>".
-  "<td>{$row['category']}</td>".
-  "<td>{$row['name']}</td>".
+  "<td>{$row['option']['category']['name']}</td>".
+  "<td>{$row['option']['name']}</td>".
   "<td>{$row['count']}</td>".
   "</tr>";
 
