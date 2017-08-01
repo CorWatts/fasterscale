@@ -8,7 +8,7 @@ use yii\captcha\Captcha;
  * @var yii\widgets\ActiveForm $form
  * @var \site\models\SignupForm $model
  */
-$this->title = 'The Faster Scale App | Signup';
+$this->title = 'The Faster Scale App | Sign up';
 $timezones = DateTimeZone::listIdentifiers();
 
 $this->registerMetaTag([
@@ -18,9 +18,9 @@ $this->registerMetaTag([
 $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset::class]]);
 ?>
 <div class="site-signup">
-  <h1>Signup</h1>
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-6 col-md-offset-3">
+      <h1>Sign up</h1>
 			<?php $form = ActiveForm::begin([
 				'id' => 'form-signup',
 				'enableClientValidation' => true,
@@ -41,7 +41,7 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
           <?= $form->field($model, 'partner_email3')->input('email') ?>
         </div>
         <div class="form-group">
-          <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+          <?= Html::submitButton('Sign up', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
         </div>
       <?php ActiveForm::end(); ?>
     </div>

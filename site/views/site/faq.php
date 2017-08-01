@@ -36,7 +36,7 @@ $this->registerMetaTag([
 
   <div>
     <strong>How can I contribute?</strong>
-    <p class="indent">We welcome contributions of any kind. Programming, design, feature suggestions, testing, or general feedback is always appreciated. You can find our codebase online at the Github link above.</p>
+    <p class="indent">We welcome contributions of any kind. Programming, design, feature suggestions, testing, or general feedback is always appreciated. You can find our codebase online at the Github link above. For non-technical feedback, please use our mailing list or contact form.</p>
   </div>
 
 </div>

@@ -35,28 +35,24 @@ if($hash = Utility::getRevHash()) {
             NavBar::begin([
                 'brandLabel' => 'The Faster Scale App',
                 'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
-                ],
             ]);
-            $menuItems = [
-                ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'About', 'url' => ['/site/about']],
-                ['label' => 'Contact', 'url' => ['/site/contact']],
-            ];
             if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+              $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
+              $menuItems[] = ['label' => 'Blog', 'url' => ['/site/blog']];
+              $menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
+              $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+              $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
-                $menuItems[] = ['label' => 'Check-in', 'url' => ['/checkin/index']];
-                $menuItems[] = ['label' => 'Previous Check-ins', 'url' => ['/checkin/view']];
-                $menuItems[] = ['label' => 'Statistics', 'url' => ['/checkin/report']];
-                $menuItems[] = ['label' => Yii::$app->user->identity->email, 'url' => ['/profile/index']];
-                $menuItems[] = [
-                    'label' => 'Logout',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
-                ];
+              $menuItems[] = ['label' => 'Check-in', 'url' => ['/checkin/index']];
+              $menuItems[] = ['label' => 'Past Check-ins', 'url' => ['/checkin/view']];
+              $menuItems[] = ['label' => 'Statistics', 'url' => ['/checkin/report']];
+              $menuItems[] = ['label' => Yii::$app->user->identity->email, 'url' => ['/profile/index']];
+              $menuItems[] = ['label' => 'Blog', 'url' => ['/site/blog']];
+              $menuItems[] = [
+                'label' => 'Logout',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post']
+              ];
             }
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
@@ -69,8 +65,12 @@ if($hash = Utility::getRevHash()) {
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+          <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+              <?= Alert::widget() ?>
+              <?= $content ?>
+            </div>
+          </div>
         </div>
     </div>
 

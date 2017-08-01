@@ -46,7 +46,7 @@ if($answer_pie) {
 <div class="checkin-view">
   <div class="row">
     <div class="col-md-8">
-      <h1>View Previous Check-ins</h1>
+      <h1>Previous Check-ins</h1>
       <div id='past-checkin-nav' role='toolbar' class='btn-toolbar'>
         <div class='form-inline'>
           <div class='btn-group' role='group'>
@@ -92,7 +92,7 @@ if($answer_pie) {
       </div>
     </div>
     <div class="col-md-4">
-    <canvas id='category-pie-chart' <?= ($answer_pie) ? "" : 'class="hidden-xs hidden-sm hidden-md"' ?>></canvas>
+    <canvas id='category-pie-chart' <?= ($answer_pie) ? "" : 'class="hidden-xs hidden-sm hidden-md"' ?> height=260></canvas>
     </div>
   </div>
 
