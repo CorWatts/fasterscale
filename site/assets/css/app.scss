@@ -2,10 +2,15 @@
  * We can override Bootstrap variables here
  * $body-bg: lightgray;
  */
+$font-size-base: 16px !default;
 
 html,
 body {
 	height: 100%;
+}
+
+p {
+  line-height: 1.6;
 }
 
 .wrap {
@@ -22,7 +27,7 @@ body {
 }
 
 .wrap > .container {
-    padding: 70px 15px 20px;
+    padding: 0px 15px 20px;
 }
 
 .site-index {
@@ -110,6 +115,42 @@ body {
   margin-left: 10px;
 }
 
+//$navbar-default-link-color: darken(#428bca, 6.5%) !default; // #337ab7
+//$navbar-default-link-hover-color:          #333 !default;
+
+/*
+// Basics of a navbar
+$navbar-height:                    50px !default;
+$navbar-margin-bottom:             $line-height-computed !default;
+$navbar-border-radius:             $border-radius-base !default;
+$navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
+$navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+$navbar-collapse-max-height:       340px !default;
+
+$navbar-default-color:             #777 !default;
+$navbar-default-bg:                #f8f8f8 !default;
+$navbar-default-border:            darken($navbar-default-bg, 6.5%) !default;
+
+// Navbar links
+$navbar-default-link-color:                #777 !default;
+$navbar-default-link-hover-color:          #333 !default;
+$navbar-default-link-hover-bg:             transparent !default;
+$navbar-default-link-active-color:         #555 !default;
+$navbar-default-link-active-bg:            darken($navbar-default-bg, 6.5%) !default;
+$navbar-default-link-disabled-color:       #ccc !default;
+$navbar-default-link-disabled-bg:          transparent !default;
+
+// Navbar brand label
+$navbar-default-brand-color:               $navbar-default-link-color !default;
+$navbar-default-brand-hover-color:         darken($navbar-default-brand-color, 10%) !default;
+$navbar-default-brand-hover-bg:            transparent !default;
+
+// Navbar toggle
+$navbar-default-toggle-hover-bg:           #ddd !default;
+$navbar-default-toggle-icon-bar-bg:        #888 !default;
+$navbar-default-toggle-border-color:       #ddd !default;
+*/
+
 @import "pickadate";
 @import "bootstrap-custom";
 
@@ -127,6 +168,9 @@ body {
     button {
       background-color: $gray-lighter;
     }
+  }
+  #signupform-captcha-image {
+    cursor: pointer;
   }
 }
 
@@ -176,7 +220,7 @@ body {
     }
   }
   #category-pie-chart {
-    margin-top: 30px;
+    margin: 30px 0px;
   }
   h3 {
     margin-left: -15px;
@@ -204,3 +248,16 @@ body {
     }
   }
 }
+
+@media(min-width: $screen-md-min) {
+    .col-md-border {
+        &:not(:last-child) {
+            border-right: 1px solid #d7d7d7;
+        }
+
+        & + .col-md-border {
+            border-left: 1px solid #d7d7d7;
+            margin-left: -1px;
+        }
+    }
+  }

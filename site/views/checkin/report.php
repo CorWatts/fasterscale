@@ -20,15 +20,15 @@ $pie_data = [
   ]]
 ];
 ?>
-<h1>Check-in Report</h1>
+<h1>Report</h1>
 
 <div class='row'>
     <div class='col-md-4'>
-        <h2>Behaviors by Category</h2>
+        <h3>Behaviors by Category</h3>
         <canvas id='category-pie-chart'></canvas>
     </div>
     <div class='col-md-8'>
-        <h2>Most Frequently Selected Behaviors</h2>
+        <h3>Most Frequently Selected Behaviors</h3>
         <table class='table table-striped'>
             <tr>
                 <th>Count</th>
@@ -49,7 +49,7 @@ print "<tr>".
 </div>
 <div class='row'>
     <div class='col-md-12'>
-        <h2>Last Month's Scores</h2>
+        <h3>Last Month's Scores</h3>
         <canvas id='scores-line-chart'></canvas>
     </div>
 </div>

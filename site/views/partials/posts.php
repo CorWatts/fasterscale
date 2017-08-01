@@ -8,9 +8,10 @@ foreach($posts as $file) {
 
   $date = Html::encode(date('F j, Y', strtotime($file['date']['full'])));
 ?>
+<hr />
 <div class="post">
   <div class="post-heading">
-    <a name='<?=$short_name?>'><h3><?=Html::encode($yaml['title'])?></h3></a>
+    <h3><?=Html::encode($yaml['title'])?></h3>
     <p><em>Written by <?=Html::encode($yaml['author'])?> on <?=$date?></em></p>
   </div>
   <div class="post-body"><?=$content?></div>

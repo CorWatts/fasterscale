@@ -19,7 +19,7 @@ $this->registerMetaTag([
   
   
   <div class="row">
-    <div class="col-md-5 mailing-list-container">
+    <div class="col-md-6 col-md-border mailing-list-container">
       <h2>Join our mailing list</h2>
       <p>Our mailing list is the primary location for announcements and ongoing discussions.</p>
       <form action="https://www.freelists.org/cgi-bin/subscription.cgi" method="post">
@@ -48,7 +48,7 @@ $this->registerMetaTag([
       </form>
     </div>
 
-    <div class="col-md-5 col-md-offset-1 well">
+    <div class="col-md-6 col-md-border">
       <h2 style="margin-top: 0px;">Send us a message</h2>
       <p>If you'd like to contact us directly, this is the form to use.</p>
       <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
@@ -60,7 +60,7 @@ $this->registerMetaTag([
         <?php if(Yii::$app->user->isGuest) {
           // only show captcha if user is not logged in
           print $form->field($model, 'verifyCode')->widget(Captcha::class, [
-            'template' => '<div class="row"><div class="col-md-3">{image}</div><div class="col-md-6">{input}</div></div>',
+            'template' => '<div class="row"><div class="col-md-4">{image}</div><div class="col-md-8">{input}</div></div>',
           ]);
         } ?>
 

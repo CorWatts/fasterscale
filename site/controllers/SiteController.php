@@ -29,7 +29,7 @@ class SiteController extends Controller
         'class' => AccessControl::class,
         'rules' => [
           [
-            'actions' => ['index', 'error', 'privacy', 'terms', 'about', 'captcha', 'contact', 'faq'],
+            'actions' => ['index', 'blog', 'error', 'privacy', 'terms', 'about', 'captcha', 'contact', 'faq'],
             'allow' => true,
           ],
           [
@@ -70,6 +70,11 @@ class SiteController extends Controller
 
   public function actionIndex()
   {
+    return $this->render('index');
+  }
+
+  public function actionBlog()
+  {
     $time = Yii::$container->get(\common\interfaces\TimeInterface::class); 
     $key = "index_blog_".$time->getLocalDate('UTC');
     $posts = Yii::$app->cache->get($key);
@@ -81,7 +86,7 @@ class SiteController extends Controller
     }
     Yii::$app->cache->set($key, $posts, 60*60*24);
 
-    return $this->render('index', ['posts'=>$posts]);
+    return $this->render('blog', ['posts'=>$posts]);
   }
 
   public function actionLogin()
