@@ -3,7 +3,6 @@
 namespace site\tests\unit\models;
 
 use Yii;
-use site\models\CheckinForm;
 
 class CheckinFormTest extends \Codeception\Test\Unit
 {
@@ -108,20 +107,26 @@ class CheckinFormTest extends \Codeception\Test\Unit
 		];
  
 
-    protected function setUp()
-    {
-        parent::setUp();
+    protected function setUp() {
+      $this->container = new \yii\di\Container;
+      $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
+      $this->container->set('common\interfaces\UserOptionInterface', '\site\tests\_support\MockUserOption');
+      $this->container->set('common\interfaces\QuestionInterface', '\site\tests\_support\MockQuestion');
+    $this->container->set('common\interfaces\TimeInterface', function () {
+      return new \common\components\Time('America/Los_Angeles');
+    });
+      parent::setUp();
     }
 
-    protected function tearDown()
-    {
-        parent::tearDown();
-    }
+    //protected function tearDown()
+    //{
+        //parent::tearDown();
+    //}
 
 		public function testAttributeLabels()
 		{
         $this->specify('setOptions should function properly', function () {
-        	$model = new CheckinForm();
+          $model = $this->container->get('\site\models\CheckinForm');
           expect('attributeLabels should be correct', $this->assertEquals($model->attributeLabels(), [
             'options1' => 'Restoration',
             'options2' => 'Forgetting Priorities',
@@ -137,7 +142,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
     public function testSetOptions()
     {
         $this->specify('setOptions should function properly', function () {
-        	$model = new CheckinForm();
+          $model = $this->container->get('\site\models\CheckinForm');
 					$model->setOptions($this->options);
 
           expect('options1 should be correct', $this->assertEquals($model->options1, [ 0 => 7 ]));
@@ -162,7 +167,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
 		public function testValidateOptions()
 		{
         $this->specify('validateOptions should function properly', function () {
-        	$model = new CheckinForm();
+          $model = $this->container->get('\site\models\CheckinForm');
 					$model->setOptions($this->options);
           expect('validation should be good', $this->assertTrue($model->validate()));
 
@@ -174,7 +179,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
 		public function testCompileOptions()
 		{
         $this->specify('compileOptions should function properly', function () {
-        	$model = new CheckinForm();
+          $model = $this->container->get('\site\models\CheckinForm');
 					$model->setOptions($this->options);
           expect('compiling options should be return a correct array', $this->assertEquals($model->compileOptions(), [
 											  	0 => 7,
@@ -194,7 +199,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
 											  	14 => 128,
 											  ]));
 
-        	$model = new CheckinForm();
+          $model = $this->container->get('\site\models\CheckinForm');
 					$model->setOptions($this->options);
           $model->options1[0] = null;
           $model->options2[0] = null;
@@ -214,7 +219,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
 											  	14 => 128,
 											  ]));
 
-        	$model = new CheckinForm();
+          $model = $this->container->get('\site\models\CheckinForm');
 					$model->setOptions([]);
           expect('compiling options should return an empty array when no options are set', $this->assertEmpty($model->compileOptions()));
         });

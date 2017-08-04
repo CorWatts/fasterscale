@@ -1,12 +1,13 @@
 <?php
+
 namespace site\controllers;
+ini_set('display_errors', 1); 
 
 use Yii;
 use common\models\LoginForm;
 use common\models\Question;
 use site\models\PasswordResetRequestForm;
 use site\models\ResetPasswordForm;
-use site\models\SignupForm;
 use site\models\EditProfileForm;
 use site\models\DeleteAccountForm;
 use site\models\ContactForm;
@@ -75,7 +76,8 @@ class SiteController extends Controller
 
   public function actionIndex()
   {
-    $key = "index_blog_".\common\components\Time::getLocalDate('UTC');
+    $time = Yii::$container->get('common\interfaces\TimeInterface'); 
+    $key = "index_blog_".$time->getLocalDate('UTC');
     $posts = Yii::$app->cache->get($key);
     if($posts === false) {
       $posts = \Yii::$app->getModule('blog')
@@ -90,7 +92,7 @@ class SiteController extends Controller
 
   public function actionLogin()
   {
-    $model = new LoginForm();
+    $model = Yii::$container->get('\common\models\LoginForm');
     if ($model->load(Yii::$app->request->post()) && $model->login()) {
       return $this->goBack();
     } else {
@@ -141,7 +143,7 @@ class SiteController extends Controller
 
   public function actionSignup()
   {
-    $model = new SignupForm();
+    $model = Yii::$container->get('\site\models\SignupForm');
     if($model->load(Yii::$app->request->post())) {
       $user = $model->signup();
       Yii::$app->getSession()->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
@@ -155,7 +157,7 @@ class SiteController extends Controller
 
   public function actionRequestPasswordReset()
   {
-    $model = new PasswordResetRequestForm();
+    $model = Yii::$container->get('\site\models\PasswordResetRequestForm');
     if($model->load(Yii::$app->request->post()) && $model->validate()) {
       if(!$model->sendEmail()) {
         $ip = Yii::$app->getRequest()->getUserIP() ?: "UNKNOWN";
@@ -174,7 +176,8 @@ class SiteController extends Controller
   public function actionResetPassword($token)
   {
     try {
-      $model = new ResetPasswordForm($token);
+      $model = Yii::$container->get('\site\models\ResetPasswordForm', [$token]);
+      //$model = new ResetPasswordForm($token);
     } catch (InvalidParamException $e) {
       throw new BadRequestHttpException($e->getMessage());
     }
@@ -197,7 +200,7 @@ class SiteController extends Controller
       throw new BadRequestHttpException('Email verification token cannot be blank.');
     }
 
-    $user = User::findByVerifyEmailToken($token);
+    $user = Yii::$container->get('common\interfaces\UserInterface')->findByVerifyEmailToken($token);
     if (!$user) {
       throw new BadRequestHttpException("Wrong or expired email verification token. If you aren't sure why this error occurs perhaps you've already verified your account. Please try logging in.");
     }
@@ -215,10 +218,9 @@ class SiteController extends Controller
 
   public function actionProfile()
   {
-    $editProfileForm = new EditProfileForm();
+    $editProfileForm = Yii::$container->get('\site\models\EditProfileForm', [Yii::$app->user->identity]);
 
-    if (Yii::$app->request->isAjax && $editProfileForm->load($_POST))
-    {
+    if (Yii::$app->request->isAjax && $editProfileForm->load($_POST)) {
       Yii::$app->response->format = 'json';
       return \yii\widgets\ActiveForm::validate($editProfileForm);
     }
@@ -231,7 +233,7 @@ class SiteController extends Controller
       }
     }
 
-    $deleteAccountForm = new DeleteAccountForm();
+    $deleteAccountForm = Yii::$container->get('\site\models\DeleteAccountForm', [Yii::$app->user->identity]);
     return $this->render('profile', [
       'profile' => $editProfileForm,
       'delete' => $deleteAccountForm
@@ -240,7 +242,7 @@ class SiteController extends Controller
 
   public function actionDeleteAccount()
   {
-    $model = new DeleteAccountForm();
+    $model = Yii::$container->get('\site\models\DeleteAccountForm', [Yii::$app->user->identity]);
 
     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
       if($model->deleteAccount()) {

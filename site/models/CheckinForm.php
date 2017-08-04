@@ -4,8 +4,8 @@ namespace site\models;
 use Yii;
 use yii\base\Model;
 use yii\db\Expression;
-use common\models\UserOption;
-use common\components\Time;
+use common\interfaces\UserOptionInterface;
+use common\interfaces\TimeInterface;
 
 /**
  * Checkin form
@@ -21,6 +21,16 @@ class CheckinForm extends Model
   public $options7;
 
   public $compiled_options;
+
+  private $user_option;
+  private $time;
+
+  public function __construct(UserOptionInterface $user_option, TimeInterface $time, $config = []) {
+    $this->user_option = $user_option;
+    $this->time = $time;
+    parent::__construct($config);
+  }
+
   /**
    * @inheritdoc
    */
@@ -86,9 +96,9 @@ class CheckinForm extends Model
   }
 
   public function deleteToday() {
-    $date = Time::getLocalDate();
-    list($start, $end) = Time::getUTCBookends($date);
-    UserOption::deleteAll("user_id=:user_id 
+    $date = $this->time->getLocalDate();
+    list($start, $end) = $this->time->getUTCBookends($date);
+    $this->user_option->deleteAll("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
       [
@@ -118,7 +128,7 @@ class CheckinForm extends Model
       ->db
       ->createCommand()
       ->batchInsert(
-        UserOption::tableName(),
+        $this->user_option->tableName(),
         ['user_id', 'option_id', 'date'],
         $rows
       )->execute();

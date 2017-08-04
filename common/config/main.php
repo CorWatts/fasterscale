@@ -3,6 +3,23 @@ return [
   'name' => "The Faster Scale App",
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
   'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
+  'container' => [
+    'definitions' => [
+      'common\interfaces\UserInterface' => '\common\models\User',
+      'common\interfaces\UserOptionInterface' => '\common\models\UserOption',
+      'common\interfaces\QuestionInterface' => '\common\models\Question',
+    ],
+    'singletons' => [
+      'common\interfaces\TimeInterface' => function () {
+        //var_dump( Yii::$app->user);
+        if(Yii::$app->user->getIsGuest()) {
+          return new \common\components\Time('UTC');
+        } else {
+          return new \common\components\Time(Yii::$app->user->identity->timezone);
+        }
+      },
+    ],
+  ],
   'modules' => [
     'blog' => [
       'class' => \corwatts\MarkdownFiles\Module::className(),
@@ -12,7 +29,7 @@ return [
   ],
   'components' => [
     'cache' => [
-      'class' => 'yii\caching\DummyCache', // OR USE MEMCACHE OR SOMETHING
+      'class' => 'yii\caching\FileCache', // OR USE MEMCACHE OR SOMETHING
     ],
     'session' => [
       'class'=> 'yii\web\CacheSession',

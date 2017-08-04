@@ -2,12 +2,14 @@
 namespace site\models;
 
 use Yii;
-use common\models\User;
-use common\models\Question;
-use common\models\UserOption;
-use common\components\Time;
 use yii\base\Model;
 use yii\db\Expression;
+use \common\interfaces\UserInterface;
+use \common\interfaces\UserOptionInterface;
+use \common\interfaces\QuestionInterface;
+use \common\interfaces\TimeInterface;
+
+
 
 /**
  * Question form
@@ -50,6 +52,23 @@ class QuestionForm extends Model
   public $answer_7b;
   public $answer_7c;
 
+  private $time;
+  private $user;
+  private $question;
+  private $user_option;
+
+  public function __construct(UserInterface $user,
+                              UserOptionInterface $user_option,
+                              QuestionInterface $question,
+                              TimeInterface $time,
+                              $config = []) {
+    $this->user        = $user;
+    $this->user_option = $user_option;
+    $this->question    = $question;
+    $this->time        = $time;
+    parent::__construct($config);
+  }
+
   /**
    * @inheritdoc
    */
@@ -60,7 +79,7 @@ class QuestionForm extends Model
 
       [['user_option_id1', 'user_option_id2', 'user_option_id3', 'user_option_id4', 'user_option_id5', 'user_option_id6', 'user_option_id7'],
         'required',
-        'when' => self::getBhvrValidator(),
+        'when' => $this->getBhvrValidator(),
         'whenClient' => "function(attribute, value) { return false; }", // lame, but acceptable
         "message" => "You must select a behavior your responses apply to."],
 
@@ -80,7 +99,7 @@ class QuestionForm extends Model
     ];
   }
 
-  public static function getBhvrValidator() {
+  public function getBhvrValidator() {
     return function($model, $attr) {
       $attrNum = $attr[strlen($attr)-1];
       foreach(['a', 'b', 'c'] as $l) {
@@ -92,9 +111,9 @@ class QuestionForm extends Model
   }
 
   public function deleteToday() {
-    $date = Time::getLocalDate();
-    list($start, $end) = Time::getUTCBookends($date);
-    Question::deleteAll("user_id=:user_id 
+    $date = $this->time->getLocalDate();
+    list($start, $end) = $this->time->getUTCBookends($date);
+    $this->question->deleteAll("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
       [
@@ -121,23 +140,21 @@ class QuestionForm extends Model
     }, ARRAY_FILTER_USE_BOTH);
   }
 
-  public function getUserOptions($ids) {
-    return UserOption::findAll($ids);
+  public function getUserBehaviorProps() {
+    return array_keys($this->getPrefixProps('user_option_id'));
   }
 
-  public function getUserBehaviors() {
-    $user_bhvr_props = $this->getPrefixProps('user_option_id');
-    $user_bhvrs = $this->getUserOptions(array_values($user_bhvr_props));
-    return array_combine(array_keys($user_bhvr_props), $user_bhvrs);
+  public function getUserBehaviorIds() {
+    return array_values($this->getPrefixProps('user_option_id'));
   }
 
-  public function getAnswers() {
+  public function getAnswers($bhvrs) {
     $answers = [];
-    $user_bhvrs = $this->getUserBehaviors();
+    $user_bhvrs = array_combine($this->getUserBehaviorProps(), $bhvrs);
     foreach($user_bhvrs as $property => $user_bhvr) {
       $behavior_id = intval(substr($property, -1, 1));
       foreach($this->behaviorToAnswers($behavior_id) as $answer_letter => $answer) {
-        $question_id = Question::$TYPES[$answer_letter];
+        $question_id = \common\models\Question::$TYPES[$answer_letter];
         array_push($answers, [
                                'option_id'    => $user_bhvr->option_id,
                                'user_bhvr_id' => $user_bhvr->id,
@@ -149,25 +166,20 @@ class QuestionForm extends Model
     return $answers;
   }
 
-  public function saveAnswers() {
+  public function saveAnswers($bhvrs) {
     $result = true;
-    foreach($this->getAnswers() as $answer_data) {
-      if(!$this->saveModel($answer_data)) {
+    foreach($this->getAnswers($bhvrs) as $answer) {
+      $model = new \common\models\Question;
+      $model->user_id = Yii::$app->user->id;
+      $model->option_id = $answer['option_id'];
+      $model->user_option_id = $answer['user_bhvr_id'];
+      $model->date = new Expression("now()::timestamp");
+      $model->question = $answer['question_id'];
+      $model->answer = $answer['answer'];
+      if(!$model->save()) {
         $result = false;
       }
     }
     return $result;
-  }
-
-  public function saveModel(Array $answer_data) {
-    extract($answer_data);
-    $model = new Question;
-    $model->user_id = Yii::$app->user->id;
-    $model->option_id = $option_id;
-    $model->user_option_id = $user_bhvr_id;
-    $model->date = new Expression("now()::timestamp");
-    $model->question = $question_id;
-    $model->answer = $answer;
-    return $model->save();
   }
 }

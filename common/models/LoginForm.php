@@ -13,7 +13,13 @@ class LoginForm extends Model
   public $password;
   public $rememberMe = true;
 
-  private $_user = false;
+  private $user = false;
+  private $tmp_user;
+
+  public function __construct(\common\models\User $user, $config = []) {
+    $this->tmp_user = $user;
+    parent::__construct($config);
+  }
 
   /**
    * @inheritdoc
@@ -70,10 +76,10 @@ class LoginForm extends Model
    */
   public function getUser()
   {
-    if ($this->_user === false) {
-      $this->_user = User::findByEmail($this->email);
+    if ($this->user === false) {
+      $this->user = $this->tmp_user->findByEmail($this->email);
     }
 
-    return $this->_user;
+    return $this->user;
   }
 }

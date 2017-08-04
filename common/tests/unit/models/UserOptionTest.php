@@ -4,7 +4,6 @@ namespace common\unit\models;
 
 use Yii;
 use Codeception\Specify;
-use common\models\UserOption;
 
 date_default_timezone_set('UTC');
 
@@ -272,42 +271,43 @@ class UserOptionTest extends \Codeception\Test\Unit {
   ]; 
 
   public function setUp() {
+    $this->container = new \yii\di\Container;
+    $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
+    $this->container->set('common\interfaces\QuestionInterface', '\site\tests\_support\MockQuestion');
+    $this->container->set('common\interfaces\TimeInterface', function () {
+        return new \common\components\Time('America/Los_Angeles');
+      });
+
+    $time = $this->container->get('common\interfaces\TimeInterface');
+    $user = $this->container->get('common\interfaces\UserInterface');
+
+    $this->user_option = $this
+                            ->getMockBuilder("common\models\UserOption")
+                            ->setConstructorArgs([$time])
+                            ->setMethods(array("getIsNewRecord", "save"))
+                            ->getMock();
     parent::setUp();
-
-    Yii::configure(Yii::$app, [
-      'components' => [
-        'user' => [
-          'class' => 'yii\web\User',
-          'identityClass' => '\common\tests\unit\FakeUser',
-        ],
-      ],
-    ]);
-
-    $identity = new \common\tests\unit\FakeUser();
-    $identity->timezone = "America/Los_Angeles";
-
-    // logs in the user 
-    Yii::$app->user->setIdentity($identity);
   }
 
   protected function tearDown() {
+    $this->user_option = null;
     parent::tearDown();
   }
 
   public function testCalculateScore() {
     $this->specify('calculateScore should function correctly', function () {
-      expect('calculateScore should return the empty set when null is passed', $this->assertEmpty(UserOption::calculateScore(null)));
+      expect('calculateScore should return the empty set when null is passed', $this->assertEmpty($this->user_option->calculateScore(null)));
 
-      expect('calculateScore should return the empty set with no selected options', $this->assertEmpty(UserOption::calculateScore([])));
+      expect('calculateScore should return the empty set with no selected options', $this->assertEmpty($this->user_option->calculateScore([])));
       
-      expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals(UserOption::calculateScore($this->singleSimpleBehaviors), ['2016-06-16 21:12:43' => 29]));
+      expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals($this->user_option->calculateScore($this->singleSimpleBehaviors), ['2016-06-16 21:12:43' => 29]));
       
-      expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals(UserOption::calculateScore($this->singleComplexBehaviors), ['2016-06-20 21:08:36' => 233]));
+      expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals($this->user_option->calculateScore($this->singleComplexBehaviors), ['2016-06-20 21:08:36' => 233]));
     });
   }
 
   public function testDecorate() {
-    expect('decorate should add Option data to an array of UserOptions', $this->assertEquals(UserOption::decorate($this->singleSimpleBehaviorNoOption),
+    expect('decorate should add Option data to an array of UserOptions', $this->assertEquals($this->user_option->decorate($this->singleSimpleBehaviorNoOption),
                     [['id' => 396,
                       'user_id' => 2,
                       'option_id' => 107,
@@ -320,7 +320,7 @@ class UserOptionTest extends \Codeception\Test\Unit {
 
     expect('decorate SHOULD NOT add Option data when the provided option_id is invalid',
       $this->assertEquals(
-        UserOption::decorate($this->badSingleSimpleBehaviorNoOption),
+        $this->user_option->decorate($this->badSingleSimpleBehaviorNoOption),
         [['id' => 396,
           'user_id' => 2,
           'option_id' => 99999,
@@ -330,7 +330,7 @@ class UserOptionTest extends \Codeception\Test\Unit {
   public function testDecorateWithCategory() {
     expect('decorate should add Option data and Category data to an array of UserOptions',
       $this->assertEquals(
-        UserOption::decorateWithCategory($this->singleSimpleBehaviorNoOption),
+        $this->user_option->decorateWithCategory($this->singleSimpleBehaviorNoOption),
          [['id' => 396,
            'user_id' => 2,
            'option_id' => 107,

@@ -9,7 +9,7 @@ use common\models\User;
 date_default_timezone_set('UTC');
 
 /**
- * Time test
+ * User test
  */
 
 class UserTest extends \Codeception\Test\Unit {
@@ -738,7 +738,22 @@ public $exportData = [
   ];
 
   public function setUp() {
+    $this->container = new \yii\di\Container;
+    $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
+    $this->container->set('common\interfaces\UserOptionInterface', '\site\tests\_support\MockUserOption');
+    $this->container->set('common\interfaces\TimeInterface', function () {
+      return new \common\components\Time('America/Los_Angeles');
+    });
+
+    $user_option = $this->container->get('common\interfaces\UserOptionInterface');
+    $time        = $this->container->get('common\interfaces\TimeInterface');
+
+    $question = $this->getMockBuilder('\common\models\Question')
+      ->setMethods(['save', 'attributes'])
+      ->getMock();
+
     $this->user = $this->getMockBuilder('\common\models\User')
+      ->setConstructorArgs([$user_option, $question, $time])
       ->setMethods(['save', 'attributes'])
       ->getMock();
     $this->user->method('save')->willReturn(true);
@@ -771,15 +786,15 @@ public $exportData = [
 
   public function testParseQuestionData() {
     $this->specify('parseQuestionData should function correctly', function () {
-      expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals(User::parseQuestionData($this->questionData), $this->userQuestions));
-      expect('parseQuestionData should return empty with the empty set', $this->assertEmpty(User::parseQuestionData([])));
+      expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals($this->user->parseQuestionData($this->questionData), $this->userQuestions));
+      expect('parseQuestionData should return empty with the empty set', $this->assertEmpty($this->user->parseQuestionData([])));
     });
   }
 
   public function testParseOptionData() {
     $this->specify('parseOptionData should function correctly', function () {
-      expect('parseOptionData should return the correct structure with expected data', $this->assertEquals(User::parseOptionData($this->optionData), $this->userOptions));
-      expect('parseOptionData should return empty with the empty set', $this->assertEmpty(User::parseOptionData([])));
+      expect('parseOptionData should return the correct structure with expected data', $this->assertEquals($this->user->parseOptionData($this->optionData), $this->userOptions));
+      expect('parseOptionData should return empty with the empty set', $this->assertEmpty($this->user->parseOptionData([])));
     });
   }
 
@@ -844,7 +859,7 @@ public $exportData = [
   public function testConfirmVerifyEmailToken() {
     $this->user->verify_email_token = 'hello_world';
     $this->user->confirmVerifyEmailToken();
-    expect('confirmVerifyEmailToken should append User::CONFIRMED_STRING to the end of the verify_email_token property', $this->assertEquals($this->user->verify_email_token, 'hello_world'.User::CONFIRMED_STRING));
+    expect('confirmVerifyEmailToken should append User::CONFIRMED_STRING to the end of the verify_email_token property', $this->assertEquals($this->user->verify_email_token, 'hello_world'.$this->user::CONFIRMED_STRING));
   }
 
   public function testIsVerified() {

@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use common\interfaces\QuestionInterface;
+use \common\components\ActiveRecord;
 
 /**
  * @property integer $id
@@ -17,7 +19,7 @@ use Yii;
  * @property Option $option
  * @property UserOptionLink $userOption
  */
-class Question extends \yii\db\ActiveRecord
+class Question extends ActiveRecord implements QuestionInterface
 {
   public static $TYPES = [
     'a' => 1,
@@ -49,8 +51,9 @@ class Question extends \yii\db\ActiveRecord
     return [
       [['user_id', 'option_id', 'user_option_id', 'question', 'answer', 'date'], 'required'],
       [['user_id', 'option_id', 'user_option_id', 'question'], 'integer'],
-      [['answer'], 'string'],
-      [['date'], 'safe']
+      ['option_id', 'in', 'range' => array_column(\common\models\Option::$options, 'id')],
+      ['answer', 'string'],
+      ['date', 'safe']
     ];
   }
 
@@ -80,7 +83,7 @@ class Question extends \yii\db\ActiveRecord
    */
   public function getUser()
   {
-    return $this->hasOne(User::className(), ['id' => 'user_id']);
+    return $this->hasOne(\common\models\User::className(), ['id' => 'user_id']);
   }
 
   /**
@@ -88,6 +91,6 @@ class Question extends \yii\db\ActiveRecord
    */
   public function getUserOption()
   {
-    return $this->hasOne(UserOptionLink::className(), ['id' => 'user_option_id']);
+    return $this->hasOne(\common\models\UserOption::className(), ['id' => 'user_option_id']);
   }
 }

@@ -3,12 +3,13 @@ namespace common\models;
 
 use yii;
 use yii\base\NotSupportedException;
-use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\web\IdentityInterface;
-use common\models\Option;
-use common\models\UserOption;
-use common\components\Time;
+use \common\components\ActiveRecord;
+use \common\interfaces\UserInterface;
+use \common\interfaces\UserOptionInterface;
+use \common\interfaces\QuestionInterface;
+use \common\interfaces\TimeInterface;
 
 /**
  * User model
@@ -30,7 +31,7 @@ use common\components\Time;
  * @property string $partner_email2
  * @property string $partner_email3
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, UserInterface
 {
   const STATUS_DELETED = 0;
   const STATUS_ACTIVE = 10;
@@ -39,7 +40,31 @@ class User extends ActiveRecord implements IdentityInterface
 
   const CONFIRMED_STRING = '_confirmed';
 
-  public $decorator;
+  public $user_option;
+  public $question;
+  public $time;
+
+  public function __construct(UserOptionInterface $user_option, QuestionInterface $question, TimeInterface $time, $config = []) {
+    $this->user_option = $user_option;
+    $this->question = $question;
+    $this->time = $time;
+    parent::__construct($config);
+  }
+
+  public function afterFind() {
+    $this->time = new \common\components\Time($this->timezone);
+    parent::afterFind();
+  }
+
+  public function afterRefresh() {
+    $this->time = new \common\components\Time($this->timezone);
+    parent::afterRefresh();
+  }
+
+  //public function afterSave() {
+  //  $this->time = new \common\components\Time($this->timezone);
+  //  parent::afterSave();
+  //}
 
   /**
    * @inheritdoc
@@ -102,9 +127,9 @@ class User extends ActiveRecord implements IdentityInterface
    * @param  string      $email
    * @return static|null
    */
-  public static function findByEmail($email)
+  public function findByEmail($email)
   {
-    return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+    return $this->findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
   }
 
   /**
@@ -113,13 +138,13 @@ class User extends ActiveRecord implements IdentityInterface
    * @param  string      $token password reset token
    * @return static|null
    */
-  public static function findByPasswordResetToken($token)
+  public function findByPasswordResetToken($token)
   {
-    if(!static::isTokenCurrent($token)) {
+    if(!$this->isTokenCurrent($token)) {
       return null;
     }
 
-    return static::findOne([
+    return $this->findOne([
       'password_reset_token' => $token,
       'status' => self::STATUS_ACTIVE,
     ]);
@@ -131,18 +156,18 @@ class User extends ActiveRecord implements IdentityInterface
    * @param  string      $token email verification token
    * @return static|null
    */
-  public static function findByVerifyEmailToken($token)
+  public function findByVerifyEmailToken($token)
   {
-    if(static::isTokenConfirmed($token)) return null;
+    if($this->isTokenConfirmed($token)) return null;
 
-    $user = static::findOne([
+    $user = $this->findOne([
       'verify_email_token' => [$token, $token . self::CONFIRMED_STRING],
       'status' => self::STATUS_ACTIVE,
     ]);
 
     if($user) {
-      if(!static::isTokenConfirmed($token) &&
-         !static::isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
+      if(!$this->isTokenConfirmed($token) &&
+         !$this->isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
         return null;
       }
     }
@@ -157,7 +182,7 @@ class User extends ActiveRecord implements IdentityInterface
    * @param  string      $paramPath Yii app param path
    * @return boolean
    */
-  public static function isTokenCurrent($token, String $paramPath = 'user.passwordResetTokenExpire') {
+  public function isTokenCurrent($token, String $paramPath = 'user.passwordResetTokenExpire') {
     $expire = \Yii::$app->params[$paramPath];
     $parts = explode('_', $token);
     $timestamp = (int) end($parts);
@@ -174,7 +199,8 @@ class User extends ActiveRecord implements IdentityInterface
    * @param string    $token verification token (the haystack)
    * @param string    $match the needle to search for
    */
-  public static function isTokenConfirmed($token, String $match = self::CONFIRMED_STRING) {
+  public function isTokenConfirmed($token = null, String $match = self::CONFIRMED_STRING) {
+    if(is_null($token)) $token = $this->verify_email_token;
     return substr($token, -strlen($match)) === $match;
   }
 
@@ -295,7 +321,7 @@ class User extends ActiveRecord implements IdentityInterface
   public function sendEmailReport($date) {
     if(!$this->isPartnerEnabled()) return false; // no partner emails set
 
-    list($start, $end) = Time::getUTCBookends($date);
+    list($start, $end) = $this->time->getUTCBookends($date);
 
     $messages = [];
     foreach($this->getPartnerEmails() as $email) {
@@ -304,12 +330,12 @@ class User extends ActiveRecord implements IdentityInterface
           'user'          => $this,
           'email'         => $email,
           'date'          => $date,
-          'user_options'  => self::getUserOptions($date),
-          'questions'     => self::getUserQuestions($date),
-          'chart_content' => UserOption::generateScoresGraph(),
-          'categories'    => Category::$categories,
-          'score'         => UserOption::calculateScoreByUTCRange($start, $end),
-          'options_list'  => Option::$options,
+          'user_options'  => $this->getUserOptions($date),
+          'questions'     => $this->getUserQuestions($date),
+          'chart_content' => $this->user_option->generateScoresGraph(),
+          'categories'    => \common\models\Category::$categories,
+          'score'         => $this->user_option->calculateScoreByUTCRange($start, $end),
+          'options_list'  => \common\models\Option::$options,
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
         ->setSubject($this->email." has scored high in The Faster Scale App")
@@ -347,7 +373,7 @@ class User extends ActiveRecord implements IdentityInterface
           "question2",
           "question3"')
       ->orderBy('l.date DESC');
-   $data = UserOption::decorateWithCategory($query->all());
+   $data = $this->user_option::decorateWithCategory($query->all());
    return $this->cleanExportData($data);
 
 /* Plaintext Query
@@ -414,21 +440,21 @@ ORDER  BY l.date DESC;
     return Yii::$app->mailer->sendMultiple($messages);
   }
 
-  public static function getUserQuestions($local_date = null) {
-    if(is_null($local_date)) $local_date = Time::getLocalDate();
-    $questions = self::getQuestionData($local_date);
-    return self::parseQuestionData($questions);
+  public function getUserQuestions($local_date = null) {
+    if(is_null($local_date)) $local_date = $this->time->getLocalDate();
+    $questions = $this->getQuestionData($local_date);
+    return $this->parseQuestionData($questions);
   }
 
-  public static function getUserOptions($local_date = null) {
-    if(is_null($local_date)) $local_date = Time::getLocalDate();
+  public function getUserOptions($local_date = null) {
+    if(is_null($local_date)) $local_date = $this->time->getLocalDate();
 
-    $options = self::getOptionData($local_date);
-    $options = UserOption::decorateWithCategory($options);
-    return self::parseOptionData($options);
+    $options = $this->getOptionData($local_date);
+    $options = $this->user_option::decorateWithCategory($options);
+    return $this->parseOptionData($options);
   }
 
-  public static function parseQuestionData($questions) {
+  public function parseQuestionData($questions) {
     if(!$questions) return [];
 
     $question_answers = [];
@@ -441,7 +467,7 @@ ORDER  BY l.date DESC;
       ];
 
       $question_answers[$option['id']]["answers"][] = [
-        "title" => Question::$QUESTIONS[$question['question']],
+        "title" => $this->question::$QUESTIONS[$question['question']],
         "answer" => $question['answer']
       ];
     }
@@ -449,7 +475,7 @@ ORDER  BY l.date DESC;
     return $question_answers;
   }
  
-  public static function parseOptionData($options) {
+  public function parseOptionData($options) {
     if(!$options) return [];
 
     $opts_by_cat = [];
@@ -465,10 +491,10 @@ ORDER  BY l.date DESC;
     return $opts_by_cat;
   }
 
-  public static function getQuestionData($local_date) {
-    list($start, $end) = Time::getUTCBookends($local_date);
+  public function getQuestionData($local_date) {
+    list($start, $end) = $this->time->getUTCBookends($local_date);
 
-    $questions = Question::find()
+    $questions = $this->question->find()
       ->where("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
@@ -480,15 +506,15 @@ ORDER  BY l.date DESC;
     ->asArray()
     ->all();
 
-    $questions = UserOption::decorate($questions);
+    $questions = $this->user_option::decorate($questions);
 
     return $questions;
   }
 
-  public static function getOptionData($local_date) {
-    list($start, $end) = Time::getUTCBookends($local_date);
+  public function getOptionData($local_date) {
+    list($start, $end) = $this->time->getUTCBookends($local_date);
 
-    return UserOption::find()
+    return $this->user_option->find()
       ->where("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
@@ -528,7 +554,7 @@ ORDER  BY l.date DESC;
    $ret = array_map(
      function($row) use ($order) {
        // change timestamp to local time (for the user)
-       $row['date'] = Time::convertUTCToLocal($row['date'], true);
+       $row['date'] = $this->time->convertUTCToLocal($row['date'], true);
        
        // clean up things we don't need
        $row['category'] = $row['option']['category']['name'];
