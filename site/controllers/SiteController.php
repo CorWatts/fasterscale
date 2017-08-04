@@ -202,7 +202,7 @@ class SiteController extends Controller
       throw new BadRequestHttpException("Wrong or expired email verification token. If you aren't sure why this error occurs perhaps you've already verified your account. Please try logging in.");
     }
 
-    if(User::isTokenConfirmed($user->verify_email_token)) {
+    if($user->isTokenConfirmed($user->verify_email_token)) {
       Yii::$app->getSession()->setFlash('success', 'Your account has already been verified. Please log in.');
       return $this->redirect('/login',302);
     } else if (Yii::$app->getUser()->login($user)) {
