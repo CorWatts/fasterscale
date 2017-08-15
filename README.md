@@ -66,7 +66,7 @@ composer test-coverage
 ```
 
 ## Assets
-We have built-in support for minimizing JS and CSS assets. Ensure the npm packages uglifyjs and uglifycss are installed via ```npm install uglifyjs uglifycss -g```. Then uncomment the respective assetManager lines in ```site/config/main.php``` or override them in ```site/config/main-local.php``` and execute:
+We have built-in support for minimizing JS and CSS assets. Ensure the npm packages uglify-js and uglifycss are installed via ```npm install uglify-js uglifycss -g```. Then uncomment the respective assetManager lines in ```site/config/main.php``` or override them in ```site/config/main-local.php``` and execute:
 ```bash
 ./yii asset site/assets/assets.php site/assets/assets-compressed.php
 ```
