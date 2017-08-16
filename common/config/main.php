@@ -8,10 +8,7 @@ return [
       'common\interfaces\UserInterface' => '\common\models\User',
       'common\interfaces\UserOptionInterface' => '\common\models\UserOption',
       'common\interfaces\QuestionInterface' => '\common\models\Question',
-    ],
-    'singletons' => [
       'common\interfaces\TimeInterface' => function () {
-        //var_dump( Yii::$app->user);
         if(Yii::$app->user->getIsGuest()) {
           return new \common\components\Time('UTC');
         } else {
