@@ -7,12 +7,13 @@ use yii\helpers\ArrayHelper as AH;
 
 use common\models\User;
 use common\models\Question;
-use common\components\Time;
 /**
  * @var yii\web\View $this
  */
 
 $this->title = "The Faster Scale App | Previous Check-ins";
+
+$time = Yii::$container->get('common\interfaces\TimeInterface');
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
   $checked_val = ($checked) ? "btn-primary" : "";
@@ -22,8 +23,8 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 <h1>View Previous Check-ins</h1>
 <div id='past-checkin-nav' role='toolbar' class='btn-toolbar'>
   <div class='btn-group' role='group'>
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "-1 week")]); ?>">&lt;&lt;</a> 
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "-1 day")]); ?>">&lt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "-1 week")]); ?>">&lt;&lt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "-1 day")]); ?>">&lt;</a> 
   </div>
   <div class='btn-group' role='group'>
 <?= yii\jui\DatePicker::widget([
@@ -43,8 +44,8 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
             ]) ?>
   </div>
   <div class='btn-group' role='group'>
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "+1 day")]); ?>">&gt;</a> 
-    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>Time::alterLocalDate($actual_date, "+1 week")]); ?>">&gt;&gt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "+1 day")]); ?>">&gt;</a> 
+    <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "+1 week")]); ?>">&gt;&gt;</a> 
   </div>
 </div>
 

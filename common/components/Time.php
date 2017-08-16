@@ -5,45 +5,53 @@ use yii;
 use \DateTime;
 use \DateTimeZone;
 
-class Time {
-  public static function convertLocalToUTC($local, $inc_time = true) {
+class Time extends \yii\base\Object implements \common\interfaces\TimeInterface {
+
+  public $timezone;
+
+  public function __construct(String $timezone, $config = []) {
+    $this->timezone = $timezone;
+    parent::__construct($config);
+  }
+
+  public function convertLocalToUTC($local, $inc_time = true) {
     $fmt = $inc_time ? "Y-m-d H:i:s" : "Y-m-d";
 
-    $timestamp = new DateTime($local, new DateTimeZone(Yii::$app->user->identity->timezone));
+    $timestamp = new DateTime($local, new DateTimeZone($this->timezone));
     $timestamp->setTimeZone(new DateTimeZone("UTC"));
     return $timestamp->format($fmt);
   }
 
-  public static function convertUTCToLocal($utc, $inc_time = true) {
+  public function convertUTCToLocal($utc, $inc_time = true) {
     $fmt = $inc_time ? "Y-m-d H:i:s" : "Y-m-d";
 
     $timestamp = new DateTime($utc, new DateTimeZone("UTC"));
-    $timestamp->setTimeZone(new DateTimeZone(Yii::$app->user->identity->timezone));
+    $timestamp->setTimeZone(new DateTimeZone($this->timezone));
     return $timestamp->format($fmt);
   }
 
-  public static function getLocalTime($timezone = null) {
+  public function getLocalTime($timezone = null) {
     if($timezone === null)
-      $timezone = Yii::$app->user->identity->timezone;
+      $timezone = $this->timezone;
 
     $timestamp = new DateTime("now", new DateTimeZone($timezone));
     return $timestamp->format("Y-m-d H:i:s");
   }
 
-  public static function getLocalDate($timezone = null) {
+  public function getLocalDate($timezone = null) {
     if($timezone === null)
-      $timezone = Yii::$app->user->identity->timezone;
+      $timezone = $this->timezone;
 
-    $timestamp = new DateTime("now", new DateTimeZone($timezone));
-    return $timestamp->format("Y-m-d");
+    return (new DateTime("now", new DateTimeZone($timezone)))
+      ->format("Y-m-d");
   }
 
-  public static function alterLocalDate($date, $modifier) {
-    $new_date = new DateTime("$date $modifier", new DateTimeZone(Yii::$app->user->identity->timezone));
-    return $new_date->format("Y-m-d");
+  public function alterLocalDate($date, $modifier) {
+    return (new DateTime("$date $modifier", new DateTimeZone($this->timezone)))
+      ->format("Y-m-d");
   }
 
-  public static function getUTCBookends($local) {
+  public function getUTCBookends($local) {
     $local = trim($local);
     if(strpos($local, " ")) {
       return false;

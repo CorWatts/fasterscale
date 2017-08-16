@@ -1,7 +1,6 @@
 <?php
 namespace site\models;
 
-use common\models\User;
 use yii\base\Model;
 use Yii;
 use \DateTimeZone;
@@ -19,6 +18,20 @@ class EditProfileForm extends Model
   public $partner_email1;
   public $partner_email2;
   public $partner_email3;
+
+  private $user;
+
+  /**
+   * Creates a form model
+   *
+   * @param  object                          $user
+   * @param  array                           $config name-value pairs that will be used to initialize the object properties
+   * @throws \yii\base\InvalidParamException if token is empty or not valid
+   */
+  public function __construct(\common\models\User $user, $config = []) {
+    $this->user = $user;
+    parent::__construct($config);
+  }
 
   /**
    * @inheritdoc
@@ -68,7 +81,7 @@ class EditProfileForm extends Model
   public function saveProfile()
   {
     if ($this->validate()) {
-      $user = User::findOne(Yii::$app->user->id);
+      $user = $this->user->findOne(Yii::$app->user->id);
 
       if($this->email)
         $user->email = $this->email;
@@ -96,7 +109,7 @@ class EditProfileForm extends Model
   }
 
   public function loadUser() {
-    $user                  = User::findOne(Yii::$app->user->id);
+    $user                  = $this->user->findOne(Yii::$app->user->id);
     $this->email           = $user->email;
     $this->timezone        = $user->timezone;
     $this->email_threshold = $user->email_threshold;

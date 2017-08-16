@@ -8,6 +8,13 @@ use yii\base\Model;
 class PasswordResetRequestForm extends Model
 {
   public $email;
+  private $user;
+
+  public function __construct(\common\models\User $user, $config = []) {
+    $this->user = $user;
+    parent::__construct($config);
+  }
+
   /**
    * @inheritdoc
    */
@@ -27,13 +34,13 @@ class PasswordResetRequestForm extends Model
   public function sendEmail()
   {
     /* @var $user User */
-    $user = User::findOne([
+    $user = $this->user->findOne([
       'status' => User::STATUS_ACTIVE,
       'email' => $this->email,
     ]);
 
     if ($user) {
-      if (!User::isTokenCurrent($user->password_reset_token)) {
+      if (!$user->isTokenCurrent($user->password_reset_token)) {
         $user->generatePasswordResetToken();
       }
       if ($user->save()) {

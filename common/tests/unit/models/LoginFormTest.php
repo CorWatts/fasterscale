@@ -11,7 +11,7 @@ use common\models\LoginForm;
 date_default_timezone_set('UTC');
 
 /**
- * Time test
+ * Login test
  */
 
 class LoginFormTest extends \Codeception\Test\Unit {
@@ -25,7 +25,8 @@ class LoginFormTest extends \Codeception\Test\Unit {
       'save' => true
     ];
 
-    $user = $this->getMockBuilder('\common\models\User')
+    $user = $this->getMockBuilder('common\models\User')
+      ->disableOriginalConstructor()
       ->setMethods(['save', 'login', 'attributes', 'validatePassword', 'isVerified'])
       ->getMock();
 
@@ -57,7 +58,7 @@ class LoginFormTest extends \Codeception\Test\Unit {
 
   private function mockForm($user) {
     $form = Stub::make('\common\models\LoginForm', [
-      '_user' => $user,
+      'user' => $user,
     ]);
     return $form;
   }
@@ -82,8 +83,8 @@ class LoginFormTest extends \Codeception\Test\Unit {
 
 
   public function testGetUser() {
-    $this->specify('getUser should function correctly', function() {
-      expect('getUser should return the user if the _user attr on the form object is already set', $this->assertInstanceOf('\common\models\User', $this->form->getUser()));
+    $this->specify('getUser shougd function correctly', function() {
+      expect('getUser should return the user if the user attr on the form object is already set', $this->assertInstanceOf('\common\models\User', $this->form->getUser()));
     });
   }
 

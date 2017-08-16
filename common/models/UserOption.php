@@ -3,9 +3,9 @@
 namespace common\models;
 
 use Yii;
-use common\models\UserOption;
-use common\models\User;
-use common\components\Time;
+use \common\interfaces\TimeInterface;
+use \common\interfaces\UserOptionInterface;
+use \common\components\ActiveRecord;
 use yii\db\Query;
 use yii\helpers\ArrayHelper as AH;
 use \DateTime;
@@ -24,8 +24,15 @@ use Amenadiel\JpGraph\Plot;
  *
  * @property Option $user
  */
-class UserOption extends \yii\db\ActiveRecord
+class UserOption extends ActiveRecord implements UserOptionInterface
 {
+  private $time;
+
+  public function __construct(TimeInterface $time, $config = []) {
+    $this->time = $time;
+    parent::__construct($config);
+  }
+
   /**
    * @inheritdoc
    */
@@ -64,10 +71,10 @@ class UserOption extends \yii\db\ActiveRecord
    */
   public function getUser()
   {
-    return $this->hasOne(User::className(), ['id' => 'user_id']);
+    return $this->hasOne(\common\models\User::className(), ['id' => 'user_id']);
   }
 
-  public static function getPastCheckinDates()
+  public function getPastCheckinDates()
   {
     $past_checkin_dates = [];
     $query = new Query;
@@ -78,14 +85,14 @@ class UserOption extends \yii\db\ActiveRecord
       ->having('user_id = :user_id');
     $temp_dates = $query->all();
     foreach($temp_dates as $temp_date) {
-      $past_checkin_dates[] = Time::convertUTCToLocal($temp_date['date'], false);
+      $past_checkin_dates[] = $this->time->convertUTCToLocal($temp_date['date'], false);
     }
 
     return $past_checkin_dates;
   }
 
-  public static function getUserOptionsWithCategory($checkin_date) {
-    list($start, $end) = Time::getUTCBookends($checkin_date);
+  public function getUserOptionsWithCategory($checkin_date) {
+    list($start, $end) = $this->time->getUTCBookends($checkin_date);
 
     $query = new Query;
     $query->select('*')
@@ -104,17 +111,17 @@ class UserOption extends \yii\db\ActiveRecord
     return AH::map($user_options, 'id', function($a) { return $a['option']['name']; }, function($b) {return $b['option']['category_id']; });
   }
 
-  public static function getDailyScore($date = null) {
+  public function getDailyScore($date = null) {
     // default to today's score
-    if(is_null($date)) $date = Time::getLocalDate();
+    if(is_null($date)) $date = $this->time->getLocalDate();
 
-    list($start, $end) = Time::getUTCBookends($date);
-    $score = UserOption::calculateScoreByUTCRange($start, $end);
+    list($start, $end) = $this->time->getUTCBookends($date);
+    $score = $this->calculateScoreByUTCRange($start, $end);
     return reset($score) ?: 0; // get first array item
   }
 
-  public static function getBehaviorsByDate($start, $end) {
-      $uo = UserOption::find()
+  public function getBehaviorsByDate($start, $end) {
+      $uo = $this->find()
         ->select(['id', 'user_id', 'option_id', 'date'])
         ->where(
           "user_id=:user_id AND date > :start_date AND date < :end_date",
@@ -131,15 +138,15 @@ class UserOption extends \yii\db\ActiveRecord
    * @date date string in yyyy-mm-dd format
    * @return int score
    */
-  public static function calculateScoreByUTCRange($start, $end) {
-    $behaviors = self::getBehaviorsByDate($start, $end);
-    $scores = self::calculateScore($behaviors);
+  public function calculateScoreByUTCRange($start, $end) {
+    $behaviors = $this->getBehaviorsByDate($start, $end);
+    $scores = $this->calculateScore($behaviors);
 
     return $scores;
   }
 
-  public static function calculateScoresOfLastMonth() {
-    $key = "scores_of_last_month_".Yii::$app->user->id."_".Time::getLocalDate();
+  public function calculateScoresOfLastMonth() {
+    $key = "scores_of_last_month_".Yii::$app->user->id."_".$this->time->getLocalDate();
     $scores = Yii::$app->cache->get($key);
     if($scores === false) {
       $scores = [];
@@ -148,8 +155,8 @@ class UserOption extends \yii\db\ActiveRecord
       $end = $dt->format("Y-m-d H:i:s");
       $start = $dt->modify("-1 month")->format("Y-m-d H:i:s");
 
-      $behaviors = self::getBehaviorsByDate($start, $end);
-      $scores = self::calculateScore($behaviors);
+      $behaviors = $this->getBehaviorsByDate($start, $end);
+      $scores = $this->calculateScore($behaviors);
 
       Yii::$app->cache->set($key, $scores, 60*60*24);
     }
@@ -157,14 +164,14 @@ class UserOption extends \yii\db\ActiveRecord
     return $scores;
   }
 
-  public static function calculateScore($selected_opts) {
+  public function calculateScore($selected_opts) {
     if(!!!$selected_opts) {
       return [];
     }
 
     $local_opts = [];
     foreach($selected_opts as $user_option) {
-      $local_opts[Time::convertUTCToLocal($user_option['date'])][] = $user_option['option'];
+      $local_opts[$this->time->convertUTCToLocal($user_option['date'])][] = $user_option['option'];
     }
 
     $scores = [];
@@ -201,8 +208,8 @@ class UserOption extends \yii\db\ActiveRecord
     return $scores;
   }
 
-  public static function generateScoresGraph() {
-    $values = UserOption::calculateScoresOfLastMonth();
+  public function generateScoresGraph() {
+    $values = $this->calculateScoresOfLastMonth();
     $scores = array_values($values);
     $dates = array_map(function($date) {
       return (new \DateTime($date))->format('M j, Y');
@@ -242,7 +249,7 @@ class UserOption extends \yii\db\ActiveRecord
     return $img_data;
   }
 
-  public static function getTopBehaviors($limit = 5) {
+  public function getTopBehaviors($limit = 5) {
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
     $query->select("user_id, option_id, COUNT(id) as count")
@@ -254,7 +261,7 @@ class UserOption extends \yii\db\ActiveRecord
     return self::decorateWithCategory($query->all(), false);
   }
 
-  public static function getBehaviorsByCategory() {
+  public function getBehaviorsByCategory() {
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
     $query->select("user_id, option_id, COUNT(id) as count")
@@ -279,10 +286,10 @@ class UserOption extends \yii\db\ActiveRecord
 
   public static function decorate(Array $uo, $with_category = false) {
     foreach($uo as &$o) {
-      if($option = Option::getOption('id', $o['option_id'])) {
+      if($option = \common\models\Option::getOption('id', $o['option_id'])) {
         $o['option'] = $option;
         if($with_category) {
-          $o['option']['category'] = Category::getCategory('id', $o['option']['category_id']);
+          $o['option']['category'] = \common\models\Category::getCategory('id', $o['option']['category_id']);
         }
       }
     }

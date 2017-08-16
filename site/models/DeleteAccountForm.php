@@ -11,6 +11,18 @@ use Yii;
 class DeleteAccountForm extends Model
 {
   public $password;
+  private $user;
+
+  /**
+   * Creates a form model
+   *
+   * @param  object                          $user
+   * @param  array                           $config name-value pairs that will be used to initialize the object properties
+   */
+  public function __construct(\common\models\User $user, $config = []) {
+    $this->user = $user;
+    parent::__construct($config);
+  }
 
   /**
    * @inheritdoc
@@ -35,17 +47,9 @@ class DeleteAccountForm extends Model
    */
   public function deleteAccount()
   {
-    if ($this->validate() && Yii::$app->user->identity->validatePassword($this->password)) {
-      Yii::$app
-        ->user
-        ->identity
-        ->sendDeleteNotificationEmail();
-
-      Yii::$app
-        ->user
-        ->identity
-        ->delete();
-
+    if ($this->validate() && $this->user->validatePassword($this->password)) {
+      $this->user->sendDeleteNotificationEmail();
+      $this->user->delete();
       return true;
     }
 
