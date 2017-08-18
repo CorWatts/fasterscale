@@ -7,6 +7,8 @@
  Yii::setAlias('@webroot', __DIR__ . '/../web');
  Yii::setAlias('@web', '/');
 
+$mainConf = require(Yii::getAlias('@site/config/main.php'));
+
 return [
     // Adjust command/callback for JavaScript files compressing:
     'jsCompressor' => 'uglifyjs {from} --compress --mangle --output {to}',
@@ -16,8 +18,7 @@ return [
     'bundles' => [
         'site\assets\AppAsset',
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
+        'site\assets\BootstrapPluginAsset',
         'site\assets\JuiAsset',
     ],
     // Asset bundle for compression output:
@@ -32,7 +33,7 @@ return [
         ],
     ],
     // Asset manager configuration:
-    'assetManager' => [
+    'assetManager' => array_merge($mainConf['components']['assetManager'], [
       'basePath' => '@webroot/assets',
       'baseUrl' => '@web',
       'bundles' => [
@@ -44,5 +45,5 @@ return [
           'css' => [],
         ],
       ],
-    ],
+    ]),
 ];

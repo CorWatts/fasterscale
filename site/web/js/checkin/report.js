@@ -36,12 +36,12 @@
         borderJoinStyle: 'miter',
         pointBorderColor: "rgba(75,192,192,1)",
         pointBackgroundColor: "#fff",
-        pointBorderWidth: 1,
+        pointBorderWidth: 2,
         pointHoverRadius: 5,
         pointHoverBackgroundColor: "rgba(75,192,192,1)",
         pointHoverBorderColor: "rgba(220,220,220,1)",
         pointHoverBorderWidth: 2,
-        pointRadius: 1,
+        pointRadius: 3,
         pointHitRadius: 10,
         data: $.parseJSON($("#chart_scores_values_json").html())
       }]
@@ -72,7 +72,8 @@
             type: "time",
             time: {
               unit: "day" // only show 'day' units on the scale
-            }
+            },
+            autoSkip: true
           }],
           yAxes: [{
             ticks: {
