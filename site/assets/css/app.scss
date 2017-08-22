@@ -1,3 +1,8 @@
+/* 
+ * We can override Bootstrap variables here
+ * $body-bg: lightgray;
+ */
+
 html,
 body {
 	height: 100%;
@@ -14,16 +19,37 @@ body {
     padding: 70px 15px 20px;
 }
 
+.site-index {
+  .jumbotron {
+    text-align: center;
+    background-color: transparent;
+  }
+  .block {
+    padding-top: 30px;
+    &:first-child {
+      padding-top: 0px;
+    }
+  }
+}
+
+#checkin-form {
+  .btn {
+    white-space: normal;
+    margin-bottom: 4px;
+  }
+  .control-label {
+    font-size: 16px;
+  }
+  .datepicker {
+    width: 125px;
+  }
+}
+
 .footer {
 	height: 60px;
 	background-color: #f5f5f5;
 	border-top: 1px solid #ddd;
 	padding-top: 20px;
-}
-
-.jumbotron {
-	text-align: center;
-	background-color: transparent;
 }
 
 .not-set {
@@ -45,32 +71,12 @@ body {
 	margin: 0 0 15px 0;
 }
 
-.site-index {
-  .block {
-    padding-top: 30px;
-    &:first-child {
-      padding-top: 0px;
-    }
-  }
-}
-
-#checkin-form {
-  .btn {
-    white-space: normal;
-    margin-bottom: 4px;
-  }
-  .control-label {
-    font-size: 16px;
-  }
-  .datepicker {
-    width: 125px;
-  }
-}
 .well {
   button.btn {
     white-space: normal;
   }
 }
+
 #ui-datepicker-div {
   z-index: 1050 !important;
 }
@@ -87,9 +93,13 @@ body {
   font-weight: inherit;
   font-height: inherit;
 }
+
 #profile-button {
   width: 100px;
 }
+
 .indent {
   margin-left: 10px;
 }
+
+@import "bootstrap-custom";

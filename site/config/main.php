@@ -46,12 +46,20 @@ return [
       'enableCsrfValidation' => true
     ],
     'assetManager' => [
+      'bundles' => [
+        'yii\bootstrap\BootstrapPluginAsset' => [
+          'js'=>[]
+        ],
+        'yii\bootstrap\BootstrapAsset' => [
+          'css' => [],
+        ],
+      ],
       'linkAssets' => true,
       'converter' => [
         'class' => 'yii\web\AssetConverter',
         'commands' => [
 					'less' => ['css', 'lessc {from} {to} --no-color --source-map'],
-					'scss' => ['css', 'sass {from} {to}'],
+					'scss' => ['css', 'sass -I "../../vendor/bower/bootstrap-sass/assets/stylesheets" {from} {to}'],
 					'sass' => ['css', 'sass {from} {to}'],
 					'styl' => ['css', 'stylus < {from} > {to}'],
 					'coffee' => ['js', 'coffee -p {from} > {to}'],
