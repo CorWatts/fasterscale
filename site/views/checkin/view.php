@@ -11,6 +11,7 @@ use common\models\Question;
  * @var yii\web\View $this
  */
 \site\assets\PickadateAsset::register($this);
+\site\assets\ChartjsAsset::register($this);
 
 $this->title = "The Faster Scale App | Previous Check-ins";
 $time = Yii::$container->get('common\interfaces\TimeInterface');
