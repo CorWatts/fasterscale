@@ -8,10 +8,7 @@ class ChartjsAsset extends AssetBundle
 {
     public $sourcePath = '@bower/chartjs/dist';
     public $js = [
-        'Chart.min.js',
-    ];
-    public $depends = [
-      'yii\web\JqueryAsset',
+        'Chart.bundle.min.js',
     ];
 }
 

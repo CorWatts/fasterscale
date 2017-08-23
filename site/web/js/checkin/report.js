@@ -29,8 +29,6 @@
     /* Event Listeners */
     $('.date-period-switcher').on('click', 'label', function(e) {
       var period = this.getAttribute('data-period');
-      console.log('clicked', this, period)
-
       $.ajax({
         url: '/checkin/history/'+period,
         dataType: 'json'
@@ -43,11 +41,26 @@
 
 
     function buildChart(labels, datasets) {
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
       return new Chart(bar_ctx, {
         type: 'bar',
         data: {labels: labels, datasets: datasets},
         options: {
-          tooltips: { mode: 'index', intersect: false },
+          tooltips: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              title: function(tooltipItem, data) {
+                // format tooltip title
+                var d = new Date(tooltipItem[0].xLabel)
+                return months[d.getUTCMonth()]+" "+d.getUTCDate()+", "+d.getUTCFullYear()
+              },
+              label: function(tooltipItem, data) {
+                // format tooltip label
+                return "Score: " + tooltipItem.yLabel;
+              }
+            }
+          },
           responsive: true,
           maintainAspectRatio: false,
           legend: {
@@ -68,6 +81,5 @@
         }
       });
     }
-
   });
 })(jQuery, Chart)
