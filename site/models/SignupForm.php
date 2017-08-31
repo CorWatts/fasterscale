@@ -79,42 +79,40 @@ class SignupForm extends Model
    * @return User|null the saved model or null if saving fails
    */
   public function signup() {
-    if ($this->validate()) {
-      $user_maybe = $this->user->findByEmail($this->email);
-      if(!$user_maybe) {
-        // this is a brand new user
-        $this->user = $this->setFields($this->user);
+    $user_maybe = $this->user->findByEmail($this->email);
+    if(!$user_maybe) {
+      // this is a brand new user
+      $this->user = $this->setFields($this->user);
+      $this->user->save();
+
+      $this->user->sendSignupNotificationEmail();
+      $this->user->sendVerifyEmail();
+
+      return $this->user;
+    } else {
+      /*
+       * this is a user that for whatever reason is trying to sign up again
+       * with the same email address.
+       */
+      if(!$this->user->isTokenConfirmed() && !$this->user->isTokenCurrent($this->user->verify_email_token, 'user.verifyAccountTokenExpire')) {
+        /*
+         * they've never verified their account and their verification token
+         * is expired. We're resetting their account and resending their
+         * verification email.
+         */
+        $this->setFields($this->user);
         $this->user->save();
 
-        $this->user->sendSignupNotificationEmail();
+        $this->user->generateVerifyEmailToken();
         $this->user->sendVerifyEmail();
-
-        return $this->user;
       } else {
         /*
-         * this is a user that for whatever reason is trying to sign up again
-         * with the same email address.
+         * they've already confirmed their account and are a full user, so skip
+         * all this
+         *   OR
+         * their token is still current and live and they should
+         * click the link in their email.
          */
-        if(!$this->user->isTokenConfirmed() && !$this->user->isTokenCurrent($this->user->verify_email_token, 'user.verifyAccountTokenExpire')) {
-          /*
-           * they've never verified their account and their verification token
-           * is expired. We're resetting their account and resending their
-           * verification email.
-           */
-          $this->setFields($this->user);
-          $this->user->save();
-
-          $this->user->generateVerifyEmailToken();
-          $this->user->sendVerifyEmail();
-        } else {
-          /*
-           * they've already confirmed their account and are a full user, so skip
-           * all this
-           *   OR
-           * their token is still current and live and they should
-           * click the link in their email.
-           */
-        }
       }
     }
     return null;

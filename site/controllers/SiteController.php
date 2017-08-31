@@ -144,7 +144,7 @@ class SiteController extends Controller
   public function actionSignup()
   {
     $model = Yii::$container->get('\site\models\SignupForm');
-    if($model->load(Yii::$app->request->post())) {
+    if($model->load(Yii::$app->request->post()) && $model->validate()) {
       $user = $model->signup();
       Yii::$app->getSession()->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
       return $this->redirect('/',302);
