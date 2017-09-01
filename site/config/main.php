@@ -53,6 +53,10 @@ return [
         'yii\bootstrap\BootstrapAsset' => [
           'css' => [],
         ],
+        'yii\web\JqueryAsset' => [
+          'sourcePath' => '@assets',
+          'js' => ['js/jquery-3.2.1.slim.min.js'],
+        ],
       ],
       'linkAssets' => true,
       'converter' => [
