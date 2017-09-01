@@ -15,4 +15,7 @@ class JqueryUiAsset extends AssetBundle
     public $js = [
         'jquery-ui.js',
     ];
+    public $depends = [
+      'site\assets\JqueryAsset',
+    ];
 }

@@ -21,5 +21,8 @@ class ChartjsAsset extends AssetBundle
     public $js = [
         'Chart.min.js',
     ];
+    public $depends = [
+      'site\assets\JqueryAsset',
+    ];
 }
 

@@ -14,6 +14,6 @@ class JuiAsset extends AssetBundle
         'themes/flick/jquery-ui.css',
     ];
     public $depends = [
-        'yii\web\JqueryAsset',
+        'site\assets\JqueryAsset',
     ];
 }

@@ -48,14 +48,15 @@ return [
     'assetManager' => [
       'bundles' => [
         'yii\bootstrap\BootstrapPluginAsset' => [
-          'js'=>[]
+          'js'=>[],
+          'css' => [],
         ],
         'yii\bootstrap\BootstrapAsset' => [
+          'js'=>[],
           'css' => [],
         ],
         'yii\web\JqueryAsset' => [
-          'sourcePath' => '@assets',
-          'js' => ['js/jquery-3.2.1.slim.min.js'],
+          'js' => [],
         ],
       ],
       'linkAssets' => true,

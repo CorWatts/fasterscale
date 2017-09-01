@@ -15,13 +15,10 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class BootstrapPluginAsset extends AssetBundle
+class JqueryAsset extends \yii\web\JqueryAsset
 {
-    public $sourcePath = '@bower/bootstrap-sass/assets';
+    public $sourcePath = '@assets';
     public $js = [
-        'javascripts/bootstrap.js',
-    ];
-    public $depends = [
-        'site\assets\JqueryAsset',
+        'js/jquery-3.2.1.min.js'
     ];
 }

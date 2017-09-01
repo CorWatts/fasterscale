@@ -16,10 +16,12 @@ return [
     'cssCompressor' => 'uglifycss --debug --ugly-comments {from} > {to}',
     // The list of asset bundles to compress:
     'bundles' => [
+        'site\assets\JqueryAsset',
         'site\assets\AppAsset',
         'yii\web\YiiAsset',
         'site\assets\BootstrapPluginAsset',
         'site\assets\JuiAsset',
+        'site\assets\ChartjsAsset',
     ],
     // Asset bundle for compression output:
     'targets' => [
@@ -37,6 +39,27 @@ return [
       'basePath' => '@webroot/assets',
       'baseUrl' => '@web',
       'bundles' => [
+        'yii\bootstrap\BootstrapAsset' => [
+          'sourcePath' => null,
+          'basePath' => null,
+          'baseUrl' => null,
+          'js' => [],
+          'css' => [],
+        ],
+        'yii\bootstrap\BootstrapPluginAsset' => [
+          'sourcePath' => null,
+          'basePath' => null,
+          'baseUrl' => null,
+          'js' => [],
+          'css' => [],
+        ],
+        'yii\web\JqueryAsset' => [
+          'sourcePath' => null,
+          'basePath' => null,
+          'baseUrl' => null,
+          'js' => [],
+          'css' => [],
+        ],
         'yii\jui\JuiAsset' => [
           'sourcePath' => null,
           'basePath' => null,
