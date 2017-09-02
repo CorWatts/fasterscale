@@ -1,7 +1,6 @@
 <?php
 
 namespace site\controllers;
-ini_set('display_errors', 1); 
 
 use Yii;
 use common\models\LoginForm;
