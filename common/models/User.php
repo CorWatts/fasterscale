@@ -554,7 +554,7 @@ ORDER  BY l.date DESC;
    $ret = array_map(
      function($row) use ($order) {
        // change timestamp to local time (for the user)
-       $row['date'] = $this->time->convertUTCToLocal($row['date'], true);
+       $row['date'] = $this->time->convertUTCToLocal($row['date']);
        
        // clean up things we don't need
        $row['category'] = $row['option']['category']['name'];

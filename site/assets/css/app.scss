@@ -40,9 +40,6 @@ body {
   .control-label {
     font-size: 16px;
   }
-  .datepicker {
-    width: 125px;
-  }
 }
 
 .footer {
@@ -77,10 +74,6 @@ body {
   }
 }
 
-#ui-datepicker-div {
-  z-index: 1050 !important;
-}
-
 #spinner {
   text-align: center;
 }
@@ -102,4 +95,5 @@ body {
   margin-left: 10px;
 }
 
+@import "pickadate";
 @import "bootstrap-custom";

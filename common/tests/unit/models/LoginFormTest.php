@@ -27,13 +27,14 @@ class LoginFormTest extends \Codeception\Test\Unit {
 
     $user = $this->getMockBuilder('common\models\User')
       ->disableOriginalConstructor()
-      ->setMethods(['save', 'login', 'attributes', 'validatePassword', 'isVerified'])
+      ->setMethods(['save', 'login', 'attributes', 'validatePassword', 'isVerified', 'findByEmail'])
       ->getMock();
 
     $mocks = \yii\helpers\ArrayHelper::merge($defaultMocks, $mocks);
     foreach($mocks as $name => $val) {
       $user->method($name)->willReturn($val);
     }
+    $user->method('findByEmail')->will($this->returnSelf());
     $user->method('attributes')->willReturn([
       'id',
       'password_hash',

@@ -300,9 +300,9 @@ class UserOptionTest extends \Codeception\Test\Unit {
 
       expect('calculateScore should return the empty set with no selected options', $this->assertEmpty($this->user_option->calculateScore([])));
       
-      expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals($this->user_option->calculateScore($this->singleSimpleBehaviors), ['2016-06-16 21:12:43' => 29]));
+      expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals(['2016-06-16T21:12:43-07:00' => 29], $this->user_option->calculateScore($this->singleSimpleBehaviors)));
       
-      expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals($this->user_option->calculateScore($this->singleComplexBehaviors), ['2016-06-20 21:08:36' => 233]));
+      expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals(['2016-06-20T21:08:36-07:00' => 233], $this->user_option->calculateScore($this->singleComplexBehaviors)));
     });
   }
 

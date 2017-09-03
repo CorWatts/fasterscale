@@ -9,13 +9,22 @@ namespace site\assets;
 
 use yii\web\AssetBundle;
 
-class JqueryUiAsset extends AssetBundle
+/**
+ * Asset bundle for the Twitter bootstrap css files.
+ *
+ * @author Qiang Xue <qiang.xue@gmail.com>
+ * @since 2.0
+ */
+class PickadateAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/jquery-ui';
+    public $sourcePath = '@bower/pickadate/lib';
     public $js = [
-        'jquery-ui.js',
+        'picker.js',
+        'picker.date.js',
     ];
+
     public $depends = [
       'site\assets\JqueryAsset',
     ];
 }
+

@@ -9,27 +9,25 @@
     "yiisoft/yii2": "~2.0.11",
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
-    "yiisoft/yii2-jui": "*",
     "yiisoft/yii2-redis": "~2.0.5",
     "bower-asset/jquery": "@stable",
     "bower-asset/bootstrap-sass": "@stable",
-    "bower-asset/jquery-ui": "@stable",
     "bower-asset/jquery.inputmask": "@stable",
     "bower-asset/punycode": "@stable",
     "moment/moment": "dev-master",
     "spacedealer/yii2-loggly": ">=0.2.0",
     "bower-asset/chartjs": "~2.5",
     "amenadiel/jpgraph": "~3.6.7",
-    "corwatts/yii2-markdown-files": "*"
+    "corwatts/yii2-markdown-files": "*",
+    "bower-asset/pickadate": "^3.5"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
     "yiisoft/yii2-gii": "~2.0.0",
     "yiisoft/yii2-faker": "~2.0.0",
-
-    "codeception/base": "^2.2.3",
-    "codeception/specify": "*",
-    "codeception/verify": "*"
+    "codeception/base": "2.3.3",
+    "codeception/specify": "0.4.6",
+    "codeception/verify": "0.3.3"
   },
   "scripts": {
     "post-create-project-cmd": [
@@ -40,7 +38,10 @@
     "test-scaffold": "codecept build"
   },
   "config": {
-    "process-timeout": 1800
+    "process-timeout": 1800,
+    "platform": {
+      "php": "7.0"
+    }
   },
   "extra": {
     "writable": [
@@ -54,10 +55,12 @@
     ],
     "executable": [
       "yii"
-    ],
-    "asset-installer-paths": {
-      "npm-asset-library": "vendor/npm",
-      "bower-asset-library": "vendor/bower"
+    ]
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
     }
-  }
+  ]
 }

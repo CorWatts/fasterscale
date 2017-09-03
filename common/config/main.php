@@ -38,4 +38,7 @@ return [
       'useFileTransport' => true,
     ],
   ],
+  'aliases' => [
+    '@bower' => '@vendor/bower-asset'
+  ]
 ];

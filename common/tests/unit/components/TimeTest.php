@@ -80,8 +80,8 @@ class TimeTest extends \Codeception\Test\Unit
       $this->specify('convertUTCToLocal should function correctly', function () {
         $utc_tz = (new DateTime("now"))->format("Y-m-d H:i:s");
 
-        expect('convertUTCToLocal should convert a UTC tz to Los Angeles with the included time', $this->assertEquals($this->time->convertUTCToLocal($utc_tz), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s")));
-        expect('convertUTCToLocal should convert a UTC tz to Los Angeles without the included time', $this->assertEquals($this->time->convertUTCToLocal($utc_tz, false), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d")));
+        expect('convertUTCToLocal should convert a UTC tz to Los Angeles with the included timezone', $this->assertEquals((new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format(DateTime::ATOM), $this->time->convertUTCToLocal($utc_tz)));
+        expect('convertUTCToLocal should convert a UTC tz to Los Angeles without the included timezone', $this->assertEquals($this->time->convertUTCToLocal($utc_tz, false), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d")));
 
         // with UTC
         $this->container->set('common\interfaces\TimeInterface', function () {

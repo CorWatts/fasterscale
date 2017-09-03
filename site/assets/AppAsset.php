@@ -16,8 +16,6 @@ use yii\web\AssetBundle;
 class AppAsset extends AssetBundle
 {
     public $sourcePath = '@assets';
-    //public $basePath = '@webroot';
-    //public $baseUrl = '@web';
 
     public $css = [
         'css/app.scss',
@@ -27,7 +25,6 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'site\assets\JqueryAsset',
         'site\assets\BootstrapPluginAsset',
-        'site\assets\JuiAsset',
         'site\assets\MomentAsset',
         'site\assets\ChartjsAsset',
     ];

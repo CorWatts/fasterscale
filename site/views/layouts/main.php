@@ -4,7 +4,6 @@ use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use site\assets\AppAsset;
 use site\widgets\Alert;
 use common\components\Utility;
 
@@ -12,7 +11,7 @@ use common\components\Utility;
  * @var \yii\web\View $this
  * @var string $content
  */
-AppAsset::register($this);
+site\assets\AppAsset::register($this);
 
 if($hash = Utility::getRevHash()) {
   $rev_link = '<a href="'.Utility::getGithubRevUrl().'">'.Utility::getRevHash().'</a>';

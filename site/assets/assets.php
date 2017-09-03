@@ -20,18 +20,30 @@ return [
         'site\assets\AppAsset',
         'yii\web\YiiAsset',
         'site\assets\BootstrapPluginAsset',
-        'site\assets\JuiAsset',
+        'site\assets\MomentAsset',
         'site\assets\ChartjsAsset',
+        'site\assets\PickadateAsset',
     ],
     // Asset bundle for compression output:
     'targets' => [
         'all' => [
-            'class' => 'yii\web\AssetBundle',
-            'basePath' => '@webroot',
+            'class'      => 'yii\web\AssetBundle',
+            'basePath'   => '@webroot',
             'sourcePath' => '@web/assets',
-            'baseUrl' => '@web',
-            'js' => 'js/all-{hash}.js',
-            'css' => 'css/all-{hash}.css',
+            'baseUrl'    => '@web',
+            'js'         => 'js/all-{hash}.js',
+            'css'        => 'css/all-{hash}.css',
+            'depends'    => [], // Include all remaining assets
+        ],
+        'pickadate' => [
+          'class'      => 'yii\web\AssetBundle',
+          'basePath'   => '@webroot',
+          'sourcePath' => '@web/assets',
+          'baseUrl'    => '@web',
+          'js'         => 'js/pickadate-{hash}.js',
+          'depends'    => [
+            'site\assets\PickadateAsset',
+          ]
         ],
     ],
     // Asset manager configuration:
