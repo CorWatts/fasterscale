@@ -17,7 +17,8 @@ $this->registerMetaTag([
 <div class="site-contact">
   <h1>Contact Us</h1>
   
-  <p>Thanks for using this tool! If you have any comments, questions, or feedback please drop us a message using this form. Thanks!</p>
+  <p>For comments, questions, or feedback please ask a question on our mailing list: <a href="https://www.freelists.org/list/fsa-discuss">https://www.freelists.org/list/fsa-discuss</a>.<br />
+     Otherwise, You can drop us a message using this form.</p>
   
   <div class="row">
     <div class="col-lg-5">
