@@ -373,8 +373,10 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
           "question2",
           "question3"')
       ->orderBy('l.date DESC');
-   $data = $this->user_option::decorateWithCategory($query->all());
-   return $this->cleanExportData($data);
+
+    return $query
+      ->createCommand()
+      ->query();
 
 /* Plaintext Query
 SELECT l.id,
@@ -554,7 +556,7 @@ ORDER  BY l.date DESC;
    $ret = array_map(
      function($row) use ($order) {
        // change timestamp to local time (for the user)
-       $row['date'] = $this->time->convertUTCToLocal($row['date']);
+       $row['date'] = $this->time->convertUTCToLocal($row['date'], false);
        
        // clean up things we don't need
        $row['category'] = $row['option']['category']['name'];

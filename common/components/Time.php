@@ -23,7 +23,7 @@ class Time extends \yii\base\Object implements \common\interfaces\TimeInterface 
   }
 
   public function convertUTCToLocal($utc, $iso = true) {
-    $fmt = $iso ? Datetime::ATOM : "Y-m-d";
+    $fmt = $iso ? Datetime::ATOM : "Y-m-d H:i:s";
 
     $timestamp = new DateTime($utc, new DateTimeZone("UTC"));
     $timestamp->setTimeZone(new DateTimeZone($this->timezone));
