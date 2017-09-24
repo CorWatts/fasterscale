@@ -81,3 +81,6 @@ The _FASTER Relapse Awareness Scale_ is copyrighted by Michael Dye and Patricia 
 
 ## Contributions
 Want to contribute? Wonderful! We're excited to hear any and every idea you have about the Faster Scale App. If you're struggling to come up with a task of your own to work on, take a look at our issues list and feel free to tackle any of the unassigned issues.
+
+## Questions?
+Questions can be answered by [filing an issue](https://github.com/CorWatts/fasterscale/issues/new) on this project or by joining our mailing list: <https://www.freelists.org/list/fsa-discuss>.
