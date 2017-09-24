@@ -271,7 +271,7 @@ class SiteController extends Controller
     header("Content-Type: text/csv");
     header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->email."-".date('Ymd').".csv");
 
-    $data = Yii::$app->user->identity->getExportData();
+    $reader = Yii::$app->user->identity->getExportData();
     $fp = fopen('php://output', 'w');
 
     $header = [
@@ -284,8 +284,11 @@ class SiteController extends Controller
     ];
 
     fputcsv($fp, $header);
-    foreach($data as $row) {
-      fputcsv($fp, $row);
+    while($row = $reader->read()) {
+      // SWAP THIS OUT FOR DI WHEN improve-score-formula branch is merged
+      $row = \common\models\UserOption::decorateWithCategory([$row]);
+      $row = Yii::$app->user->identity->cleanExportData($row);
+      fputcsv($fp, $row[0]);
     }
     fclose($fp);
 
