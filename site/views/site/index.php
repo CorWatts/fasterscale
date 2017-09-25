@@ -43,8 +43,9 @@ $this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset:
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-        <h3>Latest Updates</h3>
+      <div class="col-md-12 blog">
+        <hr />
+        <h2>Updates</h2>
         <?=$this->render('/partials/posts', ['posts' => $posts])?>
       </div>
     </div>

@@ -13,14 +13,15 @@ use yii\helpers\ArrayHelper as AH;
 class Category extends \yii\base\Object
 {
 
+  // a weight of 0 means selections in that category do not increase the score
   public static $categories = [
-    [ "id" => 1, "name" => "Restoration", "weight" => 0],
-    [ "id" => 2, "name" => "Forgetting Priorities", "weight" => 1],
-    [ "id" => 3, "name" => "Anxiety", "weight" => 2],
-    [ "id" => 4, "name" => "Speeding Up", "weight" => 4],
-    [ "id" => 5, "name" => "Ticked Off", "weight" => 6],
-    [ "id" => 6, "name" => "Exhausted", "weight" => 8],
-    [ "id" => 7, "name" => "Relapse/Moral Failure", "weight" => 10]
+    [ "id" => 1, "weight" => 0,  "name" => "Restoration"],
+    [ "id" => 2, "weight" => 1,  "name" => "Forgetting Priorities"],
+    [ "id" => 3, "weight" => 2,  "name" => "Anxiety"],
+    [ "id" => 4, "weight" => 4,  "name" => "Speeding Up"],
+    [ "id" => 5, "weight" => 6,  "name" => "Ticked Off"],
+    [ "id" => 6, "weight" => 8,  "name" => "Exhausted"],
+    [ "id" => 7, "weight" => 10, "name" => "Relapse/Moral Failure"],
   ];
 
   /**

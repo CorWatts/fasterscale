@@ -56,7 +56,8 @@ return [
           'css' => [],
         ],
         'yii\web\JqueryAsset' => [
-          'js' => [],
+          'sourcePath' => '@assets',
+          'js' => ['js/jquery-3.2.1.min.js'],
         ],
       ],
       'linkAssets' => true,

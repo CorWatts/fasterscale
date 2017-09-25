@@ -46,26 +46,27 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
                   $alert_msg = "You're doing well! Keep on doing whatever it is you're doing!";
                   break;
 
-                case ($score < 50):
-                  $alert_level = "info";
-                  $alert_msg = "Some warning signs, but nothing too bad. Have some quiet time, process things, and call a friend.";
-                  break;
+              case ($score < 40):
+                $alert_level = "info";
+                $alert_msg = "Some warning signs, but nothing too bad. Analyze what you're feeling and be watchful you don't move further down the scale.";
+                break;
 
-                case ($score < 70):
-                  $alert_level = "warning";
-                  $alert_msg = "Definite warning signs. You aren't doing well. Take some time out, write down what you're feeling, and discuss it with someone.";
-                  break;
+              case ($score < 60):
+                $alert_level = "warning";
+                $alert_msg = "Definite warning signs. Sounds like you aren't doing well. Take a break from whatever you're doing and process your thoughts and emotions.";
+                break;
 
-                default:
-                  $alert_level = "danger";
-                  $alert_msg = "Welcome to the dangerzone. You need to take action right now, or else you WILL act out. Go call someone. Try visiting <a href='http://emergency.nofap.org/'>http://emergency.nofap.org</a> for immediate help.";
-              }
-  ?>
+              default:
+                $alert_level = "danger";
+                $alert_msg = "Welcome to the dangerzone. You need to take action right now or you'll continue moving down the scale. Go call someone. Try visiting <a href='http://emergency.nofap.org/'>http://emergency.nofap.org</a> for immediate help.";
+            }
+?>
 
-  <div id='score'>
-      <h2>Score: <?php print $score; ?></h2>
-      <div class='alert alert-<?php print $alert_level; ?>'><?php print $alert_msg; ?></div>
-  </div>
+<div id='score'>
+    <h2>Score: <?php print $score; ?></h2>
+    <div class='small'>The score calculation formula has recently been updated. Please refer to <a href="/#new_check_in_score_formula">this post</a> for more information.</div>
+    <div class='alert alert-<?=$alert_level?>'><?=$alert_msg?></div>
+</div>
 
   <?php if($questions) {
   foreach($questions as $option_id => $option_questions) {

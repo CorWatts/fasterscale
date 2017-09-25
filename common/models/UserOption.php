@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use \common\interfaces\TimeInterface;
+use \common\interfaces\OptionInterface;
 use \common\interfaces\UserOptionInterface;
 use \common\components\ActiveRecord;
 use yii\db\Query;
@@ -27,8 +28,10 @@ use Amenadiel\JpGraph\Plot;
 class UserOption extends ActiveRecord implements UserOptionInterface
 {
   private $time;
+  private $option;
 
-  public function __construct(TimeInterface $time, $config = []) {
+  public function __construct(OptionInterface $option, TimeInterface $time, $config = []) {
+    $this->option = $option;
     $this->time = $time;
     parent::__construct($config);
   }
@@ -164,48 +167,44 @@ class UserOption extends ActiveRecord implements UserOptionInterface
     return $scores;
   }
 
-  public function calculateScore($selected_opts) {
-    if(!!!$selected_opts) {
-      return [];
-    }
+  public function calculateScore($usr_bhvrs, $all_cats = null) {
+    if(!!!$usr_bhvrs) return [];
+    if(!!!$all_cats)  $all_cats = $this->option->getCategories();
 
-    $local_opts = [];
-    foreach($selected_opts as $user_option) {
-      $local_opts[$this->time->convertUTCToLocal($user_option['date'])][] = $user_option['option'];
-    }
+    $usr_bhvrs = array_reduce($usr_bhvrs, function($carry, $bhvr) {
+      $date = $this->time->convertUTCToLocal($bhvr['date']);
+      $carry[$date][] = $bhvr['option'];
+      return $carry;
+    }, []);
 
     $scores = [];
-    foreach($local_opts as $date => $options) {
-      foreach($options as $option) {
-        $options_by_category[$option['category_id']][] = $option['id'];
-      }
+    foreach($usr_bhvrs as $date => $bhvrs) {
+      $picked = array_reduce($bhvrs, function($carry, $bhvr) {
+        $carry[$bhvr['category_id']][] = $bhvr['id'];
+        return $carry;
+      }, []);
 
-      foreach(Option::getAllOptionsByCategory() as $options) {
-        if(array_key_exists($options['category_id'], $options_by_category)) {
-          $stats[$options['category_id']] = $options['weight'] * (count($options_by_category[$options['category_id']]) / $options['option_count']);
-        } else {
-          $stats[$options['category_id']] = 0;
-        }
-      }
-
-      $sum = 0;
-      $count = 0;
-      foreach($stats as $stat) {
-        $sum += $stat;
-
-        if($stat > 0)
-          $count += 1;
-      }
-
-      unset($stats);
-      unset($options_by_category);
-
-      $avg = ($count > 0) ? $sum / $count : 0;
-
-      $scores[$date] = round($avg * 100);
+      $grades_sum = array_sum($this->_getCatGrades($picked, $all_cats));
+      $scores[$date] = intval(floor($grades_sum));
     }
 
     return $scores;
+  }
+
+  private function _getCatGrades($picked, $all_cats = null) {
+    if(!!!$all_cats) $all_cats = $this->option->getCategories();
+
+    return array_reduce($all_cats, function($carry, $cat) use($picked) {
+      if(array_key_exists($cat['category_id'], $picked)) {
+        $count = count($picked[$cat['category_id']]);
+        $prcnt_2x = ($count / $cat['option_count']) * 2;
+        // because we're doubling the % we want to ensure we don't take more than 100%
+        $carry[$cat['category_id']] = $cat['weight'] * min($prcnt_2x, 1);
+      } else {
+        $carry[$cat['category_id']] = 0;
+      }
+      return $carry;
+    }, []);
   }
 
   public function generateScoresGraph() {

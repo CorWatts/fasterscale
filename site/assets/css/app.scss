@@ -97,3 +97,24 @@ body {
 
 @import "pickadate";
 @import "bootstrap-custom";
+
+// crummy, I know
+.site-index {
+  .post {
+    margin: 15px 0px;
+    .post-heading {
+      a {
+        color: $text-color;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      h3 {
+        margin-bottom: 0px;
+      }
+    }
+    .post-body {
+      padding-left: 25px;
+    }
+  }
+}

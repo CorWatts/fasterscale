@@ -7,8 +7,6 @@
 
 namespace site\assets;
 
-use yii\web\AssetBundle;
-
 /**
  * Asset bundle for the Twitter bootstrap javascript files.
  *

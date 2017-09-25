@@ -28,6 +28,9 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 ?>
 <h1>Check-in</h1>
 <p>Click all the options below that apply to your current emotional state. Once finished, click the submit button at the bottom.</p>
+<p><b>The scoring formula has been updated. <a href="/#new_check_in_score_formula">Read here</a>.<br />
+      If you have an threshold set for partner reports you should adjust it downwards. The new recommended threshold is 30.</b></p>
+
 <?php
 $form = ActiveForm::begin([
   'id' => 'checkin-form',

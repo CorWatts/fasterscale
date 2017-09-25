@@ -53,10 +53,12 @@ class CheckinController extends \yii\web\Controller
       return $this->redirect(['questions']);
 
     } else {
+      $category = Yii::$container->get('common\interfaces\CategoryInterface');
+      $option   = Yii::$container->get('common\interfaces\OptionInterface');
       return $this->render('index', [
-        'categories'  => Category::$categories,
+        'categories'  => $category::$categories,
         'model'       => $form,
-        'optionsList' => AH::index(Option::$options, null, "category_id")
+        'optionsList' => AH::index($option::$options, null, "category_id")
       ]);
     }
   }
@@ -106,13 +108,16 @@ class CheckinController extends \yii\web\Controller
 
   public function actionView($date = null)
   {
+    $time = Yii::$container->get('common\interfaces\TimeInterface');
     if(is_null($date)) {
-      $date = Yii::$container->get('common\interfaces\TimeInterface')->getLocalDate();
+      $date = $time->getLocalDate();
     }
 
-    list($start, $end) = Yii::$container->get('common\interfaces\TimeInterface')->getUTCBookends($date);
-    $user = Yii::$container->get('common\interfaces\UserInterface');
+    list($start, $end) = $time->getUTCBookends($date);
+    $user        = Yii::$container->get('common\interfaces\UserInterface');
     $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
+    $category    = Yii::$container->get('common\interfaces\CategoryInterface');
+    $option      = Yii::$container->get('common\interfaces\OptionInterface');
 
     $form = Yii::$container->get('\site\models\CheckinForm');
     $form->setOptions($user->getUserOptions($date));
@@ -120,8 +125,8 @@ class CheckinController extends \yii\web\Controller
     return $this->render('view', [
       'model'              => $form,
       'actual_date'        => $date,
-      'categories'         => Category::$categories,
-      'optionsList'        => AH::index(Option::$options, 'name', "category_id"),
+      'categories'         => $category::$categories,
+      'optionsList'        => AH::index($option::$options, 'name', "category_id"),
       'score'              => $user_option->getDailyScore($date),
       'past_checkin_dates' => $user_option->getPastCheckinDates(),
       'questions'          => $user->getUserQuestions($date),
