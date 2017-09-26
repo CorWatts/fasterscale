@@ -66,10 +66,12 @@ composer test-coverage
 ```
 
 ## Assets
-We have built-in support for minimizing JS and CSS assets. Ensure the npm packages uglify-js and uglifycss are installed via ```npm install uglify-js uglifycss -g```. Then uncomment the respective assetManager lines in ```site/config/main.php``` or override them in ```site/config/main-local.php``` and execute:
-```bash
-./yii asset site/assets/assets.php site/assets/assets-compressed.php
-```
+We have built-in support for minimizing JS and CSS assets. The following steps should be sufficient:  
+1. Install the the npm packages `uglify-js` and `uglifycss`  via ```npm install uglify-js uglifycss -g```
+2. Swap the commented and uncommented code blocks in ```site/config/bundles-local.php```
+3. Run the asset compression by executing ```./yii asset site/assets/assets.php site/assets/assets-compressed.php```
+
+That should result the browser downloading published asset bundles instead of each JS/CSS file individually.
 
 ## Deployment
 This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.

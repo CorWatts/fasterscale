@@ -17,11 +17,17 @@ use yii\web\AssetBundle;
  */
 class BootstrapPluginAsset extends AssetBundle
 {
+    /**
+     * we bring in the Bootstrap CSS in our
+     * SCSS files. The Bootstrap CSS is not
+     * handled by Yii's asset pipeline.
+     */
+
     public $sourcePath = '@bower/bootstrap-sass/assets';
     public $js = [
         'javascripts/bootstrap.js',
     ];
     public $depends = [
-        'site\assets\JqueryAsset',
+        'yii\web\JqueryAsset',
     ];
 }

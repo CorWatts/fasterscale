@@ -78,7 +78,6 @@ class SiteController extends Controller
     $time = Yii::$container->get('common\interfaces\TimeInterface'); 
     $key = "index_blog_".$time->getLocalDate('UTC');
     $posts = Yii::$app->cache->get($key);
-    $posts = false; // REMOVE THIS
     if($posts === false) {
       $posts = \Yii::$app->getModule('blog')
                             ->fetch()
