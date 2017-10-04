@@ -24,7 +24,7 @@ class PickadateAsset extends AssetBundle
     ];
 
     public $depends = [
-      'site\assets\JqueryAsset',
+      'yii\web\JqueryAsset',
     ];
 }
 

@@ -8,6 +8,8 @@
  Yii::setAlias('@web', '/');
 
 $mainConf = require(Yii::getAlias('@site/config/main.php'));
+$converter = $mainConf['components']['assetManager']['converter'];
+$bundles = $mainConf['components']['assetManager']['bundles'];
 
 return [
     // Adjust command/callback for JavaScript files compressing:
@@ -16,13 +18,16 @@ return [
     'cssCompressor' => 'uglifycss --debug --ugly-comments {from} > {to}',
     // The list of asset bundles to compress:
     'bundles' => [
-        'site\assets\JqueryAsset',
-        'site\assets\AppAsset',
-        'yii\web\YiiAsset',
-        'site\assets\BootstrapPluginAsset',
-        'site\assets\MomentAsset',
-        'site\assets\ChartjsAsset',
-        'site\assets\PickadateAsset',
+      'yii\web\JqueryAsset',
+      'site\assets\AppAsset',
+      'yii\web\YiiAsset',
+      'site\assets\BootstrapPluginAsset',
+      'yii\widgets\ActiveFormAsset',
+      'yii\validators\ValidationAsset',
+      'yii\captcha\CaptchaAsset',
+      'site\assets\MomentAsset',
+      'site\assets\ChartjsAsset',
+      'site\assets\PickadateAsset',
     ],
     // Asset bundle for compression output:
     'targets' => [
@@ -47,38 +52,11 @@ return [
         ],
     ],
     // Asset manager configuration:
-    'assetManager' => array_merge($mainConf['components']['assetManager'], [
-      'basePath' => '@webroot/assets',
-      'baseUrl' => '@web',
-      'bundles' => [
-        'yii\bootstrap\BootstrapAsset' => [
-          'sourcePath' => null,
-          'basePath' => null,
-          'baseUrl' => null,
-          'js' => [],
-          'css' => [],
-        ],
-        'yii\bootstrap\BootstrapPluginAsset' => [
-          'sourcePath' => null,
-          'basePath' => null,
-          'baseUrl' => null,
-          'js' => [],
-          'css' => [],
-        ],
-        'yii\web\JqueryAsset' => [
-          'sourcePath' => null,
-          'basePath' => null,
-          'baseUrl' => null,
-          'js' => [],
-          'css' => [],
-        ],
-        'yii\jui\JuiAsset' => [
-          'sourcePath' => null,
-          'basePath' => null,
-          'baseUrl' => null,
-          'js' => [],
-          'css' => [],
-        ],
-      ],
-    ]),
+    'assetManager' => [
+      'basePath'   => '@webroot/assets',
+      'baseUrl'    => '@web',
+      'linkAssets' => true,
+      'converter'  => $converter,
+      'bundles'    => $bundles,
+    ],
 ];

@@ -22,7 +22,7 @@ class ChartjsAsset extends AssetBundle
         'Chart.min.js',
     ];
     public $depends = [
-      'site\assets\JqueryAsset',
+      'yii\web\JqueryAsset',
     ];
 }
 

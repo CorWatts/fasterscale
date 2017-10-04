@@ -47,14 +47,8 @@ return [
     ],
     'assetManager' => [
       'bundles' => [
-        'yii\bootstrap\BootstrapPluginAsset' => [
-          'js'=>[],
-          'css' => [],
-        ],
-        'yii\bootstrap\BootstrapAsset' => [
-          'js'=>[],
-          'css' => [],
-        ],
+        'yii\bootstrap\BootstrapPluginAsset' => false,
+        'yii\bootstrap\BootstrapAsset' => false,
         'yii\web\JqueryAsset' => [
           'sourcePath' => '@assets',
           'js' => ['js/jquery-3.2.1.min.js'],
@@ -64,12 +58,9 @@ return [
       'converter' => [
         'class' => 'yii\web\AssetConverter',
         'commands' => [
-					'scss' => ['css', 'node-sass --include-path "../../vendor/bower-asset/pickadate/lib/themes" --include-path "../../vendor/bower-asset/bootstrap-sass/assets/stylesheets" --output-style compressed {from} > {to}'],
+          'scss' => ['css', 'node-sass --include-path "../../vendor/bower-asset/pickadate/lib/themes" --include-path "../../vendor/bower-asset/bootstrap-sass/assets/stylesheets" --output-style compressed {from} > {to}'],
         ],
       ],
-      // UNCOMMENT WHEN ASSETS HAVE BEEN COMPRESSED
-      //'appendTimestamp' => true,
-      //'bundles' => require(dirname(__DIR__) . '/assets/assets-compressed.php'),
     ],
     'view' => [
       'class' => 'site\classes\View'

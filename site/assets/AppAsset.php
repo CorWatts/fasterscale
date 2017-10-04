@@ -23,7 +23,7 @@ class AppAsset extends AssetBundle
 
     public $depends = [
         'yii\web\YiiAsset',
-        'site\assets\JqueryAsset',
+        'yii\web\JqueryAsset',
         'site\assets\BootstrapPluginAsset',
         'site\assets\MomentAsset',
         'site\assets\ChartjsAsset',
