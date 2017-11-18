@@ -47,7 +47,7 @@ $config = [
 };
 ```
 * run all yii2 db migrations ```./yii migrate```
-* startup local PHP server with ```./yii serve --docroot='site/web'```
+* startup local PHP server with ```composer start```
 * visit [http://localhost:8080/signup](http://localhost:8080/signup) and create a new user
 * log in, start working
 
@@ -69,7 +69,7 @@ composer test-coverage
 We have built-in support for minimizing JS and CSS assets. The following steps should be sufficient:  
 1. Install the the npm packages `uglify-js` and `uglifycss`  via ```npm install uglify-js uglifycss -g```
 2. Swap the commented and uncommented code blocks in ```site/config/bundles-local.php```
-3. Run the asset compression by executing ```./yii asset site/assets/assets.php site/assets/assets-compressed.php```
+3. Run the asset compression by executing ```composer assets```
 
 That should result the browser downloading published asset bundles instead of each JS/CSS file individually.
 
