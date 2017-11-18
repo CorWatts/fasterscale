@@ -12,7 +12,7 @@ $this->title = 'The Faster Scale App | Login';
 <div class="site-login">
   <h1>Login</h1>
   <div class="row">
-    <div class="col-lg-5">
+    <div class="col-md-5">
       <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
         <?= $form->field($model, 'email') ?>
         <?= $form->field($model, 'password')->passwordInput() ?>

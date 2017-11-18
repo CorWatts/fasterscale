@@ -19,7 +19,7 @@ $this->registerMetaTag([
 <div class="site-signup">
   <h1>Signup</h1>
   <div class="row">
-    <div class="col-lg-5">
+    <div class="col-md-5">
 			<?php $form = ActiveForm::begin([
 				'id' => 'form-signup',
 				'enableClientValidation' => true,
