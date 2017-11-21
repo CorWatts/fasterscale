@@ -3,7 +3,6 @@ namespace site\models;
 
 use yii\base\Model;
 use Yii;
-use \DateTimeZone;
 use \common\interfaces\UserInterface;
 
 /**
@@ -43,27 +42,42 @@ class SignupForm extends Model
 
       ['timezone', 'required'],
       ['timezone', 'string', 'min' => 2, 'max' => 255],
-      ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
+      ['timezone', 'in', 'range'   => \DateTimeZone::listIdentifiers()],
 
       // captcha needs to be entered correctly
       ['captcha', 'captcha', 'caseSensitive' => false, 'skipOnEmpty' => !!YII_ENV_TEST],
 
       ['send_email', 'boolean'],
       ['email_threshold', 'integer'],
-      ['email_threshold', 'required', 'when'=> function($model) {
-        return $model->send_email;
-      }, 'message' => "If you've elected to send email reports, you must set a threshold.", "whenClient" => "function(attribute, value) {
-        return $('#signupform-send_email').is(':checked');
-  }"],
-    [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
-    [['partner_email1'], 'required', 'when' => function($model) {
-      return $model->send_email;
-    }, 'message' => "If you've elected to send email reports, at least one partner email must be set.", "whenClient" => "function(attribute, value) {
-      return $('#signupform-send_email').is(':checked');
-  }"]
-  ];
+      [
+        'email_threshold',
+        'required',
+        'when'=> function($model) {
+          return $model->send_email;
+        },
+        'message' => "If you've elected to send email reports, you must set a threshold.",
+        "whenClient" => "function(attribute, value) {
+          return $('#signupform-send_email').is(':checked');
+        }"
+      ],
+      [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
+      [
+        ['partner_email1'],
+        'required',
+        'when' => function($model) {
+          return $model->send_email;
+        },
+        'message' => "If you've elected to send email reports, at least one partner email must be set.",
+        "whenClient" => "function(attribute, value) {
+          return $('#signupform-send_email').is(':checked');
+        }"
+      ]
+    ];
   }
 
+  /**
+   * @codeCoverageIgnore
+   */
   public function attributeLabels() {
     return [
       'partner_email1' => "Partner Email #1",
@@ -79,8 +93,8 @@ class SignupForm extends Model
    * @return User|null the saved model or null if saving fails
    */
   public function signup() {
-    $user_maybe = $this->user->findByEmail($this->email);
-    if(!$user_maybe) {
+    $user = $this->user->findByEmail($this->email);
+    if(!$user) {
       // this is a brand new user
       $this->user = $this->setFields($this->user);
       $this->user->save();
@@ -94,24 +108,20 @@ class SignupForm extends Model
        * this is a user that for whatever reason is trying to sign up again
        * with the same email address.
        */
-      if(!$this->user->isTokenConfirmed() && !$this->user->isTokenCurrent($this->user->verify_email_token, 'user.verifyAccountTokenExpire')) {
+      if(!$user->isTokenConfirmed()) {
         /*
-         * they've never verified their account and their verification token
-         * is expired. We're resetting their account and resending their
-         * verification email.
+         * they've never verified their account. We don't care if their
+         * verification token is current or expired. We're resetting their
+         * account and resending their verification email.
          */
-        $this->setFields($this->user);
-        $this->user->save();
-
-        $this->user->generateVerifyEmailToken();
-        $this->user->sendVerifyEmail();
+        $this->setFields($user);
+        $user->save();
+        $user->sendVerifyEmail();
+        return $user;
       } else {
         /*
          * they've already confirmed their account and are a full user, so skip
          * all this
-         *   OR
-         * their token is still current and live and they should
-         * click the link in their email.
          */
       }
     }
