@@ -33,7 +33,7 @@ class UserOptionTest extends \Codeception\Test\Unit {
   ]; 
   public function setUp() {
     // pull in test data
-    $data = require_once(__DIR__.'/../data/checkinData.php');
+    $data = require(__DIR__.'/../data/checkinData.php');
     $this->singleBhvr = $data['singleBhvr'];
     $this->manyBhvrs = $data['manyBhvrs'];
     $this->allBhvrs = $data['allBhvrs'];
@@ -54,7 +54,7 @@ class UserOptionTest extends \Codeception\Test\Unit {
     $this->user_option = $this
                             ->getMockBuilder("common\models\UserOption")
                             ->setConstructorArgs([$option, $time])
-                            ->setMethods(["getIsNewRecord", "save"])
+                            ->setMethods(["getIsNewRecord", "save", "getBehaviorsByDate"])
                             ->getMock();
     parent::setUp();
   }
@@ -126,5 +126,21 @@ class UserOptionTest extends \Codeception\Test\Unit {
                'weight' => 8
              ]
            ]]]));
+  }
+
+  public function testGetDailyScore() {
+    // getBehaviorsByDate() is called internally by getDailyScore()
+    $this
+      ->user_option
+      ->method('getBehaviorsByDate')
+      ->willReturnOnConsecutiveCalls([], $this->manyBhvrs);
+
+    expect('getDailyScore should return the score for the day given',
+      $this->assertEquals($this->user_option->getDailyScore(),
+      0));
+    
+    expect('getDailyScore should return the score for the day given',
+      $this->assertEquals($this->user_option->getDailyScore('2017-08-01'),
+      43));
   }
 }
