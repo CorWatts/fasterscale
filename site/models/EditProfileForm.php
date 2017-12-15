@@ -40,6 +40,7 @@ class EditProfileForm extends Model
   {
     return [
       ['email', 'filter', 'filter' => 'trim'],
+      ['email', 'filter', 'filter' => 'strtolower'],
       ['email', 'email'],
       ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'filter' => "id <> ".Yii::$app->user->id],
 

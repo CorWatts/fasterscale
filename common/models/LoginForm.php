@@ -28,6 +28,8 @@ class LoginForm extends Model
   {
     return [
       // email and password are both required
+      ['email', 'filter', 'filter' => 'trim'],
+      ['email', 'filter', 'filter' => 'strtolower'],
       [['email', 'password'], 'required'],
       ['email', 'email'],
       // rememberMe must be a boolean value

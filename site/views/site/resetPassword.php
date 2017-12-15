@@ -8,7 +8,6 @@ use yii\widgets\ActiveForm;
  * @var \site\models\ResetPasswordForm $model
  */
 $this->title = 'Reset password';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-reset-password">
   <h1><?= Html::encode($this->title) ?></h1>
