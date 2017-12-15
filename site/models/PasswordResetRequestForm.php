@@ -21,6 +21,7 @@ class PasswordResetRequestForm extends Model
   public function rules()
   {
     return [
+      ['email', 'filter', 'filter' => 'strtolower'],
       ['email', 'filter', 'filter' => 'trim'],
       ['email', 'required'],
       ['email', 'email'],

@@ -34,6 +34,7 @@ class SignupForm extends Model
   {
     return [
       ['email', 'filter', 'filter' => 'trim'],
+      ['email', 'filter', 'filter' => 'strtolower'],
       ['email', 'required'],
       ['email', 'email'],
 
