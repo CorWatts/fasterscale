@@ -96,12 +96,6 @@ $timezones = \DateTimeZone::listIdentifiers();
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4">
-    </div>
-  </div>
-</div>
-
 <?php $this->registerJs(
   "$('#new-password-toggle').click(function () {
     if( $('#changepasswordform-new_password').attr('type') === 'password' ) {

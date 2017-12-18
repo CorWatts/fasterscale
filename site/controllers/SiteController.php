@@ -301,9 +301,9 @@ class SiteController extends Controller
     ];
 
     fputcsv($fp, $header);
+    $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
     while($row = $reader->read()) {
-      // SWAP THIS OUT FOR DI WHEN improve-score-formula branch is merged
-      $row = \common\models\UserOption::decorateWithCategory([$row]);
+      $row = $user_option::decorateWithCategory([$row]);
       $row = Yii::$app->user->identity->cleanExportData($row);
       fputcsv($fp, $row[0]);
     }

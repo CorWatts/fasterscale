@@ -64,7 +64,6 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 
 <div id='score'>
     <h2>Score: <?php print $score; ?></h2>
-    <div class='small'>The score calculation formula has recently been updated. Please refer to <a href="/#new_check_in_score_formula">this post</a> for more information.</div>
     <div class='alert alert-<?=$alert_level?>'><?=$alert_msg?></div>
 </div>
 
