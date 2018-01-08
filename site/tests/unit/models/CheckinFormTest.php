@@ -105,23 +105,15 @@ class CheckinFormTest extends \Codeception\Test\Unit
 				],
 			],
 		];
- 
 
     protected function setUp() {
       $this->container = new \yii\di\Container;
-      $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
       $this->container->set('common\interfaces\UserOptionInterface', '\site\tests\_support\MockUserOption');
-      $this->container->set('common\interfaces\QuestionInterface', '\site\tests\_support\MockQuestion');
     $this->container->set('common\interfaces\TimeInterface', function () {
       return new \common\components\Time('America/Los_Angeles');
     });
       parent::setUp();
     }
-
-    //protected function tearDown()
-    //{
-        //parent::tearDown();
-    //}
 
 		public function testAttributeLabels()
 		{

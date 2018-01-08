@@ -7,8 +7,6 @@ use common\models\LoginForm;
 use common\models\Question;
 use site\models\PasswordResetRequestForm;
 use site\models\ResetPasswordForm;
-use site\models\EditProfileForm;
-use site\models\DeleteAccountForm;
 use site\models\ContactForm;
 use common\models\User;
 use yii\base\InvalidParamException;
@@ -42,7 +40,7 @@ class SiteController extends Controller
             'roles' => ['?'],
           ],
           [
-            'actions' => ['logout', 'welcome', 'delete-account', 'profile', 'export'],
+            'actions' => ['logout', 'welcome', 'delete-account', 'change-password', 'profile', 'export'],
             'allow' => true,
             'roles' => ['@'],
           ],
@@ -217,7 +215,9 @@ class SiteController extends Controller
 
   public function actionProfile()
   {
-    $editProfileForm = Yii::$container->get('\site\models\EditProfileForm', [Yii::$app->user->identity]);
+    $editProfileForm    = Yii::$container->get('\site\models\EditProfileForm', [Yii::$app->user->identity]);
+    $changePasswordForm = Yii::$container->get('\site\models\ChangePasswordForm', [Yii::$app->user->identity]);
+    $deleteAccountForm  = Yii::$container->get('\site\models\DeleteAccountForm', [Yii::$app->user->identity]);
 
     if (Yii::$app->request->isAjax && $editProfileForm->load($_POST)) {
       Yii::$app->response->format = 'json';
@@ -232,10 +232,10 @@ class SiteController extends Controller
       }
     }
 
-    $deleteAccountForm = Yii::$container->get('\site\models\DeleteAccountForm', [Yii::$app->user->identity]);
     return $this->render('profile', [
       'profile' => $editProfileForm,
-      'delete' => $deleteAccountForm
+      'change_password' => $changePasswordForm,
+      'delete' => $deleteAccountForm,
     ]);
   }
 
@@ -254,6 +254,23 @@ class SiteController extends Controller
     }
 
     $this->redirect(Yii::$app->request->getReferrer());
+  }
+
+  public function actionChangePassword()
+  {
+    $model = Yii::$container->get('\site\models\ChangePasswordForm', [Yii::$app->user->identity]);
+
+    if ($model->load(Yii::$app->request->post())) {
+      if($model->validate() && $model->changePassword()) {
+        Yii::$app->getSession()->setFlash('success', 'Password successfully changed');
+      } else {
+        Yii::$app->getSession()->setFlash('error', 'Wrong password!');
+      }
+    } else {
+      Yii::$app->getSession()->setFlash('error', 'Request must be a POST.');
+    }
+
+    $this->redirect(['site/profile']);
   }
 
   public function actionPrivacy()
