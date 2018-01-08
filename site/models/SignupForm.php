@@ -39,7 +39,7 @@ class SignupForm extends Model
       ['email', 'email'],
 
       ['password', 'required'],
-      ['password', 'string', 'min' => 6],
+      ['password', 'string', 'min' => 8],
 
       ['timezone', 'required'],
       ['timezone', 'string', 'min' => 2, 'max' => 255],

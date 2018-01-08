@@ -11,7 +11,6 @@ use \DateTimeZone;
 class EditProfileForm extends Model
 {
   public $email;
-  public $password;
   public $timezone;
   public $send_email;
   public $email_threshold;
@@ -44,7 +43,6 @@ class EditProfileForm extends Model
       ['email', 'email'],
       ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'filter' => "id <> ".Yii::$app->user->id],
 
-      ['password', 'string', 'min' => 6],
 
       ['timezone', 'string', 'min' => 2, 'max' => 255],
       ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
@@ -82,12 +80,10 @@ class EditProfileForm extends Model
   public function saveProfile()
   {
     if ($this->validate()) {
-      $user = $this->user->findOne(Yii::$app->user->id);
+      $user = $this->user;
 
       if($this->email)
         $user->email = $this->email;
-      if($this->password)
-        $user->setPassword($this->password);
       if($this->timezone)
         $user->timezone = $this->timezone;
       if($this->send_email) {
@@ -110,7 +106,7 @@ class EditProfileForm extends Model
   }
 
   public function loadUser() {
-    $user                  = $this->user->findOne(Yii::$app->user->id);
+    $user                  = $this->user;
     $this->email           = $user->email;
     $this->timezone        = $user->timezone;
     $this->email_threshold = $user->email_threshold;

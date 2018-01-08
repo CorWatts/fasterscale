@@ -93,10 +93,6 @@ body {
   font-height: inherit;
 }
 
-#profile-button {
-  width: 100px;
-}
-
 .indent {
   margin-left: 10px;
 }
@@ -128,6 +124,28 @@ body {
     }
     .post-body {
       padding-left: 25px;
+    }
+  }
+}
+
+.card {
+  margin-bottom: 30px;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+
+  .card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #f7f7f9;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+  }
+  .card-body, .card-block {
+    padding: 1.25rem;
+    .card-title {
+      margin-bottom: .75rem;
     }
   }
 }
