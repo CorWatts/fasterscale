@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper as AH;
  * @property string $name
  * @property integer $weight
  */
-class Category extends \yii\base\Object
+class Category extends \yii\base\BaseObject
 {
 
   // a weight of 0 means selections in that category do not increase the score

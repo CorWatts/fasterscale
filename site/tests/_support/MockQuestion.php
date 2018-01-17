@@ -2,6 +2,8 @@
 
 namespace site\tests\_support;
 class MockQuestion implements \common\interfaces\QuestionInterface {
+  use \yii\base\StaticInstanceTrait;
+
   public static function primaryKey() {}
   public function attributes() {}
   public function getAttribute($name) {}
