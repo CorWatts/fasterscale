@@ -49,7 +49,8 @@ class CheckinController extends \yii\web\Controller
 
       // delete cached scores
       $time = Yii::$container->get('common\interfaces\TimeInterface');
-      Yii::$app->cache->delete("scores_of_last_month_".$time->getLocalDate());
+      $key = "scores_of_last_month_".Yii::$app->user->id."_".$time->getLocalDate();
+      Yii::$app->cache->delete($key);
       return $this->redirect(['questions']);
 
     } else {

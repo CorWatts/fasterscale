@@ -5,7 +5,7 @@ use yii;
 use \DateTime;
 use \DateTimeZone;
 
-class Time extends \yii\base\Object implements \common\interfaces\TimeInterface {
+class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterface {
 
   public $timezone;
 

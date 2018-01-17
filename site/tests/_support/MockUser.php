@@ -2,6 +2,8 @@
 
 namespace site\tests\_support;
 class MockUser implements \common\interfaces\UserInterface, \yii\web\IdentityInterface {
+  use \yii\base\StaticInstanceTrait;
+    
   public $timezone = 'America/Los_Angeles';
   public $password;
 

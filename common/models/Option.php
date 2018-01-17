@@ -3,7 +3,6 @@
 namespace common\models;
 
 use Yii;
-use \yii\base\Object;
 use yii\helpers\ArrayHelper as AH;
 use \common\interfaces\OptionInterface;
 
@@ -12,7 +11,7 @@ use \common\interfaces\OptionInterface;
  * @property string $name
  * @property integer $category_id
  */
-class Option extends Object implements OptionInterface
+class Option extends \yii\base\BaseObject implements OptionInterface
 {
 	public static $options = [
 		['id' => 1,   'name' => 'no current secrets', 'category_id' => 1],
