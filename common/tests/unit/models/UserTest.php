@@ -877,6 +877,17 @@ public $exportData = [
       expect('removeVerifyEmailToken should set the verify_email_token to be null', $this->assertNull($this->user->verify_email_token));
   }
 
+  public function testGetIdHash() {
+    $hash = 'iegYQgiPZUF48kk5bneuPn9_6ZOZhkMEGJ6Y8yICgKc';
+
+    $this->user->id = 12345;
+    $this->user->created_at = "2017-12-31 23:59:59";
+    expect('getIdHash should return a url-safe string', $this->assertEquals($this->user->getidHash(), $hash));
+
+    $this->user->created_at = "2018-01-01 00:00:00";
+    expect('getIdHash should return a DIFFERENT url-safe string for different params', $this->assertNotEquals($this->user->getidHash(), $hash));
+  }
+
   public function testCleanExportData() {
     // need this for the convertUTCToLocal call
     Yii::configure(Yii::$app, [

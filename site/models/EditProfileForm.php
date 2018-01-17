@@ -12,6 +12,7 @@ class EditProfileForm extends Model
 {
   public $email;
   public $timezone;
+  public $expose_graph;
   public $send_email;
   public $email_threshold;
   public $partner_email1;
@@ -47,6 +48,7 @@ class EditProfileForm extends Model
       ['timezone', 'string', 'min' => 2, 'max' => 255],
       ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
 
+      ['expose_graph', 'boolean'],
       ['send_email', 'boolean'],
       ['email_threshold', 'integer'],
       ['email_threshold', 'required', 'when'=> function($model) {
@@ -68,7 +70,8 @@ class EditProfileForm extends Model
       'partner_email1' => "Partner Email #1",
       'partner_email2' => "Partner Email #2",
       'partner_email3' => "Partner Email #3",
-      'send_email'     => 'Send an email when I score above a certain threshold'
+      'send_email'     => 'Send an email when I score above a certain threshold',
+      'expose_graph'   => 'Share my scores graph via a link'
     ];
   }
 
@@ -80,12 +83,26 @@ class EditProfileForm extends Model
   public function saveProfile()
   {
     if ($this->validate()) {
-      $user = $this->user;
+      $user  = $this->user;
+
+      $graph = Yii::$container
+        ->get('common\components\Graph', [$this->user]);
 
       if($this->email)
         $user->email = $this->email;
       if($this->timezone)
         $user->timezone = $this->timezone;
+      if($this->expose_graph) {
+        $user->expose_graph = true;
+
+        // generate scores graph image
+        $scores_last_month = (Yii::$container->get('common\interfaces\UserOptionInterface'))->calculateScoresOfLastMonth();
+        $graph->create($scores_last_month, true);
+      } else {
+        $user->expose_graph = false;
+        // remove scores graph image
+        $graph->destroy();
+      }
       if($this->send_email) {
         $user->email_threshold = $this->email_threshold;
         $user->partner_email1  = $this->partner_email1;
@@ -113,6 +130,7 @@ class EditProfileForm extends Model
     $this->partner_email1  = $user->partner_email1;
     $this->partner_email2  = $user->partner_email2;
     $this->partner_email3  = $user->partner_email3;
+    $this->expose_graph    = $user->expose_graph;
     $this->send_email      = (isset($user->email_threshold) && array_filter($user->getPartnerEmails()));
   }
 }

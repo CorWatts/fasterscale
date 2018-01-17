@@ -30,6 +30,7 @@ use \common\interfaces\TimeInterface;
  * @property string $partner_email1
  * @property string $partner_email2
  * @property string $partner_email3
+ * @property boolean $expose_graph
  */
 class User extends ActiveRecord implements IdentityInterface, UserInterface
 {
@@ -323,6 +324,15 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
     list($start, $end) = $this->time->getUTCBookends($date);
 
+    $scores_of_month   = $this->user_option->calculateScoresOfLastMonth();
+    $graph = Yii::$container
+      ->get('common\components\Graph')
+      ->create($scores_of_month);
+
+    $score          = $this->user_option->calculateScoreByUTCRange($start, $end);
+    $user_options   = $this->getUserOptions($date);
+    $user_questions = $this->getUserQuestions($date);
+
     $messages = [];
     foreach($this->getPartnerEmails() as $email) {
       if($email) {
@@ -330,11 +340,11 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
           'user'          => $this,
           'email'         => $email,
           'date'          => $date,
-          'user_options'  => $this->getUserOptions($date),
-          'questions'     => $this->getUserQuestions($date),
-          'chart_content' => $this->user_option->generateScoresGraph(),
+          'user_options'  => $user_options,
+          'questions'     => $user_questions,
+          'chart_content' => $graph,
           'categories'    => \common\models\Category::$categories,
-          'score'         => $this->user_option->calculateScoreByUTCRange($start, $end),
+          'score'         => $score,
           'options_list'  => \common\models\Option::$options,
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
@@ -573,5 +583,30 @@ ORDER  BY l.date DESC;
      $data
    );
    return $ret;
+  }
+
+  /*
+   * getIdHash()
+   *
+   * @return String a user-identifying hash
+   *
+   * After generating the hash, we run it through a url-safe base64 encoding to
+   * shorten it. This generated string is currently used as an identifier in
+   * URLs, so the shorter the better. the url-safe version has been ripped from
+   * https://secure.php.net/manual/en/function.base64-encode.php#103849
+   *
+   * It does NOT take into account the user's email address. The email address
+   * is changeable by the user. If that was used for this function, the
+   * returned hash would change when the user updates their email. That would
+   * obviously not be desirable.
+   */
+  public function getIdHash() {
+    return rtrim(
+      strtr(
+        base64_encode(
+          hash('sha256', $this->id."::".$this->created_at, true)
+        ),
+      '+/', '-_'),
+    '=');
   }
 }

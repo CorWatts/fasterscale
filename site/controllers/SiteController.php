@@ -218,6 +218,7 @@ class SiteController extends Controller
     $editProfileForm    = Yii::$container->get('\site\models\EditProfileForm', [Yii::$app->user->identity]);
     $changePasswordForm = Yii::$container->get('\site\models\ChangePasswordForm', [Yii::$app->user->identity]);
     $deleteAccountForm  = Yii::$container->get('\site\models\DeleteAccountForm', [Yii::$app->user->identity]);
+    $graph              = Yii::$container->get('\common\components\Graph', [Yii::$app->user->identity]);
 
     if (Yii::$app->request->isAjax && $editProfileForm->load($_POST)) {
       Yii::$app->response->format = 'json';
@@ -233,9 +234,10 @@ class SiteController extends Controller
     }
 
     return $this->render('profile', [
-      'profile' => $editProfileForm,
+      'profile'         => $editProfileForm,
       'change_password' => $changePasswordForm,
-      'delete' => $deleteAccountForm,
+      'delete'          => $deleteAccountForm,
+      'graph_url'       => $graph->getUrl(Yii::$app->user->identity->getIdHash()),
     ]);
   }
 

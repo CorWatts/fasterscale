@@ -6,6 +6,8 @@ defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(__DI
 
 require_once(YII_APP_BASE_PATH . '/vendor/autoload.php');
 require_once(YII_APP_BASE_PATH . '/vendor/yiisoft/yii2/Yii.php');
-require(YII_APP_BASE_PATH . '/common/config/aliases.php');
 
+ Yii::setAlias('@web', '/');
+
+require(YII_APP_BASE_PATH . '/common/config/aliases.php');
 Yii::setAlias('@tests', dirname(__DIR__));
