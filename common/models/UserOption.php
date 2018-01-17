@@ -12,8 +12,6 @@ use yii\helpers\ArrayHelper as AH;
 use \DateTime;
 use \DateTimeZone;
 use yii\db\Expression;
-use Amenadiel\JpGraph\Graph;
-use Amenadiel\JpGraph\Plot;
 
 /**
  * This is the model class for table "user_option_link".
@@ -127,7 +125,7 @@ class UserOption extends ActiveRecord implements UserOptionInterface
       $uo = $this->find()
         ->select(['id', 'user_id', 'option_id', 'date'])
         ->where(
-          "user_id=:user_id AND date > :start_date AND date < :end_date",
+          "user_id=:user_id AND date > :start_date AND date <= :end_date",
           ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end]
         )
         ->orderBy('date')
@@ -205,47 +203,6 @@ class UserOption extends ActiveRecord implements UserOptionInterface
       }
       return $carry;
     }, []);
-  }
-
-  public function generateScoresGraph() {
-    $values = $this->calculateScoresOfLastMonth();
-    $scores = array_values($values);
-    $dates = array_map(function($date) {
-      return (new \DateTime($date))->format('M j, Y');
-    }, array_keys($values));
-
-    $graph = new Graph\Graph(800, 600);
-    //$graph->SetImgFormat('jpeg',0);
-    $graph->SetImgFormat('png');
-    //$graph->SetScale('textlin',0,100);
-    $graph->img->SetImgFormat('png');
-    $graph->img->SetMargin(60, 60, 40, 160);
-    $graph->img->SetAntiAliasing();
-    $graph->SetScale("textlin");
-    $graph->SetShadow();
-    $graph->title->Set(Yii::$app->user->identity->email . "'s scores for the last month");
-    $graph->title->SetFont(FF_ARIAL, FS_BOLD, 20);
-    // Use 20% "grace" to get slightly larger scale then min/max of data
-    $graph->yscale->SetGrace(10); // remove when new score formula is released
-    // Set the angle for the labels to 90 degrees
-    $graph->xaxis->SetLabelAngle(45);
-    $graph->xaxis->SetTickLabels($dates);
-    $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
-    $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
-    $p1 = new Plot\LinePlot($scores);
-    $p1->SetColor("#37b98f");
-    $p1->SetFillColor("#92d1b5");
-    $p1->mark->SetWidth(8);
-    $p1->SetCenter();
-    $graph->Add($p1);
-    $img = $graph->Stroke(_IMG_HANDLER);
-
-    ob_start();
-    imagepng($img);
-    $img_data = ob_get_clean();
-
-
-    return $img_data;
   }
 
   public function getTopBehaviors($limit = 5) {

@@ -51,8 +51,17 @@ class CheckinController extends \yii\web\Controller
       $time = Yii::$container->get('common\interfaces\TimeInterface');
       $key = "scores_of_last_month_".Yii::$app->user->id."_".$time->getLocalDate();
       Yii::$app->cache->delete($key);
-      return $this->redirect(['questions']);
 
+      // if the user has publicised their score graph, create the image
+      if(Yii::$app->user->identity->expose_graph) {
+        $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
+        $scores_last_month = $user_option->calculateScoresOfLastMonth();
+        Yii::$container
+          ->get('common\components\Graph', [Yii::$app->user->identity])
+          ->create($scores_last_month, true);
+      }
+
+      return $this->redirect(['questions']);
     } else {
       $category = Yii::$container->get('common\interfaces\CategoryInterface');
       $option   = Yii::$container->get('common\interfaces\OptionInterface');
@@ -82,15 +91,10 @@ class CheckinController extends \yii\web\Controller
 
       $behaviors = $user_option->findAll($form->getUserBehaviorIds());
       if($result = $form->saveAnswers($behaviors)) {
-        $user = Yii::$container->get('common\interfaces\UserInterface');
-        $user = $user->findOne([
-          'status' => $user::STATUS_ACTIVE,
-          'email' => Yii::$app->user->identity->email,
-        ]);
 
         $score = $user_option->getDailyScore();
-        if($user->isOverThreshold($score)) {
-          $user->sendEmailReport($date);
+        if(Yii::$app->user->identity->isOverThreshold($score)) {
+          Yii::$app->user->identity->sendEmailReport($date);
           Yii::$app->session->setFlash('warning', 'Your check-in is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
         } else {
           Yii::$app->session->setFlash('success', 'Your behaviors and processing questions have been logged!');

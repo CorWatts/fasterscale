@@ -39,4 +39,5 @@ class MockUser implements \common\interfaces\UserInterface, \yii\web\IdentityInt
   public function link($name, $model, $extraColumns = []) {}
   public function unlink($name, $model, $delete = false) {}
   public static function getDb() {}
+  public function getIdHash() {}
 }
