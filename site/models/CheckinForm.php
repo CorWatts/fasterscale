@@ -119,12 +119,15 @@ class CheckinForm extends Model
       $temp = [
         Yii::$app->user->id,
         (int)$option_id,
-        new Expression("now()::timestamp")
+        $this->time->getLocalTime('UTC')
       ];
       $rows[] = $temp;
     }
+    if(sizeof($rows) === 0) {
+      return 0;
+    }
 
-    Yii::$app
+    return Yii::$app
       ->db
       ->createCommand()
       ->batchInsert(

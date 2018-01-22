@@ -173,7 +173,7 @@ class QuestionForm extends Model
       $model->user_id = Yii::$app->user->id;
       $model->option_id = $answer['option_id'];
       $model->user_option_id = $answer['user_bhvr_id'];
-      $model->date = new Expression("now()::timestamp");
+      $model->date = $this->time->getLocalTime('UTC');
       $model->question = $answer['question_id'];
       $model->answer = $answer['answer'];
       if(!$model->save()) {

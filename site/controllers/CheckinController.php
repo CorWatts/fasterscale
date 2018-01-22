@@ -64,8 +64,7 @@ class CheckinController extends \yii\web\Controller
     }
   }
 
-  public function actionQuestions()
-  {
+  public function actionQuestions() {
     $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
     $date = Yii::$container
       ->get('common\interfaces\TimeInterface')
@@ -104,17 +103,14 @@ class CheckinController extends \yii\web\Controller
       'model' => $form,
       'options' => $user_options
     ]);	
-
   }
 
-  public function actionView($date = null)
-  {
+  public function actionView($date = null) {
     $time = Yii::$container->get('common\interfaces\TimeInterface');
     if(is_null($date)) {
       $date = $time->getLocalDate();
     }
 
-    list($start, $end) = $time->getUTCBookends($date);
     $user        = Yii::$container->get('common\interfaces\UserInterface');
     $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
     $category    = Yii::$container->get('common\interfaces\CategoryInterface');
