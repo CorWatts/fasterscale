@@ -7,11 +7,9 @@
   "require": {
     "php": ">=7.0",
     "yiisoft/yii2": "~2.0.15.1",
-    "yiisoft/yii2-bootstrap": "~2.0.0",
-    "yiisoft/yii2-swiftmailer": "dev-master",
-    "yiisoft/yii2-redis": "~2.0.8",
+    "yiisoft/yii2-bootstrap4": "dev-master",
     "bower-asset/jquery": "@stable",
-    "bower-asset/bootstrap-sass": "@stable",
+    "bower-asset/bootstrap": "^4.0.0",
     "bower-asset/jquery.inputmask": "@stable",
     "bower-asset/punycode": "@stable",
     "moment/moment": "dev-master",
@@ -21,12 +19,13 @@
     "amenadiel/jpgraph": "dev-master#10a818b"
   },
   "require-dev": {
-    "yiisoft/yii2-debug": "2.0.9",
-    "yiisoft/yii2-gii": "~2.0.6",
     "yiisoft/yii2-faker": "~2.0.0",
     "codeception/base": "@stable",
     "codeception/specify": "@stable",
     "codeception/verify": "@stable"
+  },
+  "replace": {
+    "bower-asset/bootstrap": "^4.0.0"
   },
   "scripts": {
     "post-create-project-cmd": [

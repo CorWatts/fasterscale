@@ -58,7 +58,7 @@ return [
       'converter' => [
         'class' => yii\web\AssetConverter::class,
         'commands' => [
-          'scss' => ['css', 'node-sass --include-path "../../vendor/bower-asset/pickadate/lib/themes" --include-path "../../vendor/bower-asset/bootstrap-sass/assets/stylesheets" --output-style compressed {from} > {to}'],
+          'scss' => ['css', 'node-sass --include-path "../../vendor/bower-asset/pickadate/lib/themes" --include-path "../../vendor/bower-asset/bootstrap/scss" --output-style compressed {from} > {to}'],
         ],
       ],
     ],

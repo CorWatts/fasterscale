@@ -172,7 +172,7 @@ $navbar-default-toggle-border-color:       #ddd !default;
 .site-signup {
   .input-group-btn {
     button {
-      background-color: $gray-lighter;
+      //background-color: $gray-lighter;
     }
   }
   #signupform-captcha-image {
@@ -185,7 +185,7 @@ $navbar-default-toggle-border-color:       #ddd !default;
     margin: 15px 0px;
     .post-heading {
       a {
-        color: $text-color;
+        //color: $text-color;
         &:hover {
           text-decoration: none;
         }

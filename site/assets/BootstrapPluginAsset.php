@@ -23,9 +23,9 @@ class BootstrapPluginAsset extends AssetBundle
      * handled by Yii's asset pipeline.
      */
 
-    public $sourcePath = '@bower/bootstrap-sass/assets';
+    public $sourcePath = '@bower/bootstrap';
     public $js = [
-        'javascripts/bootstrap.js',
+        'dist/js/bootstrap.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

@@ -35,6 +35,9 @@ if($hash = Utility::getRevHash()) {
             NavBar::begin([
                 'brandLabel' => 'The Faster Scale App',
                 'brandUrl' => Yii::$app->homeUrl,
+                'options' => [
+                    'class' => 'navbar-fixed-top navbar-expand-lg',
+                ],
             ]);
             if (Yii::$app->user->isGuest) {
               $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
