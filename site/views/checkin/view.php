@@ -68,11 +68,11 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 </div>
 
   <?php if($questions) {
-  foreach($questions as $option_id => $option_questions) {
+  foreach($questions as $behavior_id => $behavior_questions) {
     print "<div class='well well-sm'>";
-    print "<button type='button' class='btn btn-primary' disabled='disabled'>{$option_questions['question']['title']}</button>";
+    print "<button type='button' class='btn btn-primary' disabled='disabled'>{$behavior_questions['question']['title']}</button>";
     print "<div class='row'>";
-    foreach($option_questions['answers'] as $question) { 
+    foreach($behavior_questions['answers'] as $question) { 
       print "<div class='col-md-4'>";
       print "<p><strong>{$question['title']}</strong></p>";
       print "<p>".Html::encode($question['answer'])."</p>";
@@ -88,10 +88,10 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
   ]);
 
   foreach($categories as $category) {
-    $options = AH::map($optionsList[$category['id']], 'id', 'name');
+    $behaviors = AH::map($behaviorsList[$category['id']], 'id', 'name');
     print $form
-            ->field($model, "options{$category['id']}")
-            ->checkboxList($options,
+            ->field($model, "behaviors{$category['id']}")
+            ->checkboxList($behaviors,
                            ['item' => "checkboxItemTemplate"]);
   }
   ActiveForm::end();

@@ -4,8 +4,8 @@ namespace common\models;
 
 use Yii;
 use \common\interfaces\TimeInterface;
-use \common\interfaces\OptionInterface;
-use \common\interfaces\UserOptionInterface;
+use \common\interfaces\BehaviorInterface;
+use \common\interfaces\UserBehaviorInterface;
 use \common\components\ActiveRecord;
 use yii\db\Query;
 use yii\helpers\ArrayHelper as AH;
@@ -14,22 +14,22 @@ use \DateTimeZone;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "user_option_link".
+ * This is the model class for table "user_behavior_link".
  *
  * @property integer $id
  * @property integer $user_id
- * @property integer $option_id
+ * @property integer $behavior_id
  * @property string $date
  *
- * @property Option $user
+ * @property Behavior $user
  */
-class UserOption extends ActiveRecord implements UserOptionInterface
+class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 {
   private $time;
-  private $option;
+  private $behavior;
 
-  public function __construct(OptionInterface $option, TimeInterface $time, $config = []) {
-    $this->option = $option;
+  public function __construct(BehaviorInterface $behavior, TimeInterface $time, $config = []) {
+    $this->behavior = $behavior;
     $this->time = $time;
     parent::__construct($config);
   }
@@ -39,7 +39,7 @@ class UserOption extends ActiveRecord implements UserOptionInterface
    */
   public static function tableName()
   {
-    return 'user_option_link';
+    return 'user_behavior_link';
   }
 
   /**
@@ -48,8 +48,8 @@ class UserOption extends ActiveRecord implements UserOptionInterface
   public function rules()
   {
     return [
-      [['user_id', 'option_id', 'date'], 'required'],
-      [['user_id', 'option_id'], 'integer'],
+      [['user_id', 'behaviorr_id', 'date'], 'required'],
+      [['user_id', 'behaviorr_id'], 'integer'],
       //[['date'], 'string']
     ];
   }
@@ -63,7 +63,7 @@ class UserOption extends ActiveRecord implements UserOptionInterface
       'id'        => 'ID',
       'date'      => 'Date',
       'user_id'   => 'User ID',
-      'option_id' => 'Option ID',
+      'behavior_id' => 'Behavior ID',
     ];
   }
 
@@ -81,7 +81,7 @@ class UserOption extends ActiveRecord implements UserOptionInterface
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
     $query->select("date")
-      ->from('user_option_link l')
+      ->from('user_behavior_link l')
       ->groupBy('date, user_id')
       ->having('user_id = :user_id');
     $temp_dates = $query->all();
@@ -92,13 +92,13 @@ class UserOption extends ActiveRecord implements UserOptionInterface
     return $past_checkin_dates;
   }
 
-  public function getUserOptionsWithCategory($checkin_date) {
+  public function getUserBehaviorsWithCategory($checkin_date) {
     list($start, $end) = $this->time->getUTCBookends($checkin_date);
 
     $query = new Query;
     $query->select('*')
-      ->from('user_option_link')
-      ->orderBy('option_id')
+      ->from('user_behavior_link')
+      ->orderBy('behavior_id')
       ->where("user_id=:user_id
           AND date > :start_date
           AND date < :end_date",
@@ -108,8 +108,8 @@ class UserOption extends ActiveRecord implements UserOptionInterface
         ":end_date" => $end
       ]);
 
-    $user_options = self::decorateWithCategory($query->all());
-    return AH::map($user_options, 'id', function($a) { return $a['option']['name']; }, function($b) {return $b['option']['category_id']; });
+    $user_behaviors = self::decorateWithCategory($query->all());
+    return AH::map($user_behaviors, 'id', function($a) { return $a['behavior']['name']; }, function($b) {return $b['behavior']['category_id']; });
   }
 
   public function getDailyScore($date = null) {
@@ -123,7 +123,7 @@ class UserOption extends ActiveRecord implements UserOptionInterface
 
   public function getBehaviorsByDate($start, $end) {
       $uo = $this->find()
-        ->select(['id', 'user_id', 'option_id', 'date'])
+        ->select(['id', 'user_id', 'behavior_id', 'date'])
         ->where(
           "user_id=:user_id AND date > :start_date AND date <= :end_date",
           ["user_id" => Yii::$app->user->id, ':start_date' => $start, ":end_date" => $end]
@@ -167,11 +167,11 @@ class UserOption extends ActiveRecord implements UserOptionInterface
 
   public function calculateScore($usr_bhvrs, $all_cats = null) {
     if(!!!$usr_bhvrs) return [];
-    if(!!!$all_cats)  $all_cats = $this->option->getCategories();
+    if(!!!$all_cats)  $all_cats = $this->behavior->getCategories();
 
     $usr_bhvrs = array_reduce($usr_bhvrs, function($carry, $bhvr) {
       $date = $this->time->convertUTCToLocal($bhvr['date']);
-      $carry[$date][] = $bhvr['option'];
+      $carry[$date][] = $bhvr['behavior'];
       return $carry;
     }, []);
 
@@ -190,12 +190,12 @@ class UserOption extends ActiveRecord implements UserOptionInterface
   }
 
   private function _getCatGrades($picked, $all_cats = null) {
-    if(!!!$all_cats) $all_cats = $this->option->getCategories();
+    if(!!!$all_cats) $all_cats = $this->behavior->getCategories();
 
     return array_reduce($all_cats, function($carry, $cat) use($picked) {
       if(array_key_exists($cat['category_id'], $picked)) {
         $count = count($picked[$cat['category_id']]);
-        $prcnt_2x = ($count / $cat['option_count']) * 2;
+        $prcnt_2x = ($count / $cat['behavior_count']) * 2;
         // because we're doubling the % we want to ensure we don't take more than 100%
         $carry[$cat['category_id']] = $cat['weight'] * min($prcnt_2x, 1);
       } else {
@@ -208,9 +208,9 @@ class UserOption extends ActiveRecord implements UserOptionInterface
   public function getTopBehaviors($limit = 5) {
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("user_id, option_id, COUNT(id) as count")
-      ->from('user_option_link')
-      ->groupBy('option_id, user_id')
+    $query->select("user_id, behavior_id, COUNT(id) as count")
+      ->from('user_behavior_link')
+      ->groupBy('behavior_id, user_id')
       ->having('user_id = :user_id')
       ->orderBy('count DESC')
       ->limit($limit);
@@ -220,19 +220,19 @@ class UserOption extends ActiveRecord implements UserOptionInterface
   public function getBehaviorsByCategory() {
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("user_id, option_id, COUNT(id) as count")
-      ->from('user_option_link')
-      ->groupBy('option_id, user_id')
+    $query->select("user_id, behavior_id, COUNT(id) as count")
+      ->from('user_behavior_link')
+      ->groupBy('behavior_id, user_id')
       ->having('user_id = :user_id')
       ->orderBy('count DESC');
 
     return array_values(array_reduce(self::decorateWithCategory($query->all(), false), function($acc, $row) {
-      $cat_id = $row['option']['category']['id'];
+      $cat_id = $row['behavior']['category']['id'];
       if(array_key_exists($cat_id, $acc)) {
         $acc[$cat_id]['count'] += $row['count'];
       } else {
         $acc[$cat_id] = [
-          'name' => $row['option']['category']['name'],
+          'name' => $row['behavior']['category']['name'],
           'count' => $row['count'],
         ];
       }
@@ -242,10 +242,10 @@ class UserOption extends ActiveRecord implements UserOptionInterface
 
   public static function decorate(Array $uo, $with_category = false) {
     foreach($uo as &$o) {
-      if($option = \common\models\Option::getOption('id', $o['option_id'])) {
-        $o['option'] = $option;
+      if($behavior = \common\models\Behavior::getBehavior('id', $o['behavior_id'])) {
+        $o['behavior'] = $behavior;
         if($with_category) {
-          $o['option']['category'] = \common\models\Category::getCategory('id', $o['option']['category_id']);
+          $o['behavior']['category'] = \common\models\Category::getCategory('id', $o['behavior']['category_id']);
         }
       }
     }

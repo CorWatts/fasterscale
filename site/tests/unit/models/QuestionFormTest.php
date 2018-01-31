@@ -15,7 +15,7 @@ class QuestionFormTest extends \Codeception\Test\Unit
   public function setUp() {
     $this->container = new Container;
     $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
-    $this->container->set('common\interfaces\UserOptionInterface', '\site\tests\_support\MockUserOption');
+    $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
     $this->container->set('common\interfaces\QuestionInterface', '\site\tests\_support\MockQuestion');
     $this->container->set('common\interfaces\TimeInterface', function () {
       return new \common\components\Time('America/Los_Angeles');
@@ -24,16 +24,16 @@ class QuestionFormTest extends \Codeception\Test\Unit
 
   public function testAttributeLabels()
   {
-    $this->specify('setOptions should function properly', function () {
+    $this->specify('setBehaviors should function properly', function () {
       $model = $this->container->get('\site\models\QuestionForm');
       expect('attributeLabels should be correct', $this->assertEquals($model->attributeLabels(), [
-        'user_option_id1' => 'Restoration',
-        'user_option_id2' => 'Forgetting Priorities',
-        'user_option_id3' => 'Anxiety',
-        'user_option_id4' => 'Speeding Up',
-        'user_option_id5' => 'Ticked Off',
-        'user_option_id6' => 'Exhausted',
-        'user_option_id7' => 'Relapsed/Moral Failure'
+        'user_behavior_id1' => 'Restoration',
+        'user_behavior_id2' => 'Forgetting Priorities',
+        'user_behavior_id3' => 'Anxiety',
+        'user_behavior_id4' => 'Speeding Up',
+        'user_behavior_id5' => 'Ticked Off',
+        'user_behavior_id6' => 'Exhausted',
+        'user_behavior_id7' => 'Relapsed/Moral Failure'
       ]));
     });
   }
@@ -44,19 +44,19 @@ class QuestionFormTest extends \Codeception\Test\Unit
     $validator = $model->getBhvrValidator();
 
     $this->specify('getBhvrValidator should function properly', function () use($model, $validator) {
-      expect('getBhvrValidator should return false when nothing is set on the form', $this->assertFalse($validator($model, "user_option_id1")));
-      expect('getBhvrValidator should return false when nothing is set on the form', $this->assertFalse($validator($model, "user_option_id7")));
+      expect('getBhvrValidator should return false when nothing is set on the form', $this->assertFalse($validator($model, "user_behavior_id1")));
+      expect('getBhvrValidator should return false when nothing is set on the form', $this->assertFalse($validator($model, "user_behavior_id7")));
 
       $model->answer_1a = "processing emotions";
-      expect('getBhvrValidator should return true when there is one answer set for this option', $this->assertTrue($validator($model, "user_option_id1")));
+      expect('getBhvrValidator should return true when there is one answer set for this behavior', $this->assertTrue($validator($model, "user_behavior_id1")));
 
       $model->answer_1b = "also processing emotions";
-      expect('getBhvrValidator should return true when there are two answers set for this option', $this->assertTrue($validator($model, "user_option_id1")));
+      expect('getBhvrValidator should return true when there are two answers set for this behavior', $this->assertTrue($validator($model, "user_behavior_id1")));
 
       $model->answer_1c = "yep, processing emotions";
-      expect('getBhvrValidator should return true when there are three answers set for this option', $this->assertTrue($validator($model, "user_option_id1")));
+      expect('getBhvrValidator should return true when there are three answers set for this behavior', $this->assertTrue($validator($model, "user_behavior_id1")));
 
-      expect('getBhvrValidator should return false when the answers that are set are NOT for this option', $this->assertFalse($validator($model, "user_option_id3")));
+      expect('getBhvrValidator should return false when the answers that are set are NOT for this behavior', $this->assertFalse($validator($model, "user_behavior_id3")));
     });
   }
 
@@ -99,9 +99,9 @@ class QuestionFormTest extends \Codeception\Test\Unit
     $model = $this->container->get('\site\models\QuestionForm');
 
     $this->specify('getAnswers should function properly', function() use($model) {
-      $model->user_option_id1 = 'dummy';
-      $model->user_option_id2 = 'dummy';
-      $model->user_option_id3 = 'dummy';
+      $model->user_behavior_id1 = 'dummy';
+      $model->user_behavior_id2 = 'dummy';
+      $model->user_behavior_id3 = 'dummy';
       $model->answer_1a = "processing emotions";
       $model->answer_1b = "processing emotions";
       $model->answer_1c = "processing emotions";
@@ -117,47 +117,47 @@ class QuestionFormTest extends \Codeception\Test\Unit
         $this->fakeModel(13, 281),
         $this->fakeModel(28, 284)
       ]), [ [
-										'option_id' => 280,
+										'behavior_id' => 280,
 										'user_bhvr_id' => 7,
 										'question_id' => 1,
 										'answer' => 'processing emotions',
 									], [
-										'option_id' => 280,
+										'behavior_id' => 280,
 										'user_bhvr_id' => 7,
 										'question_id' => 2,
 										'answer' => 'processing emotions',
 									], [
-										'option_id' => 280,
+										'behavior_id' => 280,
 										'user_bhvr_id' => 7,
 										'question_id' => 3,
 										'answer' => 'processing emotions',
 									], [
-										'option_id' => 281,
+										'behavior_id' => 281,
 										'user_bhvr_id' => 13,
 										'question_id' => 1,
 										'answer' => 'processing emotions',
 									], [
-										'option_id' => 281,
+										'behavior_id' => 281,
 										'user_bhvr_id' => 13,
 										'question_id' => 2,
 										'answer' => 'processing emotions',
 									], [
-										'option_id' => 281,
+										'behavior_id' => 281,
 										'user_bhvr_id' => 13,
 										'question_id' => 3,
 										'answer' => 'processing emotions',
 									], [
-										'option_id' => 284,
+										'behavior_id' => 284,
 										'user_bhvr_id' => 28,
 										'question_id' => 1,
 										'answer' => 'processing emotions',
 									], [
-										'option_id' => 284,
+										'behavior_id' => 284,
 										'user_bhvr_id' => 28,
 										'question_id' => 2,
 										'answer' => 'processing emotions',
 									], [
-										'option_id' => 284,
+										'behavior_id' => 284,
 										'user_bhvr_id' => 28,
 										'question_id' => 3,
 										'answer' => 'processing emotions',
@@ -165,10 +165,10 @@ class QuestionFormTest extends \Codeception\Test\Unit
     });
   }
 
-  private function fakeModel($id, $option_id) {
+  private function fakeModel($id, $behavior_id) {
     $class = new \stdClass;
     $class->id = $id;
-    $class->option_id = $option_id;
+    $class->behavior_id = $behavior_id;
     return $class;
   }
 }

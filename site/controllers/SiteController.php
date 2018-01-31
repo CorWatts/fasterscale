@@ -295,7 +295,7 @@ class SiteController extends Controller
 
     $header = [
       'Date',
-      'Option',
+      'Behavior',
       'Category',
       Question::$QUESTIONS[1],
       Question::$QUESTIONS[2],
@@ -303,9 +303,9 @@ class SiteController extends Controller
     ];
 
     fputcsv($fp, $header);
-    $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
+    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
     while($row = $reader->read()) {
-      $row = $user_option::decorateWithCategory([$row]);
+      $row = $user_behavior::decorateWithCategory([$row]);
       $row = Yii::$app->user->identity->cleanExportData($row);
       fputcsv($fp, $row[0]);
     }

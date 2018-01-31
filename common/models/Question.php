@@ -9,15 +9,15 @@ use \common\components\ActiveRecord;
 /**
  * @property integer $id
  * @property integer $user_id
- * @property integer $option_id
- * @property integer $user_option_id
+ * @property integer $behavior_id
+ * @property integer $user_behavior_id
  * @property integer $question
  * @property string $answer
  * @property string $date
  *
  * @property User $user
- * @property Option $option
- * @property UserOptionLink $userOption
+ * @property Behavior $behavior
+ * @property UserBehaviorLink $userBehavior
  */
 class Question extends ActiveRecord implements QuestionInterface
 {
@@ -49,9 +49,9 @@ class Question extends ActiveRecord implements QuestionInterface
   public function rules()
   {
     return [
-      [['user_id', 'option_id', 'user_option_id', 'question', 'answer', 'date'], 'required'],
-      [['user_id', 'option_id', 'user_option_id', 'question'], 'integer'],
-      ['option_id', 'in', 'range' => array_column(\common\models\Option::$options, 'id')],
+      [['user_id', 'behavior_id', 'user_behavior_id', 'question', 'answer', 'date'], 'required'],
+      [['user_id', 'behavior_id', 'user_behavior_id', 'question'], 'integer'],
+      ['behavior_id', 'in', 'range' => array_column(\common\models\Behavior::$behaviors, 'id')],
       ['answer', 'string'],
       ['date', 'safe']
     ];
@@ -65,8 +65,8 @@ class Question extends ActiveRecord implements QuestionInterface
     return [
       'id'             => 'ID',
       'user_id'        => 'User ID',
-      'option_id'      => 'Option ID',
-      'user_option_id' => 'User Option ID',
+      'behavior_id'      => 'Behavior ID',
+      'user_behavior_id' => 'User Behavior ID',
       'question'       => 'Question',
       'answer'         => 'Answer',
       'date'           => 'Date',
@@ -89,8 +89,8 @@ class Question extends ActiveRecord implements QuestionInterface
   /**
    * @return \yii\db\ActiveQuery
    */
-  public function getUserOption()
+  public function getUserBehavior()
   {
-    return $this->hasOne(\common\models\UserOption::className(), ['id' => 'user_option_id']);
+    return $this->hasOne(\common\models\UserBehavior::className(), ['id' => 'user_behavior_id']);
   }
 }

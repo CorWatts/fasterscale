@@ -2,4 +2,4 @@
 
 namespace common\interfaces;
 
-interface OptionInterface {}
+interface BehaviorInterface {}

@@ -77,15 +77,15 @@ $pie_data = [
             <tr>
                 <th>#</th>
                 <th>Category</th>
-                <th>Option</th>
+                <th>Behavior</th>
                 <th>Count</th>
             </tr>
-<?php foreach($top_options as $key => $row) {
+<?php foreach($top_behaviors as $key => $row) {
 $num = $key + 1;
 print "<tr>".
   "<td>".$num."</td>".
-  "<td>{$row['option']['category']['name']}</td>".
-  "<td>{$row['option']['name']}</td>".
+  "<td>{$row['behavior']['category']['name']}</td>".
+  "<td>{$row['behavior']['name']}</td>".
   "<td>{$row['count']}</td>".
   "</tr>";
 

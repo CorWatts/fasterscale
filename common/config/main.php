@@ -6,9 +6,9 @@ return [
   'container' => [
     'definitions' => [
       'common\interfaces\UserInterface' => '\common\models\User',
-      'common\interfaces\UserOptionInterface' => '\common\models\UserOption',
+      'common\interfaces\UserBehaviorInterface' => '\common\models\UserBehavior',
       'common\interfaces\QuestionInterface' => '\common\models\Question',
-      'common\interfaces\OptionInterface' => '\common\models\Option',
+      'common\interfaces\BehaviorInterface' => '\common\models\Behavior',
       'common\interfaces\CategoryInterface' => '\common\models\Category',
       'common\interfaces\TimeInterface' => function () {
         if(Yii::$app->user->getIsGuest()) {
