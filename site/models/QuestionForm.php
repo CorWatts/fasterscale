@@ -5,7 +5,7 @@ use Yii;
 use yii\base\Model;
 use yii\db\Expression;
 use \common\interfaces\UserInterface;
-use \common\interfaces\UserOptionInterface;
+use \common\interfaces\UserBehaviorInterface;
 use \common\interfaces\QuestionInterface;
 use \common\interfaces\TimeInterface;
 
@@ -16,13 +16,13 @@ use \common\interfaces\TimeInterface;
  */
 class QuestionForm extends Model
 {
-  public $user_option_id1;
-  public $user_option_id2;
-  public $user_option_id3;
-  public $user_option_id4;
-  public $user_option_id5;
-  public $user_option_id6;
-  public $user_option_id7;
+  public $user_behavior_id1;
+  public $user_behavior_id2;
+  public $user_behavior_id3;
+  public $user_behavior_id4;
+  public $user_behavior_id5;
+  public $user_behavior_id6;
+  public $user_behavior_id7;
 
   public $answer_1a;
   public $answer_1b;
@@ -55,15 +55,15 @@ class QuestionForm extends Model
   private $time;
   private $user;
   private $question;
-  private $user_option;
+  private $user_behavior;
 
   public function __construct(UserInterface $user,
-                              UserOptionInterface $user_option,
+                              UserBehaviorInterface $user_behavior,
                               QuestionInterface $question,
                               TimeInterface $time,
                               $config = []) {
     $this->user        = $user;
-    $this->user_option = $user_option;
+    $this->user_behavior = $user_behavior;
     $this->question    = $question;
     $this->time        = $time;
     parent::__construct($config);
@@ -75,9 +75,9 @@ class QuestionForm extends Model
   public function rules()
   {
     return [
-      [['user_option_id1', 'user_option_id2', 'user_option_id3', 'user_option_id4', 'user_option_id5', 'user_option_id6', 'user_option_id7'], 'integer'],
+      [['user_behavior_id1', 'user_behavior_id2', 'user_behavior_id3', 'user_behavior_id4', 'user_behavior_id5', 'user_behavior_id6', 'user_behavior_id7'], 'integer'],
 
-      [['user_option_id1', 'user_option_id2', 'user_option_id3', 'user_option_id4', 'user_option_id5', 'user_option_id6', 'user_option_id7'],
+      [['user_behavior_id1', 'user_behavior_id2', 'user_behavior_id3', 'user_behavior_id4', 'user_behavior_id5', 'user_behavior_id6', 'user_behavior_id7'],
         'required',
         'when' => $this->getBhvrValidator(),
         'whenClient' => "function(attribute, value) { return false; }", // lame, but acceptable
@@ -89,13 +89,13 @@ class QuestionForm extends Model
 
   public function attributeLabels() {
     return [
-      'user_option_id1' => 'Restoration',
-      'user_option_id2' => 'Forgetting Priorities',
-      'user_option_id3' => 'Anxiety',
-      'user_option_id4' => 'Speeding Up',
-      'user_option_id5' => 'Ticked Off',
-      'user_option_id6' => 'Exhausted',
-      'user_option_id7' => 'Relapsed/Moral Failure'
+      'user_behavior_id1' => 'Restoration',
+      'user_behavior_id2' => 'Forgetting Priorities',
+      'user_behavior_id3' => 'Anxiety',
+      'user_behavior_id4' => 'Speeding Up',
+      'user_behavior_id5' => 'Ticked Off',
+      'user_behavior_id6' => 'Exhausted',
+      'user_behavior_id7' => 'Relapsed/Moral Failure'
     ];
   }
 
@@ -141,11 +141,11 @@ class QuestionForm extends Model
   }
 
   public function getUserBehaviorProps() {
-    return array_keys($this->getPrefixProps('user_option_id'));
+    return array_keys($this->getPrefixProps('user_behavior_id'));
   }
 
   public function getUserBehaviorIds() {
-    return array_values($this->getPrefixProps('user_option_id'));
+    return array_values($this->getPrefixProps('user_behavior_id'));
   }
 
   public function getAnswers($bhvrs) {
@@ -156,7 +156,7 @@ class QuestionForm extends Model
       foreach($this->behaviorToAnswers($behavior_id) as $answer_letter => $answer) {
         $question_id = \common\models\Question::$TYPES[$answer_letter];
         array_push($answers, [
-                               'option_id'    => $user_bhvr->option_id,
+                               'behavior_id'    => $user_bhvr->behavior_id,
                                'user_bhvr_id' => $user_bhvr->id,
                                'question_id'  => $question_id,
                                'answer'       => $answer,
@@ -171,8 +171,8 @@ class QuestionForm extends Model
     foreach($this->getAnswers($bhvrs) as $answer) {
       $model = new \common\models\Question;
       $model->user_id = Yii::$app->user->id;
-      $model->option_id = $answer['option_id'];
-      $model->user_option_id = $answer['user_bhvr_id'];
+      $model->behavior_id = $answer['behavior_id'];
+      $model->user_behavior_id = $answer['user_bhvr_id'];
       $model->date = new Expression("now()::timestamp");
       $model->question = $answer['question_id'];
       $model->answer = $answer['answer'];

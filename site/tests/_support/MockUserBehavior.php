@@ -1,7 +1,7 @@
 <?php
 
 namespace site\tests\_support;
-class MockUserOption extends \yii\base\BaseObject implements \common\interfaces\UserOptionInterface {
+class MockUserBehavior extends \yii\base\BaseObject implements \common\interfaces\UserBehaviorInterface {
   use \yii\base\StaticInstanceTrait;
 
   public static function primaryKey() {}

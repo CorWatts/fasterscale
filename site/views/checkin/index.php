@@ -27,7 +27,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
 }
 ?>
 <h1>Check-in</h1>
-<p>Click all the options below that apply to your current emotional state. Once finished, click the submit button at the bottom.</p>
+<p>Click all the behaviors below that apply to your current emotional state. Once finished, click the submit button at the bottom.</p>
 
 <?php
 $form = ActiveForm::begin([
@@ -36,10 +36,10 @@ $form = ActiveForm::begin([
 ]);
 
 foreach($categories as $category) {
-  $options = AH::map($optionsList[$category['id']], 'id', 'name');
+  $behaviors = AH::map($behaviorsList[$category['id']], 'id', 'name');
   print $form
-          ->field($model, "options{$category['id']}")
-          ->checkboxList($options,
+          ->field($model, "behaviors{$category['id']}")
+          ->checkboxList($behaviors,
                          ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]);
 }
 print Html::submitButton('Submit', ['class' => 'btn btn-success']); 

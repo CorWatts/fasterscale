@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-use common\models\UserOption;
+use common\models\UserBehavior;
 
 $email = Html::encode($user->email);
 $date = str_replace('-', '', $date);
@@ -189,13 +189,13 @@ if($questions) {
                                                 <th style="Margin:0;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
 
 <?php
-if($user_options) {
-  foreach($user_options as $user_option) { ?>
+if($user_behaviors) {
+  foreach($user_behaviors as $user_behavior) { ?>
         <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">
-          <strong style="color:#37b98f"><?= $user_option['category_name'] ?></strong>
+          <strong style="color:#37b98f"><?= $user_behavior['category_name'] ?></strong>
 <?php
-    foreach($user_option['options'] as $option) { ?>
-        <br><?= $option['name'] ?>
+    foreach($user_behavior['behaviors'] as $behavior) { ?>
+        <br><?= $behavior['name'] ?>
 <?php
     }
   }

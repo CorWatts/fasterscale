@@ -4,7 +4,7 @@ namespace site\models;
 use Yii;
 use yii\base\Model;
 use yii\db\Expression;
-use common\interfaces\UserOptionInterface;
+use common\interfaces\UserBehaviorInterface;
 use common\interfaces\TimeInterface;
 
 /**
@@ -12,21 +12,21 @@ use common\interfaces\TimeInterface;
  */
 class CheckinForm extends Model
 {
-  public $options1;
-  public $options2;
-  public $options3;
-  public $options4;
-  public $options5;
-  public $options6;
-  public $options7;
+  public $behaviors1;
+  public $behaviors2;
+  public $behaviors3;
+  public $behaviors4;
+  public $behaviors5;
+  public $behaviors6;
+  public $behaviors7;
 
-  public $compiled_options;
+  public $compiled_behaviors;
 
-  private $user_option;
+  private $user_behavior;
   private $time;
 
-  public function __construct(UserOptionInterface $user_option, TimeInterface $time, $config = []) {
-    $this->user_option = $user_option;
+  public function __construct(UserBehaviorInterface $user_behavior, TimeInterface $time, $config = []) {
+    $this->user_behavior = $user_behavior;
     $this->time = $time;
     parent::__construct($config);
   }
@@ -39,66 +39,66 @@ class CheckinForm extends Model
     return [
       [
         [
-          'options1',
-          'options2',
-          'options3',
-          'options4',
-          'options5',
-          'options6',
-          'options7'
+          'behaviors1',
+          'behaviors2',
+          'behaviors3',
+          'behaviors4',
+          'behaviors5',
+          'behaviors6',
+          'behaviors7'
         ],
-        'validateOptions'],
+        'validateBehaviors'],
     ];
   }
 
   public function attributeLabels() {
     return [
-      'options1' => 'Restoration',
-      'options2' => 'Forgetting Priorities',
-      'options3' => 'Anxiety',
-      'options4' => 'Speeding Up',
-      'options5' => 'Ticked Off',
-      'options6' => 'Exhausted',
-      'options7' => 'Relapsed/Moral Failure'
+      'behaviors1' => 'Restoration',
+      'behaviors2' => 'Forgetting Priorities',
+      'behaviors3' => 'Anxiety',
+      'behaviors4' => 'Speeding Up',
+      'behaviors5' => 'Ticked Off',
+      'behaviors6' => 'Exhausted',
+      'behaviors7' => 'Relapsed/Moral Failure'
     ];
   }
 
-  public function setOptions($options) {
-    foreach($options as $category_id => $category_data) {
-      $attribute = "options$category_id";
+  public function setBehaviors($behaviors) {
+    foreach($behaviors as $category_id => $category_data) {
+      $attribute = "behaviors$category_id";
 			$this->$attribute = [];
-      foreach($category_data['options'] as $option) {
-        $this->{$attribute}[] = $option['id'];
+      foreach($category_data['behaviors'] as $behavior) {
+        $this->{$attribute}[] = $behavior['id'];
       }
     }   
   }
 
-  public function validateOptions($attribute, $params) {
+  public function validateBehaviors($attribute, $params) {
     if (!$this->hasErrors()) {
-      foreach($this->$attribute as $option) {
-        if(!is_numeric($option)) {
-          $this->addError($attribute, 'One of your options is not an integer!');
+      foreach($this->$attribute as $behavior) {
+        if(!is_numeric($behavior)) {
+          $this->addError($attribute, 'One of your behaviors is not an integer!');
         }
       }
     }
   }
 
-  public function compileOptions() {
-    $options = array_merge((array)$this->options1,
-                           (array)$this->options2,
-                           (array)$this->options3,
-                           (array)$this->options4,
-                           (array)$this->options5,
-                           (array)$this->options6,
-                           (array)$this->options7);
+  public function compileBehaviors() {
+    $behaviors = array_merge((array)$this->behaviors1,
+                           (array)$this->behaviors2,
+                           (array)$this->behaviors3,
+                           (array)$this->behaviors4,
+                           (array)$this->behaviors5,
+                           (array)$this->behaviors6,
+                           (array)$this->behaviors7);
 
-    return array_filter($options); // strip out false values
+    return array_filter($behaviors); // strip out false values
   }
 
   public function deleteToday() {
     $date = $this->time->getLocalDate();
     list($start, $end) = $this->time->getUTCBookends($date);
-    $this->user_option->deleteAll("user_id=:user_id 
+    $this->user_behavior->deleteAll("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
       [
@@ -110,15 +110,15 @@ class CheckinForm extends Model
   }
 
   public function save() {
-    if(empty($this->compiled_options)) {
-      $this->commpiled_options = $this->compileOptions();
+    if(empty($this->compiled_behaviors)) {
+      $this->commpiled_behaviors = $this->compileBehaviors();
     }
 
     $rows = [];
-    foreach($this->compiled_options as $option_id) {
+    foreach($this->compiled_behaviors as $behavior_id) {
       $temp = [
         Yii::$app->user->id,
-        (int)$option_id,
+        (int)$behavior_id,
         new Expression("now()::timestamp")
       ];
       $rows[] = $temp;
@@ -128,8 +128,8 @@ class CheckinForm extends Model
       ->db
       ->createCommand()
       ->batchInsert(
-        $this->user_option->tableName(),
-        ['user_id', 'option_id', 'date'],
+        $this->user_behavior->tableName(),
+        ['user_id', 'behavior_id', 'date'],
         $rows
       )->execute();
   }

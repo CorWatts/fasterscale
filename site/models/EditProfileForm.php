@@ -96,7 +96,7 @@ class EditProfileForm extends Model
         $user->expose_graph = true;
 
         // generate scores graph image
-        $scores_last_month = (Yii::$container->get('common\interfaces\UserOptionInterface'))->calculateScoresOfLastMonth();
+        $scores_last_month = (Yii::$container->get('common\interfaces\UserBehaviorInterface'))->calculateScoresOfLastMonth();
         $graph->create($scores_last_month, true);
       } else {
         $user->expose_graph = false;

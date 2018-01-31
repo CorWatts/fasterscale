@@ -32,13 +32,13 @@ class SignupFormTest extends \Codeception\Test\Unit
     // define interfaces for injection
     $this->container = new \yii\di\Container;
     $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
-    $this->container->set('common\interfaces\UserOptionInterface', '\site\tests\_support\MockUserOption');
+    $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
     $this->container->set('common\interfaces\TimeInterface', function () {
       return new \common\components\Time('America/Los_Angeles');
     });
 
     // instantiate mock objects
-    $user_option = $this->container->get('common\interfaces\UserOptionInterface');
+    $user_behavior = $this->container->get('common\interfaces\UserBehaviorInterface');
     $time        = $this->container->get('common\interfaces\TimeInterface');
 
     $question = $this->getMockBuilder('\common\models\Question')
@@ -46,7 +46,7 @@ class SignupFormTest extends \Codeception\Test\Unit
       ->getMock();
 
     $this->user = $this->getMockBuilder('\common\models\User')
-      ->setConstructorArgs([$user_option, $question, $time])
+      ->setConstructorArgs([$user_behavior, $question, $time])
       ->setMethods(['save', 'attributes', 'findByEmail', 'sendSignupNotificationEmail', 'sendVerifyEmail'])
       ->getMock();
     //$this->user->method('save')->willReturn(true);
@@ -70,7 +70,7 @@ class SignupFormTest extends \Codeception\Test\Unit
     ]);
 
     $this->existing_user = $this->getMockBuilder('\common\models\User')
-      ->setConstructorArgs([$user_option, $question, $time])
+      ->setConstructorArgs([$user_behavior, $question, $time])
       ->setMethods(['save', 'attributes', 'findByEmail', 'sendSignupNotificationEmail', 'sendVerifyEmail'])
       ->getMock();
     //$this->user->method('save')->willReturn(true);

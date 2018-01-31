@@ -4,16 +4,16 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper as AH;
-use \common\interfaces\OptionInterface;
+use \common\interfaces\BehaviorInterface;
 
 /**
  * @property integer $id
  * @property string $name
  * @property integer $category_id
  */
-class Option extends \yii\base\BaseObject implements OptionInterface
+class Behavior extends \yii\base\BaseObject implements BehaviorInterface
 {
-	public static $options = [
+	public static $behaviors = [
 		['id' => 1,   'name' => 'no current secrets', 'category_id' => 1],
 		['id' => 2,   'name' => 'resolving problems', 'category_id' => 1],
 		['id' => 3,   'name' => 'identifying fears and feelings', 'category_id' => 1],
@@ -172,17 +172,17 @@ class Option extends \yii\base\BaseObject implements OptionInterface
 
   /**
    * This grabs all the categories from Category and adds the count of
-   * options/behaviors in each category, it also renames the "id" field to be
+   * behaviors in each category, it also renames the "id" field to be
    * "category_id", and normalizes the category weights.
    *
    * @returns Array
    */
   public function getCategories() {
-    $bhvrs_by_cat = AH::index(self::$options, null, 'category_id');
+    $bhvrs_by_cat = AH::index(self::$behaviors, null, 'category_id');
     $cats = AH::index(\common\models\Category::$categories, "id");
     $weights_sum = array_sum(array_column($cats, 'weight'));
     foreach($cats as $id => &$cat) {
-      $cat['option_count'] = count($bhvrs_by_cat[$id]); // add count of options
+      $cat['behavior_count'] = count($bhvrs_by_cat[$id]); // add count of behaviors
       $cat['category_id'] = $cat['id']; // rename id to category_id 
       $cat['weight'] = (100 * $cat['weight']) / $weights_sum; // normalize weight
       unset($cat['id']);
@@ -190,8 +190,8 @@ class Option extends \yii\base\BaseObject implements OptionInterface
     return $cats;
   }
 
-  public static function getOption($key, $val) {
-    $indexed = AH::index(self::$options, null, $key);
+  public static function getBehavior($key, $val) {
+    $indexed = AH::index(self::$behaviors, null, $key);
     return AH::getValue($indexed, $val, [false])[0];
   }
 }

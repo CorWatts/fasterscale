@@ -7,7 +7,7 @@ use yii\db\Query;
 use yii\web\IdentityInterface;
 use \common\components\ActiveRecord;
 use \common\interfaces\UserInterface;
-use \common\interfaces\UserOptionInterface;
+use \common\interfaces\UserBehaviorInterface;
 use \common\interfaces\QuestionInterface;
 use \common\interfaces\TimeInterface;
 
@@ -41,12 +41,12 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
   const CONFIRMED_STRING = '_confirmed';
 
-  public $user_option;
+  public $user_behavior;
   public $question;
   public $time;
 
-  public function __construct(UserOptionInterface $user_option, QuestionInterface $question, TimeInterface $time, $config = []) {
-    $this->user_option = $user_option;
+  public function __construct(UserBehaviorInterface $user_behavior, QuestionInterface $question, TimeInterface $time, $config = []) {
+    $this->user_behavior = $user_behavior;
     $this->question = $question;
     $this->time = $time;
     parent::__construct($config);
@@ -324,13 +324,13 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
     list($start, $end) = $this->time->getUTCBookends($date);
 
-    $scores_of_month   = $this->user_option->calculateScoresOfLastMonth();
+    $scores_of_month   = $this->user_behavior->calculateScoresOfLastMonth();
     $graph = Yii::$container
       ->get('common\components\Graph')
       ->create($scores_of_month);
 
-    $score          = $this->user_option->calculateScoreByUTCRange($start, $end);
-    $user_options   = $this->getUserOptions($date);
+    $score          = $this->user_behavior->calculateScoreByUTCRange($start, $end);
+    $user_behaviors   = $this->getUserBehaviors($date);
     $user_questions = $this->getUserQuestions($date);
 
     $messages = [];
@@ -340,12 +340,12 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
           'user'          => $this,
           'email'         => $email,
           'date'          => $date,
-          'user_options'  => $user_options,
+          'user_behaviors'  => $user_behaviors,
           'questions'     => $user_questions,
           'chart_content' => $graph,
           'categories'    => \common\models\Category::$categories,
           'score'         => $score,
-          'options_list'  => \common\models\Option::$options,
+          'behaviors_list'  => \common\models\Behavior::$behaviors,
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
         ->setSubject($this->email." has scored high in The Faster Scale App")
@@ -361,21 +361,21 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
       ->select(
       'l.id,        
        l.date      AS "date",
-       l.option_id AS "option_id",
+       l.behavior_id AS "behavior_id",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 1
-          AND q1.user_option_id = l.id) AS "question1",
+          AND q1.user_behavior_id = l.id) AS "question1",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 2
-          AND q1.user_option_id = l.id) AS "question2",
+          AND q1.user_behavior_id = l.id) AS "question2",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 3
-          AND q1.user_option_id = l.id) AS "question3"')
-      ->from('user_option_link l')
-      ->join("LEFT JOIN", "question q", "l.id = q.user_option_id")
+          AND q1.user_behavior_id = l.id) AS "question3"')
+      ->from('user_behavior_link l')
+      ->join("LEFT JOIN", "question q", "l.id = q.user_behavior_id")
       ->where('l.user_id=:user_id', ["user_id" => Yii::$app->user->id])
       ->groupBy('l.id,
           l.date,
@@ -391,22 +391,22 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 /* Plaintext Query
 SELECT l.id,
        l.date      AS "date",
-       l.option_id AS "option_id",
+       l.behavior_id AS "behavior_id",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 1
-          AND q1.user_option_id = l.id) AS "question1",
+          AND q1.user_behavior_id = l.id) AS "question1",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 2
-          AND q1.user_option_id = l.id) AS "question2",
+          AND q1.user_behavior_id = l.id) AS "question2",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 3
-          AND q1.user_option_id = l.id) AS "question3"
-FROM   user_option_link l
+          AND q1.user_behavior_id = l.id) AS "question3"
+FROM   user_behavior_link l
        LEFT JOIN question q
-         ON l.id = q.user_option_id
+         ON l.id = q.user_behavior_id
 WHERE  l.user_id = 1
 GROUP  BY l.id,
           l.date,
@@ -458,12 +458,12 @@ ORDER  BY l.date DESC;
     return $this->parseQuestionData($questions);
   }
 
-  public function getUserOptions($local_date = null) {
+  public function getUserBehaviors($local_date = null) {
     if(is_null($local_date)) $local_date = $this->time->getLocalDate();
 
-    $options = $this->getOptionData($local_date);
-    $options = $this->user_option::decorateWithCategory($options);
-    return $this->parseOptionData($options);
+    $behaviors = $this->getBehaviorData($local_date);
+    $behaviors = $this->user_behavior::decorateWithCategory($behaviors);
+    return $this->parseBehaviorData($behaviors);
   }
 
   public function parseQuestionData($questions) {
@@ -471,14 +471,14 @@ ORDER  BY l.date DESC;
 
     $question_answers = [];
     foreach($questions as $question) {
-      $option = $question['option'];
+      $behavior = $question['behavior'];
 
-      $question_answers[$option['id']]['question'] = [
-        "id" => $option['id'],
-        "title" => $option['name']
+      $question_answers[$behavior['id']]['question'] = [
+        "id" => $behavior['id'],
+        "title" => $behavior['name']
       ];
 
-      $question_answers[$option['id']]["answers"][] = [
+      $question_answers[$behavior['id']]["answers"][] = [
         "title" => $this->question::$QUESTIONS[$question['question']],
         "answer" => $question['answer']
       ];
@@ -487,17 +487,17 @@ ORDER  BY l.date DESC;
     return $question_answers;
   }
  
-  public function parseOptionData($options) {
-    if(!$options) return [];
+  public function parseBehaviorData($behaviors) {
+    if(!$behaviors) return [];
 
     $opts_by_cat = [];
-    foreach($options as $option) {
-      $indx = $option['option']['category_id'];
+    foreach($behaviors as $behavior) {
+      $indx = $behavior['behavior']['category_id'];
 
-      $opts_by_cat[$indx]['category_name'] = $option['option']['category']['name'];
-      $opts_by_cat[$indx]['options'][] = [
-        "id" => $option['option_id'],
-        "name"=>$option['option']['name']];
+      $opts_by_cat[$indx]['category_name'] = $behavior['behavior']['category']['name'];
+      $opts_by_cat[$indx]['behaviors'][] = [
+        "id" => $behavior['behavior_id'],
+        "name"=>$behavior['behavior']['name']];
     }
 
     return $opts_by_cat;
@@ -518,15 +518,15 @@ ORDER  BY l.date DESC;
     ->asArray()
     ->all();
 
-    $questions = $this->user_option::decorate($questions);
+    $questions = $this->user_behavior::decorate($questions);
 
     return $questions;
   }
 
-  public function getOptionData($local_date) {
+  public function getBehaviorData($local_date) {
     list($start, $end) = $this->time->getUTCBookends($local_date);
 
-    return $this->user_option->find()
+    return $this->user_behavior->find()
       ->where("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
@@ -561,7 +561,7 @@ ORDER  BY l.date DESC;
   }
 
   public function cleanExportData($data) {
-   $order = array_flip(["date", "option", "category", "question1", "question2", "question3"]);
+   $order = array_flip(["date", "behavior", "category", "question1", "question2", "question3"]);
 
    $ret = array_map(
      function($row) use ($order) {
@@ -569,10 +569,10 @@ ORDER  BY l.date DESC;
        $row['date'] = $this->time->convertUTCToLocal($row['date'], false);
        
        // clean up things we don't need
-       $row['category'] = $row['option']['category']['name'];
-       $row['option'] = $row['option']['name'];
+       $row['category'] = $row['behavior']['category']['name'];
+       $row['behavior'] = $row['behavior']['name'];
        unset($row['id']);
-       unset($row['option_id']);
+       unset($row['behavior_id']);
 
        // sort the array into a sensible order
        uksort($row, function($a, $b) use ($order) {

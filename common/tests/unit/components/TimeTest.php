@@ -30,7 +30,7 @@ class TimeTest extends \Codeception\Test\Unit
 
       $this->container = new \yii\di\Container;
       $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
-      $this->container->set('common\interfaces\UserOptionInterface', '\site\tests\_support\MockUserOption');
+      $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
       $this->container->set('common\interfaces\QuestionInterface', '\site\tests\_support\MockQuestion');
 
       $this->container->set('common\interfaces\TimeInterface', function () {

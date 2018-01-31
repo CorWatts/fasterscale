@@ -4,9 +4,9 @@ namespace site\controllers;
 
 use Yii;
 use common\models\Category;
-use common\models\Option;
+use common\models\Behavior;
 use common\interfaces\UserInterface;
-use common\interfaces\UserOptionInterface;
+use common\interfaces\UserBehaviorInterface;
 use common\Interfaces\TimeInterface;
 use yii\di\Container;
 use yii\base\InvalidParamException;
@@ -37,9 +37,9 @@ class CheckinController extends \yii\web\Controller
   public function actionIndex() {
     $form = Yii::$container->get('\site\models\CheckinForm');
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-      $form->compiled_options = $form->compileOptions();
+      $form->compiled_behaviors = $form->compileBehaviors();
 
-      if(sizeof($form->compiled_options) === 0) {
+      if(sizeof($form->compiled_behaviors) === 0) {
         return $this->redirect(['view']);
       }
 
@@ -54,8 +54,8 @@ class CheckinController extends \yii\web\Controller
 
       // if the user has publicised their score graph, create the image
       if(Yii::$app->user->identity->expose_graph) {
-        $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
-        $scores_last_month = $user_option->calculateScoresOfLastMonth();
+        $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
+        $scores_last_month = $user_behavior->calculateScoresOfLastMonth();
         Yii::$container
           ->get('common\components\Graph', [Yii::$app->user->identity])
           ->create($scores_last_month, true);
@@ -64,23 +64,23 @@ class CheckinController extends \yii\web\Controller
       return $this->redirect(['questions']);
     } else {
       $category = Yii::$container->get('common\interfaces\CategoryInterface');
-      $option   = Yii::$container->get('common\interfaces\OptionInterface');
+      $behavior   = Yii::$container->get('common\interfaces\BehaviorInterface');
       return $this->render('index', [
         'categories'  => $category::$categories,
         'model'       => $form,
-        'optionsList' => AH::index($option::$options, null, "category_id")
+        'behaviorsList' => AH::index($behavior::$behaviors, null, "category_id")
       ]);
     }
   }
 
   public function actionQuestions()
   {
-    $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
+    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
     $date = Yii::$container
       ->get('common\interfaces\TimeInterface')
       ->getLocalDate();
-    $user_options = $user_option->getUserOptionsWithCategory($date);
-    if(count($user_options) === 0) {
+    $user_behaviors = $user_behavior->getUserBehaviorsWithCategory($date);
+    if(count($user_behaviors) === 0) {
       return $this->redirect(['view']);
     }
 
@@ -89,10 +89,10 @@ class CheckinController extends \yii\web\Controller
       // we only store one data set per day so clear out any previously saved ones
       $form->deleteToday();
 
-      $behaviors = $user_option->findAll($form->getUserBehaviorIds());
+      $behaviors = $user_behavior->findAll($form->getUserBehaviorIds());
       if($result = $form->saveAnswers($behaviors)) {
 
-        $score = $user_option->getDailyScore();
+        $score = $user_behavior->getDailyScore();
         if(Yii::$app->user->identity->isOverThreshold($score)) {
           Yii::$app->user->identity->sendEmailReport($date);
           Yii::$app->session->setFlash('warning', 'Your check-in is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
@@ -106,7 +106,7 @@ class CheckinController extends \yii\web\Controller
 
     return $this->render('questions', [
       'model' => $form,
-      'options' => $user_options
+      'behaviors' => $user_behaviors
     ]);	
 
   }
@@ -120,32 +120,32 @@ class CheckinController extends \yii\web\Controller
 
     list($start, $end) = $time->getUTCBookends($date);
     $user        = Yii::$container->get('common\interfaces\UserInterface');
-    $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
+    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
     $category    = Yii::$container->get('common\interfaces\CategoryInterface');
-    $option      = Yii::$container->get('common\interfaces\OptionInterface');
+    $behavior      = Yii::$container->get('common\interfaces\BehaviorInterface');
 
     $form = Yii::$container->get('\site\models\CheckinForm');
-    $form->setOptions($user->getUserOptions($date));
+    $form->setBehaviors($user->getUserBehaviors($date));
 
     return $this->render('view', [
       'model'              => $form,
       'actual_date'        => $date,
       'categories'         => $category::$categories,
-      'optionsList'        => AH::index($option::$options, 'name', "category_id"),
-      'score'              => $user_option->getDailyScore($date),
-      'past_checkin_dates' => $user_option->getPastCheckinDates(),
+      'behaviorsList'        => AH::index($behavior::$behaviors, 'name', "category_id"),
+      'score'              => $user_behavior->getDailyScore($date),
+      'past_checkin_dates' => $user_behavior->getPastCheckinDates(),
       'questions'          => $user->getUserQuestions($date),
     ]);
   }
 
   public function actionReport() {
-    $user_option = Yii::$container->get('common\interfaces\UserOptionInterface');
-    $user_rows  = $user_option->getTopBehaviors();
-    $answer_pie = $user_option->getBehaviorsByCategory();
-    $scores     = $user_option->calculateScoresOfLastMonth();
+    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
+    $user_rows  = $user_behavior->getTopBehaviors();
+    $answer_pie = $user_behavior->getBehaviorsByCategory();
+    $scores     = $user_behavior->calculateScoresOfLastMonth();
 
     return $this->render('report', [
-      'top_options' => $user_rows,
+      'top_behaviors' => $user_rows,
       'answer_pie' => $answer_pie,
       'scores' => $scores
     ]);

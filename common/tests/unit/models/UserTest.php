@@ -21,12 +21,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 641,
 		'user_id' => 2,
-		'option_id' => 13,
-		'user_option_id' => 821,
+		'behavior_id' => 13,
+		'user_behavior_id' => 821,
 		'question' => 1,
 		'answer' => 'alsgn',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 13,
 			'name' => 'less time/energy for God, meetings, and church',
@@ -36,12 +36,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 642,
 		'user_id' => 2,
-		'option_id' => 13,
-		'user_option_id' => 821,
+		'behavior_id' => 13,
+		'user_behavior_id' => 821,
 		'question' => 2,
 		'answer' => 'loiun',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 13,
 			'name' => 'less time/energy for God, meetings, and church',
@@ -51,12 +51,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 643,
 		'user_id' => 2,
-		'option_id' => 13,
-		'user_option_id' => 821,
+		'behavior_id' => 13,
+		'user_behavior_id' => 821,
 		'question' => 3,
 		'answer' => 'liun',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 13,
 			'name' => 'less time/energy for God, meetings, and church',
@@ -66,12 +66,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 644,
 		'user_id' => 2,
-		'option_id' => 29,
-		'user_option_id' => 823,
+		'behavior_id' => 29,
+		'user_behavior_id' => 823,
 		'question' => 1,
 		'answer' => 'ljnb',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 29,
 			'name' => 'using profanity',
@@ -81,12 +81,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 645,
 		'user_id' => 2,
-		'option_id' => 29,
-		'user_option_id' => 823,
+		'behavior_id' => 29,
+		'user_behavior_id' => 823,
 		'question' => 2,
 		'answer' => 'liunb',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 29,
 			'name' => 'using profanity',
@@ -96,12 +96,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 646,
 		'user_id' => 2,
-		'option_id' => 29,
-		'user_option_id' => 823,
+		'behavior_id' => 29,
+		'user_behavior_id' => 823,
 		'question' => 3,
 		'answer' => 'ilub ',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 29,
 			'name' => 'using profanity',
@@ -111,12 +111,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 647,
 		'user_id' => 2,
-		'option_id' => 48,
-		'user_option_id' => 825,
+		'behavior_id' => 48,
+		'user_behavior_id' => 825,
 		'question' => 1,
 		'answer' => 'liub',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 48,
 			'name' => 'workaholic',
@@ -126,12 +126,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 648,
 		'user_id' => 2,
-		'option_id' => 48,
-		'user_option_id' => 825,
+		'behavior_id' => 48,
+		'user_behavior_id' => 825,
 		'question' => 2,
 		'answer' => 'liub',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 48,
 			'name' => 'workaholic',
@@ -141,12 +141,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 649,
 		'user_id' => 2,
-		'option_id' => 48,
-		'user_option_id' => 825,
+		'behavior_id' => 48,
+		'user_behavior_id' => 825,
 		'question' => 3,
 		'answer' => 'liub ',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 48,
 			'name' => 'workaholic',
@@ -156,12 +156,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 650,
 		'user_id' => 2,
-		'option_id' => 89,
-		'user_option_id' => 828,
+		'behavior_id' => 89,
+		'user_behavior_id' => 828,
 		'question' => 1,
 		'answer' => 'liub',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 89,
 			'name' => 'obsessive (stuck) thoughts',
@@ -171,12 +171,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 651,
 		'user_id' => 2,
-		'option_id' => 89,
-		'user_option_id' => 828,
+		'behavior_id' => 89,
+		'user_behavior_id' => 828,
 		'question' => 2,
 		'answer' => 'liuby',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 89,
 			'name' => 'obsessive (stuck) thoughts',
@@ -186,12 +186,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 652,
 		'user_id' => 2,
-		'option_id' => 89,
-		'user_option_id' => 828,
+		'behavior_id' => 89,
+		'user_behavior_id' => 828,
 		'question' => 3,
 		'answer' => 'uiylb',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 89,
 			'name' => 'obsessive (stuck) thoughts',
@@ -201,12 +201,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 653,
 		'user_id' => 2,
-		'option_id' => 111,
-		'user_option_id' => 829,
+		'behavior_id' => 111,
+		'user_behavior_id' => 829,
 		'question' => 1,
 		'answer' => 'liub',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 111,
 			'name' => 'seeking out old unhealthy people and places',
@@ -216,12 +216,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 654,
 		'user_id' => 2,
-		'option_id' => 111,
-		'user_option_id' => 829,
+		'behavior_id' => 111,
+		'user_behavior_id' => 829,
 		'question' => 2,
 		'answer' => 'liuyb',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 111,
 			'name' => 'seeking out old unhealthy people and places',
@@ -231,12 +231,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 655,
 		'user_id' => 2,
-		'option_id' => 111,
-		'user_option_id' => 829,
+		'behavior_id' => 111,
+		'user_behavior_id' => 829,
 		'question' => 3,
 		'answer' => 'iuyb',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 111,
 			'name' => 'seeking out old unhealthy people and places',
@@ -246,12 +246,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 656,
 		'user_id' => 2,
-		'option_id' => 122,
-		'user_option_id' => 831,
+		'behavior_id' => 122,
+		'user_behavior_id' => 831,
 		'question' => 1,
 		'answer' => 'iuyb',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 122,
 			'name' => 'returning to the place you swore you would never go again',
@@ -261,12 +261,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 657,
 		'user_id' => 2,
-		'option_id' => 122,
-		'user_option_id' => 831,
+		'behavior_id' => 122,
+		'user_behavior_id' => 831,
 		'question' => 2,
 		'answer' => 'iuyb',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 122,
 			'name' => 'returning to the place you swore you would never go again',
@@ -276,12 +276,12 @@ class UserTest extends \Codeception\Test\Unit {
 	[
 		'id' => 658,
 		'user_id' => 2,
-		'option_id' => 122,
-		'user_option_id' => 831,
+		'behavior_id' => 122,
+		'user_behavior_id' => 831,
 		'question' => 3,
 		'answer' => 'liuyb',
 		'date' => '2016-09-10 19:27:43',
-		'option' => 
+		'behavior' => 
 		[
 			'id' => 122,
 			'name' => 'returning to the place you swore you would never go again',
@@ -400,13 +400,13 @@ public $userQuestions = [
 	],
 ];
 
-public $optionData = [
+public $behaviorData = [
 	[
 		'id' => 820,
 		'user_id' => 2,
-		'option_id' => 7,
+		'behavior_id' => 7,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 7,
 			'name' => 'making eye contact',
 			'category_id' => 1,
@@ -419,9 +419,9 @@ public $optionData = [
 	], [
 		'id' => 821,
 		'user_id' => 2,
-		'option_id' => 13,
+		'behavior_id' => 13,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 13,
 			'name' => 'less time/energy for God, meetings, and church',
 			'category_id' => 2,
@@ -434,9 +434,9 @@ public $optionData = [
 	], [
 		'id' => 822,
 		'user_id' => 2,
-		'option_id' => 18,
+		'behavior_id' => 18,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 18,
 			'name' => 'changes in goals',
 			'category_id' => 2,
@@ -449,9 +449,9 @@ public $optionData = [
 	], [
 		'id' => 823,
 		'user_id' => 2,
-		'option_id' => 29,
+		'behavior_id' => 29,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 29,
 			'name' => 'using profanity',
 			'category_id' => 3,
@@ -464,9 +464,9 @@ public $optionData = [
 	], [
 		'id' => 824,
 		'user_id' => 2,
-		'option_id' => 41,
+		'behavior_id' => 41,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 41,
 			'name' => 'co-dependent rescuing',
 			'category_id' => 3,
@@ -479,9 +479,9 @@ public $optionData = [
 	], [
 		'id' => 825,
 		'user_id' => 2,
-		'option_id' => 48,
+		'behavior_id' => 48,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 48,
 			'name' => 'workaholic',
 			'category_id' => 4,
@@ -494,9 +494,9 @@ public $optionData = [
 	], [
 		'id' => 826,
 		'user_id' => 2,
-		'option_id' => 72,
+		'behavior_id' => 72,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 72,
 			'name' => 'black and white, all or nothing thinking',
 			'category_id' => 5,
@@ -509,9 +509,9 @@ public $optionData = [
 	], [
 		'id' => 827,
 		'user_id' => 2,
-		'option_id' => 79,
+		'behavior_id' => 79,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 79,
 			'name' => 'blaming',
 			'category_id' => 5,
@@ -524,9 +524,9 @@ public $optionData = [
 	], [
 		'id' => 828,
 		'user_id' => 2,
-		'option_id' => 89,
+		'behavior_id' => 89,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 89,
 			'name' => 'obsessive (stuck) thoughts',
 			'category_id' => 5,
@@ -539,9 +539,9 @@ public $optionData = [
 	], [
 		'id' => 829,
 		'user_id' => 2,
-		'option_id' => 111,
+		'behavior_id' => 111,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 111,
 			'name' => 'seeking out old unhealthy people and places',
 			'category_id' => 6,
@@ -554,9 +554,9 @@ public $optionData = [
 	], [
 		'id' => 830,
 		'user_id' => 2,
-		'option_id' => 118,
+		'behavior_id' => 118,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 118,
 			'name' => 'not returning phone calls',
 			'category_id' => 6,
@@ -569,9 +569,9 @@ public $optionData = [
 	], [
 		'id' => 831,
 		'user_id' => 2,
-		'option_id' => 122,
+		'behavior_id' => 122,
 		'date' => '2016-09-10 19:26:04',
-		'option' => [
+		'behavior' => [
 			'id' => 122,
 			'name' => 'returning to the place you swore you would never go again',
 			'category_id' => 7,
@@ -584,10 +584,10 @@ public $optionData = [
 	],
 ];
 
-public $userOptions = [
+public $userBehaviors = [
 	1 => [
 		'category_name' => 'Restoration',
-		'options' => [
+		'behaviors' => [
 			[
 				'id' => 7,
 				'name' => 'making eye contact',
@@ -596,7 +596,7 @@ public $userOptions = [
 	],
 	2 => [
 		'category_name' => 'Forgetting Priorities',
-		'options' => [
+		'behaviors' => [
 			[
 				'id' => 13,
 				'name' => 'less time/energy for God, meetings, and church',
@@ -608,7 +608,7 @@ public $userOptions = [
   ],
   3 => [
 		'category_name' => 'Anxiety',
-		'options' => [
+		'behaviors' => [
 			[
 				'id' => 29,
 				'name' => 'using profanity',
@@ -620,7 +620,7 @@ public $userOptions = [
 	],
 	4 => [
 		'category_name' => 'Speeding Up',
-		'options' => [
+		'behaviors' => [
 			[
 				'id' => 48,
 				'name' => 'workaholic',
@@ -629,7 +629,7 @@ public $userOptions = [
 	],
 	5 => [
 		'category_name' => 'Ticked Off',
-		'options' => [
+		'behaviors' => [
 			[
 				'id' => 72,
 				'name' => 'black and white, all or nothing thinking',
@@ -644,7 +644,7 @@ public $userOptions = [
 	],
 	6 => [
 		'category_name' => 'Exhausted',
-		'options' => [
+		'behaviors' => [
 			[
 				'id' => 111,
 				'name' => 'seeking out old unhealthy people and places',
@@ -656,7 +656,7 @@ public $userOptions = [
 	],
 	7 => [
 		'category_name' => 'Relapse/Moral Failure',
-		'options' => [
+		'behaviors' => [
 			[
 				'id' => 122,
 				'name' => 'returning to the place you swore you would never go again',
@@ -669,11 +669,11 @@ public $exportData = [
     [
       'id' => 485,
       'date' => '2017-07-29 10:40:29',
-      'option_id' => 59,
+      'behavior_id' => 59,
       'question1' => 'q1',
       'question2' => 'q2',
       'question3' => 'q3',
-      'option' => [
+      'behavior' => [
         'id' => 59,
         'name' => 'repetitive, negative thoughts',
         'category_id' => 4,
@@ -686,11 +686,11 @@ public $exportData = [
     ], [
       'id' => 487,
       'date' => '2017-07-29 10:40:29',
-      'option_id' => 106,
+      'behavior_id' => 106,
       'question1' => 'q1',
       'question2' => 'q2',
       'question3' => 'q3',
-      'option' => [
+      'behavior' => [
         'id' => 106,
         'name' => 'tired',
         'category_id' => 6,
@@ -703,11 +703,11 @@ public $exportData = [
     ], [
       'id' => 488,
       'date' => '2017-07-29 10:40:29',
-      'option_id' => 125,
+      'behavior_id' => 125,
       'question1' => 'q1',
       'question2' => 'q2',
       'question3' => 'q3',
-      'option' => [
+      'behavior' => [
         'id' => 125,
         'name' => 'out of control',
         'category_id' => 7,
@@ -720,11 +720,11 @@ public $exportData = [
     ], [
       'id' => 486,
       'date' => '2017-07-29 10:40:29',
-      'option_id' => 89,
+      'behavior_id' => 89,
       'question1' => 'q1',
       'question2' => 'q2',
       'question3' => 'q3',
-      'option' => [
+      'behavior' => [
         'id' => 89,
         'name' => 'obsessive (stuck) thoughts',
         'category_id' => 5,
@@ -740,20 +740,20 @@ public $exportData = [
   public function setUp() {
     $this->container = new \yii\di\Container;
     $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
-    $this->container->set('common\interfaces\UserOptionInterface', '\site\tests\_support\MockUserOption');
+    $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
     $this->container->set('common\interfaces\TimeInterface', function () {
       return new \common\components\Time('America/Los_Angeles');
     });
 
-    $user_option = $this->container->get('common\interfaces\UserOptionInterface');
-    $time        = $this->container->get('common\interfaces\TimeInterface');
+    $user_behavior = $this->container->get('common\interfaces\UserBehaviorInterface');
+    $time          = $this->container->get('common\interfaces\TimeInterface');
 
     $question = $this->getMockBuilder('\common\models\Question')
       ->setMethods(['save', 'attributes'])
       ->getMock();
 
     $this->user = $this->getMockBuilder('\common\models\User')
-      ->setConstructorArgs([$user_option, $question, $time])
+      ->setConstructorArgs([$user_behavior, $question, $time])
       ->setMethods(['save', 'attributes'])
       ->getMock();
     $this->user->method('save')->willReturn(true);
@@ -791,10 +791,10 @@ public $exportData = [
     });
   }
 
-  public function testParseOptionData() {
-    $this->specify('parseOptionData should function correctly', function () {
-      expect('parseOptionData should return the correct structure with expected data', $this->assertEquals($this->user->parseOptionData($this->optionData), $this->userOptions));
-      expect('parseOptionData should return empty with the empty set', $this->assertEmpty($this->user->parseOptionData([])));
+  public function testParseBehaviorData() {
+    $this->specify('parseBehaviorData should function correctly', function () {
+      expect('parseBehaviorData should return the correct structure with expected data', $this->assertEquals($this->user->parseBehaviorData($this->behaviorData), $this->userBehaviors));
+      expect('parseBehaviorData should return empty with the empty set', $this->assertEmpty($this->user->parseBehaviorData([])));
     });
   }
 
@@ -906,28 +906,28 @@ public $exportData = [
     expect('cleanExportData should clean and mutate the queried data to be suitable for downloading', $this->assertEquals([
       [
         'date' => '2017-07-29 03:40:29',
-        'option' => 'repetitive, negative thoughts',
+        'behavior' => 'repetitive, negative thoughts',
         'category' => 'Speeding Up',
         'question1' => 'q1',
         'question2' => 'q2',
         'question3' => 'q3',
       ], [
         'date' => '2017-07-29 03:40:29',
-        'option' => 'tired',
+        'behavior' => 'tired',
         'category' => 'Exhausted',
         'question1' => 'q1',
         'question2' => 'q2',
         'question3' => 'q3',
       ], [
         'date' => '2017-07-29 03:40:29',
-        'option' => 'out of control',
+        'behavior' => 'out of control',
         'category' => 'Relapse/Moral Failure',
         'question1' => 'q1',
         'question2' => 'q2',
         'question3' => 'q3',
       ], [
         'date' => '2017-07-29 03:40:29',
-        'option' => 'obsessive (stuck) thoughts',
+        'behavior' => 'obsessive (stuck) thoughts',
         'category' => 'Ticked Off',
         'question1' => 'q1',
         'question2' => 'q2',
