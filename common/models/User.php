@@ -444,7 +444,7 @@ ORDER  BY l.date DESC;
           'email' => $email
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
-        ->setSubject($this->email." has delete their The Faster Scale App account")
+        ->setSubject($this->email." has deleted their The Faster Scale App account")
         ->setTo($email);
       }
     }
