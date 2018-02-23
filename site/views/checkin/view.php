@@ -30,7 +30,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
         <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "-1 day")]); ?>" aria-label="Previous Day">&lt;</a> 
       </div>
       <div class='btn-group datepicker-container' role='group'>
-        <input type="text" id="datepicker" class='form-control' value="<?=$actual_date?>" data-value="<?=$actual_date?>" readOnly="true" />
+        <input type="text" id="datepicker" class='form-control btn btn-default' value="<?=$actual_date?>" data-value="<?=$actual_date?>" readOnly="true" />
       </div>
       <div class='btn-group' role='group'>
         <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "+1 day")]); ?>" aria-label="Next Day">&gt;</a> 
