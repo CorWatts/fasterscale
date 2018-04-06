@@ -33,7 +33,7 @@ return [
       'showScriptName' => false,
       'rules' => [
         '' => 'site/index',
-        '<action:(index|about|faq|contact|signup|login|logout|welcome|profile|privacy|terms|request-password-reset|reset-password|delete-account)>' => 'site/<action>',
+        '<action:(index|about|faq|contact|signup|login|logout|welcome|privacy|terms|request-password-reset|reset-password)>' => 'site/<action>',
         'checkin/view/<date:\d{4}-\d{2}-\d{2}>' => 'checkin/view',
         'report/view/<date:\d{4}-\d{2}-\d{2}>' => 'report/view',
         '<controller:\w+>/<action:\w+>' => '<controller>/<action>',

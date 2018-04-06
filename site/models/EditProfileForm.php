@@ -97,7 +97,12 @@ class EditProfileForm extends Model
 
         // generate scores graph image
         $scores_last_month = (Yii::$container->get('common\interfaces\UserBehaviorInterface'))->calculateScoresOfLastMonth();
-        $graph->create($scores_last_month, true);
+        // if they haven't done a check-in in the last month this
+        // will explode because $scores_last_month is an empty
+        // array
+        if($scores_last_month) {
+          $graph->create($scores_last_month, true);
+        }
       } else {
         $user->expose_graph = false;
         // remove scores graph image
