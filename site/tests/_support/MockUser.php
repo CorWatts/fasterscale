@@ -40,4 +40,13 @@ class MockUser implements \common\interfaces\UserInterface, \yii\web\IdentityInt
   public function unlink($name, $model, $delete = false) {}
   public static function getDb() {}
   public function getIdHash() {}
+  public function findByEmail($email) {}
+
+  public function generateChangeEmailToken() {}
+  public function removeChangeEmailToken() {}
+  public function findByChangeEmailToken($email) {}
+
+  public function generateVerifyEmailToken() {}
+  public function confirmVerifyEmailToken() {}
+  public function removeVerifyEmailToken() {}
 }

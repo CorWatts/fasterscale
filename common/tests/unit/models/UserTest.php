@@ -762,6 +762,7 @@ public $exportData = [
       'password_hash',
       'password_reset_token',
       'verify_email_token',
+      'change_email_token',
       'email',
       'auth_key',
       'role',
@@ -856,6 +857,18 @@ public $exportData = [
       expect('isTokenConfirmed should return false if the token has not been confirmed', $this->assertFalse($this->user->isTokenConfirmed('token123_not_blah')));
   }
 
+  public function testGeneratePasswordResetToken() {
+    expect('password_reset_token should be null by default', $this->assertNull($this->user->password_reset_token));
+    $this->user->generatePasswordResetToken();
+    expect('password_reset_token should now have a verification token set', $this->assertRegExp('/.*_[0-9]+/', $this->user->password_reset_token));
+  }
+
+  public function testGenerateVerifyEmailToken() {
+    expect('verify_email_token should be null by default', $this->assertNull($this->user->verify_email_token));
+    $this->user->generateVerifyEmailToken();
+    expect('verify_email_token should now have a verification token set', $this->assertRegExp('/.*_[0-9]+/', $this->user->verify_email_token));
+  }
+
   public function testConfirmVerifyEmailToken() {
     $this->user->verify_email_token = 'hello_world';
     $this->user->confirmVerifyEmailToken();
@@ -934,5 +947,17 @@ public $exportData = [
         'question3' => 'q3',
       ]
     ], $this->user->cleanExportData($this->exportData)));
+  }
+
+  public function testGenerateChangeEmailToken() {
+    expect('change_email_token should be null by default', $this->assertNull($this->user->change_email_token));
+    $this->user->generateChangeEmailToken();
+    expect('change_email_token should now have a verification token set', $this->assertRegExp('/.*_[0-9]+/', $this->user->change_email_token));
+  }
+
+  public function testRemoveChangeEmailToken() {
+      $this->user->change_email_token = 'faketoken_1234';
+      $this->user->removeChangeEmailToken();
+      expect('removeChangeEmailToken should set the change_email_token to be null', $this->assertNull($this->user->change_email_token));
   }
 }

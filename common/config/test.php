@@ -9,5 +9,10 @@ return [
   'params' => $params,
   'components' => [
     'db' => new \yii\helpers\UnsetArrayValue(),
+    'mailer' => [
+      'class' => yii\swiftmailer\Mailer::class,
+      'viewPath' => '@common/mail',
+      'useFileTransport' => true,
+    ],
   ]
 ];

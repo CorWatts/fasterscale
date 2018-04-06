@@ -10,7 +10,6 @@ use \DateTimeZone;
  */
 class EditProfileForm extends Model
 {
-  public $email;
   public $timezone;
   public $expose_graph;
   public $send_email;
@@ -39,12 +38,6 @@ class EditProfileForm extends Model
   public function rules()
   {
     return [
-      ['email', 'filter', 'filter' => 'trim'],
-      ['email', 'filter', 'filter' => 'strtolower'],
-      ['email', 'email'],
-      ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'filter' => "id <> ".Yii::$app->user->id],
-
-
       ['timezone', 'string', 'min' => 2, 'max' => 255],
       ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
 
@@ -88,8 +81,6 @@ class EditProfileForm extends Model
       $graph = Yii::$container
         ->get(\common\components\Graph::class, [$this->user]);
 
-      if($this->email)
-        $user->email = $this->email;
       if($this->timezone)
         $user->timezone = $this->timezone;
       if($this->expose_graph) {
@@ -129,7 +120,6 @@ class EditProfileForm extends Model
 
   public function loadUser() {
     $user                  = $this->user;
-    $this->email           = $user->email;
     $this->timezone        = $user->timezone;
     $this->email_threshold = $user->email_threshold;
     $this->partner_email1  = $user->partner_email1;
