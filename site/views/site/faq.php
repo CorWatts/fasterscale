@@ -31,7 +31,7 @@ $this->registerMetaTag([
 
   <div>
     <strong>How do I ensure a partner email is always sent, regardless of my score?</strong>
-    <p class="indent">It's as simple as setting your Email Threshold (on the <?=Html::a("/profile", Url::to(['site/profile']))?>) to 0. Then a report will be sent to your partners with each check-in.</p>
+    <p class="indent">It's as simple as setting your Email Threshold (on the <?=Html::a("/profile", Url::to(['profile/index']))?>) to 0. Then a report will be sent to your partners with each check-in.</p>
   </div>
 
   <div>

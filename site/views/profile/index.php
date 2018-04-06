@@ -6,7 +6,7 @@ use yii\captcha\Captcha;
 $this->title = 'Profile';
 $timezones = \DateTimeZone::listIdentifiers();
 ?>
-<div class="site-profile">
+<div class="profile-index">
   <h1><?= Html::encode($this->title) ?></h1>
 
   <p>Update your account information below</p>
@@ -49,7 +49,7 @@ $timezones = \DateTimeZone::listIdentifiers();
         <div class="card-text">
           <?php $form = ActiveForm::begin([
             'id' => 'form-change-password',
-            'action' => ['site/change-password'],
+            'action' => ['profile/change-password'],
             'method' => 'post',
             'enableClientValidation' => true,
             'options' => ['validateOnSubmit' => true]
@@ -72,7 +72,7 @@ $timezones = \DateTimeZone::listIdentifiers();
             <p>To export ALL of your check-in data, click this button. You will be redirected to a CSV download that can be opened in any spreadsheet program.</p>
     
             <div class="form-group">
-              <?= Html::a('Export', ['/site/export'], ['class'=>'btn btn-success']) ?>
+              <?= Html::a('Export', ['/profile/export'], ['class'=>'btn btn-success']) ?>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ $timezones = \DateTimeZone::listIdentifiers();
             <p>If you're really <em>really</em> sure about this, please enter your password below and click the Delete button. You will be logged out, your account and all your stored data will be immediately deleted, and a notification email will be sent to you and your partners.</p>
         <?php $form = ActiveForm::begin([
           'id' => 'form-delete-account',
-          'action' => ['site/delete-account'],
+          'action' => ['profile/delete-account'],
           'method' => 'post',
           'enableClientValidation' => true,
           'options' => ['validateOnSubmit' => true]
