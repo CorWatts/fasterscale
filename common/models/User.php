@@ -31,6 +31,8 @@ use \common\interfaces\TimeInterface;
  * @property string $partner_email2
  * @property string $partner_email3
  * @property boolean $expose_graph
+ * @property string $desired_email
+ * @property string $change_emaiL_token
  */
 class User extends ActiveRecord implements IdentityInterface, UserInterface
 {
@@ -177,6 +179,28 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
   }
 
   /**
+   * Finds user by email change token
+   *
+   * @param  string      $token email change token
+   * @return static|null
+   */
+  public function findByChangeEmailToken($token)
+  {
+    $user = static::findOne([
+      'change_email_token' => $token,
+      'status' => self::STATUS_ACTIVE,
+    ]);
+
+    if($user) {
+      if(!$user->isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
+        return null;
+      }
+    }
+
+    return $user;
+  }
+
+  /**
    * Finds out if a token is current or expired
    *
    * @param  string      $token verification token
@@ -273,11 +297,12 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
    */
   public function generateVerifyEmailToken()
   {
-    $this->verify_email_token = Yii::$app
-      ->getSecurity()
-      ->generateRandomString() . '_' . time();
+    $this->verify_email_token = $this->getRandomVerifyString();
   }
 
+  /**
+   * Confirms email verification token
+   */
   public function confirmVerifyEmailToken()
   {
     $this->verify_email_token .= self::CONFIRMED_STRING;
@@ -289,6 +314,21 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
   public function removeVerifyEmailToken()
   {
     $this->verify_email_token = null;
+  }
+
+  /**
+   * Generates email change tokens
+   */
+  public function generateChangeEmailToken() {
+    $this->change_email_token = $this->getRandomVerifyString();
+  }
+
+  /**
+   * Removes change email token
+   */
+  public function removeChangeEmailToken()
+  {
+    $this->change_email_token = null;
   }
 
   /**
@@ -306,9 +346,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
    */
   public function generatePasswordResetToken()
   {
-    $this->password_reset_token = Yii::$app
-      ->getSecurity()
-      ->generateRandomString() . '_' . time();
+    $this->password_reset_token = $this->getRandomVerifyString();
   }
 
   /**
@@ -608,5 +646,18 @@ ORDER  BY l.date DESC;
         ),
       '+/', '-_'),
     '=');
+  }
+
+  /*
+   * getRandomVerifyString()
+   * 
+   * @return String a randomly generated string with a timestamp appended
+   *
+   * This is generally used for verification purposes: verifying an email, password change, or email address change.
+   */
+  private function getRandomVerifyString() {
+    return Yii::$app
+      ->getSecurity()
+      ->generateRandomString() . '_' . time();
   }
 }

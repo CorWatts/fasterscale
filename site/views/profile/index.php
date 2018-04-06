@@ -22,7 +22,6 @@ $timezones = \DateTimeZone::listIdentifiers();
     'enableClientValidation' => true,
     'options' => ['validateOnSubmit' => true]
   ]); ?>
-          <?= $form->field($profile, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>']); ?>
           <?= $form->field($profile, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
           <?= $form->field($profile, 'expose_graph')->checkbox() ?>
           <?php if($profile->expose_graph): ?>
@@ -58,6 +57,25 @@ $timezones = \DateTimeZone::listIdentifiers();
           <?= $form->field($change_password, 'new_password', ['inputTemplate' => '<div class="input-group">{input}<span class="input-group-btn"><button id="new-password-toggle" class="btn btn-default" type="button">Show</button></span></div>'])->passwordInput() ?>
           <div class="form-group">
           <?= Html::submitButton('Change', ['class' => 'btn btn-warning', 'name' => 'change-password-button']) ?>
+          </div>
+          <?php ActiveForm::end(); ?>
+        </div>
+      </div>
+      </div>
+      <div class="card">
+      <div class="card-header"><h4>Change email</h4></div>
+      <div class="card-block">
+        <div class="card-text">
+          <?php $form = ActiveForm::begin([
+            'id' => 'form-change-email',
+            'action' => ['profile/request-change-email'],
+            'method' => 'post',
+            'enableClientValidation' => true,
+            'options' => ['validateOnSubmit' => true]
+          ]); ?>
+          <?= $form->field($change_email, 'desired_email') ?>
+          <div class="form-group">
+          <?= Html::submitButton('Change', ['class' => 'btn btn-warning', 'name' => 'change-email-button']) ?>
           </div>
           <?php ActiveForm::end(); ?>
         </div>

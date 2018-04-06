@@ -6,8 +6,6 @@ use Yii;
 
 class ChangePasswordFormTest extends \Codeception\Test\Unit
 {
-  use \Codeception\Specify;
-
   private $user;
 
   public function setUp() {
