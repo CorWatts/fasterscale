@@ -37,7 +37,7 @@
     "test-coverage": "codecept run --coverage --coverage-xml --coverage-html --ansi",
     "test-scaffold": "codecept build",
     "start": "cd site/web; php -S localhost:8080 router.php",
-    "assets": "./yii asset site/assets/assets.php site/assets/assets-compressed.php"
+    "assets": "rm -f site/assets/css/app.css && ./yii asset site/assets/assets.php site/assets/assets-compressed.php"
   },
   "config": {
     "process-timeout": 1800,

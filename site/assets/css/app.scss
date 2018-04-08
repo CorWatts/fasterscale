@@ -11,8 +11,14 @@ body {
 .wrap {
 	min-height: 100%;
 	height: auto;
-	margin: 0 auto -60px;
-	padding: 0 0 60px;
+	margin: 0 auto;
+  margin-bottom: -80px;
+	padding: 0 0;
+}
+
+.wrap:after {
+  content: "";
+  display: block;
 }
 
 .wrap > .container {
@@ -48,8 +54,11 @@ body {
   }
 }
 
+.footer, .wrap:after {
+  height: 80px;
+}
+
 .footer {
-	height: 60px;
 	background-color: #f5f5f5;
 	border-top: 1px solid #ddd;
 	padding-top: 20px;
@@ -99,6 +108,15 @@ body {
 
 @import "pickadate";
 @import "bootstrap-custom";
+
+@media (min-width: $screen-md-min) {
+  .footer, .wrap:after {
+    height: 60px;
+  }
+  .wrap {
+    margin-bottom: -60px;
+  }
+}
 
 .site-signup {
   .input-group-btn {

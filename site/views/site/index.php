@@ -50,3 +50,4 @@ $this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset:
       </div>
     </div>
   </div>
+</div>
