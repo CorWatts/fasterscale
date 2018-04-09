@@ -56,9 +56,11 @@ class CheckinController extends \yii\web\Controller
       if(Yii::$app->user->identity->expose_graph) {
         $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
         $scores_last_month = $user_behavior->calculateScoresOfLastMonth();
-        Yii::$container
-          ->get('common\components\Graph', [Yii::$app->user->identity])
-          ->create($scores_last_month, true);
+        if($scores_last_month) {
+          Yii::$container
+            ->get('common\components\Graph', [Yii::$app->user->identity])
+            ->create($scores_last_month, true);
+        }
       }
 
       return $this->redirect(['questions']);
