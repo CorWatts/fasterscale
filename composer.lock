@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7b454f1c3a3e662eed029be1c713de3",
+    "content-hash": "b58712aa1fe4a630497e509a4dd73987",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -182,7 +182,7 @@
             "version": "3.5.6",
             "source": {
                 "type": "git",
-                "url": "git@github.com:amsul/pickadate.js.git",
+                "url": "https://github.com/amsul/pickadate.js.git",
                 "reference": "b704a8a8a19df24481f8291dd3e6c008501f04f1"
             },
             "dist": {
@@ -822,16 +822,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.13.1",
+            "version": "2.0.13.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "7af96d8da5ea3e9a5dd05d0e734b21c5726a6ddf"
+                "reference": "47476abe8acb4be9d1b1b2f03fdced3b4b792ed0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/7af96d8da5ea3e9a5dd05d0e734b21c5726a6ddf",
-                "reference": "7af96d8da5ea3e9a5dd05d0e734b21c5726a6ddf",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/47476abe8acb4be9d1b1b2f03fdced3b4b792ed0",
+                "reference": "47476abe8acb4be9d1b1b2f03fdced3b4b792ed0",
                 "shasum": ""
             },
             "require": {
@@ -918,7 +918,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2017-11-14T11:08:21+00:00"
+            "time": "2018-03-21T18:45:59+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
