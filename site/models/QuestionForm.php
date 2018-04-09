@@ -145,7 +145,8 @@ class QuestionForm extends Model
   }
 
   public function getUserBehaviorIds() {
-    return array_values($this->getPrefixProps('user_behavior_id'));
+    // for security reasons, make double-sure we're giving back an array of integers
+    return array_map('intval', array_values($this->getPrefixProps('user_behavior_id')));
   }
 
   public function getAnswers($bhvrs) {
