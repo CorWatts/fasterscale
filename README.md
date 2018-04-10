@@ -3,6 +3,7 @@
 
 [![Build Status](https://travis-ci.org/CorWatts/fasterscale.svg?branch=master)](https://travis-ci.org/CorWatts/fasterscale)
 [![codecov](https://codecov.io/gh/CorWatts/fasterscale/branch/master/graph/badge.svg)](https://codecov.io/gh/CorWatts/fasterscale)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorWatts/fasterscale/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorWatts/fasterscale/?branch=master)
 
 
 ## Getting Started
