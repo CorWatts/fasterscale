@@ -205,28 +205,19 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     }, []);
   }
 
+  /**
+   * Returns a list of the most-selected behaviors
+   * @param integer $limit the desired number of behaviors
+   */
   public function getTopBehaviors($limit = 5) {
-    $query = new Query;
-    $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("user_id, behavior_id, COUNT(id) as count")
-      ->from('user_behavior_link')
-      ->groupBy('behavior_id, user_id')
-      ->having('user_id = :user_id')
-      ->orderBy('count DESC')
-      ->limit($limit);
-    return self::decorateWithCategory($query->all(), false);
+    return self::decorateWithCategory($this->getBehaviorsWithCounts($limit));
   }
 
+  /**
+   * Returns a list of categories and the number of selected behaviors in each category
+   */
   public function getBehaviorsByCategory() {
-    $query = new Query;
-    $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("user_id, behavior_id, COUNT(id) as count")
-      ->from('user_behavior_link')
-      ->groupBy('behavior_id, user_id')
-      ->having('user_id = :user_id')
-      ->orderBy('count DESC');
-
-    return array_values(array_reduce(self::decorateWithCategory($query->all(), false), function($acc, $row) {
+    return array_values(array_reduce(self::decorateWithCategory($this->getBehaviorsWithCounts()), function($acc, $row) {
       $cat_id = $row['behavior']['category']['id'];
       if(array_key_exists($cat_id, $acc)) {
         $acc[$cat_id]['count'] += $row['count'];
@@ -254,5 +245,20 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   public static function decorateWithCategory(Array $uo) {
     return self::decorate($uo, true);
+  }
+
+  public function getBehaviorsWithCounts($limit = null) {
+    $query = new Query;
+    $query->params = [":user_id" => Yii::$app->user->id];
+    $query->select("user_id, behavior_id, COUNT(id) as count")
+      ->from('user_behavior_link')
+      ->groupBy('behavior_id, user_id')
+      ->having('user_id = :user_id')
+      ->orderBy('count DESC');
+    if($limit) {
+      $query->limit($limit);
+    }
+
+    return $query->all();
   }
 }
