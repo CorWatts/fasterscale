@@ -68,25 +68,23 @@ $pie_data = [
 
 <div class='row'>
     <div class='col-md-4'>
-        <h2>Answers by Category</h2>
+        <h2>Behaviors by Category</h2>
         <canvas id='category-pie-chart'></canvas>
     </div>
     <div class='col-md-8'>
-        <h2>Top Answers</h2>
+        <h2>Most Frequently Selected Behaviors</h2>
         <table class='table table-striped'>
             <tr>
-                <th>#</th>
-                <th>Category</th>
-                <th>Behavior</th>
                 <th>Count</th>
+                <th>Behavior</th>
+                <th>Category</th>
             </tr>
 <?php foreach($top_behaviors as $key => $row) {
 $num = $key + 1;
 print "<tr>".
-  "<td>".$num."</td>".
-  "<td>{$row['behavior']['category']['name']}</td>".
-  "<td>{$row['behavior']['name']}</td>".
   "<td>{$row['count']}</td>".
+  "<td>{$row['behavior']['name']}</td>".
+  "<td>{$row['behavior']['category']['name']}</td>".
   "</tr>";
 
 }

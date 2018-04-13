@@ -54,7 +54,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     $this->user_behavior = $this
                             ->getMockBuilder("common\models\UserBehavior")
                             ->setConstructorArgs([$behavior, $time])
-                            ->setMethods(["getIsNewRecord", "save", "getBehaviorsByDate"])
+                            ->setMethods(['getIsNewRecord', 'save', 'getBehaviorsByDate', 'getBehaviorsWithCounts'])
                             ->getMock();
     parent::setUp();
   }
@@ -142,5 +142,106 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     expect('getDailyScore should return the score for the day given',
       $this->assertEquals($this->user_behavior->getDailyScore('2017-08-01'),
       43));
+  }
+
+  public function testGetTopBehaviors() {
+    $this
+      ->user_behavior
+      ->method('getBehaviorsWithCounts')
+      ->willReturnOnConsecutiveCalls([], [
+        [
+          'user_id' => 1,
+          'behavior_id' => 1,
+          'count' => 5
+        ], [
+          'user_id' => 1,
+          'behavior_id' => 2,
+          'count' => 4
+        ], [
+          'user_id' => 1,
+          'behavior_id' => 3,
+          'count' => 3
+        ]
+      ]);
+
+    expect('getTopBehaviors to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getTopBehaviors()));
+    expect('getTopBehaviors to return embelished data corresponding to the most commonly selected behaviors', $this->assertEquals(
+      [[
+        'user_id' => 1,
+        'behavior_id' => 1,
+        'count' => 5,
+        'behavior' => [
+          'id' => 1,
+          'name' => 'no current secrets',
+          'category_id' => 1,
+          'category' => [
+            'id' => 1,
+            'weight' => 0,
+            'name' => 'Restoration',
+          ],
+        ],
+      ], [
+        'user_id' => 1,
+        'behavior_id' => 2,
+        'count' => 4,
+        'behavior' => [
+          'id' => 2,
+          'name' => 'resolving problems',
+          'category_id' => 1,
+          'category' => [
+            'id' => 1,
+            'weight' => 0,
+            'name' => 'Restoration',
+          ],
+        ],
+      ], [
+        'user_id' => 1,
+        'behavior_id' => 3,
+        'count' => 3,
+        'behavior' => [
+          'id' => 3,
+          'name' => 'identifying fears and feelings',
+          'category_id' => 1,
+          'category' => [
+            'id' => 1,
+            'weight' => 0,
+            'name' => 'Restoration',
+          ],
+        ],
+      ]], $this->user_behavior->getTopBehaviors()));
+  }
+
+  public function testGetBehaviorsByCategory() {
+    $this
+      ->user_behavior
+      ->method('getBehaviorsWithCounts')
+      ->willReturnOnConsecutiveCalls([], [
+        [
+          'user_id' => 1,
+          'behavior_id' => 1,
+          'count' => 5
+        ], [
+          'user_id' => 1,
+          'behavior_id' => 20,
+          'count' => 4
+        ], [
+          'user_id' => 1,
+          'behavior_id' => 50,
+          'count' => 3
+        ]
+      ]);
+
+    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getBehaviorsByCategory()));
+    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals(
+      [[
+        'name' => 'Restoration',
+        'count' => 5,
+      ], [
+        'name' => 'Forgetting Priorities',
+        'count' => 4,
+      ], [
+        'name' => 'Speeding Up',
+        'count' => 3,
+      ]], $this->user_behavior->getBehaviorsByCategory()));
   }
 }
