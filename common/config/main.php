@@ -21,7 +21,7 @@ return [
   ],
   'modules' => [
     'blog' => [
-      'class' => \corwatts\MarkdownFiles\Module::className(),
+      'class' => \corwatts\MarkdownFiles\Module::class,
       'posts' => '@site/views/blog/posts',
       'drafts' => '@site/views/blog/drafts',
     ]

@@ -59,7 +59,7 @@ $this->registerMetaTag([
 
         <?php if(Yii::$app->user->isGuest) {
           // only show captcha if user is not logged in
-          print $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+          print $form->field($model, 'verifyCode')->widget(Captcha::class, [
             'template' => '<div class="row"><div class="col-md-3">{image}</div><div class="col-md-6">{input}</div></div>',
           ]);
         } ?>

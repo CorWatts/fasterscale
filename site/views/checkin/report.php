@@ -7,7 +7,7 @@ use yii\web\JsExpression;
  */
 
 $this->title = "The Faster Scale App | Report";
-$this->registerJsFile('/js/checkin/report.js', ['depends' => [\site\assets\AppAsset::className()]]);
+$this->registerJsFile('/js/checkin/report.js', ['depends' => [\site\assets\AppAsset::class]]);
 
 $pie_colors = [
   [

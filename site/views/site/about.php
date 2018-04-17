@@ -10,7 +10,7 @@ $this->registerMetaTag([
   'name' => 'description',
   'content' => Html::encode("The Faster Scale App is a totally free, online version of Michael Dye's relapse awareness scale. Look here for recent updates.")
 ]);
-$this->registerJsFile('/js/site/about.js', ['depends' => [\site\assets\AppAsset::className()]]);
+$this->registerJsFile('/js/site/about.js', ['depends' => [\site\assets\AppAsset::class]]);
 ?>
 <div class="site-about">
     <h1>What is the Faster Scale App?</h1>

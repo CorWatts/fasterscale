@@ -9,7 +9,7 @@ $this->registerMetaTag([
   'name' => 'description',
   'content' => 'A totally free, online version of the Faster Scale. Increase your self-awareness and practice emotional mindfulness by signing up or logging in today.'
 ]);
-$this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset::className()]]);
+$this->registerJsFile('/js/site/index.js', ['depends' => [\site\assets\AppAsset::class]]);
 ?>
 <div class="site-index">
   <div class="jumbotron">
