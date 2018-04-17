@@ -137,7 +137,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   /**
    * @date date string in yyyy-mm-dd format
-   * @return int score
+   * @return array score
    */
   public function calculateScoreByUTCRange($start, $end) {
     $behaviors = $this->getBehaviorsByDate($start, $end);
