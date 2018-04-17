@@ -19,7 +19,7 @@ class ProfileController extends Controller {
   public function behaviors() {
     return [
       'access' => [
-        'class' => AccessControl::className(),
+        'class' => AccessControl::class,
         'rules' => [
           [
             'actions' => ['index', 'error', 'delete-account', 'change-password', 'export'],
@@ -29,7 +29,7 @@ class ProfileController extends Controller {
         ],
       ],
       'verbs' => [
-        'class' => VerbFilter::className(),
+        'class' => VerbFilter::class,
         'actions' => [
           'deleteAccount' => ['post'],
           'changePassword' => ['post'],

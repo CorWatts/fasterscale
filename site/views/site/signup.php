@@ -15,7 +15,7 @@ $this->registerMetaTag([
   'name' => 'description',
   'content' => 'Sign up here for the Faster Scale App, the online version of the popular emotional mindfulness questionnaire. Sign up is easy and always completely free!'
 ]);
-$this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset::className()]]);
+$this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset::class]]);
 ?>
 <div class="site-signup">
   <h1>Signup</h1>
@@ -30,7 +30,7 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
         <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>'])->input('email') ?>
         <?= $form->field($model, 'password', ['inputTemplate' => '<div class="input-group">{input}<span class="input-group-btn"><button id="password-toggle" class="btn btn-default" type="button">Show</button></span></div>'])->passwordInput() ?>
         <?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
-        <?= $form->field($model, 'captcha')->widget(Captcha::className(), [
+        <?= $form->field($model, 'captcha')->widget(Captcha::class, [
           'template' => '<div class="row"><div class="col-md-5">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
         ]) ?>
         <?= $form->field($model, 'send_email')->checkbox(['disabled'=>true]) ?>

@@ -54,7 +54,7 @@ class FixtureHelper extends Module
     public function globalFixtures()
     {
         return [
-            InitDbFixture::className(),
+            InitDbFixture::class,
         ];
     }
 
@@ -65,7 +65,7 @@ class FixtureHelper extends Module
     {
         return [
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => '@tests/codeception/common/fixtures/data/init_login.php',
             ],
         ];

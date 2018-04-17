@@ -72,7 +72,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
    */
   public function getUser()
   {
-    return $this->hasOne(\common\models\User::className(), ['id' => 'user_id']);
+    return $this->hasOne(\common\models\User::class, ['id' => 'user_id']);
   }
 
   public function getPastCheckinDates()

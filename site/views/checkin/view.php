@@ -14,7 +14,7 @@ use common\models\Question;
 
 $this->title = "The Faster Scale App | Previous Check-ins";
 $time = Yii::$container->get('common\interfaces\TimeInterface');
-$this->registerJsFile('/js/checkin/view.js', ['depends' => [\site\assets\AppAsset::className()]]);
+$this->registerJsFile('/js/checkin/view.js', ['depends' => [\site\assets\AppAsset::class]]);
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value) {
   $checked_val = ($checked) ? "btn-primary" : "";

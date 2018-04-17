@@ -83,7 +83,7 @@ class Question extends ActiveRecord implements QuestionInterface
    */
   public function getUser()
   {
-    return $this->hasOne(\common\models\User::className(), ['id' => 'user_id']);
+    return $this->hasOne(\common\models\User::class, ['id' => 'user_id']);
   }
 
   /**
@@ -91,6 +91,6 @@ class Question extends ActiveRecord implements QuestionInterface
    */
   public function getUserBehavior()
   {
-    return $this->hasOne(\common\models\UserBehavior::className(), ['id' => 'user_behavior_id']);
+    return $this->hasOne(\common\models\UserBehavior::class, ['id' => 'user_behavior_id']);
   }
 }

@@ -22,7 +22,7 @@ class CheckinController extends \yii\web\Controller
   {
     return [
       'access' => [
-        'class' => AccessControl::className(),
+        'class' => AccessControl::class,
         'only' => ['index', 'view', 'questions', 'report'],
         'rules' => [
           [
