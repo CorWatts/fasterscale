@@ -24,6 +24,37 @@ class Category extends \yii\base\BaseObject
     [ "id" => 7, "weight" => 10, "name" => "Relapse/Moral Failure"],
   ];
 
+  public static $colors = [
+    1 => [
+      "color" => "#008000",
+      "highlight" => "#199919"
+    ],
+    2 => [
+      "color" => "#4CA100",
+      "highlight" => "#61B219"
+    ],
+    3 => [
+      "color" => "#98C300",
+      "highlight" => "#AACC33"
+    ],
+    4 => [
+      "color" => "#E5E500",
+      "highlight" => "#E5E533"
+    ],
+    5 => [
+      "color" => "#E59900",
+      "highlight" => "#E5AA33"
+    ],
+    6 => [
+      "color" => "#E54B00",
+      "highlight" => "#E56D33"
+    ],
+    7 => [
+      "color" => "#CC0000",
+      "highlight" => "#CC3333"
+    ]
+  ];
+
   /**
    * @inheritdoc
    */
