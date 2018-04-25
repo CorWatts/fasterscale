@@ -232,16 +232,25 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
       ]);
 
     expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getBehaviorsByCategory()));
-    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals(
-      [[
+    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([
+      1 => [
         'name' => 'Restoration',
         'count' => 5,
-      ], [
+        'color' => '#008000',
+        'highlight' => '#199919'
+      ],
+      2 => [
         'name' => 'Forgetting Priorities',
         'count' => 4,
-      ], [
+        'color' => '#4CA100',
+        'highlight' => '#61B219'
+      ],
+      4 => [
         'name' => 'Speeding Up',
         'count' => 3,
-      ]], $this->user_behavior->getBehaviorsByCategory()));
+        'color' => '#E5E500',
+        'highlight' => '#E5E533'
+      ]
+    ], $this->user_behavior->getBehaviorsByCategory()));
   }
 }

@@ -1,7 +1,4 @@
 <?php
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\web\JsExpression;
 /**
  * @var yii\web\View $this
  */
@@ -9,62 +6,21 @@ use yii\web\JsExpression;
 $this->title = "The Faster Scale App | Report";
 $this->registerJsFile('/js/checkin/report.js', ['depends' => [\site\assets\AppAsset::class]]);
 
-$pie_colors = [
-  [
-    "color" => "#277553",
-    "highlight" => "#499272"
-  ],
-  [
-    "color" => "#29506D",
-    "highlight" => "#496D89"
-  ],
-  [
-    "color" => "#AA5939",
-    "highlight" => "#D4886A"
-  ],
-  [
-    "color" => "#AA7939",
-    "highlight" => "#D4A76A"
-  ],
-  [
-    "color" => "#277553",
-    "highlight" => "#499272"
-  ],
-  [
-    "color" => "#29506D",
-    "highlight" => "#496D89"
-  ],
-  [
-    "color" => "#AA5939",
-    "highlight" => "#D4886A"
-  ]
-];
-
-$tmp_pie = [];
-foreach($answer_pie as $key => $category) {
-  $json = [
-    "value" => (int)$category['count'],
-    "color" => $pie_colors[$key]["color"],
-    "highlight" => $pie_colors[$key]["highlight"],
-    "label" => $category['name']
-  ];
-  $tmp_pie[] = $json;
-}
-
-$labels     = array_column($tmp_pie, "label");
-$values     = array_column($tmp_pie, "value");
-$highlights = array_column($tmp_pie, "highlight");
-$colors     = array_column($tmp_pie, "color");
+$values     = array_map('intval', array_column($answer_pie, "count"));
+$labels     = array_column($answer_pie, "name");
+$colors     = array_column($answer_pie, "color");
+$highlights = array_column($answer_pie, "highlight");
 
 $pie_data = [
-  "labels" => $labels,
-  "datasets" => [
-    ["data" => $values, "backgroundColor" => $colors, "hoverBackgroundColor" => $highlights]
-  ]
+  "labels"   => $labels,
+  "datasets" => [[
+      "data"                 => $values,
+      "backgroundColor"      => $colors,
+      "hoverBackgroundColor" => $highlights
+  ]]
 ];
 ?>
 <h1>Check-in Report</h1>
-
 
 <div class='row'>
     <div class='col-md-4'>
@@ -86,7 +42,6 @@ print "<tr>".
   "<td>{$row['behavior']['name']}</td>".
   "<td>{$row['behavior']['category']['name']}</td>".
   "</tr>";
-
 }
 ?>
         </table>

@@ -217,18 +217,23 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
    * Returns a list of categories and the number of selected behaviors in each category
    */
   public function getBehaviorsByCategory() {
-    return array_values(array_reduce(self::decorateWithCategory($this->getBehaviorsWithCounts()), function($acc, $row) {
+    $colors = \common\models\Category::$colors;
+    $arr = array_reduce(self::decorateWithCategory($this->getBehaviorsWithCounts()), function($acc, $row) use ($colors) {
       $cat_id = $row['behavior']['category']['id'];
       if(array_key_exists($cat_id, $acc)) {
         $acc[$cat_id]['count'] += $row['count'];
       } else {
         $acc[$cat_id] = [
-          'name' => $row['behavior']['category']['name'],
-          'count' => $row['count'],
+          'name'      => $row['behavior']['category']['name'],
+          'count'     => $row['count'],
+          'color'     => $colors[$cat_id]['color'],
+          'highlight' => $colors[$cat_id]['highlight'],
         ];
       }
       return $acc;
-    }, []));
+    }, []);
+    ksort($arr);
+    return $arr;
   }
 
   public static function decorate(Array $uo, $with_category = false) {
