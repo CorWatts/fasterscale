@@ -111,14 +111,18 @@ class CheckinController extends \yii\web\Controller
     ]);	
   }
 
-  public function actionView($date = null)
+  public function actionView(string $date = null)
   {
     $time = Yii::$container->get('common\interfaces\TimeInterface');
     if(is_null($date)) {
       $date = $time->getLocalDate();
+    } else if($dt = $time->parse($date)) {
+      $date = $dt->format('Y-m-d');
+    } else {
+      $date = $time->getLocalDate();
     }
-
     list($start, $end) = $time->getUTCBookends($date);
+
     $user          = Yii::$container->get('common\interfaces\UserInterface');
     $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
     $category      = Yii::$container->get('common\interfaces\CategoryInterface');
@@ -135,6 +139,7 @@ class CheckinController extends \yii\web\Controller
       'score'              => $user_behavior->getDailyScore($date),
       'past_checkin_dates' => $user_behavior->getPastCheckinDates(),
       'questions'          => $user->getUserQuestions($date),
+      'isToday'            => $time->getLocalDate() === $date,
     ]);
   }
 

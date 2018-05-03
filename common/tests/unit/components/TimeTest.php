@@ -19,15 +19,6 @@ class TimeTest extends \Codeception\Test\Unit
 
     public function setUp()
     {
-      //Yii::configure(Yii::$app, [
-      //  'components' => [
-      //    'user' => [
-      //      'class' => 'yii\web\User',
-      //      'identityClass' => '\site\tests\_support\MockUser',
-      //    ]
-      //  ]
-      //]);
-
       $this->container = new \yii\di\Container;
       $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
       $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
@@ -36,7 +27,6 @@ class TimeTest extends \Codeception\Test\Unit
       $this->container->set('common\interfaces\TimeInterface', function () {
         return new \common\components\Time('America/Los_Angeles');
       });
-      //$this->container->set('common\interfaces\TimeInterface', '\common\components\Time');
 
       $this->time = $this->container->get('common\interfaces\TimeInterface');
 
@@ -125,5 +115,68 @@ class TimeTest extends \Codeception\Test\Unit
         $time = $this->container->get('common\interfaces\TimeInterface');
         expect('getUTCBookends should return UTC bookend times from UTC tz', $this->assertEquals($time->getUTCBookends('2016-05-30'), ['2016-05-30 00:00:00', '2016-05-30 23:59:59']));
       });
+    }
+
+    public function testParse() {
+      $good = new DateTime('2016-05-05', new DateTimeZone('America/Los_Angeles'));
+      expect('parse should accept a String time and verify it is in YYYY-MM-DD format, then return it as a \DateTime', $this->assertEquals($this->time->parse('2016-05-05'), $good));
+
+      $observer = $this
+        ->getMockBuilder("common\components\Time")
+        ->setConstructorArgs(['America/Los_Angeles'])
+        ->setMethods(['inBounds'])
+        ->getMock();
+      $observer->expects($this->once())
+        ->method('inBounds')
+        ->with($this->equalTo($good))
+        ->willReturn(true);
+      expect('parse should return a \DateTime object if the date is in bounds', $this->assertInstanceOf(DateTime::class, $observer->parse('2016-05-05')));
+
+      $observer2 = $this
+        ->getMockBuilder("common\components\Time")
+        ->setConstructorArgs(['America/Los_Angeles'])
+        ->setMethods(['inBounds'])
+        ->getMock();
+      $observer2->expects($this->once())
+        ->method('inBounds')
+        ->with($this->equalTo($good))
+        ->willReturn(false);
+      expect('parse should return false if the date is not in bounds', $this->assertFalse($observer2->parse('2016-05-05')));
+
+      $this->specify('should all return false', function() {
+        expect('parse should return false if the date itself is empty', $this->assertFalse($this->time->parse('')));
+        expect('parse should return false if the date itself is unacceptable or is in an unacceptable format', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
+        expect('parse should return false if the date is not in bounds', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
+        expect('parse should return false if the date itself is nonsensical', $this->assertFalse($this->time->parse('2018-22-44')));
+      });
+
+      $this->specify('should still work fine with other timezones', function() {
+        $this->time->timezone = 'UTC';
+        $good = new DateTime('2016-05-05', new DateTimeZone('UTC'));
+        expect('parse should accept a String time and verify it is in YYYY-MM-DD format, then return it as a \DateTime', $this->assertEquals($this->time->parse('2016-05-05'), $good));
+
+        expect('parse should return false if the date itself is empty', $this->assertFalse($this->time->parse('')));
+        expect('parse should return false if the date itself is unacceptable or is in an unacceptable format', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
+        expect('parse should return false if the date is not in bounds', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
+        expect('parse should return false if the date itself is nonsensical', $this->assertFalse($this->time->parse('2018-22-44')));
+      });
+
+    }
+
+    public function testinBounds() {
+    
+      $dt = new DateTime('2016-05-05');
+      expect('a sensible date should be in bounds', $this->assertTrue($this->time->inBounds($dt)));
+
+      $early = '0111-10-01';
+      $dt = new DateTime($early);
+      $this->assertTrue($this->time::EARLIEST_DATE > $early);
+      expect('a too-early date should be not in bounds', $this->assertFalse($this->time->inBounds($dt)));
+
+      $tomorrow = new DateTime("now + 1 day", new DateTimeZone('America/Los_Angeles'));
+      expect('tomorrow\'s date should be not in bounds', $this->assertFalse($this->time->inBounds($tomorrow)));
+    
+      $dt = new DateTime('2016-05-05 05:14:22');
+      expect('different formats of sensible dates should be in bounds', $this->assertTrue($this->time->inBounds($dt)));
     }
 }

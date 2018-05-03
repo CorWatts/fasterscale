@@ -20,21 +20,26 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value) {
   $checked_val = ($checked) ? "btn-primary" : "";
   return "<button class='btn btn-default $checked_val' data-toggle='button' disabled='disabled' name='$name' value='$value'>$label</button>";
 }
+
+$minus_week = $time->alterLocalDate($actual_date, "-1 week");
+$minus_day  = $time->alterLocalDate($actual_date, "-1 day");
+$plus_day   = $time->alterLocalDate($actual_date, "+1 day");
+$plus_week  = $time->alterLocalDate($actual_date, "+1 week");
 ?>
 <div class="checkin-view">
   <h1>View Previous Check-ins</h1>
   <div id='past-checkin-nav' role='toolbar' class='btn-toolbar'>
     <div class='form-inline'>
       <div class='btn-group' role='group'>
-        <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "-1 week")]); ?>" aria-label="Previous Week">&lt;&lt;</a> 
-        <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "-1 day")]); ?>" aria-label="Previous Day">&lt;</a> 
+        <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$minus_week]); ?>" title="<?=Html::encode($minus_week)?>" aria-label="Previous Week">&lt;&lt;</a> 
+        <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$minus_day]); ?>" title="<?=Html::encode($minus_day)?>" aria-label="Previous Day">&lt;</a> 
       </div>
       <div class='btn-group datepicker-container' role='group'>
         <input type="text" id="datepicker" class='form-control btn btn-default' value="<?=$actual_date?>" data-value="<?=$actual_date?>" readOnly="true" />
       </div>
       <div class='btn-group' role='group'>
-        <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "+1 day")]); ?>" aria-label="Next Day">&gt;</a> 
-        <a class="btn btn-default" href="<?= Url::toRoute(['checkin/view', 'date'=>$time->alterLocalDate($actual_date, "+1 week")]); ?>" aria-label="Next Week">&gt;&gt;</a> 
+        <a class="btn btn-default<?= $isToday ? " disabled" : "" ?>" href="<?= Url::toRoute(['checkin/view', 'date'=>$plus_day]); ?>" title="<?=Html::encode($plus_day)?>" aria-label="Next Day">&gt;</a> 
+        <a class="btn btn-default<?= $isToday ? " disabled" : "" ?>" href="<?= Url::toRoute(['checkin/view', 'date'=>$plus_week]); ?>" title="<?=Html::encode($plus_week)?>" aria-label="Next Week">&gt;&gt;</a> 
       </div>
     </div>
   </div>
