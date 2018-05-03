@@ -121,6 +121,7 @@ class CheckinController extends \yii\web\Controller
     } else {
       $date = $time->getLocalDate();
     }
+    $dt = $time->parse($date);
     list($start, $end) = $time->getUTCBookends($date);
 
     $user          = Yii::$container->get(\common\interfaces\UserInterface::class);
@@ -138,6 +139,7 @@ class CheckinController extends \yii\web\Controller
       'behaviorsList'      => AH::index($behavior::$behaviors, 'name', "category_id"),
       'score'              => $user_behavior->getDailyScore($date),
       'past_checkin_dates' => $user_behavior->getPastCheckinDates(),
+      'answer_pie'         => $user_behavior->getBehaviorsByCategory($dt),
       'questions'          => $user->getUserQuestions($date),
       'isToday'            => $time->getLocalDate() === $date,
     ]);

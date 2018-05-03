@@ -1,8 +1,26 @@
-(function($) {
+(function($, Chart) {
   $(document).ready(function() {
-    var past_checkin_dates = $.parseJSON($("#past-checkin-dates").html()).map(function(date) {
-      return new Date(date);
-    });
+    var past_checkin_dates = JSON.parse(document.getElementById('past-checkin-dates').innerHTML)
+      .map(function(date) {
+      return new Date(date)
+    })
+
+
+    var pie_data = JSON.parse(document.getElementById('pie-chart-data').innerHTML)
+    if(pie_data.labels.length) {
+      Chart.defaults.global.responsive = true
+      Chart.defaults.global.scaleBeginAtZero = true
+      var pie_ctx = document.getElementById('category-pie-chart').getContext('2d')
+      var pieChart = new Chart(pie_ctx, {
+        type: 'pie',
+        data: pie_data,
+        options: {
+          legend: {
+            display: false
+          }
+        }
+      })
+    }
 
     $( '#datepicker' ).click(function() {
       $(this).pickadate({
@@ -38,7 +56,7 @@
         onSet: function(obj) {
           // we only want to redirect them if they've selected a date
           if(obj.hasOwnProperty('select')) {
-            location.href = "/checkin/view/"+this.get();
+            location.href = "/checkin/view/"+this.get()
           }
         },
 
@@ -47,7 +65,7 @@
           true // disable all except the following
         ].concat(past_checkin_dates, [new Date()])
 
-      });
-    });
-  });
-})(jQuery)
+      })
+    })
+  })
+})(jQuery, Chart)

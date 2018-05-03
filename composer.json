@@ -16,7 +16,7 @@
     "bower-asset/punycode": "@stable",
     "moment/moment": "dev-master",
     "spacedealer/yii2-loggly": ">=0.2.0",
-    "bower-asset/chartjs": "~2.5",
+    "bower-asset/chartjs": "~2.7.2",
     "amenadiel/jpgraph": "~3.6.7",
     "corwatts/yii2-markdown-files": "*",
     "bower-asset/pickadate": "^3.5"
