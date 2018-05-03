@@ -9,7 +9,7 @@
 ## Getting Started
 These instructions will help you get a local installation set up for development and testing purposes. See the deployment instructions for how to deploy this to a live system.
 ### Prerequisites
-* PHP >= 7.0
+* PHP >= 7.1
 * Composer
 * A SASS compiler. We recommend the npm project ```node-sass```. Once npm is installed on your machine  type ```npm i node-sass -g```.
 * PostgreSQL 9.1 or later (Theoretically any type of SQL compatible with Yii2's ActiveRecord might work, but we've only tested this on PostgreSQL)

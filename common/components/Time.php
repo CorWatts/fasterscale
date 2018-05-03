@@ -7,11 +7,54 @@ use \DateTimeZone;
 
 class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterface {
 
+  public const EARLIEST_DATE = '2014-01-01';
+
   public $timezone;
 
   public function __construct(String $timezone, $config = []) {
     $this->timezone = $timezone;
     parent::__construct($config);
+  }
+
+  /*
+   * Parses the supplied string into a `\DateTime` object of the
+   * given `$format`. It assumes the supplied string is in the
+   * timezone specified in $this->timezone.
+   *
+   * @param string $time the questionable time to parse
+   * @param string $format the format `$time` is expected to be in
+   * @return \DateTime the parsed time or false
+   */
+  public function parse(string $time, string $format = 'Y-m-d') {
+    $dt = DateTime::createFromFormat($format, $time, new DateTimeZone($this->timezone));
+    if($dt) {
+      // for some reason, using createFromFromat adds in the time. The regular DateTime constructor _does not_ do this. We manually zero out the time here to make the DateTime objects match.
+      $dt->setTime(0, 0, 0);
+      $formatted = $dt->format($format);
+      if($formatted === $time && $this->inBounds($dt)) {
+        return $dt;
+      }
+    }
+    return false;
+  }
+
+  /*
+   * Checks if the given `\DateTime` is within acceptable date bounds.
+   * It does no good to have the date be far in the past or in the future.
+   *
+   * @param \DateTime $dt
+   * @return boolean
+   */
+  public function inBounds(DateTime $dt) {
+    $first = strtotime((new DateTime(self::EARLIEST_DATE))->format('Y-m-d'));
+    $test  = strtotime($dt->format('Y-m-d'));
+    $now   = strtotime($this->getLocalDate());
+
+    if($first <= $test && $test <= $now) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public function convertLocalToUTC($local, $inc_time = true) {
