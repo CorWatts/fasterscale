@@ -209,16 +209,17 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
    * Returns a list of the most-selected behaviors
    * @param integer $limit the desired number of behaviors
    */
-  public function getTopBehaviors($limit = 5) {
+  public function getTopBehaviors(int $limit = 5) {
     return self::decorateWithCategory($this->getBehaviorsWithCounts($limit));
   }
 
   /**
    * Returns a list of categories and the number of selected behaviors in each category
    */
-  public function getBehaviorsByCategory() {
-    $colors = \common\models\Category::$colors;
-    $arr = array_reduce(self::decorateWithCategory($this->getBehaviorsWithCounts()), function($acc, $row) use ($colors) {
+  public function getBehaviorsByCategory(\DateTime $date = null) {
+    $behaviors = self::decorateWithCategory($this->getBehaviorsWithCounts($date));
+
+    $arr = array_reduce($behaviors, function($acc, $row) {
       $cat_id = $row['behavior']['category']['id'];
       if(array_key_exists($cat_id, $acc)) {
         $acc[$cat_id]['count'] += $row['count'];
@@ -226,8 +227,8 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
         $acc[$cat_id] = [
           'name'      => $row['behavior']['category']['name'],
           'count'     => $row['count'],
-          'color'     => $colors[$cat_id]['color'],
-          'highlight' => $colors[$cat_id]['highlight'],
+          'color'     => \common\models\Category::$colors[$cat_id]['color'],
+          'highlight' => \common\models\Category::$colors[$cat_id]['highlight'],
         ];
       }
       return $acc;
@@ -260,7 +261,12 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
       ->groupBy('behavior_id, user_id')
       ->having('user_id = :user_id')
       ->orderBy('count DESC');
-    if($limit) {
+
+    if($limit instanceof \DateTime) {
+      list($start, $end) = $this->time->getUTCBookends($limit->format('Y-m-d'));
+      $query->params += [':start_date' => $start, ':end_date' => $end];
+      $query->where('user_id=:user_id AND date > :start_date AND date <= :end_date');
+    } else if(is_int($limit)) {
       $query->limit($limit);
     }
 

@@ -52,6 +52,10 @@ body {
   .control-label {
     font-size: 16px;
   }
+  .form-group {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
 }
 
 .footer, .wrap:after {
@@ -170,6 +174,12 @@ body {
         border-color: #adadad;
       }
     }
+  }
+  #category-pie-chart {
+    margin-top: 30px;
+  }
+  h3 {
+    margin-left: -15px;
   }
 }
 
