@@ -13,14 +13,14 @@ return [
   'controllerNamespace' => 'site\controllers',
   'components' => [
     'user' => [
-      'identityClass' => 'common\models\User',
+      'identityClass' => \common\models\User::class,
       'enableAutoLogin' => true,
     ],
     'log' => [
       'traceLevel' => YII_DEBUG ? 3 : 0,
       'targets' => [
         [
-          'class' => 'yii\log\FileTarget',
+          'class' => yii\log\FileTarget::class,
           'levels' => ['error', 'warning'],
         ],
       ],
@@ -56,14 +56,14 @@ return [
       ],
       'linkAssets' => true,
       'converter' => [
-        'class' => 'yii\web\AssetConverter',
+        'class' => yii\web\AssetConverter::class,
         'commands' => [
           'scss' => ['css', 'node-sass --include-path "../../vendor/bower-asset/pickadate/lib/themes" --include-path "../../vendor/bower-asset/bootstrap-sass/assets/stylesheets" --output-style compressed {from} > {to}'],
         ],
       ],
     ],
     'view' => [
-      'class' => 'site\classes\View'
+      'class' => site\classes\View::class
     ]
   ],
   'params' => $params,

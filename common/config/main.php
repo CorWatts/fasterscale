@@ -5,11 +5,11 @@ return [
   'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
   'container' => [
     'definitions' => [
-      'common\interfaces\UserInterface' => '\common\models\User',
-      'common\interfaces\UserBehaviorInterface' => '\common\models\UserBehavior',
-      'common\interfaces\QuestionInterface' => '\common\models\Question',
-      'common\interfaces\BehaviorInterface' => '\common\models\Behavior',
-      'common\interfaces\CategoryInterface' => '\common\models\Category',
+      'common\interfaces\UserInterface' => \common\models\User::class,
+      'common\interfaces\UserBehaviorInterface' => \common\models\UserBehavior::class,
+      'common\interfaces\QuestionInterface' => \common\models\Question::class,
+      'common\interfaces\BehaviorInterface' => \common\models\Behavior::class,
+      'common\interfaces\CategoryInterface' => \common\models\Category::class,
       'common\interfaces\TimeInterface' => function () {
         if(Yii::$app->user->getIsGuest()) {
           return new \common\components\Time('UTC');
@@ -28,14 +28,13 @@ return [
   ],
   'components' => [
     'cache' => [
-      'class' => 'yii\caching\FileCache', // OR USE MEMCACHE OR SOMETHING
+      'class' => yii\caching\FileCache::class, // OR USE MEMCACHE OR SOMETHING
     ],
     'session' => [
-      'class'=> 'yii\web\CacheSession',
+      'class'=> yii\web\CacheSession::class,
     ],
     'mailer' => [
-      'class' => 'yii\swiftmailer\Mailer',
-      'messageClass' => 'yii\swiftmailer\Message',
+      'class' => yii\swiftmailer\Mailer::class,
       'viewPath' => '@common/mail',
       'useFileTransport' => true,
     ],

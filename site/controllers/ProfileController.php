@@ -54,10 +54,10 @@ class ProfileController extends Controller {
   }
 
   public function actionIndex() {
-    $editProfileForm    = Yii::$container->get('\site\models\EditProfileForm', [Yii::$app->user->identity]);
-    $changePasswordForm = Yii::$container->get('\site\models\ChangePasswordForm', [Yii::$app->user->identity]);
-    $deleteAccountForm  = Yii::$container->get('\site\models\DeleteAccountForm', [Yii::$app->user->identity]);
-    $graph              = Yii::$container->get('\common\components\Graph', [Yii::$app->user->identity]);
+    $editProfileForm    = Yii::$container->get(\site\models\EditProfileForm::class, [Yii::$app->user->identity]);
+    $changePasswordForm = Yii::$container->get(\site\models\ChangePasswordForm::class, [Yii::$app->user->identity]);
+    $deleteAccountForm  = Yii::$container->get(\site\models\DeleteAccountForm::class, [Yii::$app->user->identity]);
+    $graph              = Yii::$container->get(\common\components\Graph::class, [Yii::$app->user->identity]);
 
     if (Yii::$app->request->isAjax && $editProfileForm->load($_POST)) {
       Yii::$app->response->format = 'json';
@@ -82,7 +82,7 @@ class ProfileController extends Controller {
 
   public function actionDeleteAccount()
   {
-    $model = Yii::$container->get('\site\models\DeleteAccountForm', [Yii::$app->user->identity]);
+    $model = Yii::$container->get(\site\models\DeleteAccountForm::class, [Yii::$app->user->identity]);
 
     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
       if($model->deleteAccount()) {
@@ -97,7 +97,7 @@ class ProfileController extends Controller {
 
   public function actionChangePassword()
   {
-    $model = Yii::$container->get('\site\models\ChangePasswordForm', [Yii::$app->user->identity]);
+    $model = Yii::$container->get(\site\models\ChangePasswordForm::class, [Yii::$app->user->identity]);
 
     if ($model->load(Yii::$app->request->post())) {
       if($model->validate() && $model->changePassword()) {
@@ -128,7 +128,7 @@ class ProfileController extends Controller {
     ];
 
     fputcsv($fp, $header);
-    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
+    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
     while($row = $reader->read()) {
       $row = $user_behavior::decorateWithCategory([$row]);
       $row = Yii::$app->user->identity->cleanExportData($row);
