@@ -77,7 +77,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
   {
     return [
       'timestamp' => [
-        'class' => 'yii\behaviors\TimestampBehavior',
+        'class' => yii\behaviors\TimestampBehavior::class,
         'attributes' => [
           ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
           ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
