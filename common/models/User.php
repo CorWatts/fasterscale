@@ -326,7 +326,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
     $scores_of_month   = $this->user_behavior->calculateScoresOfLastMonth();
     $graph = Yii::$container
-      ->get('common\components\Graph')
+      ->get(\common\components\Graph::class)
       ->create($scores_of_month);
 
     $score          = $this->user_behavior->calculateScoreByUTCRange($start, $end);

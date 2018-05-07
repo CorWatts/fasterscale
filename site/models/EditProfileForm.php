@@ -86,7 +86,7 @@ class EditProfileForm extends Model
       $user  = $this->user;
 
       $graph = Yii::$container
-        ->get('common\components\Graph', [$this->user]);
+        ->get(\common\components\Graph::class, [$this->user]);
 
       if($this->email)
         $user->email = $this->email;
@@ -96,7 +96,7 @@ class EditProfileForm extends Model
         $user->expose_graph = true;
 
         // generate scores graph image
-        $scores_last_month = (Yii::$container->get('common\interfaces\UserBehaviorInterface'))->calculateScoresOfLastMonth();
+        $scores_last_month = (Yii::$container->get(\common\interfaces\UserBehaviorInterface::class))->calculateScoresOfLastMonth();
         // if they haven't done a check-in in the last month this
         // will explode because $scores_last_month is an empty
         // array

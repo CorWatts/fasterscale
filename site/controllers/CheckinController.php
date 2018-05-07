@@ -35,7 +35,7 @@ class CheckinController extends \yii\web\Controller
     ];
   }
   public function actionIndex() {
-    $form = Yii::$container->get('\site\models\CheckinForm');
+    $form = Yii::$container->get(\site\models\CheckinForm::class);
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
       $form->compiled_behaviors = $form->compileBehaviors();
 
@@ -48,25 +48,25 @@ class CheckinController extends \yii\web\Controller
       $form->save();
 
       // delete cached scores
-      $time = Yii::$container->get('common\interfaces\TimeInterface');
+      $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
       $key = "scores_of_last_month_".Yii::$app->user->id."_".$time->getLocalDate();
       Yii::$app->cache->delete($key);
 
       // if the user has publicised their score graph, create the image
       if(Yii::$app->user->identity->expose_graph) {
-        $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
+        $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
         $scores_last_month = $user_behavior->calculateScoresOfLastMonth();
         if($scores_last_month) {
           Yii::$container
-            ->get('common\components\Graph')
+            ->get(\common\components\Graph::class)
             ->create($scores_last_month, true);
         }
       }
 
       return $this->redirect(['questions']);
     } else {
-      $category = Yii::$container->get('common\interfaces\CategoryInterface');
-      $behavior = Yii::$container->get('common\interfaces\BehaviorInterface');
+      $category = Yii::$container->get(\common\interfaces\CategoryInterface::class);
+      $behavior = Yii::$container->get(\common\interfaces\BehaviorInterface::class);
       return $this->render('index', [
         'categories'    => $category::$categories,
         'model'         => $form,
@@ -77,15 +77,15 @@ class CheckinController extends \yii\web\Controller
 
   public function actionQuestions()
   {
-    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
-    $date = Yii::$container->get('common\interfaces\TimeInterface')->getLocalDate();
+    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
+    $date = Yii::$container->get(\common\interfaces\TimeInterface::class)->getLocalDate();
 
     $user_behaviors = $user_behavior->getUserBehaviorsWithCategory($date);
     if(count($user_behaviors) === 0) {
       return $this->redirect(['view']);
     }
 
-    $form = Yii::$container->get('\site\models\QuestionForm');
+    $form = Yii::$container->get(\site\models\QuestionForm::class);
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
       // we only store one data set per day so clear out any previously saved ones
       $form->deleteToday();
@@ -113,7 +113,7 @@ class CheckinController extends \yii\web\Controller
 
   public function actionView(string $date = null)
   {
-    $time = Yii::$container->get('common\interfaces\TimeInterface');
+    $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
     if(is_null($date)) {
       $date = $time->getLocalDate();
     } else if($dt = $time->parse($date)) {
@@ -123,12 +123,12 @@ class CheckinController extends \yii\web\Controller
     }
     list($start, $end) = $time->getUTCBookends($date);
 
-    $user          = Yii::$container->get('common\interfaces\UserInterface');
-    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
-    $category      = Yii::$container->get('common\interfaces\CategoryInterface');
-    $behavior      = Yii::$container->get('common\interfaces\BehaviorInterface');
+    $user          = Yii::$container->get(\common\interfaces\UserInterface::class);
+    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
+    $category      = Yii::$container->get(\common\interfaces\CategoryInterface::class);
+    $behavior      = Yii::$container->get(\common\interfaces\BehaviorInterface::class);
 
-    $form = Yii::$container->get('\site\models\CheckinForm');
+    $form = Yii::$container->get(\site\models\CheckinForm::class);
     $form->setBehaviors($user->getUserBehaviors($date));
 
     return $this->render('view', [
@@ -144,7 +144,7 @@ class CheckinController extends \yii\web\Controller
   }
 
   public function actionReport() {
-    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
+    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
     $user_rows  = $user_behavior->getTopBehaviors();
     $answer_pie = $user_behavior->getBehaviorsByCategory();
     $scores     = $user_behavior->calculateScoresOfLastMonth();

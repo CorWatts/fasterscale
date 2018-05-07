@@ -70,7 +70,7 @@ class SiteController extends Controller
 
   public function actionIndex()
   {
-    $time = Yii::$container->get('common\interfaces\TimeInterface'); 
+    $time = Yii::$container->get(\common\interfaces\TimeInterface::class); 
     $key = "index_blog_".$time->getLocalDate('UTC');
     $posts = Yii::$app->cache->get($key);
     if($posts === false) {
@@ -86,7 +86,7 @@ class SiteController extends Controller
 
   public function actionLogin()
   {
-    $model = Yii::$container->get('\common\models\LoginForm');
+    $model = Yii::$container->get(\common\models\LoginForm::class);
     if ($model->load(Yii::$app->request->post()) && $model->login()) {
       return $this->goBack();
     } else {
@@ -137,7 +137,7 @@ class SiteController extends Controller
 
   public function actionSignup()
   {
-    $model = Yii::$container->get('\site\models\SignupForm');
+    $model = Yii::$container->get(\site\models\SignupForm::class);
     if($model->load(Yii::$app->request->post()) && $model->validate()) {
       $model->signup();
       Yii::$app->getSession()->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
@@ -151,7 +151,7 @@ class SiteController extends Controller
 
   public function actionRequestPasswordReset()
   {
-    $model = Yii::$container->get('\site\models\PasswordResetRequestForm');
+    $model = Yii::$container->get(\site\models\PasswordResetRequestForm::class);
     if($model->load(Yii::$app->request->post()) && $model->validate()) {
       if(!$model->sendEmail()) {
         $ip = Yii::$app->getRequest()->getUserIP() ?: "UNKNOWN";
@@ -170,7 +170,7 @@ class SiteController extends Controller
   public function actionResetPassword($token)
   {
     try {
-      $model = Yii::$container->get('\site\models\ResetPasswordForm', [$token]);
+      $model = Yii::$container->get(\site\models\ResetPasswordForm::class, [$token]);
     } catch (InvalidParamException $e) {
       throw new BadRequestHttpException($e->getMessage());
     }
@@ -193,7 +193,7 @@ class SiteController extends Controller
       throw new BadRequestHttpException('Email verification token cannot be blank.');
     }
 
-    $user = Yii::$container->get('common\interfaces\UserInterface')->findByVerifyEmailToken($token);
+    $user = Yii::$container->get(\common\interfaces\UserInterface::class)->findByVerifyEmailToken($token);
     if (!$user) {
       throw new BadRequestHttpException("Wrong or expired email verification token. If you aren't sure why this error occurs perhaps you've already verified your account. Please try logging in.");
     }
@@ -237,7 +237,7 @@ class SiteController extends Controller
     ];
 
     fputcsv($fp, $header);
-    $user_behavior = Yii::$container->get('common\interfaces\UserBehaviorInterface');
+    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
     while($row = $reader->read()) {
       $row = $user_behavior::decorateWithCategory([$row]);
       $row = Yii::$app->user->identity->cleanExportData($row);
