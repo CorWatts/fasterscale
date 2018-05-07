@@ -2,7 +2,7 @@
   "name": "corwatts/fasterscale",
   "description": "An online version of the Faster Scale -- a relapse awareness tool",
   "license": "BSD-3-Clause",
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
     "php": ">=7.0",
@@ -15,11 +15,10 @@
     "bower-asset/jquery.inputmask": "@stable",
     "bower-asset/punycode": "@stable",
     "moment/moment": "dev-master",
-    "spacedealer/yii2-loggly": ">=0.2.0",
     "bower-asset/chartjs": "~2.7.2",
-    "amenadiel/jpgraph": "~3.6.7",
     "corwatts/yii2-markdown-files": "*",
-    "bower-asset/pickadate": "^3.5"
+    "bower-asset/pickadate": "^3.5",
+    "amenadiel/jpgraph": "dev-master#10a818b"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "2.0.9",
@@ -40,10 +39,7 @@
     "assets": "rm -f site/assets/css/app.css && ./yii asset site/assets/assets.php site/assets/assets-compressed.php"
   },
   "config": {
-    "process-timeout": 1800,
-    "platform": {
-      "php": "7.0"
-    }
+    "process-timeout": 1800
   },
   "extra": {
     "writable": [
