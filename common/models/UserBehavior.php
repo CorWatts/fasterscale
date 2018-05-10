@@ -153,7 +153,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
       $scores = [];
 
       $dt = new DateTime("now", new DateTimeZone("UTC"));
-      $end = $dt->format("Y-m-d H:i:s");
+      $end = $dt->modify("+1 minute")->format("Y-m-d H:i:s"); // to be sure we have everything
       $start = $dt->modify("-1 month")->format("Y-m-d H:i:s");
 
       $behaviors = $this->getBehaviorsByDate($start, $end);
