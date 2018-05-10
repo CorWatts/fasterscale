@@ -58,7 +58,7 @@ class CheckinController extends \yii\web\Controller
         $scores_last_month = $user_behavior->calculateScoresOfLastMonth();
         if($scores_last_month) {
           Yii::$container
-            ->get(\common\components\Graph::class)
+            ->get(\common\components\Graph::class, [Yii::$app->user->identity])
             ->create($scores_last_month, true);
         }
       }
