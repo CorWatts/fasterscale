@@ -65,6 +65,7 @@ class LoginFormTest extends \Codeception\Test\Unit {
   }
 
   public function setUp() {
+    $this->container = new \yii\di\Container;
     $this->user = $this->mockUser();
     $this->form = $this->mockForm($this->user);
     parent::setUp();
@@ -82,6 +83,27 @@ class LoginFormTest extends \Codeception\Test\Unit {
     $identity->timezone = "America/Los_Angeles";
   }
 
+  public function testRules() {
+    $vals = [
+      'email' => 'hunter2@hunter2.com',
+      'password' => 'hunter2',
+      'remeberMe' => true,
+    ];
+    $form = $this->container->get('\common\models\LoginForm', [$this->user]);
+
+    $form->attributes = $vals; // massive assignment
+    expect('the form should pass validation with good values', $this->assertTrue($form->validate()));
+
+    $form->attributes = $vals; // massive assignment
+    $form->email = 'notanemail';
+    expect('the form should fail validation with a bad email', $this->assertFalse($form->validate()));
+
+    $form->attributes = $vals; // massive assignment
+    $form->email = '    whItESPAce@EMAIL.com    ';
+    expect('the form should trim off whitespace and lowercase an email address', $this->assertTrue($form->validate()));
+    expect('the emails to match now', $this->assertEquals('whitespace@email.com', $form->email));
+
+  }
 
   public function testGetUser() {
     $this->specify('getUser shougd function correctly', function() {

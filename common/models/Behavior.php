@@ -173,18 +173,16 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
   /**
    * This grabs all the categories from Category and adds the count of
    * behaviors in each category, it also renames the "id" field to be
-   * "category_id", and normalizes the category weights.
+   * "category_id".
    *
    * @returns Array
    */
   public function getCategories() {
     $bhvrs_by_cat = AH::index(self::$behaviors, null, 'category_id');
     $cats = AH::index(\common\models\Category::$categories, "id");
-    $weights_sum = array_sum(array_column($cats, 'weight'));
     foreach($cats as $id => &$cat) {
       $cat['behavior_count'] = count($bhvrs_by_cat[$id]); // add count of behaviors
       $cat['category_id'] = $cat['id']; // rename id to category_id 
-      $cat['weight'] = (100 * $cat['weight']) / $weights_sum; // normalize weight
       unset($cat['id']);
     }
     return $cats;

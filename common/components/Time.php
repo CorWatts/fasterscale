@@ -120,4 +120,46 @@ class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterf
 
     return [$front, $back];
   }
+
+  /*
+   * Verifies that what it is given is a parseable date string
+   * If it is not a parseable string, it defaults to the current
+   * date.
+   * 
+   * @param $date a date string or null
+   * @return string a date string
+   */
+  public function validate($date = null) {
+    if(is_null($date)) {
+      return $this->getLocalDate();
+    } else if($dt = $this->parse($date)) {
+      return $dt->format('Y-m-d');
+    } else {
+      return $this->getLocalDate();
+    }
+  }
+
+  /*
+   * Returns a \DatePeriod iterable containing a DateTime for each day of the
+   * last $period days. The \DatePeriod is in the $this->timezone timezone. The
+   * current day (end of the period) is included in the \returned \DatePeriod.
+   *
+   * @param $period int
+   * @return \DatePeriod of length $period, from $period days ago to today
+   */
+  public function getDateTimesInPeriod(int $period = 30) {
+    $dt  = new DateTime("now", new DateTimeZone($this->timezone));
+    $dt2 = new DateTime("now", new DateTimeZone($this->timezone));
+    $end   = $dt ->add(new \DateInterval('P1D'))      // add a day, so the end date gets included in the intervals
+                 ->add(new \DateInterval('PT2M'));    // add two minutes, to be sure we have everything
+    $start = $dt2->add(new \DateInterval('PT2M'))  // add two minutes, to be sure we have everything
+                 ->sub(new \DateInterval("P${period}D")); // subtract `$period` number of days
+
+    $periods = new \DatePeriod($start, new \DateInterval('P1D'), $end, \DatePeriod::EXCLUDE_START_DATE);
+    $local_tz = new \DateTimeZone($this->timezone);
+    foreach($periods as $period) {
+      $period->setTimezone($local_tz);
+    }
+    return $periods;
+  }
 }

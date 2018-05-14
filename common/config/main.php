@@ -27,11 +27,9 @@ return [
     ]
   ],
   'components' => [
-    'cache' => [
-      'class' => yii\caching\FileCache::class, // OR USE MEMCACHE OR SOMETHING
-    ],
-    'session' => [
-      'class'=> yii\web\CacheSession::class,
+    // by default, sessions are stored in a local file
+    'cache' => [ // DummyCache never actually caches anything
+      'class'=> yii\caching\DummyCache::class,
     ],
     'mailer' => [
       'class' => yii\swiftmailer\Mailer::class,

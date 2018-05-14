@@ -3,9 +3,9 @@
     $('#signupform-send_email').removeAttr('disabled');
     $('#signupform-send_email').click(function() {
       if($(this).is(":checked")) {
-        $('#email_threshold_fields').show();
+        $('#send_email_fields').show();
       } else {
-        $('#email_threshold_fields').hide();
+        $('#send_email_fields').hide();
       }
     });
   });

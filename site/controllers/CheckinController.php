@@ -23,10 +23,10 @@ class CheckinController extends Controller
     return [
       'access' => [
         'class' => AccessControl::class,
-        'only' => ['index', 'view', 'questions', 'report'],
+        'only' => ['index', 'view', 'questions', 'report', 'history'],
         'rules' => [
           [
-            'actions' => ['index', 'view', 'questions', 'report'],
+            'actions' => ['index', 'view', 'questions', 'report', 'history'],
             'allow' => true,
             'roles' => ['@'],
           ],
@@ -76,12 +76,11 @@ class CheckinController extends Controller
       $behaviors = $user_behavior->findAll($form->getUserBehaviorIds());
       if($result = $form->saveAnswers($behaviors)) {
 
-        $score = $user_behavior->getDailyScore();
-        if(Yii::$app->user->identity->isOverThreshold($score)) {
+        if(Yii::$app->user->identity->send_email) {
           Yii::$app->user->identity->sendEmailReport($date);
-          Yii::$app->session->setFlash('warning', 'Your check-in is complete. A notification has been sent to your report partners because of your high score. Reach out to them!');
+          Yii::$app->session->setFlash('success', 'Your check-in is complete. A notification has been sent to your report partners.');
         } else {
-          Yii::$app->session->setFlash('success', 'Your behaviors and processing questions have been logged!');
+          Yii::$app->session->setFlash('success', 'Your check-in is complete.');
         }
 
         return $this->redirect(['view']);
@@ -96,9 +95,9 @@ class CheckinController extends Controller
 
   public function actionView(string $date = null)
   {
-    $time = Yii::$container->get(TimeInterface::class);
-    $dt = $time->parse($date, $time->now());
-    $date = $dt->format('Y-m-d');
+    $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
+    $date = $time->validate($date);
+    $dt = $time->parse($date);
     list($start, $end) = $time->getUTCBookends($date);
 
     $user          = Yii::$container->get(UserInterface::class);
@@ -109,29 +108,80 @@ class CheckinController extends Controller
     $form = Yii::$container->get(\site\models\CheckinForm::class);
     $form->setBehaviors($user->getUserBehaviors($date));
 
+    $raw_pie_data = $user_behavior::decorateWithCategory($user_behavior->getBehaviorsWithCounts($dt));
+    $answer_pie = $user_behavior->getBehaviorsByCategory($raw_pie_data);
+
     return $this->render('view', [
       'model'              => $form,
       'actual_date'        => $date,
       'categories'         => $categories,
       'behaviorsList'      => AH::index($behaviors, 'name', "category_id"),
-      'score'              => $user_behavior->getDailyScore($date),
       'past_checkin_dates' => $user_behavior->getPastCheckinDates(),
-      'answer_pie'         => $user_behavior->getBehaviorsByCategory($dt),
+      'answer_pie'         => $answer_pie,
       'questions'          => $user->getUserQuestions($date),
       'isToday'            => $time->getLocalDate() === $date,
     ]);
   }
 
   public function actionReport() {
-    $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
-    $user_rows  = $user_behavior->getTopBehaviors();
-    $answer_pie = $user_behavior->getBehaviorsByCategory();
-    $scores     = $user_behavior->calculateScoresOfLastMonth();
+    /* Pie Chart data */
+    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
+    $user_rows     = $user_behavior::decorateWithCategory($user_behavior->getBehaviorsWithCounts(5));
+    $raw_pie_data  = $user_behavior::decorateWithCategory($user_behavior->getBehaviorsWithCounts());
+    $answer_pie    = $user_behavior->getBehaviorsByCategory($raw_pie_data);
+
+    $pie_data   = [
+      "labels"   => array_column($answer_pie, "name"),
+      "datasets" => [[
+          "data"                 => array_map('intval', array_column($answer_pie, "count")),
+          "backgroundColor"      => array_column($answer_pie, "color"),
+          "hoverBackgroundColor" => array_column($answer_pie, "highlight"),
+      ]]
+    ];
+
+    /* Bar Chart data */
+    ['labels' => $labels, 'datasets' => $datasets] = $this->history(30);
 
     return $this->render('report', [
       'top_behaviors' => $user_rows,
-      'answer_pie' => $answer_pie,
-      'scores' => $scores
+      'pie_data' => $pie_data,
+      'bar_dates' => $labels,
+      'bar_datasets' => $datasets,
     ]);
+  }
+
+  public function actionHistory($period) {
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $period = intval($period);
+    $whitelist_periods = [30, 90, 180];
+    $period = in_array($period, $whitelist_periods) ? $period : 30;
+    return $this->history($period);
+  }
+
+  private function history($period) {
+    $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
+    $category      = Yii::$container->get(\common\interfaces\CategoryInterface::class);
+
+    $checkins = $user_behavior->getCheckInBreakdown($period);
+
+    $accum = [];
+    foreach($checkins as $date => $cats) {
+      for($i = 1; $i <= 7; $i ++) {
+        $accum[$i][] = array_key_exists($i, $cats) ? $cats[$i]['count'] : [];
+      }
+    }
+
+    $bar_datasets = [];
+    foreach($accum as $idx => $data) {
+      $bar_datasets[] = [
+        'label' => ($category::getCategories())[$idx],
+        'backgroundColor' => $category::$colors[$idx]['color'],
+        'data' => $data
+      ];
+    }
+    return [
+      'labels' => array_keys($checkins),
+      'datasets' => $bar_datasets,
+    ];
   }
 }

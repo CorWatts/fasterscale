@@ -37,6 +37,7 @@ class ContactForm extends Model
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public function attributeLabels()
   {

@@ -15,7 +15,6 @@ class SignupForm extends Model
   public $timezone = "America/Los_Angeles"; // default
   public $captcha;
   public $send_email;
-  public $email_threshold;
   public $partner_email1;
   public $partner_email2;
   public $partner_email3;
@@ -49,18 +48,6 @@ class SignupForm extends Model
       ['captcha', 'captcha', 'caseSensitive' => false, 'skipOnEmpty' => !!YII_ENV_TEST],
 
       ['send_email', 'boolean'],
-      ['email_threshold', 'integer'],
-      [
-        'email_threshold',
-        'required',
-        'when'=> function($model) {
-          return $model->send_email;
-        },
-        'message' => "If you've elected to send email reports, you must set a threshold.",
-        "whenClient" => "function(attribute, value) {
-          return $('#signupform-send_email').is(':checked');
-        }"
-      ],
       [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
       [
         ['partner_email1'],
@@ -69,9 +56,9 @@ class SignupForm extends Model
           return $model->send_email;
         },
         'message' => "If you've elected to send email reports, at least one partner email must be set.",
-        "whenClient" => "function(attribute, value) {
-          return $('#signupform-send_email').is(':checked');
-        }"
+        "whenClient" => 'function(attribute, value) {
+          return $("#signupform-send_email").is("checked");
+        }'
       ]
     ];
   }
@@ -84,7 +71,7 @@ class SignupForm extends Model
       'partner_email1' => "Partner Email #1",
       'partner_email2' => "Partner Email #2",
       'partner_email3' => "Partner Email #3",
-      'send_email' => 'Send an email when I score above a certain threshold'
+      'send_email' => 'Send an email when I complete a check-in'
     ];
   }
 
@@ -130,14 +117,14 @@ class SignupForm extends Model
   }
 
   public function setFields($user) {
+      $user->send_email = $this->send_email;
       $user->email = $this->email;
       $user->setPassword($this->password);
       $user->timezone = $this->timezone;
       $user->generateAuthKey();
       $user->generateVerifyEmailToken();
 
-      if($this->send_email) {
-        $user->email_threshold = $this->email_threshold;
+      if($user->send_email) {
         $user->partner_email1  = $this->partner_email1;
         $user->partner_email2  = $this->partner_email2;
         $user->partner_email3  = $this->partner_email3;

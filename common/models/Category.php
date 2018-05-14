@@ -8,20 +8,17 @@ use yii\helpers\ArrayHelper as AH;
 /**
  * @property integer $id
  * @property string $name
- * @property integer $weight
  */
-class Category extends \yii\base\BaseObject
-{
+class Category extends \yii\base\BaseObject implements \common\interfaces\CategoryInterface {
 
-  // a weight of 0 means selections in that category do not increase the score
   public static $categories = [
-    [ "id" => 1, "weight" => 0,  "name" => "Restoration"],
-    [ "id" => 2, "weight" => 1,  "name" => "Forgetting Priorities"],
-    [ "id" => 3, "weight" => 2,  "name" => "Anxiety"],
-    [ "id" => 4, "weight" => 4,  "name" => "Speeding Up"],
-    [ "id" => 5, "weight" => 6,  "name" => "Ticked Off"],
-    [ "id" => 6, "weight" => 8,  "name" => "Exhausted"],
-    [ "id" => 7, "weight" => 10, "name" => "Relapse/Moral Failure"],
+    [ "id" => 1, "name" => "Restoration"],
+    [ "id" => 2, "name" => "Forgetting Priorities"],
+    [ "id" => 3, "name" => "Anxiety"],
+    [ "id" => 4, "name" => "Speeding Up"],
+    [ "id" => 5, "name" => "Ticked Off"],
+    [ "id" => 6, "name" => "Exhausted"],
+    [ "id" => 7, "name" => "Relapse/Moral Failure"],
   ];
 
   public static $colors = [
@@ -61,9 +58,8 @@ class Category extends \yii\base\BaseObject
   public function rules()
   {
     return [
-      [['name', 'weight'], 'required'],
-      [['weight'], 'integer'],
-      [['name'], 'string', 'max' => 255]
+      ['name', 'required'],
+      ['name', 'string', 'max' => 255],
     ];
   }
 
@@ -75,7 +71,6 @@ class Category extends \yii\base\BaseObject
     return [
       'id' => 'ID',
       'name' => 'Name',
-      'weight' => 'Weight',
     ];
   }
 

@@ -13,7 +13,6 @@ class EditProfileForm extends Model
   public $timezone;
   public $expose_graph;
   public $send_email;
-  public $email_threshold;
   public $partner_email1;
   public $partner_email2;
   public $partner_email3;
@@ -43,19 +42,14 @@ class EditProfileForm extends Model
 
       ['expose_graph', 'boolean'],
       ['send_email', 'boolean'],
-      ['email_threshold', 'integer'],
-      ['email_threshold', 'required', 'when'=> function($model) {
-        return $model->send_email;
-      }, 'message' => "If you've elected to send email reports, you must set a threshold.", "whenClient" => "function(attribute, value) {
-        return $('#signupform-send_email').is(':checked');
-  }"],
-    [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
-    [['partner_email1'], 'required', 'when' => function($model) {
-      return $model->send_email;
-    }, 'message' => "If you've elected to send email reports, at least one partner email must be set.", "whenClient" => "function(attribute, value) {
-      return $('#signupform-send_email').is(':checked');
-  }"]
-  ];
+      [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
+      [['partner_email1'], 'required',
+        'when' => function($model) { return $model->send_email; },
+        'message' => "If you've elected to send email reports, at least one partner email must be set.",
+        "whenClient" => "function(attribute, value) {
+          return $('#editprofileform-send_email').is(':checked');
+        }"]
+    ];
   }
 
   /**
@@ -66,7 +60,7 @@ class EditProfileForm extends Model
       'partner_email1' => "Partner Email #1",
       'partner_email2' => "Partner Email #2",
       'partner_email3' => "Partner Email #3",
-      'send_email'     => 'Send an email when I score above a certain threshold',
+      'send_email'     => 'Send an email when I complete a check-in',
       'expose_graph'   => 'Share my scores graph via a link'
     ];
   }
@@ -76,8 +70,7 @@ class EditProfileForm extends Model
    *
    * @return User|null the saved model or null if saving fails
    */
-  public function saveProfile()
-  {
+  public function saveProfile() {
     if ($this->validate()) {
       $user  = $this->user;
 
@@ -91,45 +84,44 @@ class EditProfileForm extends Model
         $user->expose_graph = true;
 
         // generate scores graph image
-        $scores_last_month = (Yii::$container->get(\common\interfaces\UserBehaviorInterface::class))->calculateScoresOfLastMonth();
-        // if they haven't done a check-in in the last month this
-        // will explode because $scores_last_month is an empty
-        // array
-        if($scores_last_month) {
-          $graph->create($scores_last_month, true);
+        $checkins_last_month = (Yii::$container->get(\common\interfaces\UserBehaviorInterface::class))
+                                               ->getCheckInBreakdown();
+
+        // if they haven't done a check-in in the last month this will explode
+        // because $checkins_last_month is an empty array
+        if($checkins_last_month) {
+          $graph->create($checkins_last_month, true);
         }
       } else {
         $user->expose_graph = false;
         // remove scores graph image
         $graph->destroy();
       }
+
       if($this->send_email) {
-        $user->email_threshold = $this->email_threshold;
+        $user->send_email = true;
         $user->partner_email1  = $this->partner_email1;
         $user->partner_email2  = $this->partner_email2;
         $user->partner_email3  = $this->partner_email3;
       } else {
-        $user->email_threshold = null;
+        $user->send_email = false;
         $user->partner_email1  = null;
         $user->partner_email2  = null;
         $user->partner_email3  = null;
       }
       $user->save();
-
       return $user;
     }
-
     return null;
   }
 
   public function loadUser() {
     $user                  = $this->user;
     $this->timezone        = $user->timezone;
-    $this->email_threshold = $user->email_threshold;
     $this->partner_email1  = $user->partner_email1;
     $this->partner_email2  = $user->partner_email2;
     $this->partner_email3  = $user->partner_email3;
     $this->expose_graph    = $user->expose_graph;
-    $this->send_email      = (isset($user->email_threshold) && array_filter($user->getPartnerEmails()));
+    $this->send_email      = $user->send_email;
   }
 }

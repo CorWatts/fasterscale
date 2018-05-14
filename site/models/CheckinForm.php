@@ -110,8 +110,10 @@ class CheckinForm extends Model
 
     // delete cached scores
     $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
-    $key = "scores_of_last_month_".Yii::$app->user->id."_".$time->getLocalDate();
-    Yii::$app->cache->delete($key);
+    array_map(function($period) {
+      $key = "scores_of_last_month_".Yii::$app->user->id."_{$period}_".$this->time->getLocalDate();
+      Yii::$app->cache->delete($key);
+    }, [30, 90, 180]);
   }
 
   public function save() {
@@ -140,12 +142,12 @@ class CheckinForm extends Model
 
     // if the user has publicised their score graph, create the image
     if(Yii::$app->user->identity->expose_graph) {
-      $scores_last_month = $this->user_behavior->calculateScoresOfLastMonth();
+      $checkins_last_month = $this->user_behavior->getCheckInBreakdown();
 
-      if($scores_last_month) {
+      if($checkins_last_month) {
         Yii::$container
           ->get(\common\components\Graph::class, [Yii::$app->user->identity])
-          ->create($scores_last_month, true);
+          ->create($checkins_last_month, true);
       }
     }
   }

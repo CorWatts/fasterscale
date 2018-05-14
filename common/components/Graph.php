@@ -3,7 +3,10 @@ namespace common\components;
 
 use yii;
 use Amenadiel\JpGraph\Graph as JpGraph;
-use Amenadiel\JpGraph\Plot;
+use Amenadiel\JpGraph\Plot\Plot;
+use Amenadiel\JpGraph\Plot\AccBarPlot;
+use Amenadiel\JpGraph\Plot\GroupBarPlot;
+use Amenadiel\JpGraph\Plot\BarPlot;
 
 /**
  * Graph is a collection of functions related to the score chart that is used
@@ -51,51 +54,78 @@ class Graph extends \yii\base\BaseObject {
    *
    * Generates the graph image according to the values passed in by $values. It
    * always returns the in-memory image, saving the image to disk is optionally
-   * specified with the $save boolean.
+   * specified with the $toDisk boolean.
    *
    * @param array $values an associative array of dates => scores
-   * @param bool $save used to specify whether or not to save the generated image to disk at the filepath returned by getFilepath(). Defaults to false.
+   * @param bool $toDisk used to specify whether or not to save the generated image to disk at the filepath returned by getFilepath(). Defaults to false.
    * @return string the encoded image
    */
-  public function create(array $values, bool $save = false) {
-    if($save) {
+  public function create(array $checkins, bool $toDisk = false) {
+    if($toDisk) {
       // wipe out the current image, if it exists
       $this->destroy();
     }
 
-    $scores = array_values($values);
-    $dates = array_map(function($date) {
-      return (new \DateTime($date))->format('M j, Y');
-    }, array_keys($values));
-
-    $graph = new JpGraph\Graph(800, 600);
+    // Create the graph
+    $graph = new JpGraph\Graph(800, 600, 'auto');
+    $graph->title->Set("Last 30 Days of Selected Behaviors");
+    $graph->title->SetFont(FF_ARIAL, FS_BOLD, 20);
     $graph->SetImgFormat('png');
     $graph->img->SetImgFormat('png');
+    $graph->SetScale("textlin");
     $graph->img->SetMargin(60, 60, 40, 140);
     $graph->img->SetAntiAliasing();
-    $graph->SetScale("textlin");
-    $graph->yaxis->scale->SetAutoMin(0);
-    $graph->yaxis->SetLabelFormatCallback('floor');
+
     $graph->SetShadow();
-    $graph->title->Set("Last month's scores");
-    $graph->title->SetFont(FF_ARIAL, FS_BOLD, 20);
+    $graph->ygrid->SetFill(false);
+
+    // Setup dates as labels on the X-axis
+    $graph->xaxis->SetTickLabels(array_keys($checkins));
+    $graph->xaxis->HideTicks(false,false);
+
+    $graph->yaxis->scale->SetAutoMin(0);
+    $graph->yaxis->HideLine(false);
+    $graph->yaxis->HideTicks(false,false);
     $graph->xaxis->SetLabelAngle(45);
-    $graph->xaxis->SetTickLabels($dates);
-    $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
+    $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 10);
     $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 15);
-    $p1 = new Plot\LinePlot($scores);
-    $p1->SetColor("#37b98f");
-    $p1->SetFillColor("#92d1b5");
-    $p1->mark->SetWidth(8);
-    $p1->SetCenter();
-    $graph->Add($p1);
+
+
+    // format the data into something nicer
+    $accum = [];
+    foreach($checkins as $checkin_sum) {
+      for($i = 1; $i <= 7; $i ++) {
+        $accum[$i][] = array_key_exists($i, $checkin_sum) ? $checkin_sum[$i]['count'] : 0;
+      }
+    }
+
+    // Create the bar plots
+    $plots = [];
+    $category = Yii::$container->get(\common\interfaces\CategoryInterface::class);
+    foreach($accum as $category_key => $category_data) {
+      $bplot = new BarPlot($category_data);
+      $color = $category::$colors[$category_key]['color'];
+
+      $bplot->SetColor($color);
+      $bplot->SetFillColor($color);
+      $bplot->SetLegend(($category::getCategories())[$category_key]);
+
+      $plots[] = $bplot;
+    }
+
+    $gbbplot = new AccBarPlot($plots);
+    $graph->Add($gbbplot);
+
+    $graph->legend->SetColumns(3);
+    $graph->legend->SetPos(0.5,0.98,'center','bottom'); // position it at the center, just above the bottom edge
+
     $img = $graph->Stroke(_IMG_HANDLER);
 
     ob_start();
     imagepng($img);
     $img_data = ob_get_clean();
 
-    if($save) {
+    if($toDisk) {
       $filepath = $this->getFilepath(); 
       if(!is_dir(dirname($filepath))) {
         mkdir(dirname($filepath), 0766, true);

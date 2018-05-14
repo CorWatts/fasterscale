@@ -413,7 +413,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 1,
 				'name' => 'Restoration',
-				'weight' => '0',
 			],
 		],
 	], [
@@ -428,7 +427,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 2,
 				'name' => 'Forgetting Priorities',
-				'weight' => '0.016',
 			],
 		],
 	], [
@@ -443,7 +441,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 2,
 				'name' => 'Forgetting Priorities',
-				'weight' => '0.016',
 			],
 		],
 	], [
@@ -458,7 +455,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 3,
 				'name' => 'Anxiety',
-				'weight' => '0.032',
 			],
 		],
 	], [
@@ -473,7 +469,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 3,
 				'name' => 'Anxiety',
-				'weight' => '0.032',
 			],
 		],
 	], [
@@ -488,7 +483,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 4,
 				'name' => 'Speeding Up',
-				'weight' => '0.064',
 			],
 		],
 	], [
@@ -503,7 +497,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 5,
 				'name' => 'Ticked Off',
-				'weight' => '0.128',
 			],
 		],
 	], [
@@ -518,7 +511,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 5,
 				'name' => 'Ticked Off',
-				'weight' => '0.128',
 			],
 		],
 	], [
@@ -533,7 +525,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 5,
 				'name' => 'Ticked Off',
-				'weight' => '0.128',
 			],
 		],
 	], [
@@ -548,7 +539,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 6,
 				'name' => 'Exhausted',
-				'weight' => '0.256',
 			],
 		],
 	], [
@@ -563,7 +553,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 6,
 				'name' => 'Exhausted',
-				'weight' => '0.256',
 			],
 		],
 	], [
@@ -578,7 +567,6 @@ public $behaviorData = [
 			'category' => [
 				'id' => 7,
 				'name' => 'Relapse/Moral Failure',
-				'weight' => '0.512',
 			],
 		],
 	],
@@ -680,7 +668,6 @@ public $exportData = [
         'category' => [
           'id' => 4,
           'name' => 'Speeding Up',
-          'weight' => 4,
         ],
       ],
     ], [
@@ -697,7 +684,6 @@ public $exportData = [
         'category' => [
           'id' => 6,
           'name' => 'Exhausted',
-          'weight' => 8,
         ],
       ],
     ], [
@@ -714,7 +700,6 @@ public $exportData = [
         'category' => [
           'id' => 7,
           'name' => 'Relapse/Moral Failure',
-          'weight' => 10,
         ],
       ],
     ], [
@@ -731,8 +716,7 @@ public $exportData = [
         'category' => [
           'id' => 5,
           'name' => 'Ticked Off',
-          'weight' => 6,
-        ],
+        ]
       ],
     ]
   ];
@@ -796,44 +780,6 @@ public $exportData = [
     $this->specify('parseBehaviorData should function correctly', function () {
       expect('parseBehaviorData should return the correct structure with expected data', $this->assertEquals($this->user->parseBehaviorData($this->behaviorData), $this->userBehaviors));
       expect('parseBehaviorData should return empty with the empty set', $this->assertEmpty($this->user->parseBehaviorData([])));
-    });
-  }
-
-  public function testIsPartnerEnabled() {
-    $this->specify('isPartnerEnabled should function correctly', function () {
-      expect('isPartnerEnabled should return false when no partners are set and email_threshold is null', $this->assertFalse($this->user->isPartnerEnabled()));
-
-      $this->user->email_threshold = 10;
-      expect('isPartnerEnabled should return false when no partners are set and email_threshold is a positive integer', $this->assertFalse($this->user->isPartnerEnabled()));
-
-      $this->user->partner_email3 = 'hello@partner3.com';
-      $this->user->email_threshold = null;
-      expect('isPartnerEnabled should return false when a partner is set and email_threshold is null', $this->assertFalse($this->user->isPartnerEnabled()));
-
-      $this->user->email_threshold = 10;
-      expect('isPartnerEnabled should return true when at one partner is set and email_threshold is a positive integer', $this->assertTrue($this->user->isPartnerEnabled()));
-
-      $this->user->partner_email1 = 'hello@partner1.com';
-      expect('isPartnerEnabled should return true when two partners are set and email_threshold is a positive integer', $this->assertTrue($this->user->isPartnerEnabled()));
-
-      $this->user->email_threshold = 0;
-      expect('isPartnerEnabled should return true when two partners are set and email_threshold is 0', $this->assertTrue($this->user->isPartnerEnabled()));
-
-      $this->user->email_threshold = -7;
-      expect('isPartnerEnabled should return false when two partners are set and email_threshold is a negative number', $this->assertFalse($this->user->isPartnerEnabled()));
-    });
-  }
-
-  public function testIsOverThreshold() {
-    $this->specify('isOverThreshold should function correctly', function () {
-      expect('isOverThreshold should return false with no partners enabled', $this->assertFalse($this->user->isOverThreshold(5)));
-
-      $this->user->email_threshold = 10;
-      $this->user->partner_email1 = 'hello@hello.com';
-      expect('isOverThreshold should return false if partners enabled but not over threshold', $this->assertFalse($this->user->isOverThreshold(5)));
-      expect('isOverThreshold should return false if partners enabled and equal to but not over threshold', $this->assertFalse($this->user->isOverThreshold(10)));
-
-      expect('isOverThreshold should return true if partners enabled and over threshold', $this->assertTrue($this->user->isOverThreshold(15)));
     });
   }
 
