@@ -6,19 +6,6 @@
 $this->title = "The Faster Scale App | Report";
 $this->registerJsFile('/js/checkin/report.js', ['depends' => [\site\assets\AppAsset::class]]);
 
-$values     = array_map('intval', array_column($answer_pie, "count"));
-$labels     = array_column($answer_pie, "name");
-$colors     = array_column($answer_pie, "color");
-$highlights = array_column($answer_pie, "highlight");
-
-$pie_data = [
-  "labels"   => $labels,
-  "datasets" => [[
-      "data"                 => $values,
-      "backgroundColor"      => $colors,
-      "hoverBackgroundColor" => $highlights
-  ]]
-];
 ?>
 <h1>Report</h1>
 
@@ -49,16 +36,24 @@ print "<tr>".
 </div>
 <div class='row'>
     <div class='col-md-12'>
-        <h3>Last Month's Scores</h3>
+        <div>
+          <h3 style="display: inline;">Your Check-in History</h3>
+          <div style="display: inline; float: right;" class="btn-group date-period-switcher" data-toggle="buttons">
+            <label class="btn btn-default active" data-period="30">
+              <input type="radio" name="options" checked> 30 Days
+            </label>
+            <label class="btn btn-default" data-period="90">
+              <input type="radio" name="options"> 90 Days
+            </label>
+            <label class="btn btn-default" data-period="180">
+              <input type="radio" name="options"> 180 Days
+            </label>
+          </div>
+        </div>
         <canvas id='scores-line-chart'></canvas>
     </div>
 </div>
 <?php
-$line_keys = array_map(function($date) {
-  $timestamp = new \DateTime($date);
-  return $timestamp->format('Y-m-d');
-}, array_keys($scores));
-
 $this->registerJson($pie_data, "pie_data");
-$this->registerJson($line_keys, 'chart_scores_keys_json');
-$this->registerJson(array_values($scores), 'chart_scores_values_json');
+$this->registerJson($bar_dates, 'bar_dates_json');
+$this->registerJson($bar_datasets, 'bar_datasets_json');

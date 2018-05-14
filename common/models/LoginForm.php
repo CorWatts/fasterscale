@@ -16,7 +16,7 @@ class LoginForm extends Model
   private $user = false;
   private $tmp_user;
 
-  public function __construct(\common\models\User $user, $config = []) {
+  public function __construct(\common\interfaces\UserInterface $user, $config = []) {
     $this->tmp_user = $user;
     parent::__construct($config);
   }

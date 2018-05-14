@@ -10,10 +10,9 @@ class SignupFormTest extends \Codeception\Test\Unit
 
   private $vals = [
     'password'        => 'password',
-    'send_email'      => true,
     'email'           => 'fake@email.com',
     'timezone'        => "America/Los_Angeles",
-    'email_threshold' => 60,
+    'send_email'      => true,
     'partner_email1'  => 'partner1@email.com',
     'partner_email2'  => 'partner2@email.com',
     'partner_email3'  => 'partner3@email.com',
@@ -22,7 +21,7 @@ class SignupFormTest extends \Codeception\Test\Unit
   private $whitelist = [
     'email',
     'timezone',
-    'email_threshold',
+    'send_email',
     'partner_email1',
     'partner_email2',
     'partner_email3'
@@ -63,7 +62,7 @@ class SignupFormTest extends \Codeception\Test\Unit
       'updated_at',
       'password',
       'timezone',
-      'email_threshold',
+      'send_email',
       'partner_email1',
       'partner_email2',
       'partner_email3',
@@ -87,7 +86,7 @@ class SignupFormTest extends \Codeception\Test\Unit
       'updated_at',
       'password',
       'timezone',
-      'email_threshold',
+      'send_email',
       'partner_email1',
       'partner_email2',
       'partner_email3',
@@ -110,10 +109,6 @@ class SignupFormTest extends \Codeception\Test\Unit
 
     $form->attributes = $this->vals; // massive assignment
     expect('the form should pass validation with good values', $this->assertTrue($form->validate()));
-
-    $form->send_email      = true;
-    $form->email_threshold = null;
-    expect('the form should fail validation when send_email is true but no email_threshold is provided', $this->assertFalse($form->validate()));
 
     $form->attributes     = $this->vals; // massive assignment
     $form->partner_email1 = null;
@@ -141,7 +136,7 @@ class SignupFormTest extends \Codeception\Test\Unit
       expect('the form should validate correctly', $this->assertTrue($form->validate()));
       $user = $form->signup();
       expect('signup() should return a newly-saved user when the user does not already exist with the submitted values',
-             $this->assertEquals($user->getAttributes($this->whitelist), array_splice($this->vals, 2)));
+             $this->assertEquals($user->getAttributes($this->whitelist), array_splice($this->vals, 1)));
       expect('the "Remember Me" auth_key value should be set to a random string (defaults to a 32 char length)',
              $this->assertEquals(32, strlen($user->auth_key)));
       expect('password_hash to be set to something like a hash',
@@ -191,7 +186,7 @@ class SignupFormTest extends \Codeception\Test\Unit
       $user = $form3->signup();
       expect('This user should not be an isNewRecord -- they should already exist', $this->assertFalse($user->getIsNewRecord()));
       expect('signup() should return a newly-saved user when the user does not already exist with the submitted values',
-             $this->assertEquals($user->getAttributes($this->whitelist), array_splice($this->vals, 2)));
+             $this->assertEquals($user->getAttributes($this->whitelist), array_splice($this->vals, 1)));
       expect('when the user exists and is NOT confirmed, signup() should call save() to UPDATE their info', $this->assertTrue($saved));
     });
   }

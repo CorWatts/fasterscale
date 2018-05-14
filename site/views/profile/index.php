@@ -68,25 +68,24 @@ $timezones = \DateTimeZone::listIdentifiers();
   'enableClientValidation' => true,
   'options' => ['validateOnSubmit' => true]
 ]); ?>
-          <?= $form->field($profile, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
-          <?= $form->field($profile, 'expose_graph')->checkbox() ?>
-          <?php if($profile->expose_graph): ?>
-          <div class='alert alert-success score-graph-info'>Your score graph can be found at:<br /> <a id="score-graph-link" target="_blank" href="<?=$graph_url?>"><?=$graph_url?></a></div>
-          <?php endif; ?>
-        <?= $form->field($profile, 'send_email')->checkbox() ?>
-        <div id='email_threshold_fields' <?php if(!$profile->send_email) { ?>style="display: none;"<?php } ?>>
-          <?= $form->field($profile, 'email_threshold')->textInput(['class'=>'form-control', 'style'=>'width: 50px;'])->input('number', ['min' => 0, 'max' => 1000]) ?>
-          <?= $form->field($profile, 'partner_email1')->input('email'); ?>
-          <?= $form->field($profile, 'partner_email2')->input('email'); ?>
-          <?= $form->field($profile, 'partner_email3')->input('email'); ?>
+            <?= $form->field($profile, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
+            <?= $form->field($profile, 'expose_graph')->checkbox() ?>
+            <?php if($profile->expose_graph): ?>
+            <div class='alert alert-success score-graph-info'>Your score graph can be found at:<br /> <a id="score-graph-link" target="_blank" href="<?=$graph_url?>"><?=$graph_url?></a></div>
+            <?php endif; ?>
+            <?= $form->field($profile, 'send_email')->checkbox() ?>
+            <div id='send_email_fields' <?php if(!$profile->send_email) { ?>style="display: none;"<?php } ?>>
+              <?= $form->field($profile, 'partner_email1')->input('email'); ?>
+              <?= $form->field($profile, 'partner_email2')->input('email'); ?>
+              <?= $form->field($profile, 'partner_email3')->input('email'); ?>
+            </div>
+          <?= Html::submitButton('Update', ['class' => 'btn btn-primary', 'id' => 'profile-button', 'name' => 'profile-button']) ?>
+          <?php ActiveForm::end(); ?>
         </div>
-        <?= Html::submitButton('Update', ['class' => 'btn btn-primary', 'id' => 'profile-button', 'name' => 'profile-button']) ?>
-        <?php ActiveForm::end(); ?>
-    </div>
+      </div>
     </div>
   </div>
-  </div>
-  </div>
+</div>
 
   <div class="row">
     <div class="col-md-6">
@@ -141,7 +140,7 @@ $timezones = \DateTimeZone::listIdentifiers();
   });
 
   $('#editprofileform-send_email').click(function() {
-    $('#email_threshold_fields').toggle();
+    $('#send_email_fields').toggle();
   });"
 );
 

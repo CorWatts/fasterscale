@@ -172,7 +172,7 @@ class TimeTest extends \Codeception\Test\Unit
 
     }
 
-    public function testinBounds() {
+    public function testInBounds() {
     
       $dt = new DateTime('2016-05-05');
       expect('a sensible date should be in bounds', $this->assertTrue($this->time->inBounds($dt)));
@@ -187,5 +187,17 @@ class TimeTest extends \Codeception\Test\Unit
     
       $dt = new DateTime('2016-05-05 05:14:22');
       expect('different formats of sensible dates should be in bounds', $this->assertTrue($this->time->inBounds($dt)));
+    }
+
+    public function testValidate() {
+      expect('validate should return the local date by default', $this->assertEquals($this->time->validate(), $this->time->now()->format('Y-m-d')));
+      expect('validate should return same date string if given a valid format', $this->assertEquals($this->time->validate('2015-02-02'), '2015-02-02'));
+      expect('validate should return the local date if given an invalid format', $this->assertEquals($this->time->validate('definitelynotadate9000'), $this->time->now()->format('Y-m-d')));
+    }
+
+    public function testGetDateTimesInPeriod() {
+      expect('getDateTImesInPeriod should return an a \DatePeriod', $this->assertInstanceOf(\DatePeriod::class, $this->time->getDateTimesInPeriod()));
+      expect('getDateTimesInPeriod should return a 30 day period by default', $this->assertCount(30, $this->time->getDateTimesInPeriod()));
+      expect('getDateTimesInPeriod should return an arbitrary period length if supplied', $this->assertCount(42, $this->time->getDateTimesInPeriod(42)));
     }
 }

@@ -27,7 +27,8 @@ class PasswordResetRequestFormTest extends \Codeception\Test\Unit {
   /*
    * temporarily commenting this out while I figure out how to fix this test
    * with the User::findOne() call in sendEmail()
-   *
+   */
+  /*
   public function testSendEmail() {
     $user = $this->getUser();
     $user->generatePasswordResetToken();
@@ -82,3 +83,23 @@ class PasswordResetRequestFormTest extends \Codeception\Test\Unit {
     return $user;
   }
 }
+
+/*
+class User extends \site\tests\_support\MockUser {
+  public static function findOne($condition) {
+    $user = $this->getmockbuilder('\common\models\user')
+      ->disableoriginalconstructor()
+      ->setmethods(['getisnewrecord', 'attributes', 'save', 'generatepasswordresettoken', 'istokencurrent', 'findOne'])
+      ->getmock();
+    $user->method('attributes')->willReturn([
+      'isGuest',
+      'email',
+      'password',
+      'password_reset_token',
+      'password_hash',
+    ]);
+    $user->email = $condition['email'] || 'example@example.com';
+    return $user;
+  }
+}
+*/

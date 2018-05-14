@@ -4,37 +4,30 @@
     [
       'category_id' => 1,
       'name' => 'Restoration',
-      'weight' => 0,
       'behavior_count' => 10,
     ], [
       'category_id' => 2,
       'name' => 'Forgetting Priorities',
-      'weight' => 0.16,
       'behavior_count' => 17,
     ], [
       'category_id' => 3,
       'name' => 'Anxiety',
-      'weight' => 0.32,
       'behavior_count' => 17,
     ], [
       'category_id' => 4,
       'name' => 'Speeding Up',
-      'weight' => 0.64,
       'behavior_count' => 23,
     ], [
       'category_id' => 5,
       'name' => 'Ticked Off',
-      'weight' => 1.28,
       'behavior_count' => 24,
     ], [
       'category_id' => 6,
       'name' => 'Exhausted',
-      'weight' => 2.56,
       'behavior_count' => 28,
     ], [
       'category_id' => 7,
       'name' => 'Relapse/Moral Failure',
-      'weight' => 5.12,
       'behavior_count' => 11,
     ]
   ];

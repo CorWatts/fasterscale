@@ -48,8 +48,8 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
   public function rules()
   {
     return [
-      [['user_id', 'behaviorr_id', 'date'], 'required'],
-      [['user_id', 'behaviorr_id'], 'integer'],
+      [['user_id', 'behavior_id', 'date'], 'required'],
+      [['user_id', 'behavior_id'], 'integer'],
       //[['date'], 'string']
     ];
   }
@@ -75,8 +75,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     return $this->hasOne(\common\models\User::class, ['id' => 'user_id']);
   }
 
-  public function getPastCheckinDates()
-  {
+  public function getPastCheckinDates() {
     $past_checkin_dates = [];
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
@@ -112,15 +111,6 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     return AH::map($user_behaviors, 'id', function($a) { return $a['behavior']['name']; }, function($b) {return $b['behavior']['category_id']; });
   }
 
-  public function getDailyScore($date = null) {
-    // default to today's score
-    if(is_null($date)) $date = $this->time->getLocalDate();
-
-    list($start, $end) = $this->time->getUTCBookends($date);
-    $score = $this->calculateScoreByUTCRange($start, $end);
-    return reset($score) ?: 0; // get first array item
-  }
-
   public function getBehaviorsByDate($start, $end) {
       $uo = $this->find()
         ->select(['id', 'user_id', 'behavior_id', 'date'])
@@ -135,74 +125,22 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
       return self::decorate($uo, false);
   }
 
-  /**
-   * @date date string in yyyy-mm-dd format
-   * @return array score
-   */
-  public function calculateScoreByUTCRange($start, $end) {
-    $behaviors = $this->getBehaviorsByDate($start, $end);
-    $scores = $this->calculateScore($behaviors);
-
-    return $scores;
-  }
-
-  public function calculateScoresOfLastMonth() {
-    $key = "scores_of_last_month_".Yii::$app->user->id."_".$this->time->getLocalDate();
+  public function getCheckinBreakdown(int $period = 30) {
+    $datetimes = $this->time->getDateTimesInPeriod($period);
+    $key = "scores_of_last_month_".Yii::$app->user->id."_{$period}_".$this->time->getLocalDate();
     $scores = Yii::$app->cache->get($key);
+
     if($scores === false) {
       $scores = [];
-
-      $dt = new DateTime("now", new DateTimeZone("UTC"));
-      $end = $dt->modify("+1 minute")->format("Y-m-d H:i:s"); // to be sure we have everything
-      $start = $dt->modify("-1 month")->format("Y-m-d H:i:s");
-
-      $behaviors = $this->getBehaviorsByDate($start, $end);
-      $scores = $this->calculateScore($behaviors);
+      foreach($datetimes as $datetime) {
+        $behaviors = self::decorateWithCategory($this->getBehaviorsWithCounts($datetime));
+        $scores[$datetime->format('Y-m-d')] = $this->getBehaviorsByCategory($behaviors);
+      }
 
       Yii::$app->cache->set($key, $scores, 60*60*24);
     }
 
     return $scores;
-  }
-
-  public function calculateScore($usr_bhvrs, $all_cats = null) {
-    if(!!!$usr_bhvrs) return [];
-    if(!!!$all_cats)  $all_cats = $this->behavior->getCategories();
-
-    $usr_bhvrs = array_reduce($usr_bhvrs, function($carry, $bhvr) {
-      $date = $this->time->convertUTCToLocal($bhvr['date']);
-      $carry[$date][] = $bhvr['behavior'];
-      return $carry;
-    }, []);
-
-    $scores = [];
-    foreach($usr_bhvrs as $date => $bhvrs) {
-      $picked = array_reduce($bhvrs, function($carry, $bhvr) {
-        $carry[$bhvr['category_id']][] = $bhvr['id'];
-        return $carry;
-      }, []);
-
-      $grades_sum = array_sum($this->_getCatGrades($picked, $all_cats));
-      $scores[$date] = intval(floor($grades_sum));
-    }
-
-    return $scores;
-  }
-
-  private function _getCatGrades($picked, $all_cats = null) {
-    if(!!!$all_cats) $all_cats = $this->behavior->getCategories();
-
-    return array_reduce($all_cats, function($carry, $cat) use($picked) {
-      if(array_key_exists($cat['category_id'], $picked)) {
-        $count = count($picked[$cat['category_id']]);
-        $prcnt_2x = ($count / $cat['behavior_count']) * 2;
-        // because we're doubling the % we want to ensure we don't take more than 100%
-        $carry[$cat['category_id']] = $cat['weight'] * min($prcnt_2x, 1);
-      } else {
-        $carry[$cat['category_id']] = 0;
-      }
-      return $carry;
-    }, []);
   }
 
   /**
@@ -215,11 +153,10 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   /**
    * Returns a list of categories and the number of selected behaviors in each category
+   * @param array $decorated_behaviors an array of behaviors ran through self::decorateWithCategory()
    */
-  public function getBehaviorsByCategory(\DateTime $date = null) {
-    $behaviors = self::decorateWithCategory($this->getBehaviorsWithCounts($date));
-
-    $arr = array_reduce($behaviors, function($acc, $row) {
+  public function getBehaviorsByCategory(array $decorated_behaviors) {
+    $arr = array_reduce($decorated_behaviors, function($acc, $row) {
       $cat_id = $row['behavior']['category']['id'];
       if(array_key_exists($cat_id, $acc)) {
         $acc[$cat_id]['count'] += $row['count'];
@@ -253,6 +190,11 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     return self::decorate($uo, true);
   }
 
+  /*
+   * Returns a list of the user's behaviors with a count of each behavior's
+   * occurence, sorted in descending order of occurrence.
+   * @param integer|\DateTime $limit a limit for the number of behaviors to return if an integer is supplied. If a \DateTime object is given, then it returns the 
+   */
   public function getBehaviorsWithCounts($limit = null) {
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];

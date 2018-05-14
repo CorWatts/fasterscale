@@ -95,7 +95,6 @@ class SiteController extends Controller
       } else {
         Yii::$app->session->setFlash('error', 'There was an error sending email.');
       }
-
       return $this->refresh();
     } else {
       return $this->render('contact', [

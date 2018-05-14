@@ -26,7 +26,7 @@ use \common\interfaces\TimeInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  * @property string $timezone
- * @property integer $email_threshold
+ * @property boolean $send_email
  * @property string $partner_email1
  * @property string $partner_email2
  * @property string $partner_email3
@@ -358,16 +358,14 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
   }
 
   public function sendEmailReport($date) {
-    if(!$this->isPartnerEnabled()) return false; // no partner emails set
-
+    if(!$this->send_email) return false; // no partner emails set
     list($start, $end) = $this->time->getUTCBookends($date);
 
-    $scores_of_month   = $this->user_behavior->calculateScoresOfLastMonth();
+    $checkins_last_month = $this->user_behavior->getCheckInBreakdown();
     $graph = Yii::$container
       ->get(\common\components\Graph::class)
-      ->create($scores_of_month);
+      ->create($checkins_last_month);
 
-    $score          = $this->user_behavior->calculateScoreByUTCRange($start, $end);
     $user_behaviors   = $this->getUserBehaviors($date);
     $user_questions = $this->getUserQuestions($date);
 
@@ -382,11 +380,10 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
           'questions'     => $user_questions,
           'chart_content' => $graph,
           'categories'    => \common\models\Category::$categories,
-          'score'         => $score,
           'behaviors_list'  => \common\models\Behavior::$behaviors,
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
-        ->setSubject($this->email." has scored high in The Faster Scale App")
+        ->setSubject($this->email." has completed a Faster Scale check-in")
         ->setTo($email);
       }
     }
@@ -573,27 +570,6 @@ ORDER  BY l.date DESC;
     ])
     ->asArray()
     ->all();
-  }
-
-  public function isPartnerEnabled() {
-    if((is_integer($this->email_threshold)
-       && $this->email_threshold >= 0)
-         && ($this->partner_email1
-           || $this->partner_email2
-           || $this->partner_email3)) {
-      return true;
-    }
-    return false;
-  }
-
-  public function isOverThreshold($score) {
-    if(!$this->isPartnerEnabled()) return false;
-
-    $threshold = $this->email_threshold;
-
-    return (!is_null($threshold) && $score > $threshold)
-            ? true
-            : false;
   }
 
   public function cleanExportData($data) {

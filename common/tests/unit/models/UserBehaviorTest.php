@@ -64,27 +64,20 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     parent::tearDown();
   }
 
-  public function testCalculateScore() {
-    $this->specify('calculateScore should function correctly', function () {
-      expect('calculateScore should return the empty set when null is passed', $this->assertEmpty($this->user_behavior->calculateScore(null)));
+  public function testRules() {
+    expect('rules', $this->assertEquals($this->user_behavior->rules(), [
+      [['user_id', 'behavior_id', 'date'], 'required'],
+      [['user_id', 'behavior_id'], 'integer'],
+    ]));
+  }
 
-      expect('calculateScore should return the empty set with no selected behaviors', $this->assertEmpty($this->user_behavior->calculateScore([])));
-      
-      expect('calculateScore should work with a single date item and simple behaviors', $this->assertEquals(['2016-06-16T21:12:43-07:00' => 1], $this->user_behavior->calculateScore($this->singleBhvr)));
-      
-      expect('calculateScore should work with a single date item and complex behaviors', $this->assertEquals(['2016-06-20T21:08:36-07:00' => 43], $this->user_behavior->calculateScore($this->manyBhvrs)));
-
-      expect('calculateScore should max out at 100', $this->assertEquals(['2016-08-03T22:57:53-07:00' => 100], $this->user_behavior->calculateScore($this->allBhvrs)));
-
-      
-      expect('calculateScore should work with multiple dates', $this->assertEquals([
-          '2016-08-03T22:57:53-07:00' => 100,
-          '2016-07-15T21:16:58-07:00' => 0,
-          '2016-07-16T20:24:35-07:00' => 0,
-          '2016-07-17T15:15:26-07:00' => 0,
-          '2016-07-29T19:49:41-07:00' => 97
-        ], $this->user_behavior->calculateScore($this->multipleDates)));
-    });
+  public function testAttributeLabels() {
+    expect('attributeLabels', $this->assertEquals($this->user_behavior->attributelabels(), [
+      'id'        => 'ID',
+      'date'      => 'Date',
+      'user_id'   => 'User ID',
+      'behavior_id' => 'Behavior ID',
+    ]));
   }
 
   public function testDecorate() {
@@ -123,115 +116,12 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
              'category' => [
                'id' => 6,
                'name' => 'Exhausted',
-               'weight' => 8
              ]
            ]]]));
   }
 
-  public function testGetDailyScore() {
-    // getBehaviorsByDate() is called internally by getDailyScore()
-    $this
-      ->user_behavior
-      ->method('getBehaviorsByDate')
-      ->willReturnOnConsecutiveCalls([], $this->manyBhvrs);
-
-    expect('getDailyScore should return the score for the day given',
-      $this->assertEquals($this->user_behavior->getDailyScore(),
-      0));
-    
-    expect('getDailyScore should return the score for the day given',
-      $this->assertEquals($this->user_behavior->getDailyScore('2017-08-01'),
-      43));
-  }
-
-  public function testGetTopBehaviors() {
-    $this
-      ->user_behavior
-      ->method('getBehaviorsWithCounts')
-      ->willReturnOnConsecutiveCalls([], [
-        [
-          'user_id' => 1,
-          'behavior_id' => 1,
-          'count' => 5
-        ], [
-          'user_id' => 1,
-          'behavior_id' => 2,
-          'count' => 4
-        ], [
-          'user_id' => 1,
-          'behavior_id' => 3,
-          'count' => 3
-        ]
-      ]);
-
-    expect('getTopBehaviors to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getTopBehaviors()));
-    expect('getTopBehaviors to return embelished data corresponding to the most commonly selected behaviors', $this->assertEquals(
-      [[
-        'user_id' => 1,
-        'behavior_id' => 1,
-        'count' => 5,
-        'behavior' => [
-          'id' => 1,
-          'name' => 'no current secrets',
-          'category_id' => 1,
-          'category' => [
-            'id' => 1,
-            'weight' => 0,
-            'name' => 'Restoration',
-          ],
-        ],
-      ], [
-        'user_id' => 1,
-        'behavior_id' => 2,
-        'count' => 4,
-        'behavior' => [
-          'id' => 2,
-          'name' => 'resolving problems',
-          'category_id' => 1,
-          'category' => [
-            'id' => 1,
-            'weight' => 0,
-            'name' => 'Restoration',
-          ],
-        ],
-      ], [
-        'user_id' => 1,
-        'behavior_id' => 3,
-        'count' => 3,
-        'behavior' => [
-          'id' => 3,
-          'name' => 'identifying fears and feelings',
-          'category_id' => 1,
-          'category' => [
-            'id' => 1,
-            'weight' => 0,
-            'name' => 'Restoration',
-          ],
-        ],
-      ]], $this->user_behavior->getTopBehaviors()));
-  }
-
   public function testGetBehaviorsByCategory() {
-    $this
-      ->user_behavior
-      ->method('getBehaviorsWithCounts')
-      ->willReturnOnConsecutiveCalls([], [
-        [
-          'user_id' => 1,
-          'behavior_id' => 1,
-          'count' => 5
-        ], [
-          'user_id' => 1,
-          'behavior_id' => 20,
-          'count' => 4
-        ], [
-          'user_id' => 1,
-          'behavior_id' => 50,
-          'count' => 3
-        ]
-      ]);
-
-    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getBehaviorsByCategory()));
+    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getBehaviorsByCategory($this->user_behavior::decorateWithCategory([]))));
     expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([
       1 => [
         'name' => 'Restoration',
@@ -251,6 +141,63 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
         'color' => '#E5E500',
         'highlight' => '#E5E533'
       ]
-    ], $this->user_behavior->getBehaviorsByCategory()));
+    ], $this->user_behavior->getBehaviorsByCategory($this->user_behavior::decorateWithCategory([
+        [
+          'user_id' => 1,
+          'behavior_id' => 1,
+          'count' => 5
+        ], [
+          'user_id' => 1,
+          'behavior_id' => 20,
+          'count' => 4
+        ], [
+          'user_id' => 1,
+          'behavior_id' => 50,
+          'count' => 3
+        ]
+      ]))));
+  }
+
+  public function testGetCheckinBreakdown() {
+    Yii::configure(Yii::$app, [
+      'components' => [
+        'user' => [
+          'class' => 'yii\web\User',
+          'identityClass' => 'common\tests\unit\FakeUser',
+        ],
+      ],
+    ]);
+    $identity = new \common\tests\unit\FakeUser();
+    $tz = 'America/Los_Angeles';
+    $identity->timezone = $tz;
+    // logs in the user -- we use Yii::$app->user->id in getCheckinBreakdown()
+    Yii::$app->user->setIdentity($identity);
+
+    /* get mocked Time */
+    $tz = new \DateTimeZone($tz);
+    $date_range = new \DatePeriod(new \DateTime('2019-02-03', $tz),
+                                  new \DateInterval('P1D'),
+                                  new \DateTime('2019-03-05', $tz));
+    $time = $this
+        ->getMockBuilder("common\components\Time")
+        ->setConstructorArgs(['America/Los_Angeles'])
+        ->setMethods(['getDateTimesInPeriod'])
+        ->getMock();
+    $time
+      ->method('getDateTimesInPeriod')
+      ->willReturn($date_range);
+
+    $behavior = new \common\models\Behavior();
+
+    $this->user_behavior = $this
+                            ->getMockBuilder("common\models\UserBehavior")
+                            ->setConstructorArgs([$behavior, $time])
+                            ->setMethods(['getIsNewRecord', 'save', 'getBehaviorsByDate', 'getBehaviorsWithCounts'])
+                            ->getMock();
+
+    $bhvrs = require(__DIR__.'/../data/behaviorsWithCounts.php');
+    $expected = require(__DIR__.'/../data/expected_getCheckinBreakdown.php');
+    $this->user_behavior->method('getBehaviorsWithCounts')->willReturn(...$bhvrs);
+		expect('asdf', $this->assertEquals($expected, $this->user_behavior->getCheckinBreakdown()));
   }
 }

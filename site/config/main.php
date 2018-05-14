@@ -35,7 +35,7 @@ return [
         '' => 'site/index',
         '<action:(index|about|blog|faq|contact|signup|login|logout|welcome|privacy|terms|request-password-reset|reset-password)>' => 'site/<action>',
         'checkin/view/<date:\d{4}-\d{2}-\d{2}>' => 'checkin/view',
-        'report/view/<date:\d{4}-\d{2}-\d{2}>' => 'report/view',
+        'checkin/history/<period:\d{2,3}>' => 'checkin/history',
         '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
         '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
 

@@ -62,34 +62,6 @@ if($answer_pie) {
           </div>
         </div>
       </div>
-
-  <?php
-              switch(true) {
-                case ($score < 30):
-                  $alert_level = "success";
-                  $alert_msg = "You're doing well! Keep on doing whatever it is you're doing!";
-                  break;
-
-              case ($score < 40):
-                $alert_level = "info";
-                $alert_msg = "Some warning signs, but nothing too bad. Analyze what you're feeling and be watchful you don't move further down the scale.";
-                break;
-
-              case ($score < 60):
-                $alert_level = "warning";
-                $alert_msg = "Definite warning signs. Sounds like you aren't doing well. Take a break from whatever you're doing and process your thoughts and emotions.";
-                break;
-
-              default:
-                $alert_level = "danger";
-                $alert_msg = "Welcome to the dangerzone. You need to take action right now or you'll continue moving down the scale. Go call someone. Try visiting <a href='http://emergency.nofap.org/'>http://emergency.nofap.org</a> for immediate help.";
-            }
-?>
-
-      <div id='score'>
-          <h2>Score: <?php print $score; ?></h2>
-          <div class='alert alert-<?=$alert_level?>'><?=$alert_msg?></div>
-      </div>
     </div>
     <div class="col-md-4">
     <canvas id='category-pie-chart' <?= ($answer_pie) ? "" : 'class="hidden-xs hidden-sm hidden-md"' ?> height=260></canvas>

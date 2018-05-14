@@ -13,7 +13,7 @@ $timezones = DateTimeZone::listIdentifiers();
 
 $this->registerMetaTag([
   'name' => 'description',
-  'content' => 'Sign up here for the Faster Scale App, the online version of the popular emotional mindfulness questionnaire. Sign up is easy and always completely free!'
+  'content' => 'Sign up here for the Faster Scale App, the online version of the popular emotional mindfulness questionnaire. Sign up is easy and completely free.'
 ]);
 $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset::class]]);
 ?>
@@ -34,8 +34,7 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
           'template' => '<div class="row"><div class="col-md-5">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
         ]) ?>
         <?= $form->field($model, 'send_email')->checkbox(['disabled'=>true]) ?>
-        <div id='email_threshold_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>
-          <?= $form->field($model, 'email_threshold', ['template' => '{label}<div class="row"><div class="col-md-3">{input}</div><div class="col-md-9"><p class="bg-info text-center" style="margin: 5px 0px;">We recommend starting with 30</p></div></div>{error}'])->textInput(['class'=>'form-control'])->input('number', ['min' => 0, 'max' => 100]) ?>
+        <div id='send_email_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>
           <?= $form->field($model, 'partner_email1')->input('email') ?>
           <?= $form->field($model, 'partner_email2')->input('email') ?>
           <?= $form->field($model, 'partner_email3')->input('email') ?>

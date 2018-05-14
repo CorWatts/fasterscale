@@ -22,7 +22,6 @@ class BehaviorTest extends \Codeception\Test\Unit {
 
     foreach($behaviors as $behavior) {
       expect('this behavior to have a "name" key', $this->assertArrayHasKey('name', $behavior));
-      expect('this behavior to have a "weight" key', $this->assertArrayHasKey('weight', $behavior));
       expect('this behavior to have a "behavior_count" key', $this->assertArrayHasKey('behavior_count', $behavior));
       expect('this behavior to have a "category_id" key', $this->assertArrayHasKey('category_id', $behavior));
     }
