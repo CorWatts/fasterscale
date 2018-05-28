@@ -126,7 +126,8 @@ class ProfileController extends Controller {
   }
 
   public function actionChangeEmail(string $token) {
-    $user = \common\models\User::findByChangeEmailToken($token);
+    $user = Yii::$container->get(\common\interfaces\UserInterface::class)->findByChangeEmailToken($token);
+
     if($user) {
       $validator = new \yii\validators\EmailValidator();
       if($validator->validate($user->desired_email, $error)) {
