@@ -25,13 +25,13 @@ class ContactForm extends Model
       // name, email, subject and body are required
       [['name', 'email', 'subject', 'body'], 'required'],
       // email has to be a valid email address
-      ['email', 'email'],
       ['email', 'filter', 'filter' => 'trim'],
       ['email', 'filter', 'filter' => 'strtolower'],
+      ['email', 'email'],
       // verifyCode needs to be entered correctly
       ['verifyCode', 'captcha', 'when' => function() {
         return Yii::$app->user->isGuest;
-      }],
+      }, 'skipOnEmpty' => !!YII_ENV_TEST],
     ];
   }
 
