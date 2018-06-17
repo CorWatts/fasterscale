@@ -19,7 +19,7 @@ class DeleteAccountForm extends Model
    * @param  object                          $user
    * @param  array                           $config name-value pairs that will be used to initialize the object properties
    */
-  public function __construct(\common\models\User $user, $config = []) {
+  public function __construct(\common\interfaces\UserInterface $user, $config = []) {
     $this->user = $user;
     parent::__construct($config);
   }
@@ -37,7 +37,8 @@ class DeleteAccountForm extends Model
 
   public function attributeLabels() {
     return [
-      ];
+      'password' => 'Password'
+    ];
   }
 
   /**
