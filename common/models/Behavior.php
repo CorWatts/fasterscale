@@ -121,7 +121,7 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
     ['id' => 107, 'name' => 'numb', 'category_id' => 6],
     ['id' => 108, 'name' => 'wanting to run', 'category_id' => 6],
     ['id' => 109, 'name' => 'constant cravings for old coping behaviors', 'category_id' => 6],
-    ['id' => 110, 'name' => 'thinking of using sex, drugs, or alcohol', 'category_id' => 6],
+    ['id' => 110, 'name' => 'thinking of using porn, sex, drugs, or alcohol', 'category_id' => 6],
     ['id' => 111, 'name' => 'seeking out old unhealthy people and places', 'category_id' => 6],
     ['id' => 112, 'name' => 'really isolated', 'category_id' => 6],
     ['id' => 113, 'name' => 'people are angry with you', 'category_id' => 6],
