@@ -472,12 +472,10 @@ ORDER  BY l.date DESC;
   }
 
   public function sendDeleteNotificationEmail() {
-    if($this->isPartnerEnabled()) return false; // no partner emails set
-
     $messages = [];
     foreach(array_merge([$this->email], $this->getPartnerEmails()) as $email) {
       if($email) {
-        $messages[] = Yii::$app->mailer->compose('partnerDeleteNotification', [
+        $messages[] = Yii::$app->mailer->compose('deleteNotification', [
           'user' => $this,
           'email' => $email
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])

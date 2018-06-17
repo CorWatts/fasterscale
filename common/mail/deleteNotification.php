@@ -10,4 +10,4 @@ use yii\helpers\Html;
 
 <p>Hello <?= Html::encode($email) ?>,</p>
 
-<p>This is a notification that <?= Html::encode($user->email) ?> has deleted their account. Thank you for encouraging and supporting them!</p>
+<p>This is a notification that <?= Html::encode($user->email) ?> has deleted their account. Thank you for using the Faster Scale App.</p>
