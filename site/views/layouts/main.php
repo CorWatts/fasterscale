@@ -75,16 +75,52 @@ if($hash = Utility::getRevHash()) {
     </div>
 
     <footer class="footer">
+      <div class="footer-main">
         <div class="container">
           <div class="row">
-            <div class="col-md-6">
-              <p class="pull-left">&copy; <a href="https://corwatts.com">Corey Watts</a> <?= date('Y') ?> | <a href="<?=Url::to(['site/privacy'])?>">Privacy</a> | <a href="<?=Url::to(['site/terms'])?>">Terms</a></p>
-            </div>
-            <div class="col-md-6">
-              <p class="pull-right">FSA rev. <?=$rev_link?> is powered by <a href="http://yiiframework.com">Yii</a>, written in <a href="http://www.vim.org">Vim</a></p>
+            <div class="col-sm-offset-2 col-sm-10 col-xs-12">
+              <div class="row">
+                <div class="col-xs-3 col-md-4 footer-info">
+                  <ul class="list-unstyled">
+                    <h4>Info</h4>
+                    <li><a href="<?=Url::to(['site/faq'])?>">FAQ</a>
+                    <li><a href="<?=Url::to(['site/about'])?>">About</a>
+                    <li><a href="<?=Url::to(['site/blog'])?>">Blog</a>
+                  </ul>
+                </div>
+                <div class="col-xs-3 col-md-4 footer-docs">
+                  <h4>Legal</h4>
+                  <ul class="list-unstyled">
+                    <li><a href="<?=Url::to(['site/privacy'])?>">Privacy</a></li>
+                    <li><a href="<?=Url::to(['site/terms'])?>">Terms</a></li>
+                  </ul>
+                </div>
+                <div class="col-xs-6 col-md-4 footer-info">
+                  <h4>Connect</h4>
+                  <ul class="list-unstyled">
+                    <li><a href="https://github.com/CorWatts/fasterscale"><img src="/img/GitHub-Mark-32px.png" height=24 width=24 /></a> rev. <?=$rev_link?></li>
+                    <li><a href="<?=Url::to(['site/contact'])?>">Contact</a>
+                    <li><a href="https://www.freelists.org/list/fsa-discuss">Mailing List</a></li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="footer-legal">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-offset-2 col-sm-10 col-xs-12">
+              <div class="row">
+                <div class="col-xs-12">
+                  <p class="pull-left">&copy; <a href="https://corwatts.com">Corey Watts</a> <?= date('Y') ?></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
     <?php $this->endBody() ?>
 </body>
