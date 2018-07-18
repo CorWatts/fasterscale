@@ -38,7 +38,7 @@ if($hash = Utility::getRevHash()) {
             ]);
             if (Yii::$app->user->isGuest) {
               $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
-              $menuItems[] = ['label' => 'Blog', 'url' => ['/site/blog']];
+              $menuItems[] = ['label' => 'News', 'url' => ['/site/blog']];
               $menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
               $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
               $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
@@ -47,7 +47,6 @@ if($hash = Utility::getRevHash()) {
               $menuItems[] = ['label' => 'Past Check-ins', 'url' => ['/checkin/view']];
               $menuItems[] = ['label' => 'Statistics', 'url' => ['/checkin/report']];
               $menuItems[] = ['label' => Yii::$app->user->identity->email, 'url' => ['/profile/index']];
-              $menuItems[] = ['label' => 'Blog', 'url' => ['/site/blog']];
               $menuItems[] = [
                 'label' => 'Logout',
                 'url' => ['/site/logout'],
@@ -83,9 +82,9 @@ if($hash = Utility::getRevHash()) {
                 <div class="col-xs-3 col-md-4 footer-info">
                   <ul class="list-unstyled">
                     <h4>Info</h4>
-                    <li><a href="<?=Url::to(['site/faq'])?>">FAQ</a>
+                    <li><a href="<?=Url::to(['site/blog'])?>">News</a>
                     <li><a href="<?=Url::to(['site/about'])?>">About</a>
-                    <li><a href="<?=Url::to(['site/blog'])?>">Blog</a>
+                    <li><a href="<?=Url::to(['site/faq'])?>">FAQ</a>
                   </ul>
                 </div>
                 <div class="col-xs-3 col-md-4 footer-docs">
