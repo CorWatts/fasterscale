@@ -38,6 +38,13 @@ class TimeTest extends \Codeception\Test\Unit
         parent::tearDown();
     }
 
+    public function testNow()
+    {
+      expect('now should return a \DateTime object', $this->assertInstanceOf(\DateTime::class, $this->time->now()));
+      expect('now should return a \DateTime object with the correct timezone', $this->assertEquals('America/Los_Angeles', $this->time->now()->getTimezone()->getName()));
+      expect('now should return a \DateTime object with the current date', $this->assertEquals($this->time->getLocalDate(), $this->time->now()->format('Y-m-d')));
+    }
+
     public function testGetLocalTime()
     {
       $this->specify('getLocalTime should function correctly', function () {
@@ -131,17 +138,19 @@ class TimeTest extends \Codeception\Test\Unit
         ->with($this->equalTo($good))
         ->willReturn(true);
       expect('parse should return a \DateTime object if the date is in bounds', $this->assertInstanceOf(DateTime::class, $observer->parse('2016-05-05')));
+      expect('parse should return the default value (false) if the date itself is null', $this->assertFalse($this->time->parse(null)));
 
       $observer2 = $this
         ->getMockBuilder("common\components\Time")
         ->setConstructorArgs(['America/Los_Angeles'])
         ->setMethods(['inBounds'])
         ->getMock();
-      $observer2->expects($this->once())
+      $observer2->expects($this->exactly(2))
         ->method('inBounds')
         ->with($this->equalTo($good))
         ->willReturn(false);
-      expect('parse should return false if the date is not in bounds', $this->assertFalse($observer2->parse('2016-05-05')));
+      expect('parse should return the default value (false) if the date is not in bounds', $this->assertFalse($observer2->parse('2016-05-05')));
+      expect('parse should return the default value if the date is not in bounds', $this->assertEquals($observer2->now()->format('Y-m-d'), $observer2->parse('2016-05-05', $observer2->now())->format('Y-m-d')));
 
       $this->specify('should all return false', function() {
         expect('parse should return false if the date itself is empty', $this->assertFalse($this->time->parse('')));

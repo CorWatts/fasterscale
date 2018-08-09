@@ -14,10 +14,9 @@ p {
 }
 
 .wrap {
-	min-height: 100%;
+	min-height: calc(100% - 176px);
 	height: auto;
 	margin: 0 auto;
-  margin-bottom: -80px;
 	padding: 0 0;
 }
 
@@ -30,15 +29,19 @@ p {
     padding: 0px 15px 20px;
 }
 
-.site-index {
-  .jumbotron {
-    text-align: center;
-    background-color: transparent;
-  }
-  .block {
-    padding-top: 30px;
-    &:first-child {
-      padding-top: 0px;
+.container {
+  .site-index {
+    .jumbotron {
+      text-align: center;
+      background-color: transparent;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    .block {
+      padding-top: 30px;
+      &:first-child {
+        padding-top: 0px;
+      }
     }
   }
 }
@@ -82,7 +85,6 @@ footer {
   .footer-legal {
     padding-top: 11px;
     background-color: #e3e3e3;
-	  //border-top: 1px solid #c9c9c9;
   }
 }
 
@@ -166,15 +168,6 @@ $navbar-default-toggle-border-color:       #ddd !default;
 
 @import "pickadate";
 @import "bootstrap-custom";
-
-@media (min-width: $screen-md-min) {
-  .wrap:after {
-    height: 60px;
-  }
-  .wrap {
-    margin-bottom: -60px;
-  }
-}
 
 .site-signup {
   .input-group-btn {

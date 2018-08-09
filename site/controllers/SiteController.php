@@ -3,12 +3,6 @@
 namespace site\controllers;
 
 use Yii;
-use common\models\LoginForm;
-use common\models\Question;
-use site\models\PasswordResetRequestForm;
-use site\models\ResetPasswordForm;
-use site\models\ContactForm;
-use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -109,7 +103,7 @@ class SiteController extends Controller
 
   public function actionContact()
   {
-    $model = new ContactForm();
+    $model = new \site\models\ContactForm();
     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
       if($model->sendEmail(Yii::$app->params['adminEmail'])) {
         Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
@@ -176,7 +170,7 @@ class SiteController extends Controller
   {
     try {
       $model = Yii::$container->get(\site\models\ResetPasswordForm::class, [$token]);
-    } catch (InvalidParamException $e) {
+    } catch (\yii\base\InvalidParamException $e) {
       throw new BadRequestHttpException($e->getMessage());
     }
 
@@ -198,7 +192,8 @@ class SiteController extends Controller
       throw new BadRequestHttpException('Email verification token cannot be blank.');
     }
 
-    $user = Yii::$container->get(\common\interfaces\UserInterface::class)->findByVerifyEmailToken($token);
+    $user = Yii::$container->get(\common\interfaces\UserInterface::class)
+              ->findByVerifyEmailToken($token);
     if (!$user) {
       throw new BadRequestHttpException("Wrong or expired email verification token. If you aren't sure why this error occurs perhaps you've already verified your account. Please try logging in.");
     }
@@ -222,34 +217,5 @@ class SiteController extends Controller
   public function actionTerms()
   {
     return $this->render('terms');
-  }
-
-  public function actionExport()
-  {
-    header("Content-Type: text/csv");
-    header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->email."-".date('Ymd').".csv");
-
-    $reader = Yii::$app->user->identity->getExportData();
-    $fp = fopen('php://output', 'w');
-
-    $header = [
-      'Date',
-      'Behavior',
-      'Category',
-      Question::$QUESTIONS[1],
-      Question::$QUESTIONS[2],
-      Question::$QUESTIONS[3],
-    ];
-
-    fputcsv($fp, $header);
-    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
-    while($row = $reader->read()) {
-      $row = $user_behavior::decorateWithCategory([$row]);
-      $row = Yii::$app->user->identity->cleanExportData($row);
-      fputcsv($fp, $row[0]);
-    }
-    fclose($fp);
-
-    die;
   }
 }

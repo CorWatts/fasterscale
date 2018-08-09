@@ -237,7 +237,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     return $arr;
   }
 
-  public static function decorate(Array $uo, $with_category = false) {
+  public static function decorate(array $uo, $with_category = false) {
     foreach($uo as &$o) {
       if($behavior = \common\models\Behavior::getBehavior('id', $o['behavior_id'])) {
         $o['behavior'] = $behavior;
@@ -249,7 +249,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     return $uo;
   }
 
-  public static function decorateWithCategory(Array $uo) {
+  public static function decorateWithCategory(array $uo) {
     return self::decorate($uo, true);
   }
 
