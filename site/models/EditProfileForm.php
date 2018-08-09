@@ -58,6 +58,9 @@ class EditProfileForm extends Model
   ];
   }
 
+  /**
+     * @codeCoverageIgnore
+     */
   public function attributeLabels() {
     return [
       'partner_email1' => "Partner Email #1",
@@ -81,8 +84,9 @@ class EditProfileForm extends Model
       $graph = Yii::$container
         ->get(\common\components\Graph::class, [$this->user]);
 
-      if($this->timezone)
+      if($this->timezone) {
         $user->timezone = $this->timezone;
+      }
       if($this->expose_graph) {
         $user->expose_graph = true;
 

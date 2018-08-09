@@ -1,6 +1,5 @@
 <?php
 namespace site\models;
-use common\models\User;
 use yii\base\Model;
 /**
  * Password reset request form
@@ -35,10 +34,12 @@ class PasswordResetRequestForm extends Model
   public function sendEmail()
   {
     /* @var $user User */
-    $user = $this->user->findOne([
-      'status' => User::STATUS_ACTIVE,
-      'email' => $this->email,
-    ]);
+    $user = $this->user;
+    if($user->isGuest) {
+      $user = $this->user->findOne([
+        'email' => $this->email,
+      ]);
+    }
 
     if ($user) {
       if (!$user->isTokenCurrent($user->password_reset_token)) {

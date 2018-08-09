@@ -17,29 +17,41 @@ class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterf
   }
 
   /*
+   * Returns a \DateTime object of the current time in $this->timezone
+   *
+   * @return \DateTime the current time in $this->timezone
+   */
+  public function now() {
+    return new DateTime("now", new DateTimeZone($this->timezone));
+  }
+
+  /*
    * Parses the supplied string into a `\DateTime` object of the
    * given `$format`. It assumes the supplied string is in the
    * timezone specified in $this->timezone.
    *
    * @param string $time the questionable time to parse
    * @param string $format the format `$time` is expected to be in
-   * @return \DateTime the parsed time or false
+   * @param bool | \DateTime $format the format `$time` is expected to be in
+   * @return \DateTime the parsed time or the default value
    */
-  public function parse(string $time, string $format = 'Y-m-d') {
-    $dt = DateTime::createFromFormat($format, $time, new DateTimeZone($this->timezone));
-    if($dt) {
-      // for some reason, using createFromFromat adds in the time. The regular DateTime constructor _does not_ do this. We manually zero out the time here to make the DateTime objects match.
-      $dt->setTime(0, 0, 0);
-      $formatted = $dt->format($format);
-      if($formatted === $time && $this->inBounds($dt)) {
-        return $dt;
+  public function parse($time, $default = false, string $format = 'Y-m-d') {
+    if(is_string($time)) {
+      $dt = DateTime::createFromFormat($format, $time, new DateTimeZone($this->timezone));
+      if($dt) {
+        // for some reason, using createFromFromat adds in the time. The regular DateTime constructor _does not_ do this. We manually zero out the time here to make the DateTime objects match.
+        $dt->setTime(0, 0, 0);
+        $formatted = $dt->format($format);
+        if($formatted === $time && $this->inBounds($dt)) {
+          return $dt;
+        }
       }
     }
-    return false;
+    return $default;
   }
 
   /*
-   * Checks if the given `\DateTime` is within acceptable date bounds.
+   * Checks if the given `\DateTime` is within "acceptable" date bounds.
    * It does no good to have the date be far in the past or in the future.
    *
    * @param \DateTime $dt
