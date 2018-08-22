@@ -1,6 +1,8 @@
 <?php
 namespace site\models;
+
 use yii\base\Model;
+use \common\interfaces\UserInterface;
 /**
  * Password reset request form
  */
@@ -9,7 +11,7 @@ class PasswordResetRequestForm extends Model
   public $email;
   private $user;
 
-  public function __construct(\common\models\User $user, $config = []) {
+  public function __construct(UserInterface $user, $config = []) {
     $this->user = $user;
     parent::__construct($config);
   }
@@ -34,12 +36,9 @@ class PasswordResetRequestForm extends Model
   public function sendEmail()
   {
     /* @var $user User */
-    $user = $this->user;
-    if($user->isGuest) {
-      $user = $this->user->findOne([
-        'email' => $this->email,
-      ]);
-    }
+    $user = $this->user::findOne([
+      'email' => $this->email,
+    ]);
 
     if ($user) {
       if (!$user->isTokenCurrent($user->password_reset_token)) {
