@@ -1,8 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
+use yii\bootstrap4\Nav;
+use yii\bootstrap4\NavBar;
 use yii\widgets\Breadcrumbs;
 use site\widgets\Alert;
 use common\components\Utility;
@@ -35,9 +35,6 @@ if($hash = Utility::getRevHash()) {
             NavBar::begin([
                 'brandLabel' => 'The Faster Scale App',
                 'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-fixed-top navbar-expand-lg',
-                ],
             ]);
             if (Yii::$app->user->isGuest) {
               $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
@@ -68,7 +65,7 @@ if($hash = Utility::getRevHash()) {
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
           <div class="row">
-            <div class="col-md-offset-2 col-md-8">
+            <div class="offset-md-2 col-lg-8">
               <?= Alert::widget() ?>
               <?= $content ?>
             </div>
@@ -80,9 +77,9 @@ if($hash = Utility::getRevHash()) {
       <div class="footer-main">
         <div class="container">
           <div class="row">
-            <div class="col-sm-offset-2 col-sm-10 col-xs-12">
+            <div class="offset-sm-2 col-md-10 col-12">
               <div class="row">
-                <div class="col-xs-3 col-md-4 footer-info">
+                <div class="col-3 col-lg-4 footer-info">
                   <ul class="list-unstyled">
                     <h4>Info</h4>
                     <li><a href="<?=Url::to(['site/blog'])?>">News</a>
@@ -90,14 +87,14 @@ if($hash = Utility::getRevHash()) {
                     <li><a href="<?=Url::to(['site/faq'])?>">FAQ</a>
                   </ul>
                 </div>
-                <div class="col-xs-3 col-md-4 footer-docs">
+                <div class="col-3 col-lg-4 footer-docs">
                   <h4>Legal</h4>
                   <ul class="list-unstyled">
                     <li><a href="<?=Url::to(['site/privacy'])?>">Privacy</a></li>
                     <li><a href="<?=Url::to(['site/terms'])?>">Terms</a></li>
                   </ul>
                 </div>
-                <div class="col-xs-6 col-md-4 footer-info">
+                <div class="col-6 col-lg-4 footer-info">
                   <h4>Connect</h4>
                   <ul class="list-unstyled">
                     <li><a href="https://github.com/CorWatts/fasterscale"><img src="/img/GitHub-Mark-32px.png" height=24 width=24 /></a> rev. <?=$rev_link?></li>

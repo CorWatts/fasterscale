@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use yii\bootstrap\Button;
+use yii\bootstrap4\Button;
 use yii\helpers\ArrayHelper as AH;
 
 use common\models\User;

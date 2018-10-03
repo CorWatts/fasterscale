@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\bootstrap\Button;
+use yii\bootstrap4\Button;
 use yii\helpers\ArrayHelper as AH;
 /**
  * @var yii\web\View $this

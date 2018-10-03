@@ -47,8 +47,8 @@ return [
     ],
     'assetManager' => [
       'bundles' => [
-        'yii\bootstrap\BootstrapPluginAsset' => false,
-        'yii\bootstrap\BootstrapAsset' => false,
+        'yii\bootstrap4\BootstrapPluginAsset' => false,
+        'yii\bootstrap4\BootstrapAsset' => false,
         'yii\web\JqueryAsset' => [
           'sourcePath' => '@assets',
           'js' => ['js/jquery-3.2.1.min.js'],
