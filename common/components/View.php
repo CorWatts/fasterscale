@@ -1,6 +1,6 @@
 <?php
 
-namespace site\classes;
+namespace common\components;
 
 use yii\helpers\Html;
 
@@ -12,7 +12,8 @@ class View extends \yii\web\View {
      */
     public $json;
 
-  public function registerJson($array, $key = null, $options = 0, $depth = 512)
+  // this is the key new function here
+  public function registerJson(array $array, $key = null, $options = 0, $depth = 512)
   {
     $json = json_encode($array, $options, $depth);
     $key = $key ?: md5($json);

@@ -63,7 +63,7 @@ return [
       ],
     ],
     'view' => [
-      'class' => site\classes\View::class
+      'class' => common\components\View::class
     ]
   ],
   'params' => $params,

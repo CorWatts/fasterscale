@@ -4,7 +4,7 @@ namespace site\controllers;
 
 use Yii;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
+use common\components\Controller;
 use yii\filters\VerbFilter;
 use common\components\AccessControl;
 
@@ -43,21 +43,6 @@ class SiteController extends Controller
         'actions' => [
           'logout' => ['post'],
         ],
-      ],
-    ];
-  }
-
-  /**
-   * @inheritdoc
-   */
-  public function actions()
-  {
-    return [
-      'error' => [
-        'class' => 'yii\web\ErrorAction',
-      ],
-      'captcha' => [
-        'class' => 'yii\captcha\CaptchaAction',
       ],
     ];
   }
@@ -139,7 +124,7 @@ class SiteController extends Controller
     $model = Yii::$container->get(\site\models\SignupForm::class);
     if($model->load(Yii::$app->request->post()) && $model->validate()) {
       $model->signup();
-      Yii::$app->getSession()->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
+      Yii::$app->session->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
       return $this->redirect('/',302);
     }
 
@@ -157,7 +142,7 @@ class SiteController extends Controller
         Yii::warning("$ip has tried to reset the password for ".$model->email);
       }
 
-      Yii::$app->getSession()->setFlash('success', 'If there is an account with the submitted email address you will receive further instructions in your email inbox.');
+      Yii::$app->session->setFlash('success', 'If there is an account with the submitted email address you will receive further instructions in your email inbox.');
       return $this->goHome();
     }
 
@@ -177,7 +162,7 @@ class SiteController extends Controller
     if ($model->load(Yii::$app->request->post())
         && $model->validate()
         && $model->resetPassword()) {
-      Yii::$app->getSession()->setFlash('success', 'New password was saved.');
+      Yii::$app->session->setFlash('success', 'New password was saved.');
       return $this->goHome();
     }
 
@@ -199,12 +184,12 @@ class SiteController extends Controller
     }
 
     if($user->isTokenConfirmed($user->verify_email_token)) {
-      Yii::$app->getSession()->setFlash('success', 'Your account has already been verified. Please log in.');
+      Yii::$app->session->setFlash('success', 'Your account has already been verified. Please log in.');
       return $this->redirect('/login',302);
     } else if (Yii::$app->getUser()->login($user)) {
       $user->confirmVerifyEmailToken();
       $user->save();
-      Yii::$app->getSession()->setFlash('success', 'Your account has been verified. Please continue with your check-in.');
+      Yii::$app->session->setFlash('success', 'Your account has been verified. Please continue with your check-in.');
       return $this->redirect('/welcome',302);
     }
   }

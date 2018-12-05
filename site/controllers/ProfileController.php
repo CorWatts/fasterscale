@@ -4,7 +4,7 @@ namespace site\controllers;
 
 use Yii;
 use common\models\Question;
-use yii\web\Controller;
+use common\components\Controller;
 use yii\filters\VerbFilter;
 use common\components\AccessControl;
 use League\Csv\Writer;
@@ -42,21 +42,6 @@ class ProfileController extends Controller {
     ];
   }
 
-  /**
-   * @inheritdoc
-   */
-  public function actions()
-  {
-    return [
-      'error' => [
-        'class' => 'yii\web\ErrorAction',
-      ],
-      'captcha' => [
-        'class' => 'yii\captcha\CaptchaAction',
-      ],
-    ];
-  }
-
   public function actionIndex() {
     $editProfileForm    = Yii::$container->get(\site\models\EditProfileForm::class, [Yii::$app->user->identity]);
     $changePasswordForm = Yii::$container->get(\site\models\ChangePasswordForm::class, [Yii::$app->user->identity]);
@@ -73,7 +58,7 @@ class ProfileController extends Controller {
     if ($editProfileForm->load(Yii::$app->request->post())) {
       $saved_user = $editProfileForm->saveProfile();
       if($saved_user) {
-        Yii::$app->getSession()->setFlash('success', 'New profile data saved!');
+        Yii::$app->session->setFlash('success', 'New profile data saved!');
       }
     }
 
@@ -93,7 +78,7 @@ class ProfileController extends Controller {
       if($model->deleteAccount()) {
         $this->redirect(['site/index']);
       } else {
-        Yii::$app->getSession()->setFlash('error', 'Wrong password!');
+        Yii::$app->session->setFlash('error', 'Wrong password!');
       }
     }
 
@@ -105,9 +90,9 @@ class ProfileController extends Controller {
 
     if ($model->load(Yii::$app->request->post())) {
       if($model->validate() && $model->changePassword()) {
-        Yii::$app->getSession()->setFlash('success', 'Password successfully changed');
+        Yii::$app->session->setFlash('success', 'Password successfully changed');
       } else {
-        Yii::$app->getSession()->setFlash('error', 'Wrong password!');
+        Yii::$app->session->setFlash('error', 'Wrong password!');
       }
     }
 
@@ -119,7 +104,7 @@ class ProfileController extends Controller {
 
     if ($model->load(Yii::$app->request->post()) && $model->validate()) {
       $model->changeEmail();
-      Yii::$app->getSession()->setFlash('success', "We've sent an email to your requested email address to confirm. Please click on the verification link to continue.");
+      Yii::$app->session->setFlash('success', "We've sent an email to your requested email address to confirm. Please click on the verification link to continue.");
     }
 
     $this->redirect(['profile/index']);
