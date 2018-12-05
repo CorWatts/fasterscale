@@ -11,12 +11,12 @@ use common\interfaces\TimeInterface;
 use yii\di\Container;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
+use common\components\Controller;
 use yii\filters\VerbFilter;
 use common\components\AccessControl;
 use yii\helpers\ArrayHelper as AH;
 
-class CheckinController extends \yii\web\Controller
+class CheckinController extends Controller
 {
   public function behaviors()
   {

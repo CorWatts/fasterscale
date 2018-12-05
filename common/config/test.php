@@ -14,5 +14,8 @@ return [
       'viewPath' => '@common/mail',
       'useFileTransport' => true,
     ],
+    'request' => [
+      'class' => \common\tests\_support\MockRequest::class
+    ]
   ]
 ];

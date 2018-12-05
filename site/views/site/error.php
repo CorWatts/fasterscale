@@ -13,7 +13,9 @@ use yii\helpers\Url;
 $this->title = "The Faster Scale App | $name";
 $code = $exception->statusCode;
 
-if($code === 404):
+$exception = Yii::$app->errorHandler->exception;
+
+if($exception instanceof \yii\web\NotFoundHttpException):
   $this->title = "The Faster Scale App | Page Not Found";
 ?>
 
@@ -23,9 +25,10 @@ if($code === 404):
   <p>Otherwise, please ensure your attempted url is correct.</p>
 
 <?php
-elseif($code >= 500 && $code < 600):
+elseif($exception instanceof \yii\web\ServerErrorHttpException):
   $this->title = "The Faster Scale App | Oops";
 ?>
+
   <h1>It's not you. It's us.</h1>
   <div class="alert alert-danger"><?= nl2br(Html::encode($name)) ?></div>
   <p>Well this is embarrassing...we're having an error on our side. So sorry for the annoyance. If you'd like to help, please send us a message on our <a href='<?=Url::to(['site/contact'])?>'>contact form</a>.</p>
@@ -38,4 +41,4 @@ elseif($code >= 500 && $code < 600):
   <p>The above error occurred while the Web server was processing your request.</p>
   <p>Please contact us if you think this is a server error. Thank you.</p>
 </div>
-<?php endif; ?> 
+<?php endif; ?>

@@ -114,7 +114,7 @@ class LoginFormTest extends \Codeception\Test\Unit {
       $this->form->password = 'hunter2';
 
       expect('login should return false if account is not verified', $this->assertFalse($this->form->login()));
-      expect('login should set a flash message if account is not verified', $this->assertNotEmpty(Yii::$app->getSession()->getFlash('warning', null, true)));
+      expect('login should set a flash message if account is not verified', $this->assertNotEmpty(Yii::$app->session->getFlash('warning', null, true)));
     });
 
     $this->specify('login should fail if credentials are not valid', function() {
@@ -123,7 +123,7 @@ class LoginFormTest extends \Codeception\Test\Unit {
       $this->form->email = 'hunter2@hunter2.com';
       $this->form->password = 'hunter2';
       expect('login should return false credentials are bad', $this->assertFalse($this->form->login()));
-      expect('login should NOT set a flash message if credentials are bad', $this->assertEmpty(Yii::$app->getSession()->getFlash('warning', null, true)));
+      expect('login should NOT set a flash message if credentials are bad', $this->assertEmpty(Yii::$app->session->getFlash('warning', null, true)));
     });
   }
 }
