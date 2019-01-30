@@ -37,16 +37,16 @@ class SignupFormTest extends \Codeception\Test\Unit
     });
 
     // instantiate mock objects
-    $user_behavior = $this->container->get('common\interfaces\UserBehaviorInterface');
-    $time        = $this->container->get('common\interfaces\TimeInterface');
+    $user_behavior = $this->container->get(\common\interfaces\UserBehaviorInterface::class);
+    $time        = $this->container->get(\common\interfaces\TimeInterface::class);
 
-    $question = $this->getMockBuilder('\common\models\Question')
+    $question = $this->getMockBuilder(\common\models\Question::class)
       ->setMethods(['save', 'attributes'])
       ->getMock();
 
     $user_methods = ['save', 'attributes', 'findByEmail', 'sendSignupNotificationEmail', 'sendVerifyEmail'];
-    $this->user = $this->getMockBuilder('\common\models\User')
-      ->setConstructorArgs([$user_behavior, $question, $time])
+    $this->user = $this->getMockBuilder(\common\models\User::class)
+      ->setConstructorArgs([$user_behavior, $time])
       ->setMethods($user_methods)
       ->getMock();
     $user_attrs = [
@@ -70,8 +70,8 @@ class SignupFormTest extends \Codeception\Test\Unit
     ];
     $this->user->method('attributes')->willReturn($user_attrs);
 
-    $this->existing_user = $this->getMockBuilder('\common\models\User')
-      ->setConstructorArgs([$user_behavior, $question, $time])
+    $this->existing_user = $this->getMockBuilder(\common\models\User::class)
+      ->setConstructorArgs([$user_behavior, $time])
       ->setMethods($user_methods)
       ->getMock();
     $this->existing_user->method('attributes')->willReturn($user_attrs);
@@ -89,7 +89,7 @@ class SignupFormTest extends \Codeception\Test\Unit
   }
 
   public function testRules() {
-    $form = $this->container->get('\site\models\SignupForm', [$this->user]);
+    $form = $this->container->get(\site\models\SignupForm::class, [$this->user]);
 
     $form->attributes = $this->vals; // massive assignment
     expect('the form should pass validation with good values', $this->assertTrue($form->validate()));

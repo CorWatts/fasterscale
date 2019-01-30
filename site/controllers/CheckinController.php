@@ -37,9 +37,7 @@ class CheckinController extends Controller
   public function actionIndex() {
     $form = Yii::$container->get(\site\models\CheckinForm::class);
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-      $form->compiled_behaviors = $form->compileBehaviors();
-
-      if(sizeof($form->compiled_behaviors) === 0) {
+      if(!$form->compileBehaviors()) {
         return $this->redirect(['view']);
       }
 
@@ -48,14 +46,16 @@ class CheckinController extends Controller
       $form->save();
 
       return $this->redirect(['questions']);
-    } else {
-      $behaviors  = Yii::$container->get(BehaviorInterface::class)::$behaviors;
-      return $this->render('index', [
-        'categories'    => Yii::$container->get(CategoryInterface::class)::$categories,
-        'model'         => $form,
-        'behaviorsList' => AH::index($behaviors, null, "category_id")
-      ]);
     }
+
+    $behaviors  = Yii::$container->get(BehaviorInterface::class)::$behaviors;
+    $custom = \common\models\CustomBehavior::find()->where(['user_id' => Yii::$app->user->id])->asArray()->all();
+    return $this->render('index', [
+      'categories'    => Yii::$container->get(CategoryInterface::class)::$categories,
+      'model'         => $form,
+      'behaviorsList' => AH::index($behaviors, null, "category_id"),
+      'customList' => AH::index($custom, null, "category_id")
+    ]);
   }
 
   public function actionQuestions() {
@@ -70,10 +70,10 @@ class CheckinController extends Controller
     $form = Yii::$container->get(\site\models\QuestionForm::class);
     if ($form->load(Yii::$app->request->post()) && $form->validate()) {
       // we only store one data set per day so clear out any previously saved ones
-      $form->deleteToday();
+      $form->deleteToday(Yii::$app->user->id);
 
       $behaviors = $user_behavior->findAll($form->getUserBehaviorIds());
-      if($result = $form->saveAnswers($behaviors)) {
+      if($result = $form->saveAnswers(Yii::$app->user->id, $behaviors)) {
 
         if(Yii::$app->user->identity->send_email) {
           if(Yii::$app->user->identity->sendEmailReport($date)) {
@@ -102,6 +102,7 @@ class CheckinController extends Controller
     $user          = Yii::$container->get(UserInterface::class);
     $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
     $categories    = Yii::$container->get(CategoryInterface::class)::$categories;
+    $question      = Yii::$container->get(\common\interfaces\QuestionInterface::class);
 
     $user_behaviors = $user_behavior->getByDate(Yii::$app->user->id, $date);
     $form = Yii::$container->get(\site\models\CheckinForm::class);
@@ -119,7 +120,7 @@ class CheckinController extends Controller
       'behaviorsList'      => $form_behaviors,
       'past_checkin_dates' => $user_behavior->getPastCheckinDates(),
       'answer_pie'         => $answer_pie,
-      'questions'          => $user->getUserQuestions($date),
+      'questions'          => $question->getByUser(Yii::$app->user->id, $date),
       'isToday'            => $time->getLocalDate() === $date,
     ]);
   }

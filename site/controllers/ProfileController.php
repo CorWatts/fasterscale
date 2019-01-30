@@ -47,6 +47,7 @@ class ProfileController extends Controller {
     $changePasswordForm = Yii::$container->get(\site\models\ChangePasswordForm::class, [Yii::$app->user->identity]);
     $changeEmailForm    = Yii::$container->get(\site\models\ChangeEmailForm::class, [Yii::$app->user->identity]);
     $deleteAccountForm  = Yii::$container->get(\site\models\DeleteAccountForm::class, [Yii::$app->user->identity]);
+    $customBehaviorForm = Yii::$container->get(\site\models\CustomBehaviorForm::class, [Yii::$app->user->identity]);
     $graph              = Yii::$container->get(\common\components\Graph::class, [Yii::$app->user->identity]);
 
     if (Yii::$app->request->isAjax && $editProfileForm->load($_POST)) {
@@ -62,13 +63,14 @@ class ProfileController extends Controller {
       }
     }
 
-
     return $this->render('index', [
       'profile'         => $editProfileForm,
       'change_password' => $changePasswordForm,
       'change_email'    => $changeEmailForm,
       'delete'          => $deleteAccountForm,
+      'custom_behavior'=> $customBehaviorForm,
       'graph_url'       => $graph->getUrl(Yii::$app->user->identity->getIdHash()),
+      'gridView'        => Yii::$container->get(\common\models\CustomBehavior::class)->getGridView(),
     ]);
   }
 
@@ -159,8 +161,8 @@ class ProfileController extends Controller {
     $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
     while($row = $reader->read()) {
       $row = $user_behavior::decorate([$row]);
-      $row = Yii::$app->user->identity->cleanExportData($row);
-      fputcsv($fp, $row[0]);
+      $row = Yii::$app->user->identity->cleanExportRow($row[0]);
+      fputcsv($fp, $row);
     }
     fclose($fp);
 

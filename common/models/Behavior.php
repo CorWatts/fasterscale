@@ -148,6 +148,7 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public function rules()
   {
@@ -160,6 +161,7 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public function attributeLabels()
   {

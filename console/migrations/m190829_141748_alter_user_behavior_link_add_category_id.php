@@ -51,7 +51,15 @@ class m190829_141748_alter_user_behavior_link_add_category_id extends Migration
      * {@inheritdoc}
      */
     public function safeDown() {
-      $this->dropColumn('{{%user_behavior_link}}', 'category_id');
-      $this->dropColumn('{{%question}}', 'category_id');
+      /**
+       * If custom behaviors are saved in the user_behavior_link table, we run this migration down, then
+       * try to run it up again, it will fail.
+       * If a custom behavior exists in the user_behavior_link table when we try to run this up migration, there will be rows with NULL for a category_id (we add the category_id column, but then Behavior::getBehavior() returns false).
+       * It's easiest to just not allow this migration to be ran down.
+       */
+      return false;
+
+      // $this->dropColumn('{{%user_behavior_link}}', 'category_id');
+      // $this->dropColumn('{{%question}}', 'category_id');
     }
 }

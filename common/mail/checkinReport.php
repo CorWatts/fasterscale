@@ -129,11 +129,11 @@ if($questions) {
   foreach($questions as $behavior_id => $behavior_questions) {
 ?>
 
-                                                   <h4 style="Margin:0;Margin-bottom:10px;color:#37b98f;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:5px;padding:0 8px;text-align:left;word-wrap:normal"> <?= $behavior_questions['question']['title'] ?> </h4>
+                                                   <h4 style="Margin:0;Margin-bottom:10px;color:#37b98f;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:5px;padding:0 8px;text-align:left;word-wrap:normal"> <?= Html::encode($behavior_questions['question']['behavior_name']) ?> </h4>
 
 <?php
     foreach($behavior_questions['answers'] as $key => $question) {  ?>
-      <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left"><strong><?=$question['title']?></strong> <?=$question['answer']?></p>
+      <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left"><strong><?= Html::encode($question['title']) ?></strong> <?= Html::encode($question['answer']) ?></p>
 <?php
     }
   }
@@ -192,10 +192,10 @@ if($questions) {
 if($user_behaviors) {
   foreach($user_behaviors as $cat_key => $behaviors) { ?>
         <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">
-          <strong style="color:#37b98f"><?=  $categories[$cat_key] ?></strong>
+          <strong style="color:#37b98f"><?= Html::encode($categories[$cat_key]) ?></strong>
 <?php
     foreach($behaviors as $behavior) { ?>
-        <br><?= $behavior['name'] ?>
+        <br><?= Html::encode($behavior['name']) ?>
 <?php
     }
   }

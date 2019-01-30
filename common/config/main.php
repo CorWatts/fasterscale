@@ -10,6 +10,7 @@ return [
       'common\interfaces\QuestionInterface' => \common\models\Question::class,
       'common\interfaces\BehaviorInterface' => \common\models\Behavior::class,
       'common\interfaces\CategoryInterface' => \common\models\Category::class,
+      'common\interfaces\CustomBehaviorInterface' => \common\models\CustomBehavior::class,
       'common\interfaces\TimeInterface' => function () {
         if(Yii::$app->user->getIsGuest()) {
           return new \common\components\Time('UTC');
@@ -24,7 +25,8 @@ return [
       'class' => \corwatts\MarkdownFiles\Module::class,
       'posts' => '@site/views/blog/posts',
       'drafts' => '@site/views/blog/drafts',
-    ]
+    ],
+    'gridview' => '\kartik\grid\Module',
   ],
   'components' => [
     // by default, sessions are stored in a local file

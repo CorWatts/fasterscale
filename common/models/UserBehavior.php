@@ -37,6 +37,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public static function tableName()
   {
@@ -45,18 +46,19 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public function rules()
   {
     return [
       [['user_id', 'behavior_id', 'category_id', 'date'], 'required'],
       [['user_id', 'behavior_id', 'category_id'], 'integer'],
-      //[['date'], 'string']
     ];
   }
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public function attributeLabels()
   {
@@ -71,10 +73,19 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   /**
    * @return \yii\db\ActiveQuery
+   * @codeCoverageIgnore
    */
   public function getUser()
   {
     return $this->hasOne(\common\models\User::class, ['id' => 'user_id']);
+  }
+
+  /**
+   * @return \yii\db\ActiveQuery
+   * @codeCoverageIgnore
+   */
+  public function getCustomBehavior() {
+    return $this->hasOne(\common\models\CustomBehavior::class, ['custom_behavior_id' => 'id']);
   }
 
   public function getPastCheckinDates() {
@@ -110,7 +121,13 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
       ]);
 
     $user_behaviors = self::decorate($query->all());
-    return AH::map($user_behaviors, 'id', function($a) { return $a['behavior']['name']; }, function($b) {return $b['behavior']['category_id']; });
+    return AH::map($user_behaviors, 'id',
+      function($a) {
+        return AH::getValue($a, 'behavior.name', $a['custom_behavior']);
+      },
+      function($b) {
+        return $b['category_id'];
+      });
   }
 
   public function getCheckinBreakdown(int $period = 30) {
@@ -141,7 +158,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   /**
    * @param array $decorated_behaviors an array of behaviors ran through self::decorate()
-   * @return array a list of categories and the number of selected behaviors in each category
+   * @return Array a list of categories and the number of selected behaviors in each category
    */
   public function getBehaviorsByCategory(array $decorated_behaviors) {
     $arr = array_reduce($decorated_behaviors, function($acc, $row) {
@@ -190,7 +207,11 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   /**
    * Returns an array of behaviors selected by the given user on the given date.
-   * NOTE: this function is designed to return data in the same format that is returned by using yii\helpers\ArrayHelper::index(\common\models\Behavior::$behaviors, 'name', "category_id"). This facilitates generation of the CheckinForm and allows us to easily merge these two datasets together.
+   * NOTE: this function is designed to return data in the same format that is
+   * returned by using
+   * yii\helpers\ArrayHelper::index(\common\models\Behavior::$behaviors, 'name', "category_id").
+   * This facilitates generation of the CheckinForm and allows us to easily
+   * merge these two datasets together.
    * @param integer $user_id
    * @param string|null $local_date
    * @return array
@@ -212,10 +233,10 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     foreach($uo as &$o) {
       $behavior = \common\models\Behavior::getBehavior('id', $o['behavior_id']);
       $category = \common\models\Category::getCategory('id', $o['category_id']);
-      // if this behavior does not have a valid behavior or category, something
-      // is weird and we don't want to do this halfway.
-      if($behavior && $category) {
+      if($behavior) {
         $o['behavior'] = $behavior;
+      }
+      if($category) {
         $o['category'] = $category;
       }
     }
@@ -247,9 +268,11 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     foreach($behaviors as $behavior) {
       $indx = $behavior['category_id'];
 
-      $bhvrs_by_cat[$indx][$behavior['behavior']['name']] = [
+      $bname = AH::getValue($behavior, 'behavior.name', AH::getValue($behavior, 'custom_behavior'));
+      $bhvrs_by_cat[$indx][$bname] = [
         "id" => $behavior['behavior_id'],
-        "name"=>$behavior['behavior']['name']];
+        "name"=>$bname
+      ];
     }
 
     return $bhvrs_by_cat;

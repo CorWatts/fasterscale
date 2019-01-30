@@ -189,14 +189,10 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     ], [
       'id' => 830,
       'user_id' => 2,
-      'behavior_id' => 118,
+      'behavior_id' => null,
       'category_id' => 6,
       'date' => '2016-09-10 19:26:04',
-      'behavior' => [
-        'id' => 118,
-        'name' => 'not returning phone calls',
-        'category_id' => 6,
-      ],
+      'custom_behavior' => 'some other custom behavior',
       'category' => [
         'id' => 6,
         'name' => 'Exhausted',
@@ -204,14 +200,10 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     ], [
       'id' => 831,
       'user_id' => 2,
-      'behavior_id' => 122,
+      'behavior_id' => null,
       'category_id' => 7,
       'date' => '2016-09-10 19:26:04',
-      'behavior' => [
-        'id' => 122,
-        'name' => 'returning to the place you swore you would never go again',
-        'category_id' => 7,
-      ],
+      'custom_behavior' => 'some_custom_behavior',
       'category' => [
         'id' => 7,
         'name' => 'Relapse/Moral Failure',
@@ -271,15 +263,15 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
           'id' => 111,
           'name' => 'seeking out old unhealthy people and places',
         ],
-        'not returning phone calls' => [
-          'id' => 118,
-          'name' => 'not returning phone calls',
+        'some other custom behavior' => [
+          'id' => null,
+          'name' => 'some other custom behavior',
         ],
     ],
     7 => [
-        'returning to the place you swore you would never go again' => [
-          'id' => 122,
-          'name' => 'returning to the place you swore you would never go again',
+        'some_custom_behavior' => [
+          'id' => null,
+          'name' => 'some_custom_behavior',
         ],
     ],
   ];
@@ -352,15 +344,20 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
                         'name' => 'Exhausted',
                       ]]]));
 
-    expect('decorate SHOULD NOT add additional Behavior or Category data when the provided behavior_id is invalid',
+    expect('decorate should add Category data but no Behavior data when the category_id is valid and the behavior_id is invalid',
       $this->assertEquals(
         $this->user_behavior->decorate($this->badSingleSimpleBehaviorNoBehavior),
-        $this->badSingleSimpleBehaviorNoBehavior));
-
-    expect('decorate SHOULD NOT add Category data when the provided category_id is invalid',
-      $this->assertEquals(
-        $this->user_behavior->decorate($this->badSingleSimpleBehaviorNoBehavior),
-        $this->badSingleSimpleBehaviorNoBehavior));
+        [[
+          'id' => 396,
+          'user_id' => 2,
+          'behavior_id' => 99999,
+          'category_id' => 6,
+          'date' => '2016-06-17 04:12:43',
+          'category' => [
+            'id' => 6,
+            'name' => 'Exhausted',
+          ],
+        ]]));
   }
 
   public function testParseBehaviorData() {

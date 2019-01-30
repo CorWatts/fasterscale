@@ -64,6 +64,9 @@ if($hash = Utility::getRevHash()) {
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+<?php if (!Yii::$app->user->isGuest): ?>
+            <div class="alert alert-info" role="alert">Fully editable Personal Behaviors have arrived. Try them out on <a href="<?=Url::to(['profile/index'])?>">your profile</a> or read more about the feature in <a href="<?=Url::to(['site/blog'])?>">our latest update</a>.</div>
+<?php endif; ?>
           <div class="row">
             <div class="col-md-offset-2 col-md-8">
               <?= Alert::widget() ?>
@@ -97,7 +100,7 @@ if($hash = Utility::getRevHash()) {
                 <div class="col-xs-6 col-md-4 footer-info">
                   <h4>Connect</h4>
                   <ul class="list-unstyled">
-                    <li><a href="https://github.com/CorWatts/fasterscale"><img src="/img/GitHub-Mark-32px.png" height=24 width=24 /></a> rev. <?=$rev_link?></li>
+                    <li><a href="https://github.com/CorWatts/fasterscale"><img alt="Github Logo" src="/img/GitHub-Mark-32px.png" height=24 width=24 /></a> rev. <?=$rev_link?></li>
                     <li><a href="<?=Url::to(['site/contact'])?>">Contact</a>
                     <li><a href="https://www.freelists.org/list/fsa-discuss">Mailing List</a></li>
                   </ul>

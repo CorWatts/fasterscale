@@ -29,6 +29,17 @@ return [
       'site\assets\MomentAsset',
       'site\assets\ChartjsAsset',
       'site\assets\PickadateAsset',
+      'yii\grid\GridViewAsset',
+      'kartik\grid\GridViewAsset',
+      'kartik\dialog\DialogAsset',
+      'kartik\dialog\DialogBootstrapAsset',
+      'kartik\dialog\DialogYiiAsset',
+      'kartik\grid\GridExportAsset',
+      'kartik\grid\GridResizeColumnsAsset',
+      'kartik\editable\EditableAsset',
+      'kartik\popover\PopoverXAsset',
+      'kartik\base\WidgetAsset',
+      'kartik\form\ActiveFormAsset',
     ],
     // Asset bundle for compression output:
     'targets' => [

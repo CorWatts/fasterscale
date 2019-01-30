@@ -72,6 +72,21 @@ class QuestionFormTest extends \Codeception\Test\Unit
     });
   }
 
+  public function testGetUserBehaviorIds()
+  {
+    $model = $this->container->get('\site\models\QuestionForm');
+
+    $model->user_behavior_id1 = false;
+    $model->user_behavior_id3 = null;
+    expect('getUserBehaviorIds should strip out all the falsy propeties it finds', $this->assertEmpty($model->getUserBehaviorIds('user_behavior_id')));
+
+    $model->user_behavior_id1 = '323';
+    $model->user_behavior_id2 = 122;
+    $model->user_behavior_id3 = '454';
+    $model->answer_1a = 'processing emotions';
+    expect('getUserBehaviorIds should return non-falsy properties that have the given prefix', $this->assertEquals($model->getUserBehaviorIds('user_behavior_id'), [323, 122, 454]));
+  }
+
   public function testBehaviorToAnswers()
   {
     $this->specify('behaviorToAnswers should function properly', function() {
@@ -173,6 +188,105 @@ class QuestionFormTest extends \Codeception\Test\Unit
 									]]));
     });
   }
+
+  public function testSaveAnswers()
+  {
+    $question = $this->getMockBuilder(\common\models\Question::class)
+                  ->setMethods(['save', 'attributes'])
+                  ->getMock();
+    $question
+      ->method('attributes')
+      ->willReturn(['id', 'user_id', 'behavior_id', 'category_id', 'user_behavior_id', 'question', 'answer', 'date']);
+    $question
+      ->expects($this->exactly(6))
+      ->method('save')
+      ->willReturn(true);
+
+    Yii::$container->set(\common\interfaces\QuestionInterface::class, $question);
+
+    $model = $this->getMockBuilder(\site\models\QuestionForm::class)
+                  ->setConstructorArgs([$question])
+                  ->setMethods(['getAnswers'])
+                  ->getMock();
+    $model
+      ->expects($this->once())
+      ->method('getAnswers')
+      ->willReturn([[
+        'behavior_id' => 280,
+        'category_id' => 8,
+        'user_bhvr_id' => 7,
+        'question_id' => 1,
+        'answer' => 'processing emotions',
+      ], [
+        'behavior_id' => 280,
+        'category_id' => 8,
+        'user_bhvr_id' => 7,
+        'question_id' => 2,
+        'answer' => 'processing emotions',
+      ], [
+        'behavior_id' => 280,
+        'category_id' => 8,
+        'user_bhvr_id' => 7,
+        'question_id' => 3,
+        'answer' => 'processing emotions',
+      ], [
+        'behavior_id' => 281,
+        'category_id' => 8,
+        'user_bhvr_id' => 13,
+        'question_id' => 1,
+        'answer' => 'processing emotions',
+      ], [
+        'behavior_id' => 281,
+        'category_id' => 8,
+        'user_bhvr_id' => 13,
+        'question_id' => 2,
+        'answer' => 'processing emotions',
+      ], [
+        'behavior_id' => 281,
+        'category_id' => 8,
+        'user_bhvr_id' => 13,
+        'question_id' => 3,
+        'answer' => 'processing emotions',
+      ]]);
+
+      expect('saveAnswers should invoke save() the expected number of times and return true', $this->assertTrue($model->saveAnswers(123, []))); // doesn't matter what we pass in, we're mocking getAnswers()
+  }
+
+  /**
+   * This test doesn't work :(
+   * Phpunit doesn't like to mock static methods
+   * There may be a way to do this but I don't have the patience
+   * to figure it out right now.
+   */
+  /*
+  public function testDeleteToday()
+  {
+    Yii::$container->set(\common\interfaces\TimeInterface::class, function () {
+      return new \common\components\Time('America/Los_Angeles');
+    });
+    $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
+    list ($start, $end) = $time->getUTCBookends($time->getLocalDate());
+    $question = $this->getMockBuilder(\common\models\Question::class)
+                  ->setMethods(['save', 'attributes', 'deleteAll'])
+                  ->getMock();
+    $user_id = 5;
+    $question
+      ->expects($this->once())
+      ->method('deleteAll')
+      ->with("user_id=:user_id 
+      AND date > :start_date 
+      AND date < :end_date", 
+      [
+        ":user_id" => 5,
+        ':start_date' => $start,
+        ":end_date" => $end
+      ]);
+    $container = new Container;
+    $form = $container->get(\site\models\QuestionForm::class, [$question]);
+
+    $form->deleteToday(5);
+  }
+  */
 
   private function fakeModel($id, $behavior_id, $category_id) {
     $class = new \stdClass;

@@ -19,388 +19,6 @@ class UserTest extends \Codeception\Test\Unit {
   private $time;
   private $question;
 
-	public $questionData = [
-	[
-		'id' => 641,
-		'user_id' => 2,
-		'behavior_id' => 13,
-		'user_behavior_id' => 821,
-		'question' => 1,
-		'answer' => 'alsgn',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 13,
-			'name' => 'less time/energy for God, meetings, and church',
-			'category_id' => 2,
-		],
-	],
-	[
-		'id' => 642,
-		'user_id' => 2,
-		'behavior_id' => 13,
-		'user_behavior_id' => 821,
-		'question' => 2,
-		'answer' => 'loiun',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 13,
-			'name' => 'less time/energy for God, meetings, and church',
-			'category_id' => 2,
-		],
-	],
-	[
-		'id' => 643,
-		'user_id' => 2,
-		'behavior_id' => 13,
-		'user_behavior_id' => 821,
-		'question' => 3,
-		'answer' => 'liun',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 13,
-			'name' => 'less time/energy for God, meetings, and church',
-			'category_id' => 2,
-		],
-	],
-	[
-		'id' => 644,
-		'user_id' => 2,
-		'behavior_id' => 29,
-		'user_behavior_id' => 823,
-		'question' => 1,
-		'answer' => 'ljnb',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 29,
-			'name' => 'using profanity',
-			'category_id' => 3,
-		],
-	],
-	[
-		'id' => 645,
-		'user_id' => 2,
-		'behavior_id' => 29,
-		'user_behavior_id' => 823,
-		'question' => 2,
-		'answer' => 'liunb',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 29,
-			'name' => 'using profanity',
-			'category_id' => 3,
-		],
-	],
-	[
-		'id' => 646,
-		'user_id' => 2,
-		'behavior_id' => 29,
-		'user_behavior_id' => 823,
-		'question' => 3,
-		'answer' => 'ilub ',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 29,
-			'name' => 'using profanity',
-			'category_id' => 3,
-		],
-	],
-	[
-		'id' => 647,
-		'user_id' => 2,
-		'behavior_id' => 48,
-		'user_behavior_id' => 825,
-		'question' => 1,
-		'answer' => 'liub',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 48,
-			'name' => 'workaholic',
-			'category_id' => 4,
-		],
-	],
-	[
-		'id' => 648,
-		'user_id' => 2,
-		'behavior_id' => 48,
-		'user_behavior_id' => 825,
-		'question' => 2,
-		'answer' => 'liub',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 48,
-			'name' => 'workaholic',
-			'category_id' => 4,
-		],
-	],
-	[
-		'id' => 649,
-		'user_id' => 2,
-		'behavior_id' => 48,
-		'user_behavior_id' => 825,
-		'question' => 3,
-		'answer' => 'liub ',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 48,
-			'name' => 'workaholic',
-			'category_id' => 4,
-		],
-	],
-	[
-		'id' => 650,
-		'user_id' => 2,
-		'behavior_id' => 89,
-		'user_behavior_id' => 828,
-		'question' => 1,
-		'answer' => 'liub',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 89,
-			'name' => 'obsessive (stuck) thoughts',
-			'category_id' => 5,
-		],
-	],
-	[
-		'id' => 651,
-		'user_id' => 2,
-		'behavior_id' => 89,
-		'user_behavior_id' => 828,
-		'question' => 2,
-		'answer' => 'liuby',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 89,
-			'name' => 'obsessive (stuck) thoughts',
-			'category_id' => 5,
-		],
-	],
-	[
-		'id' => 652,
-		'user_id' => 2,
-		'behavior_id' => 89,
-		'user_behavior_id' => 828,
-		'question' => 3,
-		'answer' => 'uiylb',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 89,
-			'name' => 'obsessive (stuck) thoughts',
-			'category_id' => 5,
-		],
-	],
-	[
-		'id' => 653,
-		'user_id' => 2,
-		'behavior_id' => 111,
-		'user_behavior_id' => 829,
-		'question' => 1,
-		'answer' => 'liub',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 111,
-			'name' => 'seeking out old unhealthy people and places',
-			'category_id' => 6,
-		],
-	],
-	[
-		'id' => 654,
-		'user_id' => 2,
-		'behavior_id' => 111,
-		'user_behavior_id' => 829,
-		'question' => 2,
-		'answer' => 'liuyb',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 111,
-			'name' => 'seeking out old unhealthy people and places',
-			'category_id' => 6,
-		],
-	],
-	[
-		'id' => 655,
-		'user_id' => 2,
-		'behavior_id' => 111,
-		'user_behavior_id' => 829,
-		'question' => 3,
-		'answer' => 'iuyb',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 111,
-			'name' => 'seeking out old unhealthy people and places',
-			'category_id' => 6,
-		],
-	],
-	[
-		'id' => 656,
-		'user_id' => 2,
-		'behavior_id' => 122,
-		'user_behavior_id' => 831,
-		'question' => 1,
-		'answer' => 'iuyb',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 122,
-			'name' => 'returning to the place you swore you would never go again',
-			'category_id' => 7,
-		],
-	],
-	[
-		'id' => 657,
-		'user_id' => 2,
-		'behavior_id' => 122,
-		'user_behavior_id' => 831,
-		'question' => 2,
-		'answer' => 'iuyb',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 122,
-			'name' => 'returning to the place you swore you would never go again',
-			'category_id' => 7,
-		],
-	],
-	[
-		'id' => 658,
-		'user_id' => 2,
-		'behavior_id' => 122,
-		'user_behavior_id' => 831,
-		'question' => 3,
-		'answer' => 'liuyb',
-		'date' => '2016-09-10 19:27:43',
-		'behavior' => 
-		[
-			'id' => 122,
-			'name' => 'returning to the place you swore you would never go again',
-			'category_id' => 7,
-		],
-	],
-];
-public $userQuestions = [
-	13 => [
-		'question' => [
-			'id' => 13,
-			'title' => 'less time/energy for God, meetings, and church',
-		],
-		'answers' => [
-			[
-				'title' => 'How does it affect me? How do I act and feel?',
-				'answer' => 'alsgn',
-			], [
-				'title' => 'How does it affect the important people in my life?',
-				'answer' => 'loiun',
-			], [
-				'title' => 'Why do I do this? What is the benefit for me?',
-				'answer' => 'liun',
-			],
-		],
-	],
-	29 => [
-		'question' => [
-			'id' => 29,
-			'title' => 'using profanity',
-		],
-		'answers' => [
-			[
-				'title' => 'How does it affect me? How do I act and feel?',
-				'answer' => 'ljnb',
-			], [
-				'title' => 'How does it affect the important people in my life?',
-				'answer' => 'liunb',
-			], [
-				'title' => 'Why do I do this? What is the benefit for me?',
-				'answer' => 'ilub ',
-			],
-		],
-	],
-	48 => [
-		'question' => [
-			'id' => 48,
-			'title' => 'workaholic',
-		],
-		'answers' => [
-			[
-				'title' => 'How does it affect me? How do I act and feel?',
-				'answer' => 'liub',
-			], [
-				'title' => 'How does it affect the important people in my life?',
-				'answer' => 'liub',
-			], [
-				'title' => 'Why do I do this? What is the benefit for me?',
-				'answer' => 'liub ',
-			],
-		],
-	],
-	89 => [
-		'question' => [
-			'id' => 89,
-			'title' => 'obsessive (stuck) thoughts',
-		],
-		'answers' => [
-			[
-				'title' => 'How does it affect me? How do I act and feel?',
-				'answer' => 'liub',
-			], [
-				'title' => 'How does it affect the important people in my life?',
-				'answer' => 'liuby',
-			], [
-				'title' => 'Why do I do this? What is the benefit for me?',
-				'answer' => 'uiylb',
-			],
-		],
-	],
-	111 => [
-		'question' => [
-			'id' => 111,
-			'title' => 'seeking out old unhealthy people and places',
-		],
-		'answers' => [
-			[
-				'title' => 'How does it affect me? How do I act and feel?',
-				'answer' => 'liub',
-			], [
-				'title' => 'How does it affect the important people in my life?',
-				'answer' => 'liuyb',
-			], [
-				'title' => 'Why do I do this? What is the benefit for me?',
-				'answer' => 'iuyb',
-			],
-		],
-	],
-	122 => [
-		'question' => [
-			'id' => 122,
-			'title' => 'returning to the place you swore you would never go again',
-		],
-		'answers' => [
-			[
-				'title' => 'How does it affect me? How do I act and feel?',
-				'answer' => 'iuyb',
-			], [
-				'title' => 'How does it affect the important people in my life?',
-				'answer' => 'iuyb',
-			], [
-				'title' => 'Why do I do this? What is the benefit for me?',
-				'answer' => 'liuyb',
-			],
-		],
-	],
-];
 
 public $exportData = [
     [
@@ -481,8 +99,8 @@ public $exportData = [
       ->setMethods(['save', 'attributes'])
       ->getMock();
 
-    $this->user = $this->getMockBuilder('\common\models\User')
-      ->setConstructorArgs([$user_behavior, $this->question, $this->time])
+    $this->user = $this->getMockBuilder(User::class)
+      ->setConstructorArgs([$user_behavior, $this->time])
       ->setMethods(['save', 'attributes'])
       ->getMock();
     $this->user->method('save')->willReturn(true);
@@ -513,13 +131,6 @@ public $exportData = [
   protected function tearDown() {
     $this->user = null;
     parent::tearDown();
-  }
-
-  public function testParseQuestionData() {
-    $this->specify('parseQuestionData should function correctly', function () {
-      expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals($this->user->parseQuestionData($this->questionData), $this->userQuestions));
-      expect('parseQuestionData should return empty with the empty set', $this->assertEmpty($this->user->parseQuestionData([])));
-    });
   }
 
   public function testIsTokenCurrent() {
@@ -586,7 +197,7 @@ public $exportData = [
     expect('getIdHash should return a DIFFERENT url-safe string for different params', $this->assertNotEquals($this->user->getidHash(), $hash));
   }
 
-  public function testCleanExportData() {
+  public function testCleanExportRow() {
     // need this for the convertUTCToLocal call
     Yii::configure(Yii::$app, [
       'components' => [
@@ -601,7 +212,7 @@ public $exportData = [
     // logs in the user 
     Yii::$app->user->setIdentity($identity);
 
-    expect('cleanExportData should clean and mutate the queried data to be suitable for downloading', $this->assertEquals([
+    expect('cleanExportRow should clean and mutate the queried data to be suitable for downloading', $this->assertEquals([
       [
         'date' => '2017-07-29 03:40:29',
         'behavior' => 'repetitive, negative thoughts',
@@ -631,7 +242,9 @@ public $exportData = [
         'question2' => 'q2',
         'question3' => 'q3',
       ]
-    ], $this->user->cleanExportData($this->exportData)));
+    ], array_map(function($row) {
+      return $this->user->cleanExportRow($row);
+    }, $this->exportData)));
   }
 
   public function testGenerateChangeEmailToken() {
@@ -647,15 +260,15 @@ public $exportData = [
   }
 
   public function testSendEmailReport() {
-    $user_behavior = $this->getMockBuilder('common\models\UserBehavior')
+    $user_behavior = $this->getMockBuilder(\common\models\UserBehavior::class)
       ->disableOriginalConstructor()
       ->setMethods(['save', 'attributes', 'getCheckinBreakdown'])
       ->getMock();
     $expected = require(__DIR__.'/../data/expected_getCheckinBreakdown.php');
     $user_behavior->method('getCheckinBreakdown')->willReturn($expected);
 
-    $user = $this->getMockBuilder('\common\models\User')
-      ->setConstructorArgs([$user_behavior, $this->question, $this->time])
+    $user = $this->getMockBuilder(User::class)
+      ->setConstructorArgs([$user_behavior, $this->time])
       ->setMethods(['save', 'attributes'])
       ->getMock();
     $user->method('save')->willReturn(true);
