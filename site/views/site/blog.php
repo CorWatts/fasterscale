@@ -4,7 +4,7 @@ use yii\helpers\Url;
 /**
  * @var yii\web\View $this
  */
-$this->title = 'The Faster Scale App | Welcome';
+$this->title = 'The Faster Scale App | Updates';
 $this->registerMetaTag([
   'name' => 'description',
   'content' => 'A totally free, online version of the Faster Scale. Increase your self-awareness and practice emotional mindfulness by signing up or logging in today.'

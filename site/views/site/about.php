@@ -35,6 +35,6 @@ $this->registerJsFile('/js/site/about.js', ['depends' => [\site\assets\AppAsset:
               <th>Description</th>
           </tr>
       </table>
-      <div id="spinner"><img src="/img/spinner.gif" id="spinner-gif" /></div>
+      <div id="spinner"><img alt="Spinner GIF" src="/img/spinner.gif" id="spinner-gif" /></div>
     </div>
 </div>

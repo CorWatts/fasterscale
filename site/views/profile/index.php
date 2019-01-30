@@ -90,6 +90,20 @@ $timezones = \DateTimeZone::listIdentifiers();
 </div>
 
   <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header"><h4>Personal Behaviors</h4></div>
+        <div class="card-block">
+          <div class="card-text">
+            <p>With personal behaviors you can create new behaviors that appear on your check-in form. Click the green button ("Add") below to create a new personal behavior. Name it, assign it to a category, then watch for it to appear in your next check-in.</p>
+            <?= $gridView ?>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-md-6">
       <div class="card">
           <div class="card-header"><h4>Export Check-in Data</h4></div>
@@ -128,6 +142,50 @@ $timezones = \DateTimeZone::listIdentifiers();
     </div>
   </div>
 
+<?php
+yii\bootstrap\Modal::begin([
+  'headerOptions' => ['id' => 'create-custom-behavior-header'],
+  'id' => 'create-custom-behavior',
+  'size' => 'modal-md',
+  'header' => '<h4 class="modal-title">Add Behavior</h4>',
+  'closeButton' => [
+    'id'=>'close-button',
+    'class'=>'close',
+    'data-dismiss' =>'modal',
+  ],
+  //keeps from closing modal with esc key or by clicking out of the modal.
+  // user must click cancel or X to close
+  //'clientOptions' => [
+  //'backdrop' => false, 'keyboard' => true
+  //]
+]);
+$form = ActiveForm::begin([
+  'id' => 'form-create-custom-behavior',
+  'action' => ['custom-behavior/create'],
+  'method' => 'post',
+  'enableClientValidation' => true,
+  'options' => ['validateOnSubmit' => true]
+]); ?>
+<div class="row">
+  <div class="col-md-6">
+    <?= $form->field($custom_behavior, 'name') ?>
+  </div>
+  <div class="col-md-6">
+    <?= $form->field($custom_behavior, 'category_id')->dropdownList(Category::getCategories()) ?>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group">
+      <?= Html::submitButton('Create Behavior', ['class' => 'btn btn-success pull-right', 'name' => 'create-custom-behavior-button']) ?>
+    </div>
+  </div>
+</div>
+<?php
+ActiveForm::end();
+yii\bootstrap\Modal::end();
+?>
+
 </div>
 
 <?php $this->registerJs(
@@ -147,6 +205,21 @@ $timezones = \DateTimeZone::listIdentifiers();
   });
 
   $('[\data-toggle=\"tooltip\"]').tooltip();
+
+  $(document).on('click', '.add-custom-behavior-btn', function(){
+    if ($('#create-custom-behavior').hasClass('in')) {
+      $('#create-custom-behavior')
+        .find('#modalContent')
+        .load($(this).attr('value'));
+      $('#create-custom-behavior-header').prepend('<h4>' + $(this).attr('title') + '</h4>');
+    } else {
+      $('#create-custom-behavior')
+        .modal('show')
+        .find('#modalContent')
+        .load($(this).attr('value'));
+      $('#create-custom-behavior-header').prepend('<h4>' + $(this).attr('title') + '</h4>');
+    }
+  });
 })"
 );
 

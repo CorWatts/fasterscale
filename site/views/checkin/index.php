@@ -37,9 +37,15 @@ $form = ActiveForm::begin([
 
 foreach($categories as $category) {
   $behaviors = AH::map($behaviorsList[$category['id']], 'id', 'name');
+  $custom = [];
+  if(array_key_exists($category['id'], $customList)) {
+    $custom = AH::map($customList[$category['id']], function($cbhvr) {
+      return $cbhvr['id'] . '-custom';
+    }, 'name');
+  }
   print $form
           ->field($model, "behaviors{$category['id']}")
-          ->checkboxList($behaviors,
+          ->checkboxList($behaviors + $custom,
                          ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]);
 }
 print Html::submitButton('Submit', ['class' => 'btn btn-success']); 

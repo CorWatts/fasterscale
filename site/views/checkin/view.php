@@ -71,7 +71,7 @@ if($answer_pie) {
   <?php if($questions) {
   foreach($questions as $behavior_id => $behavior_questions) {
     print "<div class='well well-sm'>";
-    print "<button type='button' class='btn btn-primary' disabled='disabled'>{$behavior_questions['question']['title']}</button>";
+    print "<button type='button' class='btn btn-primary' disabled='disabled'>{$behavior_questions['question']['behavior_name']}</button>";
     print "<div class='row'>";
     foreach($behavior_questions['answers'] as $question) { 
       print "<div class='col-md-4'>";
@@ -81,7 +81,7 @@ if($answer_pie) {
     }
     print "</div></div>";
   }
-              }
+}
 
   $form = ActiveForm::begin([
     'id' => 'checkin-form',

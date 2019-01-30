@@ -18,7 +18,9 @@
     "bower-asset/chartjs": "~2.7.2",
     "corwatts/yii2-markdown-files": "*",
     "bower-asset/pickadate": "^3.5",
-    "amenadiel/jpgraph": "dev-master#10a818b"
+    "amenadiel/jpgraph": "dev-master#10a818b",
+    "kartik-v/yii2-grid": "^3.2",
+    "kartik-v/yii2-editable": "^1.7"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "2.0.9",
@@ -35,7 +37,7 @@
     "test": "codecept run",
     "test-coverage": "codecept run --coverage --coverage-xml --coverage-html --ansi",
     "test-scaffold": "codecept build",
-    "start": "cd site/web; php -S localhost:8080 router.php",
+    "start": "cd site/web; php -S localhost:8080",
     "assets": "rm -f site/assets/css/app.css && ./yii asset site/assets/assets.php site/assets/assets-compressed.php"
   },
   "config": {

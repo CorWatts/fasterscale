@@ -26,7 +26,7 @@ $categories = array_intersect_key(\common\models\Category::getCategories(),
 ?>
 <h1>Check-in Questions</h1>
 <p>Answer the questions below to compete your check-in.</p>
-<p>In each category, select one feeling. Then answer the related questions.</p>
+<p>In each category, select one behavior. Then answer the related questions.</p>
 <?php
 $form = ActiveForm::begin([
   'id' => 'checkin-form',

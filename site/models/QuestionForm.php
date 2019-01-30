@@ -48,13 +48,10 @@ class QuestionForm extends Model
   public $answer_7b;
   public $answer_7c;
 
-  private $user;
   private $question;
 
-  public function __construct(UserInterface $user,
-                              QuestionInterface $question,
+  public function __construct(QuestionInterface $question,
                               $config = []) {
-    $this->user        = $user;
     $this->question    = $question;
     parent::__construct($config);
   }
@@ -100,7 +97,7 @@ class QuestionForm extends Model
     };
   }
 
-  public function deleteToday() {
+  public function deleteToday($user_id) {
     $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
     $date = $time->getLocalDate();
     list($start, $end) = $time->getUTCBookends($date);
@@ -108,7 +105,7 @@ class QuestionForm extends Model
       AND date > :start_date 
       AND date < :end_date", 
       [
-        ":user_id" => Yii::$app->user->id, 
+        ":user_id" => $user_id,
         ':start_date' => $start, 
         ":end_date" => $end
       ]
@@ -159,11 +156,12 @@ class QuestionForm extends Model
     return $answers;
   }
 
-  public function saveAnswers($bhvrs) {
+  public function saveAnswers(int $user_id, array $bhvrs) {
     $result = true;
+
     foreach($this->getAnswers($bhvrs) as $answer) {
-      $model = new \common\models\Question;
-      $model->user_id = Yii::$app->user->id;
+      $model = Yii::$container->get(\common\interfaces\QuestionInterface::class);
+      $model->user_id = $user_id;
       $model->behavior_id = $answer['behavior_id'];
       $model->category_id = $answer['category_id'];
       $model->user_behavior_id = $answer['user_bhvr_id'];

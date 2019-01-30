@@ -8,7 +8,6 @@ use yii\web\IdentityInterface;
 use \common\components\ActiveRecord;
 use \common\interfaces\UserInterface;
 use \common\interfaces\UserBehaviorInterface;
-use \common\interfaces\QuestionInterface;
 use \common\interfaces\TimeInterface;
 
 /**
@@ -45,11 +44,18 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
   const CONFIRMED_STRING = '_confirmed';
 
   public $user_behavior;
-  public $question;
   public $time;
 
-  public function __construct(UserBehaviorInterface $user_behavior, QuestionInterface $question, TimeInterface $time, $config = []) {
-    $this->question = $question;
+  private $export_order = [
+    "date" => 0,
+    "behavior" => 1,
+    "category" => 2,
+    "question1" => 3,
+    "question2" => 4,
+    "question3" => 5,
+  ];
+
+  public function __construct(UserBehaviorInterface $user_behavior, TimeInterface $time, $config = []) {
     $this->time = $time;
     parent::__construct($config);
   }
@@ -71,6 +77,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
 
   public function behaviors()
@@ -110,6 +117,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public static function findIdentity($id)
   {
@@ -118,6 +126,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public static function findIdentityByAccessToken($token, $type = null)
   {
@@ -132,7 +141,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
    */
   public function findByEmail($email)
   {
-    return $this->findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+    return $this->find()->where(['email' => $email, 'status' => self::STATUS_ACTIVE])->one();
   }
 
   /**
@@ -147,10 +156,10 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
       return null;
     }
 
-    return $this->findOne([
+    return $this->find()->where([
       'password_reset_token' => $token,
       'status' => self::STATUS_ACTIVE,
-    ]);
+    ])->one();
   }
 
   /**
@@ -163,10 +172,10 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
   {
     if($this->isTokenConfirmed($token)) return null;
 
-    $user = $this->findOne([
+    $user = $this->find()->where([
       'verify_email_token' => [$token, $token . self::CONFIRMED_STRING],
       'status' => self::STATUS_ACTIVE,
-    ]);
+    ])->one();
 
     if($user) {
       if(!$this->isTokenConfirmed($token) &&
@@ -186,10 +195,10 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
    */
   public function findByChangeEmailToken($token)
   {
-    $user = static::findOne([
+    $user = static::find()->where([
       'change_email_token' => $token,
       'status' => self::STATUS_ACTIVE,
-    ]);
+    ])->one();
 
     if($user) {
       if(!$user->isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
@@ -231,6 +240,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public function getId()
   {
@@ -239,6 +249,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
   /**
    * @inheritdoc
+   * @codeCoverageIgnore
    */
   public function getAuthKey()
   {
@@ -378,34 +389,36 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     // we should only proceed with sending the email if the user
     // scored above their set email threshold (User::email_category)
     $this_checkin     = $checkins_last_month[$date]; // gets the check-in
-    if(!$this_checkin)  return false;           // sanity check
-    $highest_cat_data = end($this_checkin);     // gets the data for the highest category from the check-in
-    if(!$highest_cat_data) return false;        // another sanity check
-    $highest_cat_idx  = key($this_checkin); // gets the key of the highest category
+    if(!$this_checkin)  return false;                // sanity check
+    $highest_cat_data = end($this_checkin);          // gets the data for the highest category from the check-in
+    if(!$highest_cat_data) return false;             // another sanity check
+    $highest_cat_idx  = key($this_checkin);          // gets the key of the highest category
 
     // if the highest category they reached today was less than
     // the category threshold they have set, don't send the email
     if($highest_cat_idx < $this->email_category) return false;
 
+    $user_behaviors = $user_behavior->getByDate(Yii::$app->user->id, $date);
+
+    $question = Yii::$container->get(\common\interfaces\QuestionInterface::class);
+    $user_questions = $question->getByUser(Yii::$app->user->id, $date);
+
     $graph = Yii::$container
       ->get(\common\components\Graph::class)
       ->create($checkins_last_month);
-
-    $user_behaviors = $user_behavior->getByDate(Yii::$app->user->id, $date);
-    $user_questions = $this->getUserQuestions($date);
 
     $messages = [];
     foreach($this->getPartnerEmails() as $email) {
       if($email) {
         $messages[] = Yii::$app->mailer->compose('checkinReport', [
-          'user'          => $this,
-          'email'         => $email,
-          'date'          => $date,
-          'user_behaviors'  => $user_behaviors,
-          'questions'     => $user_questions,
-          'chart_content' => $graph,
-          'categories'    => \common\models\Category::$categories,
-          'behaviors_list'  => \common\models\Behavior::$behaviors,
+          'user'           => $this,
+          'email'          => $email,
+          'date'           => $date,
+          'user_behaviors' => $user_behaviors,
+          'questions'      => $user_questions,
+          'chart_content'  => $graph,
+          'categories'     => \common\models\Category::$categories,
+          'behaviors_list' => \common\models\Behavior::$behaviors,
         ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
         ->setReplyTo($this->email)
         ->setSubject($this->email." has completed a Faster Scale check-in")
@@ -421,6 +434,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
       ->select(
       'l.id,        
        l.date      AS "date",
+       l.custom_behavior AS "custom_behavior",
        l.behavior_id AS "behavior_id",
        l.category_id AS "category_id",
        (SELECT q1.answer
@@ -452,6 +466,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 /* Plaintext Query
 SELECT l.id,
        l.date      AS "date",
+       l.custom_behavior AS "custom_behavior",
        l.behavior_id AS "behavior_id",
        (SELECT q1.answer
         FROM question q1
@@ -471,6 +486,7 @@ FROM   user_behavior_link l
 WHERE  l.user_id = 1
 GROUP  BY l.id,
           l.date,
+          l.custom_behavior,
           "question1",
           "question2",
           "question3",
@@ -511,78 +527,27 @@ ORDER  BY l.date DESC;
     return Yii::$app->mailer->sendMultiple($messages);
   }
 
-  public function getUserQuestions($local_date = null) {
-    if(is_null($local_date)) $local_date = $this->time->getLocalDate();
-    $questions = $this->getQuestionData($local_date);
-    return $this->parseQuestionData($questions);
-  }
+  public function cleanExportRow($row) {
+   // change timestamp to local time (for the user)
+   $row['date'] = $this->time->convertUTCToLocal($row['date'], false);
 
-  public function parseQuestionData($questions) {
-    if(!$questions) return [];
+   // clean up things we don't need
+   $row['category'] = $row['category']['name'];
+   if(array_key_exists('behavior', $row)) {
+     $row['behavior'] = $row['behavior']['name'];
+   } else {
+     $row['behavior'] = $row['custom_behavior'];
+   }
+   unset($row['id']);
+   unset($row['behavior_id']);
+   unset($row['category_id']);
+   unset($row['custom_behavior']);
 
-    $question_answers = [];
-    foreach($questions as $question) {
-      $behavior = $question['behavior'];
-
-      $question_answers[$behavior['id']]['question'] = [
-        "id" => $behavior['id'],
-        "title" => $behavior['name']
-      ];
-
-      $question_answers[$behavior['id']]["answers"][] = [
-        "title" => $this->question::$QUESTIONS[$question['question']],
-        "answer" => $question['answer']
-      ];
-    }
-
-    return $question_answers;
-  }
-
-  public function getQuestionData($local_date) {
-    list($start, $end) = $this->time->getUTCBookends($local_date);
-
-    $questions = $this->question->find()
-      ->where("user_id=:user_id 
-      AND date > :start_date 
-      AND date < :end_date", 
-    [
-      "user_id" => Yii::$app->user->id, 
-      ':start_date' => $start, 
-      ":end_date" => $end
-    ])
-    ->asArray()
-    ->all();
-
-    $questions = \common\models\UserBehavior::decorate($questions);
-
-    return $questions;
-  }
-
-
-  public function cleanExportData($data) {
-   $order = array_flip(["date", "behavior", "category", "question1", "question2", "question3"]);
-
-   $ret = array_map(
-     function($row) use ($order) {
-       // change timestamp to local time (for the user)
-       $row['date'] = $this->time->convertUTCToLocal($row['date'], false);
-       
-       // clean up things we don't need
-       $row['category'] = $row['category']['name'];
-       $row['behavior'] = $row['behavior']['name'];
-       unset($row['id']);
-       unset($row['behavior_id']);
-       unset($row['category_id']);
-
-       // sort the array into a sensible order
-       uksort($row, function($a, $b) use ($order) {
-        return $order[$a] <=> $order[$b];
-       });
-       return $row;
-     }, 
-     $data
-   );
-   return $ret;
+   // sort the array into a sensible order
+   uksort($row, function($a, $b) {
+     return $this->export_order[$a] <=> $this->export_order[$b];
+   });
+   return $row;
   }
 
   /*

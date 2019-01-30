@@ -86,6 +86,34 @@ class CheckinFormTest extends \Codeception\Test\Unit
       ],
     ];
 
+    /* fake custom behaviors */
+    public $custom_behaviors = [
+      1 => [
+        'making eye contact' => [
+          'id' => '777-custom',
+          'name' => 'making eye contact',
+        ],
+      ],
+      2 => [
+        'bored' => [
+          'id' => '12333-custom',
+          'name' => 'bored',
+        ],
+        'less time/energy for God, meetings, and church' => [
+          'id' => '11122333-custom',
+          'name' => 'less time/energy for God, meetings, and church',
+        ],
+        'isolating yourself' => [
+          'id' => '17777-custom',
+          'name' => 'isolating yourself',
+        ],
+        'changes in goals' => [
+          'id' => '11888-custom',
+          'name' => 'changes in goals',
+        ],
+      ],
+    ];
+
     protected function setUp() {
       $this->container = new \yii\di\Container;
       $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
@@ -152,47 +180,41 @@ class CheckinFormTest extends \Codeception\Test\Unit
     {
       $model = $this->container->get('\site\models\CheckinForm');
       $model->setBehaviors($this->behaviors);
-      expect('compiling behaviors should be return a correct array', $this->assertEquals([
-        0 => 7,
-        1 => 12,
-        2 => 13,
-        3 => 17,
-        4 => 18,
-        5 => 28,
-        6 => 38,
-        7 => 46,
-        8 => 47,
-        9 => 56,
-        10 => 62,
-        11 => 78,
-        12 => 79,
-        13 => 104,
-        14 => 128,
-      ], $model->compileBehaviors()));
+      expect('compiling behaviors should return a boolean true', $this->assertTrue($model->compileBehaviors()));
+      expect('compiling behaviors should set the correct array', $this->assertEquals([
+                      7, 12, 13, 17, 18, 28, 38, 46, 47, 56, 62, 78, 79, 104, 128,
+                    ], $model->compiled_behaviors));
 
       $model = $this->container->get('\site\models\CheckinForm');
       $model->setBehaviors($this->behaviors);
       $model->behaviors1[0] = null;
       $model->behaviors2[0] = null;
       $model->behaviors3[0] = null;
-      expect('compiling behaviors should strip out any falsy values', $this->assertEquals([
-        2 => 13,
-        3 => 17,
-        4 => 18,
-        6 => 38,
-        7 => 46,
-        8 => 47,
-        9 => 56,
-        10 => 62,
-        11 => 78,
-        12 => 79,
-        13 => 104,
-        14 => 128,
-      ], $model->compileBehaviors()));
+      $model->compileBehaviors();
+          expect('compiling behaviors should strip out any falsy values', $this->assertEquals([
+											  	13, 17, 18, 38, 46, 47, 56, 62, 78, 79, 104, 128,
+											  ], $model->compiled_behaviors));
 
       $model = $this->container->get('\site\models\CheckinForm');
       $model->setBehaviors([]);
       expect('compiling behaviors should return an empty array when no behaviors are set', $this->assertEmpty($model->compileBehaviors()));
+      expect('compiling behaviors should not set the compiled_behaviors array to anything when no behaviors are set', $this->assertEmpty($model->compiled_behaviors));
+
+      $model = $this->container->get('\site\models\CheckinForm');
+      $model->setBehaviors($this->custom_behaviors);
+      $model->compileBehaviors();
+      expect('compiling behaviors should identify and set custom behaviors', $this->assertEquals(["777-custom", "12333-custom", "11122333-custom", "17777-custom", "11888-custom"], $model->custom_behaviors));
+    }
+
+    public function testGetCustomBehaviors() {
+      $model = $this->container->get('\site\models\CheckinForm');
+      $model->custom_behaviors = ["777-custom", "12333-custom", "11122333-custom", "17777-custom", "11888-custom"];
+      expect('to return an array of extracted ids from an array of custom_behaviors', $this->assertEquals([777, 12333, 11122333, 17777, 11888], $model->getCustomBehaviors()));
+
+      $model = $this->container->get('\site\models\CheckinForm');
+      $model->custom_behaviors = [];
+      $model->compiled_behaviors = [ 1, 2, 3];
+      expect('to return an empty array if no custom behaviors are set', $this->assertEquals([], $model->getCustomBehaviors()));
     }
 
     public function testMergeWithDefault() {
