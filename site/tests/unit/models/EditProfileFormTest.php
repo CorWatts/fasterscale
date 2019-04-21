@@ -10,6 +10,7 @@ class EditProfileFormTest extends \Codeception\Test\Unit {
   public $values = [
       'timezone' => 'America/Los_Angeles',
       'send_email' => true,
+      'email_category' => 4,
       'partner_email1' => 'partner1@example.com',
       'partner_email2' => 'partner2@example.com',
       'partner_email3' => 'partner3@example.com',
@@ -70,7 +71,8 @@ class EditProfileFormTest extends \Codeception\Test\Unit {
       'partner_email1'  => null,
       'partner_email2'  => null,
       'partner_email3'  => null,
-      'send_email'      => null,
+      'send_email'      => false,
+      'email_category'  => 4,
       'timezone'        => 'America/Los_Angeles',
       'expose_graph'    => true,
     ];
@@ -107,6 +109,7 @@ class EditProfileFormTest extends \Codeception\Test\Unit {
       'partner_email2',
       'partner_email3',
       'send_email',
+      'email_category',
       'expose_graph',
     ]);
     $user->timezone = 'America/Los_Angeles';
@@ -114,6 +117,7 @@ class EditProfileFormTest extends \Codeception\Test\Unit {
     $user->partner_email2 = 'partner2@example.com';
     $user->partner_email3 = 'partner3@example.com';
     $user->send_email = true;
+    $user->email_category = 4;
     $user->expose_graph = true;
     return $user;
   }

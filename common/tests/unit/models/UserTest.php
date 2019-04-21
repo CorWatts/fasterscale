@@ -16,6 +16,8 @@ class UserTest extends \Codeception\Test\Unit {
   use Specify;
 
   private $user;
+  private $time;
+  private $question;
 
 	public $questionData = [
 	[
@@ -730,14 +732,14 @@ public $exportData = [
     });
 
     $user_behavior = $this->container->get('common\interfaces\UserBehaviorInterface');
-    $time          = $this->container->get('common\interfaces\TimeInterface');
+    $this->time    = $this->container->get('common\interfaces\TimeInterface');
 
-    $question = $this->getMockBuilder('\common\models\Question')
+    $this->question = $this->getMockBuilder('\common\models\Question')
       ->setMethods(['save', 'attributes'])
       ->getMock();
 
     $this->user = $this->getMockBuilder('\common\models\User')
-      ->setConstructorArgs([$user_behavior, $question, $time])
+      ->setConstructorArgs([$user_behavior, $this->question, $this->time])
       ->setMethods(['save', 'attributes'])
       ->getMock();
     $this->user->method('save')->willReturn(true);
@@ -755,7 +757,8 @@ public $exportData = [
       'updated_at',
       'password',
       'timezone',
-      'email_threshold',
+      'send_email',
+      'email_category',
       'partner_email1',
       'partner_email2',
       'partner_email3',
@@ -905,5 +908,31 @@ public $exportData = [
       $this->user->change_email_token = 'faketoken_1234';
       $this->user->removeChangeEmailToken();
       expect('removeChangeEmailToken should set the change_email_token to be null', $this->assertNull($this->user->change_email_token));
+  }
+
+  public function testSendEmailReport() {
+    $user_behavior = $this->getMockBuilder('common\models\UserBehavior')
+      ->disableOriginalConstructor()
+      ->setMethods(['save', 'attributes', 'getCheckinBreakdown'])
+      ->getMock();
+    $expected = require(__DIR__.'/../data/expected_getCheckinBreakdown.php');
+    $user_behavior->method('getCheckinBreakdown')->willReturn($expected);
+
+    $user = $this->getMockBuilder('\common\models\User')
+      ->setConstructorArgs([$user_behavior, $this->question, $this->time])
+      ->setMethods(['save', 'attributes'])
+      ->getMock();
+    $user->method('save')->willReturn(true);
+    $user->method('attributes')->willReturn([
+      'send_email',
+      'email_category',
+    ]);
+
+    $user->send_email = false;
+    $user->email_category = 6;
+    expect('it should not send any emails if the user has disabled send_email', $this->assertFalse($user->sendEmailReport('2019-01-01')));
+    expect('it should not send any emails if the user did not select any behaviors for the given day', $this->assertFalse($user->sendEmailReport('2018-01-01')));
+    expect('it should not send any emails if the user did not select any behaviors for the given day', $this->assertFalse($user->sendEmailReport('2018-03-02')));
+    expect('it should not send any emails if the user did not meet or exceed their email_category', $this->assertFalse($user->sendEmailReport('2019-03-01')));
   }
 }

@@ -31,8 +31,8 @@ class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterf
    * timezone specified in $this->timezone.
    *
    * @param string $time the questionable time to parse
+   * @param bool | \DateTime $default the value to return if $time is not a parseable date
    * @param string $format the format `$time` is expected to be in
-   * @param bool | \DateTime $format the format `$time` is expected to be in
    * @return \DateTime the parsed time or the default value
    */
   public function parse($time, $default = false, string $format = 'Y-m-d') {
@@ -148,14 +148,16 @@ class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterf
    * @return \DatePeriod of length $period, from $period days ago to today
    */
   public function getDateTimesInPeriod(int $period = 30) {
-    $dt  = new DateTime("now", new DateTimeZone($this->timezone));
-    $dt2 = new DateTime("now", new DateTimeZone($this->timezone));
-    $end   = $dt ->add(new \DateInterval('P1D'))      // add a day, so the end date gets included in the intervals
-                 ->add(new \DateInterval('PT2M'));    // add two minutes, to be sure we have everything
-    $start = $dt2->add(new \DateInterval('PT2M'))  // add two minutes, to be sure we have everything
-                 ->sub(new \DateInterval("P${period}D")); // subtract `$period` number of days
+    $start = new DateTime("now", new DateTimeZone($this->timezone));
+    $end   = new DateTime("now", new DateTimeZone($this->timezone));
+    $oneday = new \DateInterval('P1D');
+    $end->add($oneday);      // add a day, so the end date gets included in the intervals
+ 
+    $start->add(new \DateInterval('PT2M'))  // add two minutes, in case they just did a check-in
+          ->sub(new \DateInterval("P${period}D")); // subtract `$period` number of days
+    $end->add(new \DateInterval('PT2M'));   // add two minutes, in case they just did a check-in
 
-    $periods = new \DatePeriod($start, new \DateInterval('P1D'), $end, \DatePeriod::EXCLUDE_START_DATE);
+    $periods = new \DatePeriod($start, $oneday, $end, \DatePeriod::EXCLUDE_START_DATE);
     $local_tz = new \DateTimeZone($this->timezone);
     foreach($periods as $period) {
       $period->setTimezone($local_tz);

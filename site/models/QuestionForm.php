@@ -5,11 +5,7 @@ use Yii;
 use yii\base\Model;
 use yii\db\Expression;
 use \common\interfaces\UserInterface;
-use \common\interfaces\UserBehaviorInterface;
 use \common\interfaces\QuestionInterface;
-use \common\interfaces\TimeInterface;
-
-
 
 /**
  * Question form
@@ -52,20 +48,14 @@ class QuestionForm extends Model
   public $answer_7b;
   public $answer_7c;
 
-  private $time;
   private $user;
   private $question;
-  private $user_behavior;
 
   public function __construct(UserInterface $user,
-                              UserBehaviorInterface $user_behavior,
                               QuestionInterface $question,
-                              TimeInterface $time,
                               $config = []) {
     $this->user        = $user;
-    $this->user_behavior = $user_behavior;
     $this->question    = $question;
-    $this->time        = $time;
     parent::__construct($config);
   }
 
@@ -111,8 +101,9 @@ class QuestionForm extends Model
   }
 
   public function deleteToday() {
-    $date = $this->time->getLocalDate();
-    list($start, $end) = $this->time->getUTCBookends($date);
+    $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
+    $date = $time->getLocalDate();
+    list($start, $end) = $time->getUTCBookends($date);
     $this->question->deleteAll("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 

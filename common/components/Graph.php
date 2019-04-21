@@ -9,8 +9,8 @@ use Amenadiel\JpGraph\Plot\GroupBarPlot;
 use Amenadiel\JpGraph\Plot\BarPlot;
 
 /**
- * Graph is a collection of functions related to the score chart that is used
- * in the email report and when a user makes their check-in scores public
+ * Graph is a collection of functions related to the behaviors chart that is used
+ * in the email report and when a user makes their check-in behaviors public
  */
 class Graph extends \yii\base\BaseObject {
   private $user;
@@ -56,7 +56,7 @@ class Graph extends \yii\base\BaseObject {
    * always returns the in-memory image, saving the image to disk is optionally
    * specified with the $toDisk boolean.
    *
-   * @param array $values an associative array of dates => scores
+   * @param array $values an associative array of dates => check-in summary
    * @param bool $toDisk used to specify whether or not to save the generated image to disk at the filepath returned by getFilepath(). Defaults to false.
    * @return string the encoded image
    */

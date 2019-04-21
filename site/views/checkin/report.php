@@ -50,7 +50,7 @@ print "<tr>".
             </label>
           </div>
         </div>
-        <canvas id='scores-line-chart'></canvas>
+        <canvas id='checkins-line-chart'></canvas>
     </div>
 </div>
 <?php

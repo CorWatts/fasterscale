@@ -77,10 +77,11 @@ class CheckinController extends Controller
       if($result = $form->saveAnswers($behaviors)) {
 
         if(Yii::$app->user->identity->send_email) {
-          Yii::$app->user->identity->sendEmailReport($date);
-          Yii::$app->session->setFlash('success', 'Your check-in is complete. A notification has been sent to your report partners.');
-        } else {
-          Yii::$app->session->setFlash('success', 'Your check-in is complete.');
+          if(Yii::$app->user->identity->sendEmailReport($date)) {
+            Yii::$app->session->setFlash('success', 'Your check-in is complete. A notification has been sent to your report partners.');
+          } else {
+            Yii::$app->session->setFlash('success', 'Your check-in is complete.');
+          }
         }
 
         return $this->redirect(['view']);
@@ -125,7 +126,7 @@ class CheckinController extends Controller
 
   public function actionReport() {
     /* Pie Chart data */
-    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
+    $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
     $user_rows     = $user_behavior::decorateWithCategory($user_behavior->getBehaviorsWithCounts(5));
     $raw_pie_data  = $user_behavior::decorateWithCategory($user_behavior->getBehaviorsWithCounts());
     $answer_pie    = $user_behavior->getBehaviorsByCategory($raw_pie_data);
@@ -160,7 +161,7 @@ class CheckinController extends Controller
 
   private function history($period) {
     $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
-    $category      = Yii::$container->get(\common\interfaces\CategoryInterface::class);
+    $category      = Yii::$container->get(CategoryInterface::class);
 
     $checkins = $user_behavior->getCheckInBreakdown($period);
 

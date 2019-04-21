@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use common\models\Category;
 
 $this->title = 'Profile';
 $timezones = \DateTimeZone::listIdentifiers();
@@ -71,10 +72,11 @@ $timezones = \DateTimeZone::listIdentifiers();
             <?= $form->field($profile, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
             <?= $form->field($profile, 'expose_graph')->checkbox() ?>
             <?php if($profile->expose_graph): ?>
-            <div class='alert alert-success score-graph-info'>Your score graph can be found at:<br /> <a id="score-graph-link" target="_blank" href="<?=$graph_url?>"><?=$graph_url?></a></div>
+            <div class='alert alert-success behaviors-graph-info'>Your behaviors graph can be found at:<br /> <a id="behaviors-graph-link" target="_blank" href="<?=$graph_url?>"><?=$graph_url?></a></div>
             <?php endif; ?>
             <?= $form->field($profile, 'send_email')->checkbox() ?>
             <div id='send_email_fields' <?php if(!$profile->send_email) { ?>style="display: none;"<?php } ?>>
+              <?= $form->field($profile, 'email_category')->dropdownList(Category::getCategories(), ['data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-trigger' => 'hover', 'data-delay' => '{"show": 500, "hide": 100}', 'title' => 'Want to send an email with every check-in? Try setting this to "Restoration"']) ?>
               <?= $form->field($profile, 'partner_email1')->input('email'); ?>
               <?= $form->field($profile, 'partner_email2')->input('email'); ?>
               <?= $form->field($profile, 'partner_email3')->input('email'); ?>
@@ -129,7 +131,8 @@ $timezones = \DateTimeZone::listIdentifiers();
 </div>
 
 <?php $this->registerJs(
-  "$('#new-password-toggle').click(function () {
+"$(function () {
+  $('#new-password-toggle').click(function () {
     if( $('#changepasswordform-new_password').attr('type') === 'password' ) {
       $('#new-password-toggle').text('Hide');
       $('#changepasswordform-new_password').attr('type', 'text');
@@ -141,6 +144,9 @@ $timezones = \DateTimeZone::listIdentifiers();
 
   $('#editprofileform-send_email').click(function() {
     $('#send_email_fields').toggle();
-  });"
+  });
+
+  $('[\data-toggle=\"tooltip\"]').tooltip();
+})"
 );
 

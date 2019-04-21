@@ -6,7 +6,7 @@ use common\models\UserBehavior;
 $email = Html::encode($user->email);
 $date = str_replace('-', '', $date);
 $imgRef = $message->embedContent($chart_content, [
-  'fileName'       => "faster-scale-scores-$date.png",
+  'fileName'       => "faster-scale-checkins-$date.png",
   'contentType'    => 'image/png',
   'setDisposition' => 'inline'
 ]);
@@ -75,7 +75,7 @@ $imgRef = $message->embedContent($chart_content, [
                                                          </tr>
                                                       </tbody>
                                                    </table>
-                                                   <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">Hello there! <?=$email?> has set you as one of their report recipients. These reports are sent out when <?=$email?> does a Faster Scale check-in. If the responses below appear concerning (even just a little), you should contact them. You can reply to this email, and it will go directly to your friend.</p>
+                                                   <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">Hello there! <?=$email?> has set you as one of their report recipients. These reports are sent out when <?=$email?> scores above a set FASTER category. If the responses below appear concerning (even just a little), you should contact them. You can reply to this email, and it will go directly to your friend.</p>
                                                 </th>
                                                 <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
                                              </tr>

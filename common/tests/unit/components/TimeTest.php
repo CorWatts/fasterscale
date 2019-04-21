@@ -199,5 +199,16 @@ class TimeTest extends \Codeception\Test\Unit
       expect('getDateTImesInPeriod should return an a \DatePeriod', $this->assertInstanceOf(\DatePeriod::class, $this->time->getDateTimesInPeriod()));
       expect('getDateTimesInPeriod should return a 30 day period by default', $this->assertCount(30, $this->time->getDateTimesInPeriod()));
       expect('getDateTimesInPeriod should return an arbitrary period length if supplied', $this->assertCount(42, $this->time->getDateTimesInPeriod(42)));
+
+      $tz = 'America/Los_Angeles';
+      $this->time->timezone = 'America/Los_Angeles';
+
+      $today =  new \DateTime("now + 1 day", new \DateTimeZone($tz)); // we do an extra day to include today as the last day
+      $should_be_today = $this->time->getDateTimesInPeriod()->getEndDate();
+      expect('getDateTimesInPeriod should return a list of \DatePeriods, the last being for today', $this->assertEquals($today->format('Y-m-d H'), $should_be_today->format('Y-m-d H')));
+
+      $start =  new \DateTime("30 days ago", new \DateTimeZone($tz));
+      $should_be_start = $this->time->getDateTimesInPeriod()->getStartDate();
+      expect('getDateTimesInPeriod should return a list of \DatePeriods, the first being for 30 days ago (by default)', $this->assertEquals($start->format('Y-m-d H'), $should_be_start->format('Y-m-d H')));
     }
 }

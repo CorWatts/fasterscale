@@ -27,6 +27,7 @@ use \common\interfaces\TimeInterface;
  * @property string $password write-only password
  * @property string $timezone
  * @property boolean $send_email
+ * @property integer $email_category
  * @property string $partner_email1
  * @property string $partner_email2
  * @property string $partner_email3
@@ -48,19 +49,18 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
   public $time;
 
   public function __construct(UserBehaviorInterface $user_behavior, QuestionInterface $question, TimeInterface $time, $config = []) {
-    $this->user_behavior = $user_behavior;
     $this->question = $question;
     $this->time = $time;
     parent::__construct($config);
   }
 
   public function afterFind() {
-    $this->time = new \common\components\Time($this->timezone);
+    $this->time->timezone = $this->timezone;
     parent::afterFind();
   }
 
   public function afterRefresh() {
-    $this->time = new \common\components\Time($this->timezone);
+    $this->time->timezone = $this->timezone;
     parent::afterRefresh();
   }
 
@@ -357,16 +357,41 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     $this->password_reset_token = null;
   }
 
+  /*
+   * sendEmailReport()
+   * 
+   * @param $date String a date string in YYYY-mm-dd format. The desired check-in date to send an email report of. Normally just today.
+   * @return boolean whether or not it succeeds. It will return false if the user's specified criteria are not met (or if the user did not select any behaviors for the given day)
+   *
+   * This is the function that sends email reports. It can send an email report
+   * for whichever `$date` is passed in. It checks if the user's specified
+   * criteria are met before it sends any email. It sends email to every
+   * partner email address the user has set.
+   */
   public function sendEmailReport($date) {
     if(!$this->send_email) return false; // no partner emails set
     list($start, $end) = $this->time->getUTCBookends($date);
 
-    $checkins_last_month = $this->user_behavior->getCheckInBreakdown();
+    $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
+    $checkins_last_month = $user_behavior->getCheckInBreakdown();
+
+    // we should only proceed with sending the email if the user
+    // scored above their set email threshold (User::email_category)
+    $this_checkin     = $checkins_last_month[$date]; // gets the check-in
+    if(!$this_checkin)  return false;           // sanity check
+    $highest_cat_data = end($this_checkin);     // gets the data for the highest category from the check-in
+    if(!$highest_cat_data) return false;        // another sanity check
+    $highest_cat_idx  = key($this_checkin); // gets the key of the highest category
+
+    // if the highest category they reached today was less than
+    // the category threshold they have set, don't send the email
+    if($highest_cat_idx < $this->email_category) return false;
+
     $graph = Yii::$container
       ->get(\common\components\Graph::class)
       ->create($checkins_last_month);
 
-    $user_behaviors   = $this->getUserBehaviors($date);
+    $user_behaviors = $this->getUserBehaviors($date);
     $user_questions = $this->getUserQuestions($date);
 
     $messages = [];
@@ -495,7 +520,7 @@ ORDER  BY l.date DESC;
     if(is_null($local_date)) $local_date = $this->time->getLocalDate();
 
     $behaviors = $this->getBehaviorData($local_date);
-    $behaviors = $this->user_behavior::decorateWithCategory($behaviors);
+    $behaviors = \common\models\UserBehavior::decorateWithCategory($behaviors);
     return $this->parseBehaviorData($behaviors);
   }
 
@@ -551,7 +576,7 @@ ORDER  BY l.date DESC;
     ->asArray()
     ->all();
 
-    $questions = $this->user_behavior::decorate($questions);
+    $questions = \common\models\UserBehavior::decorate($questions);
 
     return $questions;
   }
@@ -559,7 +584,8 @@ ORDER  BY l.date DESC;
   public function getBehaviorData($local_date) {
     list($start, $end) = $this->time->getUTCBookends($local_date);
 
-    return $this->user_behavior->find()
+    $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
+    return $user_behavior->find()
       ->where("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 

@@ -62,6 +62,7 @@ class ProfileController extends Controller {
       }
     }
 
+
     return $this->render('index', [
       'profile'         => $editProfileForm,
       'change_password' => $changePasswordForm,

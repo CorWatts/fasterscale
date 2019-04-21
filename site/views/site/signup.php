@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use common\models\Category;
 
 /**
  * @var yii\web\View $this
@@ -35,6 +36,7 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
         ]) ?>
         <?= $form->field($model, 'send_email')->checkbox(['disabled'=>true]) ?>
         <div id='send_email_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>
+          <?= $form->field($model, 'email_category')->dropdownList(Category::getCategories(), ['data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-trigger' => 'hover', 'data-delay' => '{"show": 500, "hide": 100}', 'title' => 'Want to send an email with every check-in? Try setting this to "Restoration"']) ?>
           <?= $form->field($model, 'partner_email1')->input('email') ?>
           <?= $form->field($model, 'partner_email2')->input('email') ?>
           <?= $form->field($model, 'partner_email3')->input('email') ?>
@@ -46,23 +48,3 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
     </div>
   </div>
 </div>
-
-<?php $this->registerJs(
-  "$('#signupform-send_email').click(function() {
-    if( $('#signupform-send_email').prop('checked') ) {
-      $('#email_threshold_fields').show();
-    } else {
-      $('#email_threshold_fields').hide();
-    }
-  });
-
-  $('#password-toggle').click(function () {
-    if( $('#signupform-password').attr('type') === 'password' ) {
-      $('#password-toggle').text('Hide');
-      $('#signupform-password').attr('type', 'text');
-    } else {
-      $('#password-toggle').text('Show');
-      $('#signupform-password').attr('type', 'password');
-    }
-  });"
-);
