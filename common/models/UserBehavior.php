@@ -127,20 +127,20 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
 
   public function getCheckinBreakdown(int $period = 30) {
     $datetimes = $this->time->getDateTimesInPeriod($period);
-    $key = "scores_of_last_month_".Yii::$app->user->id."_{$period}_".$this->time->getLocalDate();
-    $scores = Yii::$app->cache->get($key);
+    $key = "checkins_".Yii::$app->user->id."_{$period}_".$this->time->getLocalDate();
+    $checkins = Yii::$app->cache->get($key);
 
-    if($scores === false) {
-      $scores = [];
+    if($checkins === false) {
+      $checkins = [];
       foreach($datetimes as $datetime) {
         $behaviors = self::decorateWithCategory($this->getBehaviorsWithCounts($datetime));
-        $scores[$datetime->format('Y-m-d')] = $this->getBehaviorsByCategory($behaviors);
+        $checkins[$datetime->format('Y-m-d')] = $this->getBehaviorsByCategory($behaviors);
       }
 
-      Yii::$app->cache->set($key, $scores, 60*60*24);
+      Yii::$app->cache->set($key, $checkins, 60*60*24);
     }
 
-    return $scores;
+    return $checkins;
   }
 
   /**

@@ -19,7 +19,7 @@
     });
 
     /* Bar Chart */
-    var bar_ctx = document.getElementById('scores-line-chart').getContext('2d');
+    var bar_ctx = document.getElementById('checkins-line-chart').getContext('2d');
     var labels = $.parseJSON($("#bar_dates_json").html());
     var datasets = $.parseJSON($("#bar_datasets_json").html());
     var chart = buildChart(labels, datasets);

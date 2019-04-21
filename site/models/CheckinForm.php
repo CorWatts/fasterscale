@@ -4,8 +4,6 @@ namespace site\models;
 use Yii;
 use yii\base\Model;
 use yii\db\Expression;
-use common\interfaces\UserBehaviorInterface;
-use common\interfaces\TimeInterface;
 
 /**
  * Checkin form
@@ -21,15 +19,6 @@ class CheckinForm extends Model
   public $behaviors7;
 
   public $compiled_behaviors;
-
-  private $user_behavior;
-  private $time;
-
-  public function __construct(UserBehaviorInterface $user_behavior, TimeInterface $time, $config = []) {
-    $this->user_behavior = $user_behavior;
-    $this->time = $time;
-    parent::__construct($config);
-  }
 
   /**
    * @inheritdoc
@@ -96,9 +85,13 @@ class CheckinForm extends Model
   }
 
   public function deleteToday() {
-    $date = $this->time->getLocalDate();
-    list($start, $end) = $this->time->getUTCBookends($date);
-    $this->user_behavior->deleteAll("user_id=:user_id 
+    $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
+    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
+
+    $date = $time->getLocalDate();
+    list($start, $end) = $time->getUTCBookends($date);
+
+    $user_behavior->deleteAll("user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date", 
       [
@@ -108,10 +101,9 @@ class CheckinForm extends Model
       ]
     );
 
-    // delete cached scores
-    $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
-    array_map(function($period) {
-      $key = "scores_of_last_month_".Yii::$app->user->id."_{$period}_".$this->time->getLocalDate();
+    // delete cached behaviors
+    array_map(function($period) use ($time) {
+      $key = "checkins_".Yii::$app->user->id."_{$period}_".$time->getLocalDate();
       Yii::$app->cache->delete($key);
     }, [30, 90, 180]);
   }
@@ -120,6 +112,8 @@ class CheckinForm extends Model
     if(empty($this->compiled_behaviors)) {
       $this->commpiled_behaviors = $this->compileBehaviors();
     }
+
+    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
 
     $rows = [];
     foreach($this->compiled_behaviors as $behavior_id) {
@@ -135,14 +129,14 @@ class CheckinForm extends Model
       ->db
       ->createCommand()
       ->batchInsert(
-        $this->user_behavior->tableName(),
+        $user_behavior->tableName(),
         ['user_id', 'behavior_id', 'date'],
         $rows
       )->execute();
 
-    // if the user has publicised their score graph, create the image
+    // if the user has publicised their check-in graph, create the image
     if(Yii::$app->user->identity->expose_graph) {
-      $checkins_last_month = $this->user_behavior->getCheckInBreakdown();
+      $checkins_last_month = $user_behavior->getCheckInBreakdown();
 
       if($checkins_last_month) {
         Yii::$container

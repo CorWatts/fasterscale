@@ -44,12 +44,12 @@ class SignupFormTest extends \Codeception\Test\Unit
       ->setMethods(['save', 'attributes'])
       ->getMock();
 
+    $user_methods = ['save', 'attributes', 'findByEmail', 'sendSignupNotificationEmail', 'sendVerifyEmail'];
     $this->user = $this->getMockBuilder('\common\models\User')
       ->setConstructorArgs([$user_behavior, $question, $time])
-      ->setMethods(['save', 'attributes', 'findByEmail', 'sendSignupNotificationEmail', 'sendVerifyEmail'])
+      ->setMethods($user_methods)
       ->getMock();
-    //$this->user->method('save')->willReturn(true);
-    $this->user->method('attributes')->willReturn([
+    $user_attrs = [
       'id',
       'password_hash',
       'password_reset_token',
@@ -63,34 +63,18 @@ class SignupFormTest extends \Codeception\Test\Unit
       'password',
       'timezone',
       'send_email',
+      'email_category',
       'partner_email1',
       'partner_email2',
       'partner_email3',
-    ]);
+    ];
+    $this->user->method('attributes')->willReturn($user_attrs);
 
     $this->existing_user = $this->getMockBuilder('\common\models\User')
       ->setConstructorArgs([$user_behavior, $question, $time])
-      ->setMethods(['save', 'attributes', 'findByEmail', 'sendSignupNotificationEmail', 'sendVerifyEmail'])
+      ->setMethods($user_methods)
       ->getMock();
-    //$this->user->method('save')->willReturn(true);
-    $this->existing_user->method('attributes')->willReturn([
-      'id',
-      'password_hash',
-      'password_reset_token',
-      'verify_email_token',
-      'email',
-      'auth_key',
-      'role',
-      'status',
-      'created_at',
-      'updated_at',
-      'password',
-      'timezone',
-      'send_email',
-      'partner_email1',
-      'partner_email2',
-      'partner_email3',
-    ]);
+    $this->existing_user->method('attributes')->willReturn($user_attrs);
 
     $this->existing_user->id          = 1;
     $this->existing_user->email       = "realuser@fsa.com";
