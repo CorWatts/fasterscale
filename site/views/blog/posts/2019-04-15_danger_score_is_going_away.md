@@ -20,13 +20,13 @@ As I've slowly trained myself to recognize my behaviors and emotional state by u
 
 One of the core purposes of the Faster Scale is to help the person learn to name their feelings, to see the patterns in their behavior, and to foresee where they will go if action is not quickly taken. Adding a shortcut to that (like an easy numerical score) is self-defeating. It short-circuits the learning process the person needs to go through.
 
-Adding a score to the Faster Scale was not actually an improvement to Dye's creation. At best, it was a distraction. That's why I intend to remove the "Danger Score" and all related functionality from the application.
+Adding a score to the Faster Scale was not actually an improvement to Dye's creation. At best, it was a distraction. That's why I intend to remove the "Danger Score" and all related functionality from this application.
 
 
 #### What are the effects?
-The most visible change involves the "Email Threshold". This feature sends an email report to the user's partners when they score above a value. Since I am removing the score, the "Email Threshold" needs to go as well. For now, sending partner reports will be a simple yes/no checkbox to ALWAYS or NEVER send a partner report. 
+The most visible change involves the "Email Threshold". This feature sends an email report to the user's partners when they score above a value. Since I am removing the score, the "Email Threshold" needs to go as well. <s>For now, sending partner reports will be a simple yes/no checkbox to ALWAYS or NEVER send a partner report.</s> Updated April 26th
     
-**When this change is rolled out, users that have enabled partner emails will be switched to always send reports _regardless of their Email Threshold value_. Likewise, users that do not have partner emails enabled (thus no set Email Threshold) will never have them sent.**
+<s>**When this change is rolled out, users that have enabled partner emails will be switched to always send reports _regardless of their Email Threshold value_. Likewise, users that do not have partner emails enabled (thus no set Email Threshold) will never have them sent.**</s> Updated April 26th
 
 Ripping out the score-related features of the App will also have the effect of simplifying the codebase. Certain portions will be significantly simpler. This means I'll have an easier time implementing new features. I already have several updates in the pipeline that have been simplified with the score removal and I'm excited to get those out to all of our users. 
 
