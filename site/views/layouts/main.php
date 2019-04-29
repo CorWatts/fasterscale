@@ -66,9 +66,6 @@ if($hash = Utility::getRevHash()) {
         ]) ?>
           <div class="row">
             <div class="col-md-offset-2 col-md-8">
-<?php if (!Yii::$app->user->isGuest): ?>
-            <div class="alert alert-info" role="alert">Fresh updates regarding the Danger Score removal. Read more about it <a href="<?=Url::to(['site/blog'])?>">here</a>.</div>
-<?php endif; ?>
               <?= Alert::widget() ?>
               <?= $content ?>
             </div>
