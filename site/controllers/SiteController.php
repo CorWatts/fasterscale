@@ -62,8 +62,8 @@ class SiteController extends Controller
                             ->fetch()
                             ->parse()
                             ->results;
+      Yii::$app->cache->set($key, $posts, 60*60*24);
     }
-    Yii::$app->cache->set($key, $posts, 60*60*24);
 
     return $this->render('blog', ['posts'=>$posts]);
   }
