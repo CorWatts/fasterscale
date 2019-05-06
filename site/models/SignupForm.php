@@ -14,7 +14,7 @@ class SignupForm extends Model
   public $password;
   public $timezone = "America/Los_Angeles"; // default
   public $captcha;
-  public $send_email;
+  public $send_email = false;
   public $email_category = 4; // default to "Speeding Up"
   public $partner_email1;
   public $partner_email2;
@@ -132,11 +132,15 @@ class SignupForm extends Model
       $user->generateVerifyEmailToken();
 
       if($user->send_email) {
+        $user->send_email = true;
         $user->email_category = $this->email_category;
         $user->partner_email1 = $this->partner_email1;
         $user->partner_email2 = $this->partner_email2;
         $user->partner_email3 = $this->partner_email3;
+      } else {
+        $user->send_email = false;
       }
+
       return $user;
   }
 }
