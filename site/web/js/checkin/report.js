@@ -14,7 +14,9 @@
       options: {
         legend: {
           display: false
-        }
+        },
+        responsive: true,
+        maintainAspectRatio: false
       }
     });
 
@@ -47,6 +49,15 @@
         options: {
           tooltips: { mode: 'index', intersect: false },
           responsive: true,
+          maintainAspectRatio: false,
+          legend: {
+            labels: {
+              filter: function(legendItem, chartData) {
+                // if no data for this dataset, do not show the legend item.
+                return chartData.datasets[legendItem.datasetIndex].data.filter(Number.isInteger).length
+              }
+            }
+          },
           scales: {
             xAxes: [{ stacked: true, }],
             yAxes: [{

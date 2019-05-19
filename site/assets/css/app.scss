@@ -52,6 +52,20 @@ p {
   }
 }
 
+.checkin-report {
+  .date-period-switcher {
+    margin-top: 10px;
+    display: inline;
+    float: right;
+  }
+  .pie-chart-container {
+    height: 175px;
+  }
+  .line-chart-container {
+    height: 375px;
+  }
+}
+
 #checkin-form {
   .btn {
     white-space: normal;
@@ -267,3 +281,11 @@ $navbar-default-toggle-border-color:       #ddd !default;
         }
     }
   }
+
+@media(max-width: 575px) {
+  .checkin-report {
+    .line-chart-container {
+      height: 275px;
+    }
+  }
+}
