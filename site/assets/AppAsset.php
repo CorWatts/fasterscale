@@ -1,18 +1,9 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace site\assets;
 
 use yii\web\AssetBundle;
 
-/**
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
- */
 class AppAsset extends AssetBundle
 {
     public $sourcePath = '@assets';
@@ -22,9 +13,12 @@ class AppAsset extends AssetBundle
     ];
 
     public $depends = [
-        'yii\web\YiiAsset',
         'yii\web\JqueryAsset',
-        'site\assets\BootstrapPluginAsset',
+        'yii\web\YiiAsset',
+        // we disable all the css in the bootstrap asset here. But we pull the css into the main appasset css at the top.
+        // however, the bootstrap fonts are still pulled in here in this bootstrap asset. The url is different, because the css (pulled in via appasset) is looking for the fonts in its same asset directory.
+        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
         'site\assets\MomentAsset',
         'site\assets\ChartjsAsset',
     ];

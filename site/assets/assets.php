@@ -7,7 +7,7 @@
  Yii::setAlias('@webroot', __DIR__ . '/../web');
  Yii::setAlias('@web', '/');
 
-$mainConf = require(Yii::getAlias('@site/config/main.php'));
+$mainConf = require Yii::getAlias('@site/config/main.php');
 $converter = $mainConf['components']['assetManager']['converter'];
 $bundles = $mainConf['components']['assetManager']['bundles'];
 
@@ -21,7 +21,8 @@ return [
       'yii\web\JqueryAsset',
       'site\assets\AppAsset',
       'yii\web\YiiAsset',
-      'site\assets\BootstrapPluginAsset',
+      'yii\bootstrap\BootstrapAsset',
+      'yii\bootstrap\BootstrapPluginAsset',
       'yii\widgets\ActiveFormAsset',
       'yii\validators\ValidationAsset',
       'yii\captcha\CaptchaAsset',

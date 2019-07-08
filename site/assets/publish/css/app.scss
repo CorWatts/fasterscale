@@ -3,6 +3,8 @@
  * $body-bg: lightgray;
  */
 $font-size-base: 16px !default;
+// we've copied the fonts to a different folder here. The reletive path is different, so we needed to change this variable.
+$icon-font-path: "../fonts/" !default;
 
 html,
 body {
