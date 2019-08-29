@@ -188,8 +188,23 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
     return $cats;
   }
 
+  /**
+   *
+  /**
+   * Given a $key => $value pair, returns the matching behavior.
+   * Example:
+   *     getBehavior('id', 1);
+   * Should return:
+   *     ['id' => 1,   'name' => 'no current secrets', 'category_id' => 1]
+   *
+   * @param string $key the name of the attribute to filter on
+   * @param string $val the value of the attribute to filter on
+   * @return a single behavior
+   */
   public static function getBehavior($key, $val) {
-    $indexed = AH::index(self::$behaviors, null, $key);
-    return AH::getValue($indexed, $val, [false])[0];
+    $ret = array_values(array_filter(self::$behaviors, function($bvr) use ($key, $val) {
+      return $bvr[$key] === $val;
+    }));
+    return $ret ? $ret[0] : null;
   }
 }

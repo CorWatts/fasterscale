@@ -158,7 +158,7 @@ class ProfileController extends Controller {
     fputcsv($fp, $header);
     $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
     while($row = $reader->read()) {
-      $row = $user_behavior::decorateWithCategory([$row]);
+      $row = $user_behavior::decorate([$row]);
       $row = Yii::$app->user->identity->cleanExportData($row);
       fputcsv($fp, $row[0]);
     }

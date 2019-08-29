@@ -58,8 +58,7 @@ class CheckinController extends Controller
     }
   }
 
-  public function actionQuestions()
-  {
+  public function actionQuestions() {
     $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
     $date = Yii::$container->get(TimeInterface::class)->getLocalDate();
 
@@ -94,8 +93,7 @@ class CheckinController extends Controller
     ]);	
   }
 
-  public function actionView(string $date = null)
-  {
+  public function actionView(string $date = null) {
     $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
     $date = $time->validate($date);
     $dt = $time->parse($date);
@@ -104,19 +102,21 @@ class CheckinController extends Controller
     $user          = Yii::$container->get(UserInterface::class);
     $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
     $categories    = Yii::$container->get(CategoryInterface::class)::$categories;
-    $behaviors     = Yii::$container->get(BehaviorInterface::class)::$behaviors;
 
+    $user_behaviors = $user_behavior->getByDate(Yii::$app->user->id, $date);
     $form = Yii::$container->get(\site\models\CheckinForm::class);
-    $form->setBehaviors($user->getUserBehaviors($date));
 
-    $raw_pie_data = $user_behavior::decorateWithCategory($user_behavior->getBehaviorsWithCounts($dt));
+    $form_behaviors = $form->mergeWithDefault($user_behaviors);
+    $form->setBehaviors($user_behaviors);
+
+    $raw_pie_data = $user_behavior::decorate($user_behavior->getBehaviorsWithCounts($dt));
     $answer_pie = $user_behavior->getBehaviorsByCategory($raw_pie_data);
 
     return $this->render('view', [
       'model'              => $form,
       'actual_date'        => $date,
       'categories'         => $categories,
-      'behaviorsList'      => AH::index($behaviors, 'name', "category_id"),
+      'behaviorsList'      => $form_behaviors,
       'past_checkin_dates' => $user_behavior->getPastCheckinDates(),
       'answer_pie'         => $answer_pie,
       'questions'          => $user->getUserQuestions($date),
@@ -127,8 +127,8 @@ class CheckinController extends Controller
   public function actionReport() {
     /* Pie Chart data */
     $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
-    $user_rows     = $user_behavior::decorateWithCategory($user_behavior->getBehaviorsWithCounts(5));
-    $raw_pie_data  = $user_behavior::decorateWithCategory($user_behavior->getBehaviorsWithCounts());
+    $user_rows     = $user_behavior::decorate($user_behavior->getBehaviorsWithCounts(5));
+    $raw_pie_data  = $user_behavior::decorate($user_behavior->getBehaviorsWithCounts());
     $answer_pie    = $user_behavior->getBehaviorsByCategory($raw_pie_data);
 
     $pie_data   = [

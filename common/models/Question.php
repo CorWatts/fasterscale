@@ -10,13 +10,13 @@ use \common\components\ActiveRecord;
  * @property integer $id
  * @property integer $user_id
  * @property integer $behavior_id
+ * @property integer $category_id
  * @property integer $user_behavior_id
  * @property integer $question
  * @property string $answer
  * @property string $date
  *
  * @property User $user
- * @property Behavior $behavior
  * @property UserBehaviorLink $userBehavior
  */
 class Question extends ActiveRecord implements QuestionInterface
@@ -49,9 +49,10 @@ class Question extends ActiveRecord implements QuestionInterface
   public function rules()
   {
     return [
-      [['user_id', 'behavior_id', 'user_behavior_id', 'question', 'answer', 'date'], 'required'],
-      [['user_id', 'behavior_id', 'user_behavior_id', 'question'], 'integer'],
+      [['user_id', 'behavior_id', 'category_id', 'user_behavior_id', 'question', 'answer', 'date'], 'required'],
+      [['user_id', 'behavior_id', 'category_id', 'user_behavior_id', 'question'], 'integer'],
       ['behavior_id', 'in', 'range' => array_column(\common\models\Behavior::$behaviors, 'id')],
+      ['category_id', 'in', 'range' => array_column(\common\models\Category::$categories, 'id')],
       ['answer', 'string'],
       ['date', 'safe']
     ];
@@ -66,6 +67,7 @@ class Question extends ActiveRecord implements QuestionInterface
       'id'             => 'ID',
       'user_id'        => 'User ID',
       'behavior_id'      => 'Behavior ID',
+      'category_id'      => 'Category ID',
       'user_behavior_id' => 'User Behavior ID',
       'question'       => 'Question',
       'answer'         => 'Answer',

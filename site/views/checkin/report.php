@@ -30,7 +30,7 @@ $this->registerJsFile('/js/checkin/report.js', ['depends' => [\site\assets\AppAs
   print "<tr>".
     "<td>{$row['count']}</td>".
     "<td>{$row['behavior']['name']}</td>".
-    "<td>{$row['behavior']['category']['name']}</td>".
+    "<td>{$row['category']['name']}</td>".
     "</tr>";
   }
   ?>

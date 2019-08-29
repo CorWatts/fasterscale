@@ -19,6 +19,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
       'id' => 396,
       'user_id' => 2,
       'behavior_id' => 107,
+      'category_id' => 6,
       'date' => '2016-06-17 04:12:43',
     ],
   ]; 
@@ -28,9 +29,262 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
       'id' => 396,
       'user_id' => 2,
       'behavior_id' => 99999,
+      'category_id' => 6,
       'date' => '2016-06-17 04:12:43',
     ],
   ]; 
+
+  public $behaviorData = [
+    [
+      'id' => 820,
+      'user_id' => 2,
+      'behavior_id' => 7,
+      'category_id' => 1,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 7,
+        'name' => 'making eye contact',
+        'category_id' => 1,
+      ],
+      'category' => [
+        'id' => 1,
+        'name' => 'Restoration',
+      ],
+    ], [
+      'id' => 821,
+      'user_id' => 2,
+      'behavior_id' => 13,
+      'category_id' => 2,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 13,
+        'name' => 'less time/energy for God, meetings, and church',
+        'category_id' => 2,
+      ],
+      'category' => [
+        'id' => 2,
+        'name' => 'Forgetting Priorities',
+      ],
+    ], [
+      'id' => 822,
+      'user_id' => 2,
+      'behavior_id' => 18,
+      'category_id' => 2,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 18,
+        'name' => 'changes in goals',
+        'category_id' => 2,
+      ],
+      'category' => [
+        'id' => 2,
+        'name' => 'Forgetting Priorities',
+      ],
+    ], [
+      'id' => 823,
+      'user_id' => 2,
+      'behavior_id' => 29,
+      'category_id' => 3,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 29,
+        'name' => 'using profanity',
+        'category_id' => 3,
+      ],
+      'category' => [
+        'id' => 3,
+        'name' => 'Anxiety',
+      ],
+    ], [
+      'id' => 824,
+      'user_id' => 2,
+      'behavior_id' => 41,
+      'category_id' => 3,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 41,
+        'name' => 'co-dependent rescuing',
+        'category_id' => 3,
+      ],
+      'category' => [
+        'id' => 3,
+        'name' => 'Anxiety',
+      ],
+    ], [
+      'id' => 825,
+      'user_id' => 2,
+      'behavior_id' => 48,
+      'category_id' => 4,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 48,
+        'name' => 'workaholic',
+        'category_id' => 4,
+      ],
+      'category' => [
+        'id' => 4,
+        'name' => 'Speeding Up',
+      ],
+    ], [
+      'id' => 826,
+      'user_id' => 2,
+      'behavior_id' => 72,
+      'category_id' => 5,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 72,
+        'name' => 'black and white, all or nothing thinking',
+        'category_id' => 5,
+      ],
+      'category' => [
+        'id' => 5,
+        'name' => 'Ticked Off',
+      ],
+    ], [
+      'id' => 827,
+      'user_id' => 2,
+      'behavior_id' => 79,
+      'category_id' => 5,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 79,
+        'name' => 'blaming',
+        'category_id' => 5,
+      ],
+      'category' => [
+        'id' => 5,
+        'name' => 'Ticked Off',
+      ],
+      'date' => '2016-09-10 19:26:04',
+    ], [
+      'id' => 828,
+      'user_id' => 2,
+      'behavior_id' => 89,
+      'category_id' => 5,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 89,
+        'name' => 'obsessive (stuck) thoughts',
+        'category_id' => 5,
+      ],
+      'category' => [
+        'id' => 5,
+        'name' => 'Ticked Off',
+      ],
+    ], [
+      'id' => 829,
+      'user_id' => 2,
+      'behavior_id' => 111,
+      'category_id' => 6,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 111,
+        'name' => 'seeking out old unhealthy people and places',
+        'category_id' => 6,
+      ],
+      'category' => [
+        'id' => 6,
+        'name' => 'Exhausted',
+      ],
+    ], [
+      'id' => 830,
+      'user_id' => 2,
+      'behavior_id' => 118,
+      'category_id' => 6,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 118,
+        'name' => 'not returning phone calls',
+        'category_id' => 6,
+      ],
+      'category' => [
+        'id' => 6,
+        'name' => 'Exhausted',
+      ],
+    ], [
+      'id' => 831,
+      'user_id' => 2,
+      'behavior_id' => 122,
+      'category_id' => 7,
+      'date' => '2016-09-10 19:26:04',
+      'behavior' => [
+        'id' => 122,
+        'name' => 'returning to the place you swore you would never go again',
+        'category_id' => 7,
+      ],
+      'category' => [
+        'id' => 7,
+        'name' => 'Relapse/Moral Failure',
+      ],
+    ],
+  ];
+
+  public $userBehaviors = [
+    1 => [
+        'making eye contact' => [
+          'id' => 7,
+          'name' => 'making eye contact',
+        ],
+    ],
+    2 => [
+        'less time/energy for God, meetings, and church' => [
+          'id' => 13,
+          'name' => 'less time/energy for God, meetings, and church',
+        ],
+        'changes in goals' => [
+          'id' => 18,
+          'name' => 'changes in goals',
+        ],
+    ],
+    3 => [
+        'using profanity' => [
+          'id' => 29,
+          'name' => 'using profanity',
+        ],
+        'co-dependent rescuing' => [
+          'id' => 41,
+          'name' => 'co-dependent rescuing',
+        ],
+    ],
+    4 => [
+        'workaholic' => [
+          'id' => 48,
+          'name' => 'workaholic',
+        ],
+    ],
+    5 => [
+        'black and white, all or nothing thinking' => [
+          'id' => 72,
+          'name' => 'black and white, all or nothing thinking',
+        ],
+        'blaming' => [
+          'id' => 79,
+          'name' => 'blaming',
+        ],
+        'obsessive (stuck) thoughts' => [
+          'id' => 89,
+          'name' => 'obsessive (stuck) thoughts',
+        ],
+    ],
+    6 => [
+        'seeking out old unhealthy people and places' => [
+          'id' => 111,
+          'name' => 'seeking out old unhealthy people and places',
+        ],
+        'not returning phone calls' => [
+          'id' => 118,
+          'name' => 'not returning phone calls',
+        ],
+    ],
+    7 => [
+        'returning to the place you swore you would never go again' => [
+          'id' => 122,
+          'name' => 'returning to the place you swore you would never go again',
+        ],
+    ],
+  ];
+
+
   public function setUp() {
     // pull in test data
     $data = require(__DIR__.'/../data/checkinData.php');
@@ -52,9 +306,9 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     $user = $this->container->get('common\interfaces\UserInterface');
 
     $this->user_behavior = $this
-                            ->getMockBuilder("common\models\UserBehavior")
+                            ->getMockBuilder('common\models\UserBehavior')
                             ->setConstructorArgs([$behavior, $time])
-                            ->setMethods(['getIsNewRecord', 'save', 'getBehaviorsByDate', 'getBehaviorsWithCounts'])
+                            ->setMethods(['getIsNewRecord', 'save', 'getBehaviorsWithCounts'])
                             ->getMock();
     parent::setUp();
   }
@@ -66,8 +320,8 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
 
   public function testRules() {
     expect('rules', $this->assertEquals($this->user_behavior->rules(), [
-      [['user_id', 'behavior_id', 'date'], 'required'],
-      [['user_id', 'behavior_id'], 'integer'],
+      [['user_id', 'behavior_id', 'category_id', 'date'], 'required'],
+      [['user_id', 'behavior_id', 'category_id'], 'integer'],
     ]));
   }
 
@@ -77,6 +331,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
       'date'      => 'Date',
       'user_id'   => 'User ID',
       'behavior_id' => 'Behavior ID',
+      'category_id' => 'Category ID',
     ]));
   }
 
@@ -85,43 +340,36 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
                     [['id' => 396,
                       'user_id' => 2,
                       'behavior_id' => 107,
+                      'category_id' => 6,
                       'date' => '2016-06-17 04:12:43',
                       'behavior' => [
                         'id' => 107,
                         'name' => 'numb',
                         'category_id' => 6,
+                      ],
+                      'category' => [
+                        'id' => 6,
+                        'name' => 'Exhausted',
                       ]]]));
 
-    expect('decorate SHOULD NOT add Behavior data when the provided behavior_id is invalid',
+    expect('decorate SHOULD NOT add additional Behavior or Category data when the provided behavior_id is invalid',
       $this->assertEquals(
         $this->user_behavior->decorate($this->badSingleSimpleBehaviorNoBehavior),
-        [['id' => 396,
-          'user_id' => 2,
-          'behavior_id' => 99999,
-          'date' => '2016-06-17 04:12:43']]));
+        $this->badSingleSimpleBehaviorNoBehavior));
+
+    expect('decorate SHOULD NOT add Category data when the provided category_id is invalid',
+      $this->assertEquals(
+        $this->user_behavior->decorate($this->badSingleSimpleBehaviorNoBehavior),
+        $this->badSingleSimpleBehaviorNoBehavior));
   }
 
-  public function testDecorateWithCategory() {
-    expect('decorate should add Behavior data and Category data to an array of UserBehaviors',
-      $this->assertEquals(
-        $this->user_behavior->decorateWithCategory($this->singleSimpleBehaviorNoBehavior),
-         [['id' => 396,
-           'user_id' => 2,
-           'behavior_id' => 107,
-           'date' => '2016-06-17 04:12:43',
-           'behavior' => [
-             'id' => 107,
-             'name' => 'numb',
-             'category_id' => 6,
-             'category' => [
-               'id' => 6,
-               'name' => 'Exhausted',
-             ]
-           ]]]));
+  public function testParseBehaviorData() {
+    expect('parseBehaviorData should return the correct structure with expected data', $this->assertEquals($this->user_behavior->parseBehaviorData($this->behaviorData), $this->userBehaviors));
+    expect('parseBehaviorData should return empty with the empty set', $this->assertEmpty($this->user_behavior->parseBehaviorData([])));
   }
 
   public function testGetBehaviorsByCategory() {
-    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getBehaviorsByCategory($this->user_behavior::decorateWithCategory([]))));
+    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getBehaviorsByCategory($this->user_behavior::decorate([]))));
     expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([
       1 => [
         'name' => 'Restoration',
@@ -141,18 +389,21 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
         'color' => '#E5E500',
         'highlight' => '#E5E533'
       ]
-    ], $this->user_behavior->getBehaviorsByCategory($this->user_behavior::decorateWithCategory([
+    ], $this->user_behavior->getBehaviorsByCategory($this->user_behavior::decorate([
         [
           'user_id' => 1,
           'behavior_id' => 1,
+          'category_id' => 1,
           'count' => 5
         ], [
           'user_id' => 1,
           'behavior_id' => 20,
+          'category_id' => 2,
           'count' => 4
         ], [
           'user_id' => 1,
           'behavior_id' => 50,
+          'category_id' => 4,
           'count' => 3
         ]
       ]))));
@@ -192,7 +443,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     $this->user_behavior = $this
                             ->getMockBuilder("common\models\UserBehavior")
                             ->setConstructorArgs([$behavior, $time])
-                            ->setMethods(['getIsNewRecord', 'save', 'getBehaviorsByDate', 'getBehaviorsWithCounts'])
+                            ->setMethods(['getIsNewRecord', 'save', 'getBehaviorsWithCounts'])
                             ->getMock();
 
     $bhvrs = require(__DIR__.'/../data/behaviorsWithCounts.php');
