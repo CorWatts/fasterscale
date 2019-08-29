@@ -4,6 +4,8 @@ namespace site\models;
 use Yii;
 use yii\base\Model;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper as AH;
+use common\interfaces\BehaviorInterface;
 
 /**
  * Checkin form
@@ -53,10 +55,10 @@ class CheckinForm extends Model
   }
 
   public function setBehaviors($behaviors) {
-    foreach($behaviors as $category_id => $category_data) {
+    foreach($behaviors as $category_id => $bhvr_set) {
       $attribute = "behaviors$category_id";
 			$this->$attribute = [];
-      foreach($category_data['behaviors'] as $behavior) {
+      foreach($bhvr_set as $behavior) {
         $this->{$attribute}[] = $behavior['id'];
       }
     }   
@@ -108,6 +110,22 @@ class CheckinForm extends Model
     }, [30, 90, 180]);
   }
 
+  /**
+   * Takes an array of the default behaivors and given behaviors from the user and returns them merged together.
+   * This is used for the generation of the CheckinForm behavior list.
+   * @param array $user_behaviors an array of UserBehaviors indexed by the category. Typically just the result of self::$getByDate().
+   * @return array the two supplied arrays merged together
+   */
+  public function mergeWithDefault(array $user_behaviors) {
+    $behaviors = AH::index(Yii::$container->get(BehaviorInterface::class)::$behaviors, 'name', "category_id");
+    array_walk($behaviors, function(&$bhvrs, $cat_id) use ($user_behaviors) {
+      if(array_key_exists($cat_id, $user_behaviors)) {
+        $bhvrs = AH::merge($bhvrs, $user_behaviors[$cat_id]);
+      }
+    });
+    return $behaviors;
+  }
+
   public function save() {
     if(empty($this->compiled_behaviors)) {
       $this->commpiled_behaviors = $this->compileBehaviors();
@@ -117,9 +135,13 @@ class CheckinForm extends Model
 
     $rows = [];
     foreach($this->compiled_behaviors as $behavior_id) {
+      $behavior_id = (int)$behavior_id;
+      $behavior = \common\models\Behavior::getBehavior('id', $behavior_id);
+      $category_id = $behavior['category_id'];
       $temp = [
         Yii::$app->user->id,
         (int)$behavior_id,
+        (int)$category_id,
         new Expression("now()::timestamp")
       ];
       $rows[] = $temp;
@@ -130,7 +152,7 @@ class CheckinForm extends Model
       ->createCommand()
       ->batchInsert(
         $user_behavior->tableName(),
-        ['user_id', 'behavior_id', 'date'],
+        ['user_id', 'behavior_id', 'category_id', 'date'],
         $rows
       )->execute();
 

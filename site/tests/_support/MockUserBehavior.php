@@ -33,9 +33,7 @@ class MockUserBehavior extends \yii\base\BaseObject implements \common\interface
   public function getPastCheckinDates() {}
   public function getUserBehaviorsWithCategory($checkin_date) {}
   public function getCheckinBreakdown(int $period) {}
-  public function getBehaviorsByDate($start, $end) {}
   public function getBehaviorsByCategory(array $decorated_behaviors) {}
-  public static function decorate(array $uo, $with_category) {}
-  public static function decorateWithCategory(array $uo) {}
+  public static function decorate(array $uo) {}
   public function getBehaviorsWithCounts($limit) {}
  }

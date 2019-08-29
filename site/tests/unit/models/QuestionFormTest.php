@@ -113,51 +113,60 @@ class QuestionFormTest extends \Codeception\Test\Unit
       $model->answer_3c = "processing emotions";
 
       expect('getAnswers should extract and coerce the data correctly', $this->assertEquals($model->getAnswers([
-        $this->fakeModel(7, 280),
-        $this->fakeModel(13, 281),
-        $this->fakeModel(28, 284)
+        $this->fakeModel(7, 280, 8),
+        $this->fakeModel(13, 281, 8),
+        $this->fakeModel(28, 284, 8)
       ]), [ [
 										'behavior_id' => 280,
+                    'category_id' => 8,
 										'user_bhvr_id' => 7,
 										'question_id' => 1,
 										'answer' => 'processing emotions',
 									], [
 										'behavior_id' => 280,
+                    'category_id' => 8,
 										'user_bhvr_id' => 7,
 										'question_id' => 2,
 										'answer' => 'processing emotions',
 									], [
 										'behavior_id' => 280,
+                    'category_id' => 8,
 										'user_bhvr_id' => 7,
 										'question_id' => 3,
 										'answer' => 'processing emotions',
 									], [
 										'behavior_id' => 281,
+                    'category_id' => 8,
 										'user_bhvr_id' => 13,
 										'question_id' => 1,
 										'answer' => 'processing emotions',
 									], [
 										'behavior_id' => 281,
+                    'category_id' => 8,
 										'user_bhvr_id' => 13,
 										'question_id' => 2,
 										'answer' => 'processing emotions',
 									], [
 										'behavior_id' => 281,
+                    'category_id' => 8,
 										'user_bhvr_id' => 13,
 										'question_id' => 3,
 										'answer' => 'processing emotions',
 									], [
 										'behavior_id' => 284,
+                    'category_id' => 8,
 										'user_bhvr_id' => 28,
 										'question_id' => 1,
 										'answer' => 'processing emotions',
 									], [
 										'behavior_id' => 284,
+                    'category_id' => 8,
 										'user_bhvr_id' => 28,
 										'question_id' => 2,
 										'answer' => 'processing emotions',
 									], [
 										'behavior_id' => 284,
+                    'category_id' => 8,
 										'user_bhvr_id' => 28,
 										'question_id' => 3,
 										'answer' => 'processing emotions',
@@ -165,10 +174,11 @@ class QuestionFormTest extends \Codeception\Test\Unit
     });
   }
 
-  private function fakeModel($id, $behavior_id) {
+  private function fakeModel($id, $behavior_id, $category_id) {
     $class = new \stdClass;
     $class->id = $id;
     $class->behavior_id = $behavior_id;
+    $class->category_id = $category_id;
     return $class;
   }
 }

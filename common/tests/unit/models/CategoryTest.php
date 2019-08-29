@@ -44,6 +44,7 @@ class CategoryTest extends \Codeception\Test\Unit {
   }
 
   public function testGetCategory() {
-    expect('getCategory', $this->assertEquals(Category::getCategory('id', 3), ["id" => 3, "name" => "Anxiety"]));
+    expect('getCategory should return a valid category', $this->assertEquals(Category::getCategory('id', 3), ["id" => 3, "name" => "Anxiety"]));
+    expect('getCategory should return null if the specified category is not found', $this->assertNull(Category::getCategory('id', 77)));
   }
 }

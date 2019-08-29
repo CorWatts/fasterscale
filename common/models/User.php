@@ -391,7 +391,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
       ->get(\common\components\Graph::class)
       ->create($checkins_last_month);
 
-    $user_behaviors = $this->getUserBehaviors($date);
+    $user_behaviors = $user_behavior->getByDate(Yii::$app->user->id, $date);
     $user_questions = $this->getUserQuestions($date);
 
     $messages = [];
@@ -422,6 +422,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
       'l.id,        
        l.date      AS "date",
        l.behavior_id AS "behavior_id",
+       l.category_id AS "category_id",
        (SELECT q1.answer
         FROM question q1
         WHERE q1.question = 1
@@ -516,14 +517,6 @@ ORDER  BY l.date DESC;
     return $this->parseQuestionData($questions);
   }
 
-  public function getUserBehaviors($local_date = null) {
-    if(is_null($local_date)) $local_date = $this->time->getLocalDate();
-
-    $behaviors = $this->getBehaviorData($local_date);
-    $behaviors = \common\models\UserBehavior::decorateWithCategory($behaviors);
-    return $this->parseBehaviorData($behaviors);
-  }
-
   public function parseQuestionData($questions) {
     if(!$questions) return [];
 
@@ -543,22 +536,6 @@ ORDER  BY l.date DESC;
     }
 
     return $question_answers;
-  }
- 
-  public function parseBehaviorData($behaviors) {
-    if(!$behaviors) return [];
-
-    $opts_by_cat = [];
-    foreach($behaviors as $behavior) {
-      $indx = $behavior['behavior']['category_id'];
-
-      $opts_by_cat[$indx]['category_name'] = $behavior['behavior']['category']['name'];
-      $opts_by_cat[$indx]['behaviors'][] = [
-        "id" => $behavior['behavior_id'],
-        "name"=>$behavior['behavior']['name']];
-    }
-
-    return $opts_by_cat;
   }
 
   public function getQuestionData($local_date) {
@@ -581,22 +558,6 @@ ORDER  BY l.date DESC;
     return $questions;
   }
 
-  public function getBehaviorData($local_date) {
-    list($start, $end) = $this->time->getUTCBookends($local_date);
-
-    $user_behavior = Yii::$container->get(UserBehaviorInterface::class);
-    return $user_behavior->find()
-      ->where("user_id=:user_id 
-      AND date > :start_date 
-      AND date < :end_date", 
-    [
-      "user_id" => Yii::$app->user->id, 
-      ':start_date' => $start, 
-      ":end_date" => $end
-    ])
-    ->asArray()
-    ->all();
-  }
 
   public function cleanExportData($data) {
    $order = array_flip(["date", "behavior", "category", "question1", "question2", "question3"]);
@@ -607,10 +568,11 @@ ORDER  BY l.date DESC;
        $row['date'] = $this->time->convertUTCToLocal($row['date'], false);
        
        // clean up things we don't need
-       $row['category'] = $row['behavior']['category']['name'];
+       $row['category'] = $row['category']['name'];
        $row['behavior'] = $row['behavior']['name'];
        unset($row['id']);
        unset($row['behavior_id']);
+       unset($row['category_id']);
 
        // sort the array into a sensible order
        uksort($row, function($a, $b) use ($order) {

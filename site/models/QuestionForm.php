@@ -149,6 +149,7 @@ class QuestionForm extends Model
         $question_id = \common\models\Question::$TYPES[$answer_letter];
         array_push($answers, [
                                'behavior_id'    => $user_bhvr->behavior_id,
+                               'category_id'    => $user_bhvr->category_id,
                                'user_bhvr_id' => $user_bhvr->id,
                                'question_id'  => $question_id,
                                'answer'       => $answer,
@@ -164,6 +165,7 @@ class QuestionForm extends Model
       $model = new \common\models\Question;
       $model->user_id = Yii::$app->user->id;
       $model->behavior_id = $answer['behavior_id'];
+      $model->category_id = $answer['category_id'];
       $model->user_behavior_id = $answer['user_bhvr_id'];
       $model->date = new Expression("now()::timestamp");
       $model->question = $answer['question_id'];

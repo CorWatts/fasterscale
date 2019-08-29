@@ -10,6 +10,7 @@ $imgRef = $message->embedContent($chart_content, [
   'contentType'    => 'image/png',
   'setDisposition' => 'inline'
 ]);
+$categories = \common\models\Category::getCategories();
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -189,11 +190,11 @@ if($questions) {
 
 <?php
 if($user_behaviors) {
-  foreach($user_behaviors as $user_behavior) { ?>
+  foreach($user_behaviors as $cat_key => $behaviors) { ?>
         <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">
-          <strong style="color:#37b98f"><?= $user_behavior['category_name'] ?></strong>
+          <strong style="color:#37b98f"><?=  $categories[$cat_key] ?></strong>
 <?php
-    foreach($user_behavior['behaviors'] as $behavior) { ?>
+    foreach($behaviors as $behavior) { ?>
         <br><?= $behavior['name'] ?>
 <?php
     }

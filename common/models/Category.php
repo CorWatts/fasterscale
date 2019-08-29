@@ -74,12 +74,35 @@ class Category extends \yii\base\BaseObject implements \common\interfaces\Catego
     ];
   }
 
+  /**
+   * getCategories() returns a array of categories indexed by the category id.
+   * The format is similar to:
+   *     [
+   *        1 => 'Restoration',
+   *        2 => 'Forgetting Priorities',
+   *        ...
+   *      ]
+   * @return array of categories
+   */
   public static function getCategories() {
     return AH::map(\common\models\Category::$categories, 'id', 'name');
   }
 
+  /**
+   * Given a $key => $value pair, returns the matching category.
+   * Example:
+   *     getCategory('id', 1);
+   * Should return:
+   *     [ "id" => 1, "name" => "Restoration"]
+   *
+   * @param string $key the name of the attribute to filter on
+   * @param string $val the value of the attribute to filter on
+   * @return a single category
+   */
   public static function getCategory($key, $val) {
-    $indexed = AH::index(self::$categories, null, $key);
-    return AH::getValue($indexed, $val, [false])[0];
+    $ret = array_values(array_filter(self::$categories, function($cat) use ($key, $val) {
+      return $cat[$key] === $val;
+    }));
+    return $ret ? $ret[0] : null;
   }
 }

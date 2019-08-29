@@ -402,259 +402,6 @@ public $userQuestions = [
 	],
 ];
 
-public $behaviorData = [
-	[
-		'id' => 820,
-		'user_id' => 2,
-		'behavior_id' => 7,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 7,
-			'name' => 'making eye contact',
-			'category_id' => 1,
-			'category' => [
-				'id' => 1,
-				'name' => 'Restoration',
-			],
-		],
-	], [
-		'id' => 821,
-		'user_id' => 2,
-		'behavior_id' => 13,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 13,
-			'name' => 'less time/energy for God, meetings, and church',
-			'category_id' => 2,
-			'category' => [
-				'id' => 2,
-				'name' => 'Forgetting Priorities',
-			],
-		],
-	], [
-		'id' => 822,
-		'user_id' => 2,
-		'behavior_id' => 18,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 18,
-			'name' => 'changes in goals',
-			'category_id' => 2,
-			'category' => [
-				'id' => 2,
-				'name' => 'Forgetting Priorities',
-			],
-		],
-	], [
-		'id' => 823,
-		'user_id' => 2,
-		'behavior_id' => 29,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 29,
-			'name' => 'using profanity',
-			'category_id' => 3,
-			'category' => [
-				'id' => 3,
-				'name' => 'Anxiety',
-			],
-		],
-	], [
-		'id' => 824,
-		'user_id' => 2,
-		'behavior_id' => 41,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 41,
-			'name' => 'co-dependent rescuing',
-			'category_id' => 3,
-			'category' => [
-				'id' => 3,
-				'name' => 'Anxiety',
-			],
-		],
-	], [
-		'id' => 825,
-		'user_id' => 2,
-		'behavior_id' => 48,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 48,
-			'name' => 'workaholic',
-			'category_id' => 4,
-			'category' => [
-				'id' => 4,
-				'name' => 'Speeding Up',
-			],
-		],
-	], [
-		'id' => 826,
-		'user_id' => 2,
-		'behavior_id' => 72,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 72,
-			'name' => 'black and white, all or nothing thinking',
-			'category_id' => 5,
-			'category' => [
-				'id' => 5,
-				'name' => 'Ticked Off',
-			],
-		],
-	], [
-		'id' => 827,
-		'user_id' => 2,
-		'behavior_id' => 79,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 79,
-			'name' => 'blaming',
-			'category_id' => 5,
-			'category' => [
-				'id' => 5,
-				'name' => 'Ticked Off',
-			],
-		],
-	], [
-		'id' => 828,
-		'user_id' => 2,
-		'behavior_id' => 89,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 89,
-			'name' => 'obsessive (stuck) thoughts',
-			'category_id' => 5,
-			'category' => [
-				'id' => 5,
-				'name' => 'Ticked Off',
-			],
-		],
-	], [
-		'id' => 829,
-		'user_id' => 2,
-		'behavior_id' => 111,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 111,
-			'name' => 'seeking out old unhealthy people and places',
-			'category_id' => 6,
-			'category' => [
-				'id' => 6,
-				'name' => 'Exhausted',
-			],
-		],
-	], [
-		'id' => 830,
-		'user_id' => 2,
-		'behavior_id' => 118,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 118,
-			'name' => 'not returning phone calls',
-			'category_id' => 6,
-			'category' => [
-				'id' => 6,
-				'name' => 'Exhausted',
-			],
-		],
-	], [
-		'id' => 831,
-		'user_id' => 2,
-		'behavior_id' => 122,
-		'date' => '2016-09-10 19:26:04',
-		'behavior' => [
-			'id' => 122,
-			'name' => 'returning to the place you swore you would never go again',
-			'category_id' => 7,
-			'category' => [
-				'id' => 7,
-				'name' => 'Relapse/Moral Failure',
-			],
-		],
-	],
-];
-
-public $userBehaviors = [
-	1 => [
-		'category_name' => 'Restoration',
-		'behaviors' => [
-			[
-				'id' => 7,
-				'name' => 'making eye contact',
-			],
-		],
-	],
-	2 => [
-		'category_name' => 'Forgetting Priorities',
-		'behaviors' => [
-			[
-				'id' => 13,
-				'name' => 'less time/energy for God, meetings, and church',
-			], [
-				'id' => 18,
-				'name' => 'changes in goals',
-			],
-		],
-  ],
-  3 => [
-		'category_name' => 'Anxiety',
-		'behaviors' => [
-			[
-				'id' => 29,
-				'name' => 'using profanity',
-			], [
-				'id' => 41,
-				'name' => 'co-dependent rescuing',
-			],
-		],
-	],
-	4 => [
-		'category_name' => 'Speeding Up',
-		'behaviors' => [
-			[
-				'id' => 48,
-				'name' => 'workaholic',
-			],
-		],
-	],
-	5 => [
-		'category_name' => 'Ticked Off',
-		'behaviors' => [
-			[
-				'id' => 72,
-				'name' => 'black and white, all or nothing thinking',
-			], [
-				'id' => 79,
-				'name' => 'blaming',
-			], [
-				'id' => 89,
-				'name' => 'obsessive (stuck) thoughts',
-			],
-		],
-	],
-	6 => [
-		'category_name' => 'Exhausted',
-		'behaviors' => [
-			[
-				'id' => 111,
-				'name' => 'seeking out old unhealthy people and places',
-			], [
-				'id' => 118,
-				'name' => 'not returning phone calls',
-			],
-		],
-	],
-	7 => [
-		'category_name' => 'Relapse/Moral Failure',
-		'behaviors' => [
-			[
-				'id' => 122,
-				'name' => 'returning to the place you swore you would never go again',
-			],
-		],
-	],
-];
-
 public $exportData = [
     [
       'id' => 485,
@@ -666,11 +413,10 @@ public $exportData = [
       'behavior' => [
         'id' => 59,
         'name' => 'repetitive, negative thoughts',
-        'category_id' => 4,
-        'category' => [
-          'id' => 4,
-          'name' => 'Speeding Up',
-        ],
+      ],
+      'category' => [
+        'id' => 4,
+        'name' => 'Speeding Up',
       ],
     ], [
       'id' => 487,
@@ -682,11 +428,10 @@ public $exportData = [
       'behavior' => [
         'id' => 106,
         'name' => 'tired',
-        'category_id' => 6,
-        'category' => [
-          'id' => 6,
-          'name' => 'Exhausted',
-        ],
+      ],
+      'category' => [
+        'id' => 6,
+        'name' => 'Exhausted',
       ],
     ], [
       'id' => 488,
@@ -698,11 +443,10 @@ public $exportData = [
       'behavior' => [
         'id' => 125,
         'name' => 'out of control',
-        'category_id' => 7,
-        'category' => [
-          'id' => 7,
-          'name' => 'Relapse/Moral Failure',
-        ],
+      ],
+      'category' => [
+        'id' => 7,
+        'name' => 'Relapse/Moral Failure',
       ],
     ], [
       'id' => 486,
@@ -714,11 +458,10 @@ public $exportData = [
       'behavior' => [
         'id' => 89,
         'name' => 'obsessive (stuck) thoughts',
-        'category_id' => 5,
-        'category' => [
-          'id' => 5,
-          'name' => 'Ticked Off',
-        ]
+      ],
+      'category' => [
+        'id' => 5,
+        'name' => 'Ticked Off',
       ],
     ]
   ];
@@ -776,13 +519,6 @@ public $exportData = [
     $this->specify('parseQuestionData should function correctly', function () {
       expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals($this->user->parseQuestionData($this->questionData), $this->userQuestions));
       expect('parseQuestionData should return empty with the empty set', $this->assertEmpty($this->user->parseQuestionData([])));
-    });
-  }
-
-  public function testParseBehaviorData() {
-    $this->specify('parseBehaviorData should function correctly', function () {
-      expect('parseBehaviorData should return the correct structure with expected data', $this->assertEquals($this->user->parseBehaviorData($this->behaviorData), $this->userBehaviors));
-      expect('parseBehaviorData should return empty with the empty set', $this->assertEmpty($this->user->parseBehaviorData([])));
     });
   }
 
