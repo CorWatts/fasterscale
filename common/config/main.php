@@ -1,4 +1,9 @@
 <?php
+$params = yii\helpers\ArrayHelper::merge(
+  require __DIR__ . '/params.php',
+  require __DIR__ . '/params-local.php'
+);
+
 return [
   'name' => "The Faster Scale App",
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
@@ -29,7 +34,6 @@ return [
     'gridview' => '\kartik\grid\Module',
   ],
   'components' => [
-    // by default, sessions are stored in a local file
     'cache' => [ // DummyCache never actually caches anything
       'class'=> yii\caching\DummyCache::class,
     ],
@@ -42,5 +46,6 @@ return [
   'aliases' => [
     '@bower' => '@vendor/bower-asset',
     '@npm' => '@vendor/npm-asset'
-  ]
+  ],
+  'params' => $params,
 ];

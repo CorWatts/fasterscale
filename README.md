@@ -73,6 +73,14 @@ We have built-in support for minimizing JS and CSS assets. The following steps s
 
 That should result the browser downloading published asset bundles instead of each JS/CSS file individually.
 
+## Testing
+1. Create a PostgreSQL database and user for tests via the following SQL:  
+    CREATE DATABASE fsatest;
+    CREATE USER fsatest WITH PASSWORD 'test123';
+    GRANT ALL PRIVILEGES ON DATABASE "fsatest" TO fsatest;
+
+If you choose to modify the name of db or user or the password, be sure to also modify the corresponding value in `common/config/tests-local.php`.
+
 ## Deployment
 This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.
 
