@@ -66,10 +66,19 @@ class CustomBehaviorFormTest extends \Codeception\Test\Unit {
     $user_id = 123;
     $this->user->id = $user_id;
 
-    $custom_behavior = $this->getMockBuilder(\common\interfaces\CustomBehaviorInterface::class)
-      ->setConstructorArgs([$this->user, $category])
+    $custom_behavior = $this->getMockBuilder(\common\models\CustomBehavior::class)
       ->setmethods(['getisnewrecord', 'attributes', 'save'])
       ->getmock();
+    $custom_behavior
+      ->method('attributes')
+      ->willReturn([
+        'id',
+        'user_id',
+        'category_id',
+        'name',
+        'created_at',
+        'updated_at',
+      ]);
     $custom_behavior
       ->expects($this->once())
       ->method('save')
