@@ -64,9 +64,6 @@ if($hash = Utility::getRevHash()) {
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-<?php if (!Yii::$app->user->isGuest): ?>
-            <div class="alert alert-info" role="alert">Fully editable Personal Behaviors have arrived. Try them out on <a href="<?=Url::to(['profile/index'])?>">your profile</a> or read more about the feature in <a href="<?=Url::to(['site/blog'])?>">our latest update</a>.</div>
-<?php endif; ?>
           <div class="row">
             <div class="col-md-offset-2 col-md-8">
               <?= Alert::widget() ?>
