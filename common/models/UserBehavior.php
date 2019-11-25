@@ -53,6 +53,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
     return [
       [['user_id', 'behavior_id', 'category_id', 'date'], 'required'],
       [['user_id', 'behavior_id', 'category_id'], 'integer'],
+      ['custom_behavior', 'string'],
     ];
   }
 
@@ -68,6 +69,7 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
       'user_id'   => 'User ID',
       'behavior_id' => 'Behavior ID',
       'category_id' => 'Category ID',
+      'custom_behavior' => 'Personal Behavior Name',
     ];
   }
 
@@ -78,14 +80,6 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
   public function getUser()
   {
     return $this->hasOne(\common\models\User::class, ['id' => 'user_id']);
-  }
-
-  /**
-   * @return \yii\db\ActiveQuery
-   * @codeCoverageIgnore
-   */
-  public function getCustomBehavior() {
-    return $this->hasOne(\common\models\CustomBehavior::class, ['custom_behavior_id' => 'id']);
   }
 
   public function getPastCheckinDates() {
@@ -189,9 +183,9 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
   public function getBehaviorsWithCounts($limit = null) {
     $query = new Query;
     $query->params = [":user_id" => Yii::$app->user->id];
-    $query->select("user_id, behavior_id, category_id, COUNT(id) as count")
+    $query->select("user_id, behavior_id, category_id, custom_behavior, COUNT(id) as count")
       ->from('user_behavior_link')
-      ->groupBy('behavior_id, category_id, user_id')
+      ->groupBy('behavior_id, category_id, custom_behavior, user_id')
       ->having('user_id = :user_id')
       ->orderBy('count DESC');
 
@@ -235,7 +229,13 @@ class UserBehavior extends ActiveRecord implements UserBehaviorInterface
       $category = \common\models\Category::getCategory('id', $o['category_id']);
       if($behavior) {
         $o['behavior'] = $behavior;
-      }
+      } else if (array_key_exists('custom_behavior', $o)) {
+        // if a behavior isn't set, this may be a custom_behavior
+        $o['behavior'] = [
+          // we don't have 'id' in here...this is a custom_behavior instead of a 'real' one
+          'name' => $o['custom_behavior'],
+        ];
+      } // else -- something is weird
       if($category) {
         $o['category'] = $category;
       }
