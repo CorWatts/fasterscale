@@ -314,6 +314,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     expect('rules', $this->assertEquals($this->user_behavior->rules(), [
       [['user_id', 'behavior_id', 'category_id', 'date'], 'required'],
       [['user_id', 'behavior_id', 'category_id'], 'integer'],
+      ['custom_behavior', 'string'],
     ]));
   }
 
@@ -324,6 +325,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
       'user_id'   => 'User ID',
       'behavior_id' => 'Behavior ID',
       'category_id' => 'Category ID',
+      'custom_behavior' => 'Personal Behavior Name',
     ]));
   }
 
