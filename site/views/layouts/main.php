@@ -37,10 +37,10 @@ if($hash = Utility::getRevHash()) {
                 'brandUrl' => Yii::$app->homeUrl,
             ]);
             if (Yii::$app->user->isGuest) {
+              $menuItems[] = ['label' => 'Start Here', 'url' => ['/site/signup']];
               $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
               $menuItems[] = ['label' => 'News', 'url' => ['/site/blog']];
               $menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
-              $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
               $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
               $menuItems[] = ['label' => 'Check-in', 'url' => ['/checkin/index']];

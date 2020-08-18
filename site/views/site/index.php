@@ -31,6 +31,7 @@ $this->registerMetaTag([
       <div class="col-md-12">
         <p>Log the emotions and behaviors you are exhibiting in order to see how vulnerable to temptation you are in the moment. Do a check-in every day to see how your mental state changes over time.</p>
         <p>More questions? Take a look at our <?=Html::a("FAQ", Url::to(['site/faq']))?>.</p>
+        <p>Sound interesting? <?=Html::a("Create an account", Url::to(['site/signup']))?> and do your first check-in.</p>
       </div>
     </div>
   </div>
