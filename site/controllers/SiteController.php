@@ -123,7 +123,7 @@ class SiteController extends Controller
     $model = Yii::$container->get(\site\models\SignupForm::class);
     if($model->load(Yii::$app->request->post()) && $model->validate()) {
       $model->signup();
-      Yii::$app->session->setFlash('success', 'We have sent a verification email to the email address you provided. Please check your inbox and follow the instructions to verify your account.');
+      Yii::$app->session->setFlash('success', "We have sent a verification email to the email address you provided.<br /><br />Please check your inbox and follow the instructions to verify your account. If the email does not arrive please check your spam folder.");
       return $this->redirect('/',302);
     }
 
@@ -141,7 +141,7 @@ class SiteController extends Controller
         Yii::warning("$ip has tried to reset the password for ".$model->email);
       }
 
-      Yii::$app->session->setFlash('success', 'If there is an account with the submitted email address you will receive further instructions in your email inbox.');
+      Yii::$app->session->setFlash('success', 'If there is an account with the submitted email address you will receive further instructions in your email inbox.<br /><br />If the email does not arrive please check your spam folder.');
       return $this->goHome();
     }
 

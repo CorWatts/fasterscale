@@ -22,6 +22,7 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <h1>Sign up</h1>
+      <p>To do a check-in you need an account. But don't worry -- <?= Html::a("we won't do anything with your data", ['site/faq']) ?>.</p>
 			<?php $form = ActiveForm::begin([
 				'id' => 'form-signup',
 				'enableClientValidation' => true,
@@ -45,6 +46,7 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
           <?= Html::submitButton('Sign up', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
         </div>
       <?php ActiveForm::end(); ?>
+      <p>If the email doesn't arrive quickly check your spam folder.</p>
     </div>
   </div>
 </div>
