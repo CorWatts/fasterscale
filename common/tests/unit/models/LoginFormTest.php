@@ -64,7 +64,8 @@ class LoginFormTest extends \Codeception\Test\Unit {
     return $form;
   }
 
-  public function setUp() {
+  public function setUp(): void
+  {
     $this->container = new \yii\di\Container;
     $this->user = $this->mockUser();
     $this->form = $this->mockForm($this->user);

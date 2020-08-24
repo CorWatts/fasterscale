@@ -60,7 +60,7 @@ class ChangeEmailFormTest extends \Codeception\Test\Unit {
       expect($emailMessage->getTo())->hasKey($desired_email);
       expect($emailMessage->getFrom())->hasKey(Yii::$app->params['supportEmail']);
       expect($emailMessage->getSubject())->equals(Yii::$app->name . ' -- your requested email change');
-      expect($emailMessage->toString())->contains($user->email);
+      expect($emailMessage->toString())->stringContainsString($user->email);
     });
   }
 

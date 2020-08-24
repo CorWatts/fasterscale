@@ -17,7 +17,7 @@ class TimeTest extends \Codeception\Test\Unit
 {
     use \Codeception\Specify;
 
-    public function setUp()
+    public function setUp(): void
     {
       $this->container = new \yii\di\Container;
       $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
@@ -33,7 +33,7 @@ class TimeTest extends \Codeception\Test\Unit
       parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }

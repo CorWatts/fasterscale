@@ -12,7 +12,8 @@ class QuestionFormTest extends \Codeception\Test\Unit
 
   private $container;
 
-  public function setUp() {
+  public function setUp(): void
+  {
     $this->container = new Container;
     $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
     $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');

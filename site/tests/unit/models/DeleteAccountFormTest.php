@@ -72,7 +72,7 @@ class DeleteAccountFormTest extends \Codeception\Test\Unit {
       expect($emailMessage->getTo())->hasKey('partner1@example.com');
       expect($emailMessage->getFrom())->hasKey(Yii::$app->params['supportEmail']);
       expect($emailMessage->getSubject())->equals('user@example.com has deleted their The Faster Scale App account');
-      expect($emailMessage->toString())->contains($user->email);
+      expect($emailMessage->toString())->stringContainsString($user->email);
     });
   }
 

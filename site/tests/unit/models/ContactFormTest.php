@@ -48,7 +48,7 @@ class ContactFormTest extends \Codeception\Test\Unit {
     expect($emailMessage->getTo())->hasKey('destination@email.com');
     expect($emailMessage->getFrom())->hasKey('email@email.com');
     expect($emailMessage->getSubject())->equals('[FSA Contact] a question');
-    expect($emailMessage->toString())->contains('hello there');
+    expect($emailMessage->toString())->stringContainsString('hello there');
   }
 }
 

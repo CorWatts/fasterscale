@@ -17,7 +17,8 @@ class EditProfileFormTest extends \Codeception\Test\Unit {
       'expose_graph' => true,
     ];
 
-  public function setUp() {
+  public function setUp(): void
+  {
     $this->graph = $this->getMockBuilder(common\components\Graph::class)
       ->setMethods(['create', 'destroy'])
       ->getMock();

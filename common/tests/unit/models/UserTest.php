@@ -84,7 +84,8 @@ public $exportData = [
     ]
   ];
 
-  public function setUp() {
+  public function setUp(): void
+  {
     $this->container = new \yii\di\Container;
     $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
     $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
@@ -128,7 +129,8 @@ public $exportData = [
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown(): void
+  {
     $this->user = null;
     parent::tearDown();
   }

@@ -19,7 +19,7 @@ class UtilityTest extends \Codeception\Test\Unit
 {
   use Specify;
 
-  protected function tearDown()
+  protected function tearDown(): void
   {
     // just in case we're forgetful :)
     if(file_exists(Utility::$REVISION_FILE)) $this->_deleteRevFile();

@@ -155,7 +155,8 @@ class QuestionTest extends \Codeception\Test\Unit {
     ],
   ];
 
-  public function setUp() {
+  public function setUp(): void
+  {
     $this->question = $this->getMockBuilder('\common\models\Question')
          ->setMethods(['save', 'attributes'])
          ->getMock();
