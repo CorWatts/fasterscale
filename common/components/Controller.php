@@ -32,7 +32,11 @@ class Controller extends \yii\web\Controller {
          'class' => 'yii\web\ErrorAction',
        ],
       'captcha' => [
-        'class' => 'yii\captcha\CaptchaAction',
+        'class' => 'juliardi\captcha\CaptchaAction',
+        //'length' => 5, // captcha character count
+        //'width' => 150, // width of generated captcha image
+        //'height' => 40, // height of generated captcha image
+        //'quality' => 100, // quality of generated captcha image
       ],
     ];
   }

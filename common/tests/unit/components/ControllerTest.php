@@ -19,7 +19,7 @@ class ControllerTest extends \Codeception\Test\Unit {
           'class' => 'yii\web\ErrorAction',
         ],
         'captcha' => [
-          'class' => 'yii\captcha\CaptchaAction',
+          'class' => 'juliardi\captcha\CaptchaAction',
         ],
       ], $controller->actions()));
     }

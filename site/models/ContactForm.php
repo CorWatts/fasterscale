@@ -4,6 +4,7 @@ namespace site\models;
 
 use Yii;
 use yii\base\Model;
+use juliardi\captcha\CaptchaValidator;
 
 /**
  * ContactForm is the model behind the contact form.
@@ -14,7 +15,7 @@ class ContactForm extends Model
   public $email;
   public $subject;
   public $body;
-  public $verifyCode;
+  public $captcha;
 
   /**
    * @inheritdoc
@@ -28,8 +29,8 @@ class ContactForm extends Model
       ['email', 'filter', 'filter' => 'trim'],
       ['email', 'filter', 'filter' => 'strtolower'],
       ['email', 'email'],
-      // verifyCode needs to be entered correctly
-      ['verifyCode', 'captcha', 'when' => function() {
+      // captcha needs to be entered correctly
+      ['captcha', CaptchaValidator::className(), 'when' => function() {
         return Yii::$app->user->isGuest;
       }, 'skipOnEmpty' => !!YII_ENV_TEST],
     ];
@@ -42,7 +43,7 @@ class ContactForm extends Model
   public function attributeLabels()
   {
     return [
-      'verifyCode' => 'Verification Code',
+      'captcha' => 'Verification Code',
     ];
   }
 

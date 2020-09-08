@@ -185,14 +185,15 @@ $navbar-default-toggle-border-color:       #ddd !default;
 @import "pickadate";
 @import "bootstrap-custom";
 
+#captcha-image > img {
+  cursor: pointer;
+}
+
 .site-signup {
   .input-group-btn {
     button {
       background-color: $gray-lighter;
     }
-  }
-  #signupform-captcha-image {
-    cursor: pointer;
   }
 }
 

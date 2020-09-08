@@ -24,7 +24,7 @@ return [
       'yii\bootstrap\BootstrapPluginAsset',
       'yii\widgets\ActiveFormAsset',
       'yii\validators\ValidationAsset',
-      'yii\captcha\CaptchaAsset',
+      //'yii\captcha\CaptchaAsset',
       'site\assets\ChartjsAsset',
       'site\assets\PickadateAsset',
       'yii\grid\GridViewAsset',

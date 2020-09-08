@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\captcha\Captcha;
+use juliardi\captcha\Captcha;
 use common\models\Category;
 
 /**
@@ -33,7 +33,7 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
         <?= $form->field($model, 'password', ['inputTemplate' => '<div class="input-group">{input}<span class="input-group-btn"><button id="password-toggle" class="btn btn-default" type="button">Show</button></span></div>'])->passwordInput() ?>
         <?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
         <?= $form->field($model, 'captcha')->widget(Captcha::class, [
-          'template' => '<div class="row"><div class="col-md-5">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
+          'template' => '<div class="row"><div class="col-md-5" id="signupform-captcha-image">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
         ]) ?>
         <?= $form->field($model, 'send_email')->checkbox(['disabled'=>true]) ?>
         <div id='send_email_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>

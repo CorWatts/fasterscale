@@ -4,6 +4,7 @@ namespace site\models;
 use yii\base\Model;
 use Yii;
 use \common\interfaces\UserInterface;
+use juliardi\captcha\CaptchaValidator;
 
 /**
  * Signup form
@@ -48,7 +49,7 @@ class SignupForm extends Model
       ['timezone', 'in', 'range'   => \DateTimeZone::listIdentifiers()],
 
       // captcha needs to be entered correctly
-      ['captcha', 'captcha', 'caseSensitive' => false, 'skipOnEmpty' => !!YII_ENV_TEST],
+      ['captcha', CaptchaValidator::className(), 'skipOnEmpty' => !!YII_ENV_TEST],
 
       ['send_email', 'boolean'],
       ['email_category', 'integer'],

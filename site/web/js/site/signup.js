@@ -20,5 +20,9 @@
     });
 
     $('[\data-toggle=\"tooltip\"]').tooltip();
+
+    $('#captcha-image > img').on('click', function () {
+      $(this).attr('src', '/site/captcha?v=' + Math.random())
+    });
   });
 })(jQuery)

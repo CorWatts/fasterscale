@@ -23,7 +23,6 @@ class CheckinController extends Controller
     return [
       'access' => [
         'class' => AccessControl::class,
-        'only' => ['index', 'view', 'questions', 'report', 'history'],
         'rules' => [
           [
             'actions' => ['index', 'view', 'questions', 'report', 'history'],

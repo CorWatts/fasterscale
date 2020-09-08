@@ -20,7 +20,8 @@
     "bower-asset/pickadate": "^3.5",
     "amenadiel/jpgraph": "dev-master#10a818b",
     "kartik-v/yii2-grid": "^3.2",
-    "kartik-v/yii2-editable": "^1.7"
+    "kartik-v/yii2-editable": "^1.7",
+    "juliardi/yii2-captcha": "^1.1"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "2.0.9",

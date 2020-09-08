@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\captcha\Captcha;
+use juliardi\captcha\Captcha;
 
 /**
  * @var yii\web\View $this
@@ -13,6 +13,7 @@ $this->registerMetaTag([
   'name' => 'description',
   'content' => 'The Faster Scale App is a totally free, online version of Michael Dye\'s relapse awareness scale. Please send us comments, questions, or suggestions here.'
 ]);
+$this->registerJsFile('/js/site/contact.js', ['depends' => [\site\assets\AppAsset::class]]);
 ?>
 <div class="site-contact">
   <h1>Contact Us</h1>
@@ -59,8 +60,8 @@ $this->registerMetaTag([
 
         <?php if(Yii::$app->user->isGuest) {
           // only show captcha if user is not logged in
-          print $form->field($model, 'verifyCode')->widget(Captcha::class, [
-            'template' => '<div class="row"><div class="col-md-4">{image}</div><div class="col-md-8">{input}</div></div>',
+          print $form->field($model, 'captcha')->widget(Captcha::class, [
+            'template' => '<div class="row"><div class="col-md-4" id="captcha-image">{image}</div><div class="col-md-7 col-md-offset-1">{input}</div></div>',
           ]);
         } ?>
 
