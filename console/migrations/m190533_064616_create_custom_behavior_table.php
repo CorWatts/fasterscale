@@ -10,7 +10,8 @@ class m190533_064616_create_custom_behavior_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp() {
+    public function safeUp()
+    {
         $this->createTable('custom_behavior', [
             'id' => $this->primaryKey(),
             "user_id" => $this->integer() . " NOT NULL",
@@ -26,7 +27,8 @@ class m190533_064616_create_custom_behavior_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown() {
+    public function safeDown()
+    {
         $this->dropForeignKey("custom_behavior_user_fk", "{{%custom_behavior}}");
         $this->dropTable('custom_behavior');
     }

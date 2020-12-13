@@ -6,7 +6,7 @@ class m171215_163223_lowercase_emails extends Migration
 {
     public function safeUp()
     {
-      $this->execute('UPDATE "user" SET email=lower(email);');
+        $this->execute('UPDATE "user" SET email=lower(email);');
     }
 
     public function safeDown()

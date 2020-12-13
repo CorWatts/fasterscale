@@ -57,12 +57,12 @@ $this->registerMetaTag([
         <?= $form->field($model, 'subject') ?>
         <?= $form->field($model, 'body')->textArea(['rows' => 6]) ?>
 
-        <?php if(Yii::$app->user->isGuest) {
-          // only show captcha if user is not logged in
-          print $form->field($model, 'verifyCode')->widget(Captcha::class, [
+        <?php if (Yii::$app->user->isGuest) {
+    // only show captcha if user is not logged in
+    print $form->field($model, 'verifyCode')->widget(Captcha::class, [
             'template' => '<div class="row"><div class="col-md-4">{image}</div><div class="col-md-8">{input}</div></div>',
           ]);
-        } ?>
+} ?>
 
         <div class="form-group">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>

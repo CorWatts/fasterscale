@@ -9,12 +9,14 @@ use common\components\Controller;
  * Controller test
  */
 
-class ControllerTest extends \Codeception\Test\Unit {
+class ControllerTest extends \Codeception\Test\Unit
+{
     use \Codeception\Specify;
 
-    public function testActions() {
-      $controller = new Controller('test', 'common');
-      expect('actions should return an array of action settings', $this->assertEquals([
+    public function testActions()
+    {
+        $controller = new Controller('test', 'common');
+        expect('actions should return an array of action settings', $this->assertEquals([
         'error' => [
           'class' => 'yii\web\ErrorAction',
         ],
@@ -24,17 +26,17 @@ class ControllerTest extends \Codeception\Test\Unit {
       ], $controller->actions()));
     }
 
-    public function testBeforeAction() {
-      $controller = new Controller('test', 'common');
-      $controller->enableCsrfValidation = true;
+    public function testBeforeAction()
+    {
+        $controller = new Controller('test', 'common');
+        $controller->enableCsrfValidation = true;
 
-      expect("If CSRF token is valid and parent's beforeAction() returns true, return true", $this->assertTrue($controller->beforeAction('test')));
+        expect("If CSRF token is valid and parent's beforeAction() returns true, return true", $this->assertTrue($controller->beforeAction('test')));
 
-      // this is a terrible way to test this
-      // look in common/config/test.php, we are setting the request class to be
-      // \common\tests\_support\MockRequest
-      Yii::$app->getRequest()->csrfValidationReturn = false;
-      expect("If CSRF token is NOT valid and parent's beforeAction() returns true, return false", $this->assertFalse($controller->beforeAction('test')));
-
+        // this is a terrible way to test this
+        // look in common/config/test.php, we are setting the request class to be
+        // \common\tests\_support\MockRequest
+        Yii::$app->getRequest()->csrfValidationReturn = false;
+        expect("If CSRF token is NOT valid and parent's beforeAction() returns true, return false", $this->assertFalse($controller->beforeAction('test')));
     }
 }

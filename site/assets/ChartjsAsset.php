@@ -11,4 +11,3 @@ class ChartjsAsset extends AssetBundle
         'Chart.bundle.min.js',
     ];
 }
-

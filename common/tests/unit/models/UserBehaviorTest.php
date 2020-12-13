@@ -11,10 +11,11 @@ date_default_timezone_set('UTC');
  * Time test
  */
 
-class UserBehaviorTest extends \Codeception\Test\Unit {
-  use Specify;
+class UserBehaviorTest extends \Codeception\Test\Unit
+{
+    use Specify;
 
-  public $singleSimpleBehaviorNoBehavior = [
+    public $singleSimpleBehaviorNoBehavior = [
     [
       'id' => 396,
       'user_id' => 2,
@@ -22,9 +23,9 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
       'category_id' => 6,
       'date' => '2016-06-17 04:12:43',
     ],
-  ]; 
+  ];
 
-  public $badSingleSimpleBehaviorNoBehavior = [
+    public $badSingleSimpleBehaviorNoBehavior = [
     [
       'id' => 396,
       'user_id' => 2,
@@ -32,9 +33,9 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
       'category_id' => 6,
       'date' => '2016-06-17 04:12:43',
     ],
-  ]; 
+  ];
 
-  public $behaviorData = [
+    public $behaviorData = [
     [
       'id' => 820,
       'user_id' => 2,
@@ -211,7 +212,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
     ],
   ];
 
-  public $userBehaviors = [
+    public $userBehaviors = [
     1 => [
         'making eye contact' => [
           'id' => 7,
@@ -277,49 +278,53 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
   ];
 
 
-  public function setUp() {
-    // pull in test data
-    $data = require(__DIR__.'/../data/checkinData.php');
-    $this->singleBhvr = $data['singleBhvr'];
-    $this->manyBhvrs = $data['manyBhvrs'];
-    $this->allBhvrs = $data['allBhvrs'];
-    $this->multipleDates = $data['multipleDates'];
+    public function setUp()
+    {
+        // pull in test data
+        $data = require(__DIR__.'/../data/checkinData.php');
+        $this->singleBhvr = $data['singleBhvr'];
+        $this->manyBhvrs = $data['manyBhvrs'];
+        $this->allBhvrs = $data['allBhvrs'];
+        $this->multipleDates = $data['multipleDates'];
 
-    $this->container = new \yii\di\Container;
-    $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
-    $this->container->set('common\interfaces\QuestionInterface', '\site\tests\_support\MockQuestion');
-    $this->container->set('common\interfaces\BehaviorInterface', 'common\models\Behavior');
-    $this->container->set('common\interfaces\TimeInterface', function () {
-        return new \common\components\Time('America/Los_Angeles');
-      });
+        $this->container = new \yii\di\Container;
+        $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
+        $this->container->set('common\interfaces\QuestionInterface', '\site\tests\_support\MockQuestion');
+        $this->container->set('common\interfaces\BehaviorInterface', 'common\models\Behavior');
+        $this->container->set('common\interfaces\TimeInterface', function () {
+            return new \common\components\Time('America/Los_Angeles');
+        });
 
-    $time = $this->container->get('common\interfaces\TimeInterface');
-    $behavior = $this->container->get('common\interfaces\BehaviorInterface');
-    $user = $this->container->get('common\interfaces\UserInterface');
+        $time = $this->container->get('common\interfaces\TimeInterface');
+        $behavior = $this->container->get('common\interfaces\BehaviorInterface');
+        $user = $this->container->get('common\interfaces\UserInterface');
 
-    $this->user_behavior = $this
+        $this->user_behavior = $this
                             ->getMockBuilder('common\models\UserBehavior')
                             ->setConstructorArgs([$behavior, $time])
                             ->setMethods(['getIsNewRecord', 'save', 'getBehaviorsWithCounts'])
                             ->getMock();
-    parent::setUp();
-  }
+        parent::setUp();
+    }
 
-  protected function tearDown() {
-    $this->user_behavior = null;
-    parent::tearDown();
-  }
+    protected function tearDown()
+    {
+        $this->user_behavior = null;
+        parent::tearDown();
+    }
 
-  public function testRules() {
-    expect('rules', $this->assertEquals($this->user_behavior->rules(), [
+    public function testRules()
+    {
+        expect('rules', $this->assertEquals($this->user_behavior->rules(), [
       [['user_id', 'behavior_id', 'category_id', 'date'], 'required'],
       [['user_id', 'behavior_id', 'category_id'], 'integer'],
       ['custom_behavior', 'string'],
     ]));
-  }
+    }
 
-  public function testAttributeLabels() {
-    expect('attributeLabels', $this->assertEquals($this->user_behavior->attributelabels(), [
+    public function testAttributeLabels()
+    {
+        expect('attributeLabels', $this->assertEquals($this->user_behavior->attributelabels(), [
       'id'        => 'ID',
       'date'      => 'Date',
       'user_id'   => 'User ID',
@@ -327,11 +332,13 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
       'category_id' => 'Category ID',
       'custom_behavior' => 'Personal Behavior Name',
     ]));
-  }
+    }
 
-  public function testDecorate() {
-    expect('decorate should add Behavior data to an array of UserBehaviors', $this->assertEquals($this->user_behavior->decorate($this->singleSimpleBehaviorNoBehavior),
-                    [['id' => 396,
+    public function testDecorate()
+    {
+        expect('decorate should add Behavior data to an array of UserBehaviors', $this->assertEquals(
+            $this->user_behavior->decorate($this->singleSimpleBehaviorNoBehavior),
+            [['id' => 396,
                       'user_id' => 2,
                       'behavior_id' => 107,
                       'category_id' => 6,
@@ -344,12 +351,14 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
                       'category' => [
                         'id' => 6,
                         'name' => 'Exhausted',
-                      ]]]));
+                      ]]]
+        ));
 
-    expect('decorate should add Category data but no Behavior data when the category_id is valid and the behavior_id is invalid',
-      $this->assertEquals(
-        $this->user_behavior->decorate($this->badSingleSimpleBehaviorNoBehavior),
-        [[
+        expect(
+            'decorate should add Category data but no Behavior data when the category_id is valid and the behavior_id is invalid',
+            $this->assertEquals(
+          $this->user_behavior->decorate($this->badSingleSimpleBehaviorNoBehavior),
+          [[
           'id' => 396,
           'user_id' => 2,
           'behavior_id' => 99999,
@@ -359,17 +368,21 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
             'id' => 6,
             'name' => 'Exhausted',
           ],
-        ]]));
-  }
+        ]]
+      )
+        );
+    }
 
-  public function testParseBehaviorData() {
-    expect('parseBehaviorData should return the correct structure with expected data', $this->assertEquals($this->user_behavior->parseBehaviorData($this->behaviorData), $this->userBehaviors));
-    expect('parseBehaviorData should return empty with the empty set', $this->assertEmpty($this->user_behavior->parseBehaviorData([])));
-  }
+    public function testParseBehaviorData()
+    {
+        expect('parseBehaviorData should return the correct structure with expected data', $this->assertEquals($this->user_behavior->parseBehaviorData($this->behaviorData), $this->userBehaviors));
+        expect('parseBehaviorData should return empty with the empty set', $this->assertEmpty($this->user_behavior->parseBehaviorData([])));
+    }
 
-  public function testGetBehaviorsByCategory() {
-    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getBehaviorsByCategory($this->user_behavior::decorate([]))));
-    expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([
+    public function testGetBehaviorsByCategory()
+    {
+        expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([], $this->user_behavior->getBehaviorsByCategory($this->user_behavior::decorate([]))));
+        expect('getBehaviorsByCategory to return the empty array if the user has not logged any behaviors', $this->assertEquals([
       1 => [
         'name' => 'Restoration',
         'count' => 5,
@@ -406,10 +419,11 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
           'count' => 3
         ]
       ]))));
-  }
+    }
 
-  public function testGetCheckinBreakdown() {
-    Yii::configure(Yii::$app, [
+    public function testGetCheckinBreakdown()
+    {
+        Yii::configure(Yii::$app, [
       'components' => [
         'user' => [
           'class' => 'yii\web\User',
@@ -417,37 +431,39 @@ class UserBehaviorTest extends \Codeception\Test\Unit {
         ],
       ],
     ]);
-    $identity = new \common\tests\unit\FakeUser();
-    $tz = 'America/Los_Angeles';
-    $identity->timezone = $tz;
-    // logs in the user -- we use Yii::$app->user->id in getCheckinBreakdown()
-    Yii::$app->user->setIdentity($identity);
+        $identity = new \common\tests\unit\FakeUser();
+        $tz = 'America/Los_Angeles';
+        $identity->timezone = $tz;
+        // logs in the user -- we use Yii::$app->user->id in getCheckinBreakdown()
+        Yii::$app->user->setIdentity($identity);
 
-    /* get mocked Time */
-    $tz = new \DateTimeZone($tz);
-    $date_range = new \DatePeriod(new \DateTime('2019-02-03', $tz),
-                                  new \DateInterval('P1D'),
-                                  new \DateTime('2019-03-05', $tz));
-    $time = $this
+        /* get mocked Time */
+        $tz = new \DateTimeZone($tz);
+        $date_range = new \DatePeriod(
+            new \DateTime('2019-02-03', $tz),
+            new \DateInterval('P1D'),
+            new \DateTime('2019-03-05', $tz)
+        );
+        $time = $this
         ->getMockBuilder("common\components\Time")
         ->setConstructorArgs(['America/Los_Angeles'])
         ->setMethods(['getDateTimesInPeriod'])
         ->getMock();
-    $time
+        $time
       ->method('getDateTimesInPeriod')
       ->willReturn($date_range);
 
-    $behavior = new \common\models\Behavior();
+        $behavior = new \common\models\Behavior();
 
-    $this->user_behavior = $this
+        $this->user_behavior = $this
                             ->getMockBuilder("common\models\UserBehavior")
                             ->setConstructorArgs([$behavior, $time])
                             ->setMethods(['getIsNewRecord', 'save', 'getBehaviorsWithCounts'])
                             ->getMock();
 
-    $bhvrs = require(__DIR__.'/../data/behaviorsWithCounts.php');
-    $expected = require(__DIR__.'/../data/expected_getCheckinBreakdown.php');
-    $this->user_behavior->method('getBehaviorsWithCounts')->willReturn(...$bhvrs);
-		expect('asdf', $this->assertEquals($expected, $this->user_behavior->getCheckinBreakdown()));
-  }
+        $bhvrs = require(__DIR__.'/../data/behaviorsWithCounts.php');
+        $expected = require(__DIR__.'/../data/expected_getCheckinBreakdown.php');
+        $this->user_behavior->method('getBehaviorsWithCounts')->willReturn(...$bhvrs);
+        expect('asdf', $this->assertEquals($expected, $this->user_behavior->getCheckinBreakdown()));
+    }
 }

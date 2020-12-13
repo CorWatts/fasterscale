@@ -4,21 +4,21 @@ namespace common\components;
 
 use yii\helpers\Html;
 
-
-class View extends \yii\web\View {
+class View extends \yii\web\View
+{
     /**
      * @var array the registered JSON code blocks
      * @see registerJson()
      */
     public $json;
 
-  // this is the key new function here
-  public function registerJson(array $array, $key = null, $options = 0, $depth = 512)
-  {
-    $json = json_encode($array, $options, $depth);
-    $key = $key ?: md5($json);
-    $this->json[self::POS_READY][$key] = $json;
-  }
+    // this is the key new function here
+    public function registerJson(array $array, $key = null, $options = 0, $depth = 512)
+    {
+        $json = json_encode($array, $options, $depth);
+        $key = $key ?: md5($json);
+        $this->json[self::POS_READY][$key] = $json;
+    }
 
     /**
      * Renders the content to be inserted at the end of the body section.
@@ -37,9 +37,9 @@ class View extends \yii\web\View {
         }
 
         if (!empty($this->json)) {
-          foreach($this->json[self::POS_READY] as $json_name => $json_value) {
-            $lines[] = Html::script($json_value, ['type' => 'application/json', 'id' => $json_name]);
-          }
+            foreach ($this->json[self::POS_READY] as $json_name => $json_value) {
+                $lines[] = Html::script($json_value, ['type' => 'application/json', 'id' => $json_name]);
+            }
         }
 
         if ($ajaxMode) {

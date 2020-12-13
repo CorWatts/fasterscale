@@ -13,7 +13,7 @@ use \common\interfaces\BehaviorInterface;
  */
 class Behavior extends \yii\base\BaseObject implements BehaviorInterface
 {
-  public static $behaviors = [
+    public static $behaviors = [
     ['id' => 1,   'name' => 'no current secrets', 'category_id' => 1],
     ['id' => 2,   'name' => 'resolving problems', 'category_id' => 1],
     ['id' => 3,   'name' => 'identifying fears and feelings', 'category_id' => 1],
@@ -146,67 +146,69 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
     ['id' => 132, 'name' => 'aloneness', 'category_id' => 7],
   ];
 
-  /**
-   * @inheritdoc
-   * @codeCoverageIgnore
-   */
-  public function rules()
-  {
-    return [
+    /**
+     * @inheritdoc
+     * @codeCoverageIgnore
+     */
+    public function rules()
+    {
+        return [
       [['name', 'category_id'], 'required'],
       [['name'], 'string'],
       [['category_id'], 'integer']
     ];
-  }
+    }
 
-  /**
-   * @inheritdoc
-   * @codeCoverageIgnore
-   */
-  public function attributeLabels()
-  {
-    return [
+    /**
+     * @inheritdoc
+     * @codeCoverageIgnore
+     */
+    public function attributeLabels()
+    {
+        return [
       'id'          => 'ID',
       'name'        => 'Name',
       'category_id' => 'Category ID',
     ];
-  }
-
-  /**
-   * This grabs all the categories from Category and adds the count of
-   * behaviors in each category, it also renames the "id" field to be
-   * "category_id".
-   *
-   * @returns Array
-   */
-  public function getCategories() {
-    $bhvrs_by_cat = AH::index(self::$behaviors, null, 'category_id');
-    $cats = AH::index(\common\models\Category::$categories, "id");
-    foreach($cats as $id => &$cat) {
-      $cat['behavior_count'] = count($bhvrs_by_cat[$id]); // add count of behaviors
-      $cat['category_id'] = $cat['id']; // rename id to category_id 
-      unset($cat['id']);
     }
-    return $cats;
-  }
 
-  /**
-   *
-  /**
-   * Given a $key => $value pair, returns the matching behavior.
-   * Example:
-   *     getBehavior('id', 1);
-   * Should return:
-   *     ['id' => 1,   'name' => 'no current secrets', 'category_id' => 1]
-   *
-   * @param string $key the name of the attribute to filter on
-   * @param string $val the value of the attribute to filter on
-   * @return a single behavior
-   */
-  public static function getBehavior($key, $val) {
-    $ret = array_values(array_filter(self::$behaviors, function($bvr) use ($key, $val) {
-      return $bvr[$key] === $val;
-    }));
-    return $ret ? $ret[0] : null;
-  }
+    /**
+     * This grabs all the categories from Category and adds the count of
+     * behaviors in each category, it also renames the "id" field to be
+     * "category_id".
+     *
+     * @returns Array
+     */
+    public function getCategories()
+    {
+        $bhvrs_by_cat = AH::index(self::$behaviors, null, 'category_id');
+        $cats = AH::index(\common\models\Category::$categories, "id");
+        foreach ($cats as $id => &$cat) {
+            $cat['behavior_count'] = count($bhvrs_by_cat[$id]); // add count of behaviors
+      $cat['category_id'] = $cat['id']; // rename id to category_id
+      unset($cat['id']);
+        }
+        return $cats;
+    }
+
+    /**
+     *
+    /**
+     * Given a $key => $value pair, returns the matching behavior.
+     * Example:
+     *     getBehavior('id', 1);
+     * Should return:
+     *     ['id' => 1,   'name' => 'no current secrets', 'category_id' => 1]
+     *
+     * @param string $key the name of the attribute to filter on
+     * @param string $val the value of the attribute to filter on
+     * @return a single behavior
+     */
+    public static function getBehavior($key, $val)
+    {
+        $ret = array_values(array_filter(self::$behaviors, function ($bvr) use ($key, $val) {
+            return $bvr[$key] === $val;
+        }));
+        return $ret ? $ret[0] : null;
+    }
 }

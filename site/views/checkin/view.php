@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper as AH;
 
 use common\models\User;
 use common\models\Question;
+
 /**
  * @var yii\web\View $this
  */
@@ -17,9 +18,10 @@ $this->title = "The Faster Scale App | Previous Check-ins";
 $time = Yii::$container->get('common\interfaces\TimeInterface');
 $this->registerJsFile('/js/checkin/view.js', ['depends' => [\site\assets\AppAsset::class]]);
 
-function checkboxItemTemplate($index, $label, $name, $checked, $value) {
-  $checked_val = ($checked) ? "btn-primary" : "";
-  return "<button class='btn btn-default $checked_val' data-toggle='button' disabled='disabled' name='$name' value='$value'>$label</button>";
+function checkboxItemTemplate($index, $label, $name, $checked, $value)
+{
+    $checked_val = ($checked) ? "btn-primary" : "";
+    return "<button class='btn btn-default $checked_val' data-toggle='button' disabled='disabled' name='$name' value='$value'>$label</button>";
 }
 
 $minus_week = $time->alterLocalDate($actual_date, "-1 week");
@@ -28,13 +30,13 @@ $plus_day   = $time->alterLocalDate($actual_date, "+1 day");
 $plus_week  = $time->alterLocalDate($actual_date, "+1 week");
 
 $pie_data = [];
-if($answer_pie) {
-  $values     = array_map('intval', array_column($answer_pie, "count"));
-  $labels     = array_column($answer_pie, "name");
-  $colors     = array_column($answer_pie, "color");
-  $highlights = array_column($answer_pie, "highlight");
+if ($answer_pie) {
+    $values     = array_map('intval', array_column($answer_pie, "count"));
+    $labels     = array_column($answer_pie, "name");
+    $colors     = array_column($answer_pie, "color");
+    $highlights = array_column($answer_pie, "highlight");
 
-  $pie_data = [
+    $pie_data = [
     "labels"   => $labels,
     "datasets" => [[
         "data"                 => $values,
@@ -69,19 +71,19 @@ if($answer_pie) {
     </div>
   </div>
 
-  <?php if($questions) {
-  foreach($questions as $behavior_id => $behavior_questions) {
-    print "<div class='well well-sm'>";
-    print "<button type='button' class='btn btn-primary' disabled='disabled'>{$behavior_questions['question']['behavior_name']}</button>";
-    print "<div class='row'>";
-    foreach($behavior_questions['answers'] as $question) { 
-      print "<div class='col-md-4'>";
-      print "<p><strong>{$question['title']}</strong></p>";
-      print "<p>".Html::encode($question['answer'])."</p>";
-      print "</div>";
+  <?php if ($questions) {
+    foreach ($questions as $behavior_id => $behavior_questions) {
+        print "<div class='well well-sm'>";
+        print "<button type='button' class='btn btn-primary' disabled='disabled'>{$behavior_questions['question']['behavior_name']}</button>";
+        print "<div class='row'>";
+        foreach ($behavior_questions['answers'] as $question) {
+            print "<div class='col-md-4'>";
+            print "<p><strong>{$question['title']}</strong></p>";
+            print "<p>".Html::encode($question['answer'])."</p>";
+            print "</div>";
+        }
+        print "</div></div>";
     }
-    print "</div></div>";
-  }
 }
 
   $form = ActiveForm::begin([
@@ -89,12 +91,14 @@ if($answer_pie) {
     'options' => ['class' => 'form-horizontal'],
   ]);
 
-  foreach($categories as $category) {
-    $behaviors = AH::map($behaviorsList[$category['id']], 'id', 'name');
-    print $form
+  foreach ($categories as $category) {
+      $behaviors = AH::map($behaviorsList[$category['id']], 'id', 'name');
+      print $form
             ->field($model, "behaviors{$category['id']}")
-            ->checkboxList($behaviors,
-                           ['item' => "checkboxItemTemplate"]);
+            ->checkboxList(
+                $behaviors,
+                ['item' => "checkboxItemTemplate"]
+            );
   }
   ActiveForm::end();
 

@@ -16,4 +16,3 @@ class PickadateAsset extends AssetBundle
       'yii\web\JqueryAsset',
     ];
 }
-

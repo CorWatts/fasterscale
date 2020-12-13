@@ -3,18 +3,19 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Button;
 use yii\helpers\ArrayHelper as AH;
+
 /**
  * @var yii\web\View $this
  */
 
 $this->title = "The Faster Scale App | Check-in";
 
-function checkboxItemTemplate($index, $label, $name, $checked, $value) {
-  return Html::checkbox
-    (
-      $name,
-      $checked,
-      [
+function checkboxItemTemplate($index, $label, $name, $checked, $value)
+{
+    return Html::checkbox(
+        $name,
+        $checked,
+        [
         'value' => $value,
         'label' => $label,
         'container' => false,
@@ -35,19 +36,21 @@ $form = ActiveForm::begin([
   'options' => ['class' => 'form-horizontal'],
 ]);
 
-foreach($categories as $category) {
-  $behaviors = AH::map($behaviorsList[$category['id']], 'id', 'name');
-  $custom = [];
-  if(array_key_exists($category['id'], $customList)) {
-    $custom = AH::map($customList[$category['id']], function($cbhvr) {
-      return $cbhvr['id'] . '-custom';
-    }, 'name');
-  }
-  print $form
+foreach ($categories as $category) {
+    $behaviors = AH::map($behaviorsList[$category['id']], 'id', 'name');
+    $custom = [];
+    if (array_key_exists($category['id'], $customList)) {
+        $custom = AH::map($customList[$category['id']], function ($cbhvr) {
+            return $cbhvr['id'] . '-custom';
+        }, 'name');
+    }
+    print $form
           ->field($model, "behaviors{$category['id']}")
-          ->checkboxList($behaviors + $custom,
-                         ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]);
+          ->checkboxList(
+              $behaviors + $custom,
+              ['data-toggle' => 'buttons', 'item' => "checkboxItemTemplate"]
+          );
 }
-print Html::submitButton('Submit', ['class' => 'btn btn-success']); 
+print Html::submitButton('Submit', ['class' => 'btn btn-success']);
 ActiveForm::end();
 ?>
