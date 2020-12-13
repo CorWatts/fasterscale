@@ -9,7 +9,7 @@
         "yiisoft/yii2": "~2.0.39",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "dev-master",
-        "yiisoft/yii2-redis": "~2.0.8",
+        "yiisoft/yii2-redis": "~2.0.14",
         "bower-asset/jquery": "@stable",
         "bower-asset/bootstrap-sass": "@stable",
         "bower-asset/jquery.inputmask": "@stable",
@@ -21,15 +21,15 @@
         "amenadiel/jpgraph": "dev-master#10a818b",
         "kartik-v/yii2-grid": "^3.2",
         "kartik-v/yii2-editable": "^1.7",
-        "codeception/module-yii2": "dev-php8",
+        "codeception/module-yii2": "~1.1.1",
         "codeception/module-asserts": "^1.0.0"
     },
     "require-dev": {
-        "yiisoft/yii2-debug": "2.0.9",
-        "yiisoft/yii2-gii": "~2.0.6",
-        "yiisoft/yii2-faker": "~2.0.0",
-        "codeception/specify": "@stable",
-        "codeception/verify": "@stable"
+        "yiisoft/yii2-debug": "~2.1.15",
+        "yiisoft/yii2-gii": "~2.2.1",
+        "yiisoft/yii2-faker": "~2.0.5",
+        "codeception/specify": "~1.4.0",
+        "codeception/verify": "~2.1.0"
     },
     "scripts": {
         "post-create-project-cmd": [
