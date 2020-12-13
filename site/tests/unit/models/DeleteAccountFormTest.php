@@ -69,13 +69,13 @@ class DeleteAccountFormTest extends \Codeception\Test\Unit
 
             $this->tester->seeEmailIsSent();
             $emailMessage = $this->tester->grabLastSentEmail();
-            expect('valid email is sent', $emailMessage)->isInstanceOf('yii\mail\MessageInterface');
+            verify($emailMessage)->instanceOf('yii\mail\MessageInterface');
             // an email was sent to both the user
             // and to partner1. We grab the most recently sent one to examine though, thus partner1
-            expect($emailMessage->getTo())->hasKey('partner1@example.com');
-            expect($emailMessage->getFrom())->hasKey(Yii::$app->params['supportEmail']);
-            expect($emailMessage->getSubject())->equals('user@example.com has deleted their The Faster Scale App account');
-            expect($emailMessage->toString())->contains($user->email);
+            verify($emailMessage->getTo())->arrayHasKey('partner1@example.com');
+            verify($emailMessage->getFrom())->arrayHasKey(Yii::$app->params['supportEmail']);
+            verify($emailMessage->getSubject())->equals('user@example.com has deleted their The Faster Scale App account');
+            verify($emailMessage->toString())->stringContainsString($user->email);
         });
     }
 

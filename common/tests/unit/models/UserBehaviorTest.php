@@ -278,7 +278,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit
   ];
 
 
-    public function setUp()
+    public function setUp(): void
     {
         // pull in test data
         $data = require(__DIR__.'/../data/checkinData.php');
@@ -307,7 +307,7 @@ class UserBehaviorTest extends \Codeception\Test\Unit
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user_behavior = null;
         parent::tearDown();

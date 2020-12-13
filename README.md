@@ -8,7 +8,7 @@
 ## Getting Started
 These instructions will help you get a local installation set up for development and testing purposes. See the deployment instructions for how to deploy this to a live system.
 ### Prerequisites
-* PHP >= 7.1
+* PHP >= 7.3
 * Composer
 * Additional PHP modules: php-pgsql, php-gd, php-mbstring
 * A SASS compiler. We recommend the npm project ```node-sass```. Once npm is installed on your machine  type ```npm i node-sass -g```.
@@ -73,6 +73,14 @@ We have built-in support for minimizing JS and CSS assets. The following steps s
 3. Run the asset compression by executing ```composer assets```
 
 That should result the browser downloading published asset bundles instead of each JS/CSS file individually.
+
+## Testing
+1. Create a PostgreSQL database and user for tests via the following commands:  
+    CREATE DATABASE fsatest;
+    CREATE USER fsatest WITH SUPERUSER PASSWORD 'test123';
+    GRANT ALL PRIVILEGES ON DATABASE "fsatest" TO fsatest;
+
+If you choose to modify the name of db or user or the password, be sure to also modify the corresponding value in `common/config/tests-local.php`.
 
 ## Deployment
 This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.

@@ -12,7 +12,7 @@ class CustomBehaviorFormTest extends \Codeception\Test\Unit
     private $user;
     private $category;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new Container;
         $this->container->set(\common\interfaces\UserInterface::class, '\site\tests\_support\MockUser');

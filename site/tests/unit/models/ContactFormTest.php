@@ -46,10 +46,10 @@ class ContactFormTest extends \Codeception\Test\Unit
 
         $this->tester->seeEmailIsSent();
         $emailMessage = $this->tester->grabLastSentEmail();
-        expect('valid email is sent', $emailMessage)->isInstanceOf('yii\mail\MessageInterface');
-        expect($emailMessage->getTo())->hasKey('destination@email.com');
-        expect($emailMessage->getFrom())->hasKey('email@email.com');
-        expect($emailMessage->getSubject())->equals('[FSA Contact] a question');
-        expect($emailMessage->toString())->contains('hello there');
+        verify($emailMessage)->instanceOf('yii\mail\MessageInterface');
+        verify($emailMessage->getTo())->arrayHasKey('destination@email.com');
+        verify($emailMessage->getFrom())->arrayHasKey('email@email.com');
+        verify($emailMessage->getSubject())->equals('[FSA Contact] a question');
+        verify($emailMessage->toString())->stringContainsString('hello there');
     }
 }

@@ -8,7 +8,7 @@ class ChangePasswordFormTest extends \Codeception\Test\Unit
 {
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new \yii\di\Container;
         $this->user = $this->getMockBuilder('\site\tests\_support\MockUser')
@@ -17,7 +17,7 @@ class ChangePasswordFormTest extends \Codeception\Test\Unit
         parent::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->user = null;
         parent::tearDown();

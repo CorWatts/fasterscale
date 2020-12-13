@@ -27,7 +27,7 @@ class SignupFormTest extends \Codeception\Test\Unit
     'partner_email3'
   ];
 
-    public function setUp()
+    public function setUp(): void
     {
         // define interfaces for injection
         $this->container = new \yii\di\Container;
@@ -84,7 +84,7 @@ class SignupFormTest extends \Codeception\Test\Unit
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->user = null;
         parent::tearDown();

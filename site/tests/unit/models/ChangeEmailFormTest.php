@@ -58,11 +58,11 @@ class ChangeEmailFormTest extends \Codeception\Test\Unit
 
             $this->tester->seeEmailIsSent();
             $emailMessage = $this->tester->grabLastSentEmail();
-            expect('valid email is sent', $emailMessage)->isInstanceOf('yii\mail\MessageInterface');
-            expect($emailMessage->getTo())->hasKey($desired_email);
-            expect($emailMessage->getFrom())->hasKey(Yii::$app->params['supportEmail']);
-            expect($emailMessage->getSubject())->equals(Yii::$app->name . ' -- your requested email change');
-            expect($emailMessage->toString())->contains($user->email);
+            verify($emailMessage)->instanceOf('yii\mail\MessageInterface');
+            verify($emailMessage->getTo())->arrayHasKey($desired_email);
+            verify($emailMessage->getFrom())->arrayHasKey(Yii::$app->params['supportEmail']);
+            verify($emailMessage->getSubject())->equals(Yii::$app->name . ' -- your requested email change');
+            verify($emailMessage->toString())->stringContainsString($user->email);
         });
     }
 

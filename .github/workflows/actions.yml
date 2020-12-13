@@ -2,7 +2,7 @@ name: Faster Scale App Integration
 
 on:
   - push
-  - pull_request
+  #- pull_request
 
 jobs:
   test:
@@ -11,12 +11,29 @@ jobs:
         os:
           - ubuntu-latest
         php:
-          - "7.1"
-          - "7.2"
           - "7.3"
           - "7.4"
           #- "8.0"
     runs-on: ubuntu-latest
+    
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
 
     steps:
     - uses: actions/checkout@v2
@@ -25,7 +42,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-        tools: composer:v1
+        tools: composer:v2
         coverage: xdebug
     
     - name: Validate composer.json and composer.lock
@@ -51,7 +68,19 @@ jobs:
       run: |
         ./init --env=Development
         composer test-scaffold
+    
+    - name: Configure app for PostgreSQL
+        # Runs a script that creates a PostgreSQL client and creates the test database and user
+      run: php test_setup.php
+      env:
+        # The hostname used to communicate with the PostgreSQL service container
+        POSTGRES_HOST: localhost
+        # The default PostgreSQL port
+        POSTGRES_PORT: 5432
         
+    - name: Run database migrations
+      run: ./yii_test migrate --interactive=0
+      
     - name: Run test suite
       run: composer test-coverage
       

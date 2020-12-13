@@ -6,8 +6,11 @@ use yii\web\AssetBundle;
 
 class ChartjsAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/chartjs/dist';
+    public $sourcePath = '@npm';
     public $js = [
-        'Chart.bundle.min.js',
+        'chart.js/dist/Chart.min.js',
+        'luxon/build/global/luxon.min.js',
+        //'luxon/build/cjs-browser/luxon.js', // maybe?
+        'chartjs-adapter-luxon/dist/chartjs-adapter-luxon.min.js',
     ];
 }
