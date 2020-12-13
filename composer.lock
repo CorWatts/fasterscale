@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75ae20e2be087a0d337f2a36dbd568f8",
+    "content-hash": "9d2f0aa45bd8256ac24a0b1f6f21754b",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
-            "version": "dev-master",
+            "version": "4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/HuasoFoundries/jpgraph.git",
-                "reference": "10a818b"
+                "reference": "1328d5a2cf0f1ce8f83b79f17d339b34241ace74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/HuasoFoundries/jpgraph/zipball/10a818b",
-                "reference": "10a818b",
+                "url": "https://api.github.com/repos/HuasoFoundries/jpgraph/zipball/1328d5a2cf0f1ce8f83b79f17d339b34241ace74",
+                "reference": "1328d5a2cf0f1ce8f83b79f17d339b34241ace74",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,6 @@
                 "symfony/event-dispatcher": "~4.2",
                 "symfony/yaml": "4.*"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -68,7 +67,7 @@
                 "issues": "https://github.com/huasofoundries/jpgraph/issues",
                 "source": "https://github.com/HuasoFoundries/jpgraph/tree/master"
             },
-            "time": "2020-01-07T12:30:19+00:00"
+            "time": "2020-01-07T08:39:02+00:00"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -6749,7 +6748,6 @@
         "bower-asset/jquery.inputmask": 0,
         "bower-asset/punycode": 0,
         "moment/moment": 20,
-        "amenadiel/jpgraph": 20,
         "codeception/module-yii2": 20
     },
     "prefer-stable": true,

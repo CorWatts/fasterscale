@@ -18,7 +18,7 @@
         "bower-asset/chartjs": "~2.7.2",
         "corwatts/yii2-markdown-files": "*",
         "bower-asset/pickadate": "^3.5",
-        "amenadiel/jpgraph": "dev-master#10a818b",
+        "amenadiel/jpgraph": "^4.0.3",
         "kartik-v/yii2-grid": "^3.2",
         "kartik-v/yii2-editable": "^1.7"
     },
