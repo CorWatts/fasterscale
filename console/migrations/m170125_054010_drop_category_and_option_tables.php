@@ -18,12 +18,13 @@ class m170125_054010_drop_category_and_option_tables extends Migration
 
     public function safeDown()
     {
-      $this->createTables();
-      $this->populateTables();
-      $this->addForeignKeys();
+        $this->createTables();
+        $this->populateTables();
+        $this->addForeignKeys();
     }
 
-    private function createTables() {
+    private function createTables()
+    {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
@@ -42,15 +43,14 @@ class m170125_054010_drop_category_and_option_tables extends Migration
         ], $tableOptions);
     }
 
-    private function populateTables() {
-
+    private function populateTables()
+    {
         $this->batchInsert("{{%option}}", ["id", "name", "category_id"], array_map('array_values', \common\models\Option::$options));
         $this->batchInsert('{{%category}}', ["id", 'name', 'weight'], array_map('array_values', \common\models\Category::$categories));
-
-
     }
 
-    private function addForeignKeys() {
+    private function addForeignKeys()
+    {
         $this->addForeignKey('option_link_option_fk', '{{%user_option_link}}', 'option_id', '{{%option}}', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('option_category_fk', '{{%option}}', 'category_id', '{{%category}}', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('question_option_fk', '{{%question}}', 'option_id', '{{%option}}', 'id', 'CASCADE', 'CASCADE');

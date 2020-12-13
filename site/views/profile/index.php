@@ -71,11 +71,11 @@ $timezones = \DateTimeZone::listIdentifiers();
 ]); ?>
             <?= $form->field($profile, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
             <?= $form->field($profile, 'expose_graph')->checkbox() ?>
-            <?php if($profile->expose_graph): ?>
+            <?php if ($profile->expose_graph): ?>
             <div class='alert alert-success behaviors-graph-info'>Your behaviors graph can be found at:<br /> <a id="behaviors-graph-link" target="_blank" href="<?=$graph_url?>"><?=$graph_url?></a></div>
             <?php endif; ?>
             <?= $form->field($profile, 'send_email')->checkbox() ?>
-            <div id='send_email_fields' <?php if(!$profile->send_email) { ?>style="display: none;"<?php } ?>>
+            <div id='send_email_fields' <?php if (!$profile->send_email) { ?>style="display: none;"<?php } ?>>
               <?= $form->field($profile, 'email_category')->dropdownList(Category::getCategories(), ['data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-trigger' => 'hover', 'data-delay' => '{"show": 500, "hide": 100}', 'title' => 'Want to send an email with every check-in? Try setting this to "Restoration"']) ?>
               <?= $form->field($profile, 'partner_email1')->input('email'); ?>
               <?= $form->field($profile, 'partner_email2')->input('email'); ?>
@@ -189,7 +189,7 @@ yii\bootstrap\Modal::end();
 </div>
 
 <?php $this->registerJs(
-"$(function () {
+    "$(function () {
   $('#new-password-toggle').click(function () {
     if( $('#changepasswordform-new_password').attr('type') === 'password' ) {
       $('#new-password-toggle').text('Hide');
@@ -222,4 +222,3 @@ yii\bootstrap\Modal::end();
   });
 })"
 );
-

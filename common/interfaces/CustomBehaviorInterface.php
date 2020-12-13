@@ -2,4 +2,6 @@
 
 namespace common\interfaces;
 
-interface CustomBehaviorInterface {}
+interface CustomBehaviorInterface
+{
+}

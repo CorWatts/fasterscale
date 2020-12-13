@@ -9,11 +9,12 @@ use yii\base\Component;
  */
 class FakeWebUser extends Component
 {
-  public $identityClass;
-  public $enableAutoLogin;
-  public $identityCookie;
+    public $identityClass;
+    public $enableAutoLogin;
+    public $identityCookie;
 
-  public function login($identity, $duration = 0) {
-    return true;
-  }
+    public function login($identity, $duration = 0)
+    {
+        return true;
+    }
 }

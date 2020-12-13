@@ -12,7 +12,7 @@ class m160403_060352_delete_incorrect_behaviors extends Migration
 
     public function safeDown()
     {
-        $this->batchInsert("{{%option}}", ["name", "category_id"],[
+        $this->batchInsert("{{%option}}", ["name", "category_id"], [
             ["masturbation", 3]
             , ["pornography", 3]
        ]);

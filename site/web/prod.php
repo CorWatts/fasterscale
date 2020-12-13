@@ -6,10 +6,10 @@ require(__DIR__ . '/../../common/config/aliases.php');
 $bundles = require(__DIR__ . '/../config/bundles-local.php');
 
 $config = yii\helpers\ArrayHelper::merge(
-  require(__DIR__ . '/../../common/config/main.php'),
-  require(__DIR__ . '/../../common/config/main-local.php'),
-  require(__DIR__ . '/../config/main.php'),
-  require(__DIR__ . '/../config/main-local.php')
+    require(__DIR__ . '/../../common/config/main.php'),
+    require(__DIR__ . '/../../common/config/main-local.php'),
+    require(__DIR__ . '/../config/main.php'),
+    require(__DIR__ . '/../config/main-local.php')
 );
 $config['components']['assetManager']['bundles'] = $bundles;
 

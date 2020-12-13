@@ -1,7 +1,6 @@
 <?php
 namespace site\controllers;
 
-
 use Yii;
 use common\models\Question;
 use common\components\Controller;
@@ -13,12 +12,14 @@ use yii\web\BadRequestHttpException;
 /**
  * Profile controller
  */
-class ProfileController extends Controller {
-  /**
-   * @inheritdoc
-   */
-  public function behaviors() {
-    return [
+class ProfileController extends Controller
+{
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
       'access' => [
         'class' => AccessControl::class,
         'rules' => [
@@ -40,30 +41,31 @@ class ProfileController extends Controller {
         ],
       ],
     ];
-  }
-
-  public function actionIndex() {
-    $editProfileForm    = Yii::$container->get(\site\models\EditProfileForm::class, [Yii::$app->user->identity]);
-    $changePasswordForm = Yii::$container->get(\site\models\ChangePasswordForm::class, [Yii::$app->user->identity]);
-    $changeEmailForm    = Yii::$container->get(\site\models\ChangeEmailForm::class, [Yii::$app->user->identity]);
-    $deleteAccountForm  = Yii::$container->get(\site\models\DeleteAccountForm::class, [Yii::$app->user->identity]);
-    $customBehaviorForm = Yii::$container->get(\site\models\CustomBehaviorForm::class, [Yii::$app->user->identity]);
-    $graph              = Yii::$container->get(\common\components\Graph::class, [Yii::$app->user->identity]);
-
-    if (Yii::$app->request->isAjax && $editProfileForm->load($_POST)) {
-      Yii::$app->response->format = 'json';
-      return \yii\widgets\ActiveForm::validate($editProfileForm);
-    }
-    $editProfileForm->loadUser();
-
-    if ($editProfileForm->load(Yii::$app->request->post())) {
-      $saved_user = $editProfileForm->saveProfile();
-      if($saved_user) {
-        Yii::$app->session->setFlash('success', 'New profile data saved!');
-      }
     }
 
-    return $this->render('index', [
+    public function actionIndex()
+    {
+        $editProfileForm    = Yii::$container->get(\site\models\EditProfileForm::class, [Yii::$app->user->identity]);
+        $changePasswordForm = Yii::$container->get(\site\models\ChangePasswordForm::class, [Yii::$app->user->identity]);
+        $changeEmailForm    = Yii::$container->get(\site\models\ChangeEmailForm::class, [Yii::$app->user->identity]);
+        $deleteAccountForm  = Yii::$container->get(\site\models\DeleteAccountForm::class, [Yii::$app->user->identity]);
+        $customBehaviorForm = Yii::$container->get(\site\models\CustomBehaviorForm::class, [Yii::$app->user->identity]);
+        $graph              = Yii::$container->get(\common\components\Graph::class, [Yii::$app->user->identity]);
+
+        if (Yii::$app->request->isAjax && $editProfileForm->load($_POST)) {
+            Yii::$app->response->format = 'json';
+            return \yii\widgets\ActiveForm::validate($editProfileForm);
+        }
+        $editProfileForm->loadUser();
+
+        if ($editProfileForm->load(Yii::$app->request->post())) {
+            $saved_user = $editProfileForm->saveProfile();
+            if ($saved_user) {
+                Yii::$app->session->setFlash('success', 'New profile data saved!');
+            }
+        }
+
+        return $this->render('index', [
       'profile'         => $editProfileForm,
       'change_password' => $changePasswordForm,
       'change_email'    => $changeEmailForm,
@@ -72,83 +74,88 @@ class ProfileController extends Controller {
       'graph_url'       => $graph->getUrl(Yii::$app->user->identity->getIdHash()),
       'gridView'        => Yii::$container->get(\common\models\CustomBehavior::class)->getGridView(),
     ]);
-  }
-
-  public function actionDeleteAccount() {
-    $model = Yii::$container->get(\site\models\DeleteAccountForm::class, [Yii::$app->user->identity]);
-
-    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-      if($model->deleteAccount()) {
-        $this->redirect(['site/index']);
-      } else {
-        Yii::$app->session->setFlash('error', 'Wrong password!');
-      }
     }
 
-    $this->redirect(Yii::$app->request->getReferrer());
-  }
+    public function actionDeleteAccount()
+    {
+        $model = Yii::$container->get(\site\models\DeleteAccountForm::class, [Yii::$app->user->identity]);
 
-  public function actionChangePassword() {
-    $model = Yii::$container->get(\site\models\ChangePasswordForm::class, [Yii::$app->user->identity]);
-
-    if ($model->load(Yii::$app->request->post())) {
-      if($model->validate() && $model->changePassword()) {
-        Yii::$app->session->setFlash('success', 'Password successfully changed');
-      } else {
-        Yii::$app->session->setFlash('error', 'Wrong password!');
-      }
-    }
-
-    $this->redirect(['profile/index']);
-  }
-
-  public function actionRequestChangeEmail() {
-    $model = Yii::$container->get(\site\models\ChangeEmailForm::class, [Yii::$app->user->identity]);
-
-    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-      $model->changeEmail();
-      Yii::$app->session->setFlash('success', "We've sent an email to your requested email address to confirm. Please click on the verification link to continue.");
-    }
-
-    $this->redirect(['profile/index']);
-  }
-
-  public function actionChangeEmail(string $token) {
-    $user = Yii::$container->get(\common\interfaces\UserInterface::class)->findByChangeEmailToken($token);
-
-    if($user) {
-      $validator = new \yii\validators\EmailValidator();
-      if($validator->validate($user->desired_email, $error)) {
-        $user->removeChangeEmailToken();
-        $user->email = $user->desired_email;
-        $user->desired_email = null;
-        $user->save();
-        if(!Yii::$app->user->isGuest) {
-          Yii::$app->user->logout();
-          Yii::$app->session->setFlash('success', 'Your email address was successfully changed. For security, we\'ve logged you out.');
-        } else {
-          Yii::$app->session->setFlash('success', 'Your email address was successfully changed.');
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->deleteAccount()) {
+                $this->redirect(['site/index']);
+            } else {
+                Yii::$app->session->setFlash('error', 'Wrong password!');
+            }
         }
-        return $this->goHome();
-      } else {
-        // desired_email failed validation. Something sneaky might be happening here
-        Yii::warning("ProfileController::actionChangeEmail() User({$user->id}) desired_email failed validation. Something weird is going on.");
-        return $this->goHome();
-      }
-    } else {
-      // no user was found with that token
-      throw new BadRequestHttpException("Wrong or expired change email token. If you aren't sure why this error occurs perhaps you've already confirmed your new email address. Please try logging in with it.");
+
+        $this->redirect(Yii::$app->request->getReferrer());
     }
-  }
 
-  public function actionExport() {
-    header("Content-Type: text/csv");
-    header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->email."-".date('Ymd').".csv");
+    public function actionChangePassword()
+    {
+        $model = Yii::$container->get(\site\models\ChangePasswordForm::class, [Yii::$app->user->identity]);
 
-    $reader = Yii::$app->user->identity->getExportData();
-    $fp = fopen('php://output', 'w');
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate() && $model->changePassword()) {
+                Yii::$app->session->setFlash('success', 'Password successfully changed');
+            } else {
+                Yii::$app->session->setFlash('error', 'Wrong password!');
+            }
+        }
 
-    $header = [
+        $this->redirect(['profile/index']);
+    }
+
+    public function actionRequestChangeEmail()
+    {
+        $model = Yii::$container->get(\site\models\ChangeEmailForm::class, [Yii::$app->user->identity]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->changeEmail();
+            Yii::$app->session->setFlash('success', "We've sent an email to your requested email address to confirm. Please click on the verification link to continue.");
+        }
+
+        $this->redirect(['profile/index']);
+    }
+
+    public function actionChangeEmail(string $token)
+    {
+        $user = Yii::$container->get(\common\interfaces\UserInterface::class)->findByChangeEmailToken($token);
+
+        if ($user) {
+            $validator = new \yii\validators\EmailValidator();
+            if ($validator->validate($user->desired_email, $error)) {
+                $user->removeChangeEmailToken();
+                $user->email = $user->desired_email;
+                $user->desired_email = null;
+                $user->save();
+                if (!Yii::$app->user->isGuest) {
+                    Yii::$app->user->logout();
+                    Yii::$app->session->setFlash('success', 'Your email address was successfully changed. For security, we\'ve logged you out.');
+                } else {
+                    Yii::$app->session->setFlash('success', 'Your email address was successfully changed.');
+                }
+                return $this->goHome();
+            } else {
+                // desired_email failed validation. Something sneaky might be happening here
+                Yii::warning("ProfileController::actionChangeEmail() User({$user->id}) desired_email failed validation. Something weird is going on.");
+                return $this->goHome();
+            }
+        } else {
+            // no user was found with that token
+            throw new BadRequestHttpException("Wrong or expired change email token. If you aren't sure why this error occurs perhaps you've already confirmed your new email address. Please try logging in with it.");
+        }
+    }
+
+    public function actionExport()
+    {
+        header("Content-Type: text/csv");
+        header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->email."-".date('Ymd').".csv");
+
+        $reader = Yii::$app->user->identity->getExportData();
+        $fp = fopen('php://output', 'w');
+
+        $header = [
       'Date',
       'Behavior',
       'Category',
@@ -157,15 +164,15 @@ class ProfileController extends Controller {
       Question::$QUESTIONS[3],
     ];
 
-    fputcsv($fp, $header);
-    $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
-    while($row = $reader->read()) {
-      $row = $user_behavior::decorate([$row]);
-      $row = Yii::$app->user->identity->cleanExportRow($row[0]);
-      fputcsv($fp, $row);
-    }
-    fclose($fp);
+        fputcsv($fp, $header);
+        $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
+        while ($row = $reader->read()) {
+            $row = $user_behavior::decorate([$row]);
+            $row = Yii::$app->user->identity->cleanExportRow($row[0]);
+            fputcsv($fp, $row);
+        }
+        fclose($fp);
 
-    die;
-  }
+        die;
+    }
 }

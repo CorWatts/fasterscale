@@ -12,11 +12,11 @@ return [
       'common\interfaces\CategoryInterface' => \common\models\Category::class,
       'common\interfaces\CustomBehaviorInterface' => \common\models\CustomBehavior::class,
       'common\interfaces\TimeInterface' => function () {
-        if(Yii::$app->user->getIsGuest()) {
-          return new \common\components\Time('UTC');
-        } else {
-          return new \common\components\Time(Yii::$app->user->identity->timezone);
-        }
+          if (Yii::$app->user->getIsGuest()) {
+              return new \common\components\Time('UTC');
+          } else {
+              return new \common\components\Time(Yii::$app->user->identity->timezone);
+          }
       },
     ],
   ],

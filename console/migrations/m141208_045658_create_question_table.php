@@ -25,7 +25,6 @@ class m141208_045658_create_question_table extends Migration
         $this->addForeignKey('question_user_fk', '{{%question}}', 'user_id', '{{%user}}', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('question_option_fk', '{{%question}}', 'option_id', '{{%option}}', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('question_user_option_fk', '{{%question}}', 'user_option_id', '{{%user_option_link}}', 'id', 'CASCADE', 'CASCADE');
-
     }
 
     public function safeDown()

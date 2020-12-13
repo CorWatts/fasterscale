@@ -10,11 +10,12 @@ use common\models\Question;
  * Time test
  */
 
-class QuestionTest extends \Codeception\Test\Unit {
-  use Specify;
+class QuestionTest extends \Codeception\Test\Unit
+{
+    use Specify;
 
-  private $question;
-  private $questionData = [
+    private $question;
+    private $questionData = [
     [
       'id' => 487,
       'user_id' => 1,
@@ -72,7 +73,7 @@ class QuestionTest extends \Codeception\Test\Unit {
     ], [
       'id' => 493,
       'user_id' => 1,
-      'behavior_id' => NULL,
+      'behavior_id' => null,
       'user_behavior_id' => 2666,
       'question' => 1,
       'answer' => 'test1',
@@ -81,7 +82,7 @@ class QuestionTest extends \Codeception\Test\Unit {
     ], [
       'id' => 494,
       'user_id' => 1,
-      'behavior_id' => NULL,
+      'behavior_id' => null,
       'user_behavior_id' => 2666,
       'question' => 2,
       'answer' => 'test2',
@@ -90,7 +91,7 @@ class QuestionTest extends \Codeception\Test\Unit {
     ], [
       'id' => 495,
       'user_id' => 1,
-      'behavior_id' => NULL,
+      'behavior_id' => null,
       'user_behavior_id' => 2666,
       'question' => 3,
       'answer' => 'test3',
@@ -98,7 +99,7 @@ class QuestionTest extends \Codeception\Test\Unit {
       'category_id' => 2,
     ],
   ];
-  private $userQuestions = [
+    private $userQuestions = [
     2664 => [
       'question' => [
         'user_behavior_id' => 2664,
@@ -155,19 +156,21 @@ class QuestionTest extends \Codeception\Test\Unit {
     ],
   ];
 
-  public function setUp() {
-    $this->question = $this->getMockBuilder('\common\models\Question')
+    public function setUp()
+    {
+        $this->question = $this->getMockBuilder('\common\models\Question')
          ->setMethods(['save', 'attributes'])
          ->getMock();
-  }
+    }
 
-  public function testParseQuestionData() {
-    $questions = array_map(function ($d) {
-      $q = $this->getMockBuilder('\common\models\Question')
+    public function testParseQuestionData()
+    {
+        $questions = array_map(function ($d) {
+            $q = $this->getMockBuilder('\common\models\Question')
          ->setMethods(['save', 'attributes'])
          ->getMock();
-      $q->method('save')->willReturn(true);
-      $q->method('attributes')
+            $q->method('save')->willReturn(true);
+            $q->method('attributes')
         ->willReturn([
           'id',
           'user_id',
@@ -179,18 +182,18 @@ class QuestionTest extends \Codeception\Test\Unit {
           'date',
           'userBehavior',
         ]);
-      foreach($d as $k => $v) {
-        if($k === 'behavior_id' && $v === null) {
-          $ub = new \StdClass();
-          $ub->custom_behavior = 'some_custom_behavior';
-          $q->userBehavior = $ub;
-        } else {
-          $q->$k = $v;
-        }
-      }
-      return $q;
-    }, $this->questionData);
-    expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals($this->question->parseQuestionData($questions), $this->userQuestions));
-    expect('parseQuestionData should return empty with the empty set', $this->assertEmpty($this->question->parseQuestionData([])));
-  }
+            foreach ($d as $k => $v) {
+                if ($k === 'behavior_id' && $v === null) {
+                    $ub = new \StdClass();
+                    $ub->custom_behavior = 'some_custom_behavior';
+                    $q->userBehavior = $ub;
+                } else {
+                    $q->$k = $v;
+                }
+            }
+            return $q;
+        }, $this->questionData);
+        expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals($this->question->parseQuestionData($questions), $this->userQuestions));
+        expect('parseQuestionData should return empty with the empty set', $this->assertEmpty($this->question->parseQuestionData([])));
+    }
 }
