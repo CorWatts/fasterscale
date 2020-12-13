@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aaaf1a2b391e7f1f9e3148af71f5e56c",
+    "content-hash": "7944df1e7f0c042970f7e7261b9908dc",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -5711,16 +5711,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.38",
+            "version": "2.0.39.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "fd01e747cc66a049ec105048f0ab8dfbdf60bf4b"
+                "reference": "7c3b93b57e568509a7cb5cef826d8c424a779f3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/fd01e747cc66a049ec105048f0ab8dfbdf60bf4b",
-                "reference": "fd01e747cc66a049ec105048f0ab8dfbdf60bf4b",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/7c3b93b57e568509a7cb5cef826d8c424a779f3f",
+                "reference": "7c3b93b57e568509a7cb5cef826d8c424a779f3f",
                 "shasum": ""
             },
             "require": {
@@ -5828,7 +5828,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-14T21:52:10+00:00"
+            "time": "2020-11-23T19:17:58+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -6256,28 +6256,27 @@
         },
         {
             "name": "codeception/verify",
-            "version": "1.5.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Verify.git",
-                "reference": "ebf833c857825207a8abec541c07bdd724ea4676"
+                "reference": "11fa56c223ae7188174c4ba50c68454d83b254e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Verify/zipball/ebf833c857825207a8abec541c07bdd724ea4676",
-                "reference": "ebf833c857825207a8abec541c07bdd724ea4676",
+                "url": "https://api.github.com/repos/Codeception/Verify/zipball/11fa56c223ae7188174c4ba50c68454d83b254e9",
+                "reference": "11fa56c223ae7188174c4ba50c68454d83b254e9",
                 "shasum": ""
             },
             "require": {
-                "codeception/phpunit-wrapper": "^7.8.0 | ^8.1.2 | ^9.0.2",
                 "ext-dom": "*",
-                "php": ">= 7.1",
-                "phpunit/phpunit": ">= 7.0"
+                "php": "^7.3",
+                "phpunit/phpunit": "^9.3"
             },
             "type": "library",
             "autoload": {
                 "files": [
-                    "src/Codeception/function.php"
+                    "src/Codeception/bootstrap.php"
                 ],
                 "psr-4": {
                     "Codeception\\": "src\\Codeception"
@@ -6302,7 +6301,7 @@
                 "issues": "https://github.com/Codeception/Verify/issues",
                 "source": "https://github.com/Codeception/Verify/tree/master"
             },
-            "time": "2020-08-29T00:28:24+00:00"
+            "time": "2020-09-03T04:43:01+00:00"
         },
         {
             "name": "fakerphp/faker",
@@ -6607,7 +6606,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0"
+        "php": ">=7.3"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
