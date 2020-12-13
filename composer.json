@@ -1,66 +1,69 @@
 {
-  "name": "corwatts/fasterscale",
-  "description": "An online version of the Faster Scale -- a relapse awareness tool",
-  "license": "BSD-3-Clause",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "require": {
-    "php": ">=7.0",
-    "yiisoft/yii2": "2.0.38",
-    "yiisoft/yii2-bootstrap": "~2.0.0",
-    "yiisoft/yii2-swiftmailer": "dev-master",
-    "yiisoft/yii2-redis": "~2.0.8",
-    "bower-asset/jquery": "@stable",
-    "bower-asset/bootstrap-sass": "@stable",
-    "bower-asset/jquery.inputmask": "@stable",
-    "bower-asset/punycode": "@stable",
-    "moment/moment": "dev-master",
-    "bower-asset/chartjs": "~2.7.2",
-    "corwatts/yii2-markdown-files": "*",
-    "bower-asset/pickadate": "^3.5",
-    "amenadiel/jpgraph": "dev-master#10a818b",
-    "kartik-v/yii2-grid": "^3.2",
-    "kartik-v/yii2-editable": "^1.7"
-  },
-  "require-dev": {
-    "yiisoft/yii2-debug": "2.0.9",
-    "yiisoft/yii2-gii": "~2.0.6",
-    "yiisoft/yii2-faker": "~2.0.0",
-    "codeception/base": "@stable",
-    "codeception/specify": "@stable",
-    "codeception/verify": "@stable"
-  },
-  "scripts": {
-    "post-create-project-cmd": [
-      "yii\\composer\\Installer::setPermission"
-    ],
-    "test": "codecept run",
-    "test-coverage": "codecept run --coverage --coverage-xml --coverage-html --ansi",
-    "test-scaffold": "codecept build",
-    "start": "cd site/web; php -S localhost:8080",
-    "assets": "rm -f site/assets/css/app.css && ./yii asset site/assets/assets.php site/assets/assets-compressed.php"
-  },
-  "config": {
-    "process-timeout": 1800
-  },
-  "extra": {
-    "writable": [
-      "console/runtime",
-      "console/migrations",
-      "site/runtime",
-      "site/assets",
-      "site/web/assets",
-      "site/web/css",
-      "site/web/js"
-    ],
-    "executable": [
-      "yii"
+    "name": "corwatts/fasterscale",
+    "description": "An online version of the Faster Scale -- a relapse awareness tool",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.3",
+        "yiisoft/yii2": "~2.0.39",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "dev-master",
+        "yiisoft/yii2-redis": "~2.0.14",
+        "bower-asset/jquery": "@stable",
+        "bower-asset/bootstrap-sass": "@stable",
+        "bower-asset/jquery.inputmask": "@stable",
+        "bower-asset/punycode": "@stable",
+        "npm-asset/chart.js": "~2.9.4",
+        "npm-asset/chartjs-adapter-luxon": "~0.2.2",
+        "npm-asset/luxon": "~1.25.0",
+        "corwatts/yii2-markdown-files": "*",
+        "bower-asset/pickadate": "^3.5",
+        "amenadiel/jpgraph": "^4.0.3",
+        "kartik-v/yii2-grid": "^3.2",
+        "kartik-v/yii2-editable": "^1.7"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.1.15",
+        "yiisoft/yii2-gii": "~2.2.1",
+        "yiisoft/yii2-faker": "~2.0.5",
+        "codeception/specify": "~1.4.0",
+        "codeception/verify": "~2.1.0",
+        "codeception/module-filesystem": "^1.0",
+        "codeception/module-yii2": "dev-php8 || ~1.1.1",
+        "codeception/module-asserts": "^1.0.0"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::setPermission"
+        ],
+        "test": "codecept run",
+        "test-coverage": "codecept run --coverage --coverage-xml --coverage-html --ansi",
+        "test-scaffold": "codecept build",
+        "start": "cd site/web; php -S localhost:8080",
+        "assets": "rm -f site/assets/css/app.css && ./yii asset site/assets/assets.php site/assets/assets-compressed.php"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "extra": {
+        "writable": [
+            "console/runtime",
+            "console/migrations",
+            "site/runtime",
+            "site/assets",
+            "site/web/assets",
+            "site/web/css",
+            "site/web/js"
+        ],
+        "executable": [
+            "yii"
+        ]
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
     ]
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://asset-packagist.org"
-    }
-  ]
 }

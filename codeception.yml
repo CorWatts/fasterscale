@@ -1,6 +1,7 @@
 include:
   - common
   - site
+  - console
 paths:
   log: console/runtime/logs
   bootstrap: _bootstrap.php

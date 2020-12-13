@@ -1,13 +1,13 @@
 <?php
-$params = array_merge(
-    require(__DIR__ . '/../../common/config/params.php'),
-    require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+$params = yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/../../common/config/params.php',
+    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
 );
 
 return [
-  'id' => 'emotional-checkin-frontend',
+  'id' => 'faster-scale-app-site',
   'basePath' => dirname(__DIR__),
   'bootstrap' => ['log'],
   'controllerNamespace' => 'site\controllers',

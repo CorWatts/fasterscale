@@ -114,7 +114,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
       ],
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = new \yii\di\Container;
         $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
