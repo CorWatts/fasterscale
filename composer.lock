@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d2f0aa45bd8256ac24a0b1f6f21754b",
+    "content-hash": "51857381b7e8641c519adb11e3fc05af",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -105,24 +105,6 @@
             },
             "require": {
                 "bower-asset/jquery": ">=1.9.1,<4.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/chartjs",
-            "version": "v2.7.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/chartjs/Chart.js.git",
-                "reference": "924a66bae23f7e938531024951f7251d46785473"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/chartjs/Chart.js/zipball/924a66bae23f7e938531024951f7251d46785473",
-                "reference": "924a66bae23f7e938531024951f7251d46785473"
             },
             "type": "bower-asset",
             "license": [
@@ -309,147 +291,6 @@
                 "source": "https://github.com/cebe/markdown"
             },
             "time": "2018-03-26T11:24:36+00:00"
-        },
-        {
-            "name": "composer/installers",
-            "version": "v1.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/installers.git",
-                "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
-                "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0 || ^2.0"
-            },
-            "replace": {
-                "roundcube/plugin-installer": "*",
-                "shama/baton": "*"
-            },
-            "require-dev": {
-                "composer/composer": "1.6.* || 2.0.*@dev",
-                "composer/semver": "1.0.* || 2.0.*@dev",
-                "phpunit/phpunit": "^4.8.36",
-                "sebastian/comparator": "^1.2.4",
-                "symfony/process": "^2.3"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Composer\\Installers\\Plugin",
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Composer\\Installers\\": "src/Composer/Installers"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kyle Robinson Young",
-                    "email": "kyle@dontkry.com",
-                    "homepage": "https://github.com/shama"
-                }
-            ],
-            "description": "A multi-framework Composer library installer",
-            "homepage": "https://composer.github.io/installers/",
-            "keywords": [
-                "Craft",
-                "Dolibarr",
-                "Eliasis",
-                "Hurad",
-                "ImageCMS",
-                "Kanboard",
-                "Lan Management System",
-                "MODX Evo",
-                "MantisBT",
-                "Mautic",
-                "Maya",
-                "OXID",
-                "Plentymarkets",
-                "Porto",
-                "RadPHP",
-                "SMF",
-                "Thelia",
-                "Whmcs",
-                "WolfCMS",
-                "agl",
-                "aimeos",
-                "annotatecms",
-                "attogram",
-                "bitrix",
-                "cakephp",
-                "chef",
-                "cockpit",
-                "codeigniter",
-                "concrete5",
-                "croogo",
-                "dokuwiki",
-                "drupal",
-                "eZ Platform",
-                "elgg",
-                "expressionengine",
-                "fuelphp",
-                "grav",
-                "installer",
-                "itop",
-                "joomla",
-                "known",
-                "kohana",
-                "laravel",
-                "lavalite",
-                "lithium",
-                "magento",
-                "majima",
-                "mako",
-                "mediawiki",
-                "modulework",
-                "modx",
-                "moodle",
-                "osclass",
-                "phpbb",
-                "piwik",
-                "ppi",
-                "puppet",
-                "pxcms",
-                "reindex",
-                "roundcube",
-                "shopware",
-                "silverstripe",
-                "sydes",
-                "sylius",
-                "symfony",
-                "typo3",
-                "wordpress",
-                "yawik",
-                "zend",
-                "zikula"
-            ],
-            "support": {
-                "issues": "https://github.com/composer/installers/issues",
-                "source": "https://github.com/composer/installers/tree/v1.9.0"
-            },
-            "funding": [
-                {
-                    "url": "https://packagist.com",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-04-07T06:57:05+00:00"
         },
         {
             "name": "corwatts/yii2-markdown-files",
@@ -1210,119 +1051,114 @@
             "time": "2019-02-23T19:45:01+00:00"
         },
         {
-            "name": "moment/moment",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/moment/moment.git",
-                "reference": "b7ec8e2ec068e03de4f832f28362675bb9e02261"
-            },
+            "name": "npm-asset/chart.js",
+            "version": "2.9.4",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/b7ec8e2ec068e03de4f832f28362675bb9e02261",
-                "reference": "b7ec8e2ec068e03de4f832f28362675bb9e02261",
-                "shasum": ""
+                "type": "tar",
+                "url": "https://registry.npmjs.org/chart.js/-/chart.js-2.9.4.tgz"
             },
             "require": {
-                "oomphinc/composer-installers-extender": "*"
+                "npm-asset/chartjs-color": ">=2.1.0,<3.0.0",
+                "npm-asset/moment": ">=2.10.2,<3.0.0"
             },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "scripts": [
-                        "moment.js"
-                    ],
-                    "files": [
-                        "min/*.js",
-                        "locale/*.js"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
+            "type": "npm-asset",
             "license": [
                 "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tim Wood",
-                    "email": "washwithcare@gmail.com"
-                }
-            ],
-            "description": "Parse, validate, manipulate, and display dates in JavaScript.",
-            "homepage": "https://github.com/moment/moment",
-            "keywords": [
-                "date",
-                "ender",
-                "format",
-                "i18n",
-                "l10n",
-                "moment",
-                "parse",
-                "time",
-                "validate"
-            ],
-            "support": {
-                "issues": "https://github.com/moment/moment/issues",
-                "source": "https://github.com/moment/moment/tree/2.29.1"
-            },
-            "time": "2020-10-06T11:13:21+00:00"
+            ]
         },
         {
-            "name": "oomphinc/composer-installers-extender",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/oomphinc/composer-installers-extender.git",
-                "reference": "8d3fe38a1723e0e91076920c8bb946b1696e28ca"
-            },
+            "name": "npm-asset/chartjs-adapter-luxon",
+            "version": "0.2.2",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oomphinc/composer-installers-extender/zipball/8d3fe38a1723e0e91076920c8bb946b1696e28ca",
-                "reference": "8d3fe38a1723e0e91076920c8bb946b1696e28ca",
-                "shasum": ""
+                "type": "tar",
+                "url": "https://registry.npmjs.org/chartjs-adapter-luxon/-/chartjs-adapter-luxon-0.2.2.tgz"
             },
-            "require": {
-                "composer-plugin-api": "^1.1 || ^2.0",
-                "composer/installers": "^1.0",
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "composer/composer": "^2.0",
-                "phpunit/phpunit": "^7.2",
-                "squizlabs/php_codesniffer": "^3.3"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "OomphInc\\ComposerInstallersExtender\\Plugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "OomphInc\\ComposerInstallersExtender\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
+            "type": "npm-asset",
             "license": [
                 "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Stephen Beemsterboer",
-                    "email": "stephen@oomphinc.com",
-                    "homepage": "https://github.com/balbuf"
-                },
-                {
-                    "name": "Nathan Dentzau",
-                    "email": "nate@oomphinc.com",
-                    "homepage": "http://oomph.is/ndentzau"
-                }
-            ],
-            "description": "Extend the composer/installers plugin to accept any arbitrary package type.",
-            "homepage": "http://www.oomphinc.com/",
-            "support": {
-                "issues": "https://github.com/oomphinc/composer-installers-extender/issues",
-                "source": "https://github.com/oomphinc/composer-installers-extender/tree/2.0.0"
+            ]
+        },
+        {
+            "name": "npm-asset/chartjs-color",
+            "version": "2.4.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/chartjs-color/-/chartjs-color-2.4.1.tgz"
             },
-            "time": "2020-08-11T21:06:11+00:00"
+            "require": {
+                "npm-asset/chartjs-color-string": ">=0.6.0,<0.7.0",
+                "npm-asset/color-convert": ">=1.9.3,<2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/chartjs-color-string",
+            "version": "0.6.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/chartjs-color-string/-/chartjs-color-string-0.6.0.tgz"
+            },
+            "require": {
+                "npm-asset/color-name": ">=1.0.0,<2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/color-convert",
+            "version": "1.9.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/color-convert/-/color-convert-1.9.3.tgz"
+            },
+            "require": {
+                "npm-asset/color-name": "1.1.3"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/color-name",
+            "version": "1.1.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/color-name/-/color-name-1.1.3.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/luxon",
+            "version": "1.25.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/luxon/-/luxon-1.25.0.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/moment",
+            "version": "2.29.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -6747,7 +6583,6 @@
         "bower-asset/bootstrap-sass": 0,
         "bower-asset/jquery.inputmask": 0,
         "bower-asset/punycode": 0,
-        "moment/moment": 20,
         "codeception/module-yii2": 20
     },
     "prefer-stable": true,
