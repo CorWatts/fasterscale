@@ -13,9 +13,11 @@ use common\components\Utility;
  */
 site\assets\AppAsset::register($this);
 
-if($hash = Utility::getRevHash()) {
-  $rev_link = '<a href="'.Utility::getGithubRevUrl().'">'.Utility::getRevHash().'</a>';
-} else $rev_link = 'DEVELOPMENT';
+if ($hash = Utility::getRevHash()) {
+    $rev_link = '<a href="'.Utility::getGithubRevUrl().'">'.Utility::getRevHash().'</a>';
+} else {
+    $rev_link = 'DEVELOPMENT';
+}
 
 ?>
 <?php $this->beginPage() ?>
@@ -37,17 +39,17 @@ if($hash = Utility::getRevHash()) {
                 'brandUrl' => Yii::$app->homeUrl,
             ]);
             if (Yii::$app->user->isGuest) {
-              $menuItems[] = ['label' => 'Start Here', 'url' => ['/site/signup']];
-              $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
-              $menuItems[] = ['label' => 'News', 'url' => ['/site/blog']];
-              $menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
-              $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+                $menuItems[] = ['label' => 'Start Here', 'url' => ['/site/signup']];
+                $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
+                $menuItems[] = ['label' => 'News', 'url' => ['/site/blog']];
+                $menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
+                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
-              $menuItems[] = ['label' => 'Check-in', 'url' => ['/checkin/index']];
-              $menuItems[] = ['label' => 'Past Check-ins', 'url' => ['/checkin/view']];
-              $menuItems[] = ['label' => 'Statistics', 'url' => ['/checkin/report']];
-              $menuItems[] = ['label' => Yii::$app->user->identity->email, 'url' => ['/profile/index']];
-              $menuItems[] = [
+                $menuItems[] = ['label' => 'Check-in', 'url' => ['/checkin/index']];
+                $menuItems[] = ['label' => 'Past Check-ins', 'url' => ['/checkin/view']];
+                $menuItems[] = ['label' => 'Statistics', 'url' => ['/checkin/report']];
+                $menuItems[] = ['label' => Yii::$app->user->identity->email, 'url' => ['/profile/index']];
+                $menuItems[] = [
                 'label' => 'Logout',
                 'url' => ['/site/logout'],
                 'linkOptions' => ['data-method' => 'post']

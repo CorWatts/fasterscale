@@ -1,13 +1,12 @@
 <?php
 use \yii\helpers\Html;
 
-foreach($posts as $file) {
-  $yaml       = $file['yaml'];
-  $content    = $file['content'];
-  $short_name = Html::encode($file['date']['name']);
+foreach ($posts as $file) {
+    $yaml       = $file['yaml'];
+    $content    = $file['content'];
+    $short_name = Html::encode($file['date']['name']);
 
-  $date = Html::encode(date('F j, Y', strtotime($file['date']['full'])));
-?>
+    $date = Html::encode(date('F j, Y', strtotime($file['date']['full']))); ?>
 <hr />
 <div class="post">
   <div class="post-heading">

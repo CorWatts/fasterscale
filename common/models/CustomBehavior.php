@@ -19,12 +19,14 @@ use kartik\grid\GridView;
  *
  * @property User $user
  */
-class CustomBehavior extends ActiveRecord {
+class CustomBehavior extends ActiveRecord
+{
     /**
      * {@inheritdoc}
      * @codeCoverageIgnore
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'custom_behavior';
     }
 
@@ -32,7 +34,8 @@ class CustomBehavior extends ActiveRecord {
      * {@inheritdoc}
      * @codeCoverageIgnore
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['user_id', 'category_id', 'name'], 'required'],
             [['user_id', 'category_id'], 'integer'],
@@ -46,8 +49,9 @@ class CustomBehavior extends ActiveRecord {
     /**
      * @codeCoverageIgnore
      */
-    public function behaviors() {
-      return [[
+    public function behaviors()
+    {
+        return [[
           'class' => TimestampBehavior::className(),
           'attributes' => [
             ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
@@ -62,7 +66,8 @@ class CustomBehavior extends ActiveRecord {
      * {@inheritdoc}
      * @codeCoverageIgnore
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
@@ -77,18 +82,20 @@ class CustomBehavior extends ActiveRecord {
      * @codeCoverageIgnore
      * @return \yii\db\ActiveQuery
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->hasOne(\common\models\User::class, ['id' => 'user_id']);
     }
 
-    public function getGridView() {
-      $dataProvider = new \yii\data\ActiveDataProvider([
+    public function getGridView()
+    {
+        $dataProvider = new \yii\data\ActiveDataProvider([
         'query' => \common\models\CustomBehavior::find()->where(['user_id' => Yii::$app->user->id])->indexBy('id'),
         'pagination' => [
           'pageSize' => 20,
         ],
       ]);
-      $gridColumns = [[
+        $gridColumns = [[
         'class'=>'kartik\grid\EditableColumn',
         'attribute'=>'name',
         'editableOptions' => ['formOptions' => ['action' => ['/custom-behavior/update']]],
@@ -104,10 +111,14 @@ class CustomBehavior extends ActiveRecord {
       ], [
         'class' => 'kartik\grid\ActionColumn',
         'buttons' => [
-          'view' => function ($url, $model) { return ''; },
-          'update' => function ($url, $model) { return ''; },
+          'view' => function ($url, $model) {
+              return '';
+          },
+          'update' => function ($url, $model) {
+              return '';
+          },
           'delete' => function ($url, $model) {
-            return yii\helpers\Html::a('<span class="glyphicon glyphicon-remove"></span>', "/custom-behavior/delete?id={$model->id}", [
+              return yii\helpers\Html::a('<span class="glyphicon glyphicon-remove"></span>', "/custom-behavior/delete?id={$model->id}", [
               'title' => 'Delete',
               'data-pjax' => true,
               'data-method' => 'post',
@@ -116,7 +127,7 @@ class CustomBehavior extends ActiveRecord {
           }
       ],
       ]];
-      $gridView = \kartik\grid\GridView::widget([
+        $gridView = \kartik\grid\GridView::widget([
         'dataProvider'=>$dataProvider,
         'columns'=>$gridColumns,
         'panel' => false,
@@ -128,6 +139,6 @@ class CustomBehavior extends ActiveRecord {
         ]]
       ]);
 
-      return $gridView;
+        return $gridView;
     }
 }

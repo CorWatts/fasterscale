@@ -11,94 +11,101 @@ use common\components\Graph;
 
 class GraphTest extends \Codeception\Test\Unit
 {
-  use \Codeception\Specify;
+    use \Codeception\Specify;
 
-  private $user;
-  private $filepath = __DIR__.'/../../_output/test_graph.png';
-  private $filepath_extra = __DIR__.'/../../_output/charts/test_graph.png';
+    private $user;
+    private $filepath = __DIR__.'/../../_output/test_graph.png';
+    private $filepath_extra = __DIR__.'/../../_output/charts/test_graph.png';
 
-  public function setUp() {
-    $this->user = $this->getMockBuilder('\site\tests\_support\MockUser')
-      ->setMethods(['getIdHash'])
-      ->getMock();
+    public function setUp(): void
+    {
+        $this->user = $this->getMockBuilder('\site\tests\_support\MockUser')
+          ->setMethods(['getIdHash'])
+          ->getMock();
 
-    parent::setUp();
-  }
+        parent::setUp();
+    }
 
-  protected function tearDown() {
-    $this->user = null;
-    parent::tearDown();
-  }
+    protected function tearDown(): void
+    {
+        $this->user = null;
+        parent::tearDown();
+    }
 
-  public function testGetFilepath() {
-    $this->user
+    public function testGetFilepath()
+    {
+        $this->user
       ->method('getIdHash')
       ->willReturn('random1DH4sh');
-    $graph = new Graph($this->user);
+        $graph = new Graph($this->user);
 
-    expect('the expected graph image filepath will be returned', $this->assertEquals(dirname(dirname(dirname(dirname(__DIR__)))).'/site/web/charts/random1DH4sh.png', $graph->getFilepath()));
-  }
+        expect('the expected graph image filepath will be returned', $this->assertEquals(dirname(dirname(dirname(dirname(__DIR__)))).'/site/web/charts/random1DH4sh.png', $graph->getFilepath()));
+    }
 
-  public function testGetUrl() {
-    $this->user
+    public function testGetUrl()
+    {
+        $this->user
       ->method('getIdHash')
       ->willReturn('random1DH4sh');
-    $graph = new Graph($this->user);
+        $graph = new Graph($this->user);
 
-    expect('the expected graph image filepath will be returned', $this->assertStringEndsWith('/charts/random1DH4sh.png', $graph->getUrl()));
-  }
+        expect('the expected graph image filepath will be returned', $this->assertStringEndsWith('/charts/random1DH4sh.png', $graph->getUrl()));
+    }
 
-  public function testDestroy() {
-    $this->graph = $this->getMockBuilder('\common\components\Graph', [$this->user])
+    public function testDestroy()
+    {
+        $this->graph = $this->getMockBuilder('\common\components\Graph', [$this->user])
       ->setConstructorArgs([$this->user])
       ->setMethods(['getFilepath'])
       ->getMock();
-    $this->graph
+        $this->graph
       ->method('getFilepath')
       ->willReturn($this->filepath);
 
-    if(!file_exists($this->filepath) && preg_match('%/_output/test_graph.png$%', $this->filepath)) {
-      touch($this->filepath);
-      expect('just a check to be sure $filepath is sane', $this->assertStringEndsWith('/_output/test_graph.png', $this->filepath));
-      expect('the generated file should exist', $this->assertFileExists($this->filepath));
-      expect('the generated file should be readable', $this->assertFileExists($this->filepath));
-      $this->graph->destroy();
-      expect('the generated file should no longer exist', $this->assertFileNotExists($this->filepath));
-    } else {
-      expect('the file should not exist yet. If this fails, delete the file', $this->assertFileNotExists($this->filepath));
-      expect('this should NOT happen', $this->assertTrue(false));
+        if (!file_exists($this->filepath) && preg_match('%/_output/test_graph.png$%', $this->filepath)) {
+            touch($this->filepath);
+            expect('just a check to be sure $filepath is sane', $this->assertStringEndsWith('/_output/test_graph.png', $this->filepath));
+            expect('the generated file should exist', $this->assertFileExists($this->filepath));
+            expect('the generated file should be readable', $this->assertFileExists($this->filepath));
+            $this->graph->destroy();
+            expect('the generated file should no longer exist', $this->assertFileNotExists($this->filepath));
+        } else {
+            expect('the file should not exist yet. If this fails, delete the file', $this->assertFileNotExists($this->filepath));
+            expect('this should NOT happen', $this->assertTrue(false));
+        }
     }
-  }
 
-  public function testCreate() {
-    $this->graph = $this->getMockBuilder('\common\components\Graph', [$this->user])
+    public function testCreate()
+    {
+        $this->graph = $this->getMockBuilder('\common\components\Graph', [$this->user])
       ->setConstructorArgs([$this->user])
       ->setMethods(['getFilepath'])
       ->getMock();
-    $this->graph
+        $this->graph
       ->method('getFilepath')
       ->willReturn($this->filepath_extra);
 
-    expect('the file should not exist yet. If this fails, delete the file', $this->assertFileNotExists($this->filepath));
-    expect('the containing directory should not exist yet either. If this fails, delete the directory', $this->assertFalse(is_dir(dirname($this->filepath_extra))));
+        expect('the file should not exist yet. If this fails, delete the file', $this->assertFileNotExists($this->filepath));
+        expect('the containing directory should not exist yet either. If this fails, delete the directory', $this->assertFalse(is_dir(dirname($this->filepath_extra))));
 
-    $this->graph->create(checkinBreakdown(), true);
+        $this->graph->create(checkinBreakdown(), true);
 
-    expect('just a check to be sure $filepath_extra is sane', $this->assertStringEndsWith('/_output/charts/test_graph.png', $this->filepath_extra));
-    expect('the generated file should exist', $this->assertFileExists($this->filepath_extra));
-    expect('the generated file should be readable', $this->assertFileExists($this->filepath_extra));
+        expect('just a check to be sure $filepath_extra is sane', $this->assertStringEndsWith('/_output/charts/test_graph.png', $this->filepath_extra));
+        expect('the generated file should exist', $this->assertFileExists($this->filepath_extra));
+        expect('the generated file should be readable', $this->assertFileExists($this->filepath_extra));
 
-    // cleanup
-    if(file_exists($this->filepath_extra) && preg_match('%/_output/charts/test_graph.png%', $this->filepath_extra)) {
-      // just in case something is weird, we don't want to straight rm this file
-      unlink($this->filepath_extra);
-      rmdir(dirname($this->filepath_extra));
+        // cleanup
+        if (file_exists($this->filepath_extra) && preg_match('%/_output/charts/test_graph.png%', $this->filepath_extra)) {
+            // just in case something is weird, we don't want to straight rm this file
+            unlink($this->filepath_extra);
+            rmdir(dirname($this->filepath_extra));
+        }
     }
-  }
 }
 
-function checkinBreakdown () {
-  return [
+function checkinBreakdown()
+{
+    return [
       '2019-01-31' => [],
       '2019-02-01' => [],
       '2019-02-02' => [

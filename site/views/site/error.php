@@ -15,7 +15,7 @@ $code = $exception->statusCode;
 
 $exception = Yii::$app->errorHandler->exception;
 
-if($exception instanceof \yii\web\NotFoundHttpException):
+if ($exception instanceof \yii\web\NotFoundHttpException):
   $this->title = "The Faster Scale App | Page Not Found";
 ?>
 
@@ -25,7 +25,7 @@ if($exception instanceof \yii\web\NotFoundHttpException):
   <p>Otherwise, please ensure your attempted url is correct.</p>
 
 <?php
-elseif($exception instanceof \yii\web\ServerErrorHttpException):
+elseif ($exception instanceof \yii\web\ServerErrorHttpException):
   $this->title = "The Faster Scale App | Oops";
 ?>
 

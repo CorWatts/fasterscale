@@ -24,11 +24,11 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
       <h1>Sign up</h1>
       <p>To do a check-in you need an account. But don't worry -- <?= Html::a("we won't do anything with your data", ['site/faq']) ?>.</p>
 			<?php $form = ActiveForm::begin([
-				'id' => 'form-signup',
-				'enableClientValidation' => true,
+                'id' => 'form-signup',
+                'enableClientValidation' => true,
         'enableAjaxValidation' => false,
         'options' => [ 'validateOnSubmit' => true ]
-			]); ?>
+            ]); ?>
         <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>'])->input('email') ?>
         <?= $form->field($model, 'password', ['inputTemplate' => '<div class="input-group">{input}<span class="input-group-btn"><button id="password-toggle" class="btn btn-default" type="button">Show</button></span></div>'])->passwordInput() ?>
         <?= $form->field($model, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
@@ -36,7 +36,7 @@ $this->registerJsFile('/js/site/signup.js', ['depends' => [\site\assets\AppAsset
           'template' => '<div class="row"><div class="col-md-5">{image}</div><div class="col-md-6 col-md-offset-1">{input}</div></div>',
         ]) ?>
         <?= $form->field($model, 'send_email')->checkbox(['disabled'=>true]) ?>
-        <div id='send_email_fields' <?php if(!$model->send_email) { ?>style="display: none;"<?php } ?>>
+        <div id='send_email_fields' <?php if (!$model->send_email) { ?>style="display: none;"<?php } ?>>
           <?= $form->field($model, 'email_category')->dropdownList(Category::getCategories(), ['data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-trigger' => 'hover', 'data-delay' => '{"show": 500, "hide": 100}', 'title' => 'Want to send an email with every check-in? Try setting this to "Restoration"']) ?>
           <?= $form->field($model, 'partner_email1')->input('email') ?>
           <?= $form->field($model, 'partner_email2')->input('email') ?>

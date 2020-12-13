@@ -12,6 +12,6 @@ class m150407_034100_fix_typo_in_option extends Migration
 
     public function down()
     {
-		echo "Why even revert this.";
+        echo "Why even revert this.";
     }
 }
