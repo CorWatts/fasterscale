@@ -20,16 +20,17 @@
         "bower-asset/pickadate": "^3.5",
         "amenadiel/jpgraph": "dev-master#10a818b",
         "kartik-v/yii2-grid": "^3.2",
-        "kartik-v/yii2-editable": "^1.7",
-        "codeception/module-yii2": "~1.1.1",
-        "codeception/module-asserts": "^1.0.0"
+        "kartik-v/yii2-editable": "^1.7"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.15",
         "yiisoft/yii2-gii": "~2.2.1",
         "yiisoft/yii2-faker": "~2.0.5",
         "codeception/specify": "~1.4.0",
-        "codeception/verify": "~2.1.0"
+        "codeception/verify": "~2.1.0",
+        "codeception/module-filesystem": "^1.0",
+        "codeception/module-yii2": "dev-php8 || ~1.1.1",
+        "codeception/module-asserts": "^1.0.0"
     },
     "scripts": {
         "post-create-project-cmd": [
