@@ -17,7 +17,8 @@ class GraphTest extends \Codeception\Test\Unit
   private $filepath = __DIR__.'/../../_output/test_graph.png';
   private $filepath_extra = __DIR__.'/../../_output/charts/test_graph.png';
 
-  public function setUp() {
+  public function setUp(): void
+  {
     $this->user = $this->getMockBuilder('\site\tests\_support\MockUser')
       ->setMethods(['getIdHash'])
       ->getMock();
@@ -25,7 +26,8 @@ class GraphTest extends \Codeception\Test\Unit
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown(): void
+  {
     $this->user = null;
     parent::tearDown();
   }
