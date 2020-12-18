@@ -41,7 +41,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
     const ROLE_USER = 10;
 
-    const CONFIRMED_STRING = '_confirmed';
+    public const CONFIRMED_STRING = '_confirmed';
 
     public $user_behavior;
     public $time;
