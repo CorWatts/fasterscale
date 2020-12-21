@@ -14,8 +14,8 @@ class FsaControllerTest extends \Codeception\Test\Unit
         $expire = \Yii::$app->params['user.verifyAccountTokenExpire'];
 
         $controller = new FsaController('fsa', 'console');
-        $controller->getTimeThreshold();
-        expect('asdf', $this->assertTrue(false));
+        $created_at = $controller->getTimeThreshold();
+        expect('asdf', $this->assertEquals(10, strlen((string)$created_at)));
     }
 }
 
