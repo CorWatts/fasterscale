@@ -1,5 +1,5 @@
 <?php
-$config = [
+return [
   'components' => [
     'db' => [
       'class' => 'yii\db\Connection',
@@ -9,7 +9,4 @@ $config = [
       'charset' => 'utf8',
     ],
   ]
-  
 ];
-
-return $config;

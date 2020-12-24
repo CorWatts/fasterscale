@@ -7,6 +7,7 @@ $params = yii\helpers\ArrayHelper::merge(
 );
 
 return [
+  'id' => 'faster-scale-app-site',
   'basePath' => dirname(__DIR__),
   'bootstrap' => ['log'],
   'controllerNamespace' => 'site\controllers',

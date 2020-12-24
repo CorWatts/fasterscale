@@ -1,5 +1,5 @@
 <?php
-$config = [
+return [
   'id' => 'app-common-tests',
   'basePath' => dirname(__DIR__),
   'components' => [
@@ -10,5 +10,3 @@ $config = [
     ],
   ]
 ];
-
-return $config;
