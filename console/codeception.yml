@@ -18,4 +18,4 @@ coverage:
 modules:
   config:
     Yii2:
-      configFile: 'config/test-local.php'
+      configFile: 'config/codeception.php'

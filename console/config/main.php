@@ -11,6 +11,16 @@ return [
   'basePath' => dirname(__DIR__),
   'bootstrap' => ['log', 'blog'],
   'controllerNamespace' => 'console\controllers',
+  'controllerMap' => [
+      'fixture' => [
+          'class' => 'yii\console\controllers\FixtureController',
+          'namespace' => 'common\fixtures',
+      ],
+      'migrate' => [
+          'class' => 'yii\console\controllers\MigrateController',
+          'migrationPath' => '@console/migrations',
+      ],
+  ],
   'components' => [
     'log' => [
       'targets' => [
