@@ -4,7 +4,7 @@ namespace console\tests\unit\controllers;
 
 use Yii;
 use \console\controllers\FsaController;
-use \console\fixtures\UserFixture;
+use \common\fixtures\UserFixture;
 
 class FsaControllerTest extends \Codeception\Test\Unit
 {
@@ -27,9 +27,12 @@ class FsaControllerTest extends \Codeception\Test\Unit
     {
         $expire = \Yii::$app->params['user.verifyAccountTokenExpire'];
 
+        $count = (new \yii\db\Query())->select('count(*)')->from('user')->one();
+        expect("starting count", $this->assertEquals($count['count'], 8));
         $controller = new FsaController('fsa', 'console');
-        $created_at = $controller->getTimeThreshold();
-        expect('asdf', $this->assertEquals(10, strlen((string)$created_at)));
+        $controller->actionRemoveOldUnconfirmedAccounts();
+        $new_count = (new \yii\db\Query())->select('count(*)')->from('user')->one();
+        expect("starting count", $this->assertEquals($new_count['count'], 5));
     }
 }
 

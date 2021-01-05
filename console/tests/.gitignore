@@ -2,4 +2,5 @@
 /unit/UnitTester.php
 /functional/FunctionalTester.php
 /acceptance/AcceptanceTester.php
+/_support/_generated/*
 /_log
