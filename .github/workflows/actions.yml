@@ -71,14 +71,14 @@ jobs:
     
     - name: Configure app for PostgreSQL
         # Runs a script that creates a PostgreSQL client and creates the test database and user
-        run: php test_setup.php
-        env:
-          # The hostname used to communicate with the PostgreSQL service container
-          POSTGRES_HOST: localhost
-          # The default PostgreSQL port
-          POSTGRES_PORT: 5432
+      run: php test_setup.php
+      env:
+        # The hostname used to communicate with the PostgreSQL service container
+        POSTGRES_HOST: localhost
+        # The default PostgreSQL port
+        POSTGRES_PORT: 5432
         
-    -name: Run database migrations
+    - name: Run database migrations
       run: ./yii_test migrate --interactive=0
       
     - name: Run test suite
