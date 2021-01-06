@@ -2,7 +2,7 @@ name: Faster Scale App Integration
 
 on:
   - push
-  - pull_request
+  #- pull_request
 
 jobs:
   test:
