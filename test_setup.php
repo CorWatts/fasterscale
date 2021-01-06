@@ -9,11 +9,11 @@
 $pg_host = getenv('POSTGRES_HOST');
 $pg_port = getenv('POSTGRES_PORT');
 
-$connection_string = "host=$pg_host port=$pg_port dbname=fsatest user=fsatest";
+$connection_string = "host=$pg_host port=$pg_port dbname=postgres user=postgres password=postgres";
 $handle = pg_connect($connection_string);
 
-pg_query($handle, 'CREATE DATABASE fsatest;');
-pg_query($handle, 'CREATE USER fsatest WITH SUPERUSER PASSWORD "test123";');
-pg_query($handle, 'GRANT ALL PRIVILEGES ON DATABASE "fsatest" TO fsatest;');
+pg_query($handle, "CREATE DATABASE fsatest;");
+pg_query($handle, "CREATE USER fsatest WITH SUPERUSER PASSWORD 'test123';");
+pg_query($handle, "GRANT ALL PRIVILEGES ON DATABASE 'fsatest' TO fsatest;");
 
 pg_close($handle);
