@@ -76,6 +76,16 @@ That should result the browser downloading published asset bundles instead of ea
 ## Deployment
 This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.
 
+Setup in a Production environment would be something like the following:
+1) ```git clone git@github.com:CorWatts/fasterscale.git && cd fasterscale```
+2) ```composer install --no-dev --optimize-autoloader```
+3) ```./init --env=Production```
+4) Edit ```site/config/main-local.php``` and replace "A RANDOM VALUE" with an actual random value (secures the cookies)
+5) Edit ```common/config/main-local.php``` and add your database connection information (host, dbname, username, password)
+6) Run all the database migrations via ```./yii migrate```. This should be successful if your database is set up and your connection information is correct.
+1) Generate the bundled static assets (CSS & JS) via ```composer assets```
+1) Start up your webserver and PHP (beyond the scope of these instructions)
+
 ## License
 This application is under the BSD-3 license. See [LICENSE.md](https://github.com/CorWatts/fasterscale/blob/master/LICENSE.md) for details.
 
