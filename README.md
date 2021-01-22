@@ -10,6 +10,7 @@ These instructions will help you get a local installation set up for development
 ### Prerequisites
 * PHP >= 7.1
 * Composer
+* Additional PHP modules: php-pgsql, php-gd, php-mbstring
 * A SASS compiler. We recommend the npm project ```node-sass```. Once npm is installed on your machine  type ```npm i node-sass -g```.
 * PostgreSQL 9.1 or later
 
