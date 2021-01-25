@@ -4,96 +4,64 @@
 [![codecov](https://codecov.io/gh/CorWatts/fasterscale/branch/master/graph/badge.svg)](https://codecov.io/gh/CorWatts/fasterscale)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorWatts/fasterscale/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorWatts/fasterscale/?branch=master)
 
-
 ## Getting Started
 These instructions will help you get a local installation set up for development and testing purposes. See the deployment instructions for how to deploy this to a live system.
-### Prerequisites
+
+### Pre-requisites
 * PHP >= 7.3
-* Composer
-* Additional PHP modules: php-pgsql, php-gd, php-mbstring
-* A SASS compiler. We recommend the npm project ```node-sass```. Once npm is installed on your machine  type ```npm i node-sass -g```.
+  * Composer
+  * Additional PHP modules: php-pgsql, php-gd, php-mbstring, php-curl
+* NodeJS >= 12 & npm >= 6
+  * ```npm install uglify-js uglifycss node-sass -g```
 * PostgreSQL 9.1 or later
 
-### Installation
-* Clone this repo with:  
-    ```git clone git@github.com:CorWatts/fasterscale.git && cd fasterscale```
-* Install necessary dependencies with:  
+### Development Installation
+1) Install necessary dependencies with:  
     ```composer install --dev```
-* Execute the init file ```./init --env=Development``` with the environment set to **Development** option
-* Edit ```site/config/main-local.php``` and add a cookie validation key in the $config variable
-```php
-<?php
-$config = [ 
-  'components' => [
-    'request' => [
-      'cookieValidationKey' => 'devcookiekey'
-    ],
-    [...other good stuff...]
-  ]
-];
-```
-* Edit ```common/config/main-local.php``` and edit the default database connection information in the $config variable
-```php
-<?php
-$config = [ 
-    'db' => [
-      'class' => 'yii\db\Connection',
-      'dsn' => '[DB_CONNECTION_STRING]',
-      'username' => '[DB_USERNAME]',
-      'password' => '[DB_PASSWORD]',
-      'charset' => 'utf8',
-    ],
-    [...other good stuff...]
-  }
-};
-```
-* run all yii2 db migrations ```./yii migrate```
-* startup local PHP server with ```composer start```
-* visit [http://localhost:8080/signup](http://localhost:8080/signup) and create a new user
-* log in, start working
-
-## Running the Tests
-Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. First, the testing files must be scaffolded by running:
-```bash
-composer test-scaffold
-```
-To run the tests, ensure you're in the base directory of this repository and execute:
-```bash
-composer test
-```
-To view the code coverage of these tests run: (XDebug is required for generation of code coverage)
-```bash
-composer test-coverage
-```
+1) Execute the init file with:  
+    ```./init --env=Development```
+1) Edit ```common/config/main-local.php``` and add your database connection information (host, dbname, username, password)
+1) run all yii2 db migrations ```./yii migrate```
+1) startup local PHP server with ```composer start```
+1) visit [http://localhost:8080/signup](http://localhost:8080/signup) and create a new user
+1) log in, start working
 
 ## Assets
-We have built-in support for minimizing JS and CSS assets. The following steps should be sufficient:  
-1. Install the the npm packages `uglify-js` and `uglifycss`  via ```npm install uglify-js uglifycss -g```
+We have built-in support for minimizing JS and CSS assets. This is optional in both the dev and prod environments but is strongly recommended in prod to reduce the page load time. The following steps should be sufficient:  
+1. Ensure the npm packages `uglify-js` and `uglifycss` are installed via ```npm install uglify-js uglifycss -g```
 2. Swap the commented and uncommented code blocks in ```site/config/bundles-local.php```
 3. Run the asset compression by executing ```composer assets```
+
+**Note:** It's best to avoid executing scripts as root whenever possible. Follow [NPM's instructions](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory) to set up a global NPM folder for a non-root user.
 
 That should result the browser downloading published asset bundles instead of each JS/CSS file individually.
 
 ## Testing
-1. Create a PostgreSQL database and user for tests via the following commands:  
-    CREATE DATABASE fsatest;
-    CREATE USER fsatest WITH SUPERUSER PASSWORD 'test123';
-    GRANT ALL PRIVILEGES ON DATABASE "fsatest" TO fsatest;
+Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. First, the test database and user must be created:
+* Create a PostgreSQL database and user for tests via the following commands:  
+```sql
+CREATE DATABASE fsatest;  
+CREATE USER fsatest WITH SUPERUSER PASSWORD 'test123';  
+GRANT ALL PRIVILEGES ON DATABASE "fsatest" TO fsatest;  
+```
 
 If you choose to modify the name of db or user or the password, be sure to also modify the corresponding value in `common/config/tests-local.php`.
 
-## Deployment
-This application is deployed live on https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```. Additional instructions will be added in the near future.
+* Next, scaffold the test configuration files with:
+```bash
+composer test-scaffold
+```
+* To run the tests, execute:
+```bash
+composer test
+```
+To view the code coverage of these tests run: (the xdebug extension is required for generation of code coverage)
+```bash
+composer test-coverage
+```
 
-Setup in a Production environment would be something like the following:
-1) ```git clone git@github.com:CorWatts/fasterscale.git && cd fasterscale```
-2) ```composer install --no-dev --optimize-autoloader```
-3) ```./init --env=Production```
-4) Edit ```site/config/main-local.php``` and replace "A RANDOM VALUE" with an actual random value (secures the cookies)
-5) Edit ```common/config/main-local.php``` and add your database connection information (host, dbname, username, password)
-6) Run all the database migrations via ```./yii migrate```. This should be successful if your database is set up and your connection information is correct.
-1) Generate the bundled static assets (CSS & JS) via ```composer assets```
-1) Start up your webserver and PHP (beyond the scope of these instructions)
+## Production Deployment
+The authoritative instance of this application is deployed at https://fasterscaleapp.com using Capistrano. A recipe for that can be found in ```config/deploy.rb```.  In-depth Production deployment instructions can be found at [PRODUCTION.md](/PRODUCTION.md).
 
 ## License
 This application is under the BSD-3 license. See [LICENSE.md](https://github.com/CorWatts/fasterscale/blob/master/LICENSE.md) for details.

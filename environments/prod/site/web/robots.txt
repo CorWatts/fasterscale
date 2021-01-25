@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /signup
 Disallow: /privacy
 Disallow: /terms
-Sitemap: http://fasterscaleapp.com/sitemap.xml
+Sitemap: https://fasterscaleapp.com/sitemap.xml

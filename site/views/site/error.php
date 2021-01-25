@@ -11,7 +11,6 @@ use yii\helpers\Url;
  */
 
 $this->title = "The Faster Scale App | $name";
-$code = $exception->statusCode;
 
 $exception = Yii::$app->errorHandler->exception;
 
