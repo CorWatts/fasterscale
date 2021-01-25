@@ -19,20 +19,41 @@
 return [
     'Development' => [
         'path' => 'dev',
-        'writable' => [
-            // handled by composer.json already
+        'setWritable' => [
+            "console/runtime",
+            "console/migrations",
+            "site/runtime",
+            "site/assets",
+            "site/web/assets",
+            "site/web/css",
+            "site/web/js",
+            "site/web/charts"
         ],
-        'executable' => [
+        'setExecutable' => [
             'yii',
+            'yii_test',
+        ],
+        'setCookieValidationKey' => [
+            'site/config/main-local.php',
         ],
     ],
     'Production' => [
         'path' => 'prod',
-        'writable' => [
-            // handled by composer.json already
+        'setWritable' => [
+            "console/runtime",
+            "console/migrations",
+            "site/runtime",
+            "site/assets",
+            "site/web/assets",
+            "site/web/css",
+            "site/web/js",
+            "site/web/charts"
         ],
-        'executable' => [
+        'setExecutable' => [
             'yii',
+        ],
+        'setCookieValidationKey' => [
+            'site/config/main-local.php',
         ],
     ],
 ];

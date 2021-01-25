@@ -30,6 +30,7 @@ class GraphTest extends \Codeception\Test\Unit
     {
         $this->user = null;
         parent::tearDown();
+    }
 
     public function testGetFilepath()
     {

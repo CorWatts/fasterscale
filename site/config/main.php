@@ -51,6 +51,7 @@ return [
       'bundles' => [
         'yii\bootstrap\BootstrapAsset' => false,
       ],
+      'appendTimestamp' => true,
       'linkAssets' => true,
       'converter' => [
         'class' => yii\web\AssetConverter::class,
