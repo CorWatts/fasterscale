@@ -15,8 +15,10 @@ site\assets\AppAsset::register($this);
 
 if ($hash = Utility::getRevHash()) {
     $rev_link = '<a href="'.Utility::getGithubRevUrl().'">'.Utility::getRevHash().'</a>';
-} else {
+} else if (YII_ENV === 'dev') {
     $rev_link = 'DEVELOPMENT';
+} else {
+    $rev_link = null;
 }
 
 ?>
@@ -99,7 +101,7 @@ if ($hash = Utility::getRevHash()) {
                 <div class="col-xs-6 col-md-4 footer-info">
                   <h4>Connect</h4>
                   <ul class="list-unstyled">
-                    <li><a href="https://github.com/CorWatts/fasterscale"><img alt="Github Logo" src="/img/GitHub-Mark-32px.png" height=24 width=24 /></a> rev. <?=$rev_link?></li>
+                    <li><a href="https://github.com/CorWatts/fasterscale"><img alt="Github Logo" src="/img/GitHub-Mark-32px.png" height=24 width=24 /></a><?= $rev_link ? "rev. $rev_link" : '' ?></li>
                     <li><a href="<?=Url::to(['site/contact'])?>">Contact</a>
                     <li><a href="https://www.freelists.org/list/fsa-discuss">Mailing List</a></li>
                   </ul>
