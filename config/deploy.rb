@@ -3,7 +3,7 @@ require 'capistrano/setup'
 set :staging, :production
 
 set :application, 'Checkin'
-set :repo_url, 'ssh://git@github.com/CorWatts/fasterscale.git'
+set :repo_url, 'https://github.com/CorWatts/fasterscale.git'
 
 set :keep_releases, 3
 
@@ -18,11 +18,22 @@ namespace :deploy do
   desc 'Restarting application'
   task :restart do
     on roles(:app) do
-      execute "sudo service php7.1-fpm restart"
+      execute "sudo systemctl restart php7.4-fpm"
     end
   end
 
   after :published, :restart
+	
+  desc 'initialize application'
+  task :init_app do
+    on roles(:web) do
+      within release_path do
+        execute "cd #{release_path} && ./init --env=Production --overwrite=n"
+      end
+    end
+  end
+
+  after :updated, 'deploy:init_app'
 	
   desc 'composer install'
   task :composer_install do
@@ -44,22 +55,11 @@ namespace :deploy do
 
   after :published, :migrate
 
-  desc "Switching index.php to prod"
-  task :switch_index do
-    on roles(:web) do
-        within release_path do
-          execute 'cp', 'site/web/prod.php', 'site/web/index.php;'
-        end
-    end
-  end
-
-  after :migrate, 'deploy:switch_index'
-
   desc "Combining and minifying assets"
   task :do_assets do
     on roles(:web) do
         within release_path do
-          execute './yii', 'asset', 'site/assets/assets.php', 'site/assets/assets-compressed.php;'
+          execute 'composer', 'assets'
         end
     end
   end

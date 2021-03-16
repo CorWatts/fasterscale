@@ -12,8 +12,7 @@ class FsaController extends \yii\console\Controller
   public $defaultAction = null;
 
   /**
-   * Deletes unconfirmed accounts that are older than the lifetime of the
-   * verification token
+   * Deletes unconfirmed accounts that are older than the lifetime of the email verification token.
    */
   public function actionRemoveOldUnconfirmedAccounts(): void
   {
@@ -21,10 +20,18 @@ class FsaController extends \yii\console\Controller
     $this->stdout("Removing accounts older than {$thresholdInDays} days...\n", Console::FG_YELLOW);
     $count = User::deleteAll([
       'and',
-        ['or',
+        ['and',
           ['not', ['verify_email_token' => null]],
+          // Yes, I know we have a wildcard at the start of this LIKE clause.
+          // The user table shouldn't be nearly as big as question or
+          // user_behavior_Like, so a sequential table scan shouldn't take
+          // _that_ long. I wrote an alternative clause (commented out below)
+          // using text positions but it doesn't appear to be faster according
+          // to EXPLAIN ANALYZE.
+          //
           // we have to escape the '_' at the start of User::CONFIRMED_STRING
           ['not like', 'verify_email_token', '%\\'.User::CONFIRMED_STRING, false]
+          //"position ('".User::CONFIRMED_STRING."' in verify_email_token) > 0"
         ],
         // elsewhere we check the expiration of the token itself. For this query
         // it's simpler to just check the created_at time. The timestamp here
@@ -32,7 +39,7 @@ class FsaController extends \yii\console\Controller
         ['<', 'created_at', $this->getTimeThreshold()],
     ]);
 
-    $this->stdout("Removed $count accounts", Console::FG_GREEN);
+    $this->stdout("Removed $count accounts\n", Console::FG_GREEN);
   }
 
   /**

@@ -23,16 +23,25 @@ class FsaControllerTest extends \Codeception\Test\Unit
         ];
     }
 
-    public function testGetTimeThreshold()
+    public function testRemoveOldUnconfirmedAccounts()
     {
         $expire = \Yii::$app->params['user.verifyAccountTokenExpire'];
 
         $count = (new \yii\db\Query())->select('count(*)')->from('user')->one();
-        expect("starting count", $this->assertEquals($count['count'], 8));
+        expect("count before cleanup", $this->assertEquals($count['count'], 10));
         $controller = new FsaController('fsa', 'console');
         $controller->actionRemoveOldUnconfirmedAccounts();
         $new_count = (new \yii\db\Query())->select('count(*)')->from('user')->one();
-        expect("starting count", $this->assertEquals($new_count['count'], 5));
+        expect("count after cleanup", $this->assertEquals($new_count['count'], 9));
+    }
+
+    public function testGetTimeThreshold()
+    {
+        $controller = new FsaController('fsa', 'console');
+        $threshold = $controller->getTimeThreshold();
+        expect("should be an integer", $this->assertIsInt($threshold));
+        expect("should be a time in the past", $this->assertLessThan(time(), $threshold));
+        expect("should have the right number of digits", $this->assertEquals(10, strlen((string)$threshold)));
     }
 }
 

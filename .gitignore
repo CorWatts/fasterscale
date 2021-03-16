@@ -7,4 +7,4 @@
 /log
 /site/web/charts
 yii*
-test-setup.php
+test_setup.php
