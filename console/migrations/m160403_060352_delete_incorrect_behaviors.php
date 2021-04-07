@@ -15,6 +15,6 @@ class m160403_060352_delete_incorrect_behaviors extends Migration
         $this->batchInsert("{{%option}}", ["name", "category_id"], [
             ["masturbation", 3]
             , ["pornography", 3]
-       ]);
+        ]);
     }
 }

@@ -152,7 +152,7 @@ class m140609_010314_populate_category_and_options_table extends \yii\db\Migrati
             ["condemnation", 7],
             ["guilt", 7],
             ["aloneness", 7]
-       ]);
+        ]);
     }
 
     public function safeDown()

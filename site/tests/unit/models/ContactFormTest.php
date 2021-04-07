@@ -3,7 +3,7 @@
 namespace site\tests\unit\models;
 
 use Yii;
-use \site\models\ContactForm;
+use site\models\ContactForm;
 
 class ContactFormTest extends \Codeception\Test\Unit
 {
@@ -15,18 +15,18 @@ class ContactFormTest extends \Codeception\Test\Unit
         expect('with no values, the form should not pass validation', $this->assertFalse($form->validate()));
 
         $form->attributes = [
-      'name' => 'Corey',
-      'email' => 'not_an-email',
-      'subject' => 'a question',
-      'body' => 'hello there'
-    ];
+        'name' => 'Corey',
+        'email' => 'not_an-email',
+        'subject' => 'a question',
+        'body' => 'hello there'
+        ];
         expect('with a value that is not an email, the form should not pass validation', $this->assertFalse($form->validate()));
         $form->attributes = [
-      'name' => 'Corey',
-      'email' => '  email@email.COM  ',
-      'subject' => 'a question',
-      'body' => 'hello there'
-    ];
+        'name' => 'Corey',
+        'email' => '  email@email.COM  ',
+        'subject' => 'a question',
+        'body' => 'hello there'
+        ];
         expect('with a valid email, the form should pass validation', $this->assertTrue($form->validate()));
     }
 
@@ -35,11 +35,11 @@ class ContactFormTest extends \Codeception\Test\Unit
         $form = new ContactForm();
 
         $form->attributes = [
-      'name' => 'Corey',
-      'email' => '  email@email.COM  ',
-      'subject' => 'a question',
-      'body' => 'hello there'
-    ];
+        'name' => 'Corey',
+        'email' => '  email@email.COM  ',
+        'subject' => 'a question',
+        'body' => 'hello there'
+        ];
 
         $form->validate();
         $form->sendEmail('destination@email.com');

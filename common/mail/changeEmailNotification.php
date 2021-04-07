@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 
 /**
@@ -8,6 +9,6 @@ use yii\helpers\Html;
 $contactLink = Yii::$app->urlManager->createAbsoluteUrl(['site/contact']);
 ?>
 
-<p>This is a notification that your email address has been changed from <?= Html::encode($user->email) ?> to <?= Html::encode($user->desired_email) ?>.</p>
+<p>This is a notification that your email address has been changed from <?php echo Html::encode($user->email) ?> to <?php echo Html::encode($user->desired_email) ?>.</p>
 
-<p>If this is in error, please contact us immediately via <?= Html::a(Html::encode($contactLink), $contactLink) ?>.</p>
+<p>If this is in error, please contact us immediately via <?php echo Html::a(Html::encode($contactLink), $contactLink) ?>.</p>

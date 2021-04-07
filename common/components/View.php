@@ -23,9 +23,10 @@ class View extends \yii\web\View
     /**
      * Renders the content to be inserted at the end of the body section.
      * The content is rendered using the registered JS code blocks and files.
-     * @param boolean $ajaxMode whether the view is rendering in AJAX mode.
-     * If true, the JS scripts registered at [[POS_READY]] and [[POS_LOAD]] positions
-     * will be rendered at the end of the view like normal scripts.
+     *
+     * @param  boolean $ajaxMode whether the view is rendering in AJAX mode.
+     *                           If true, the JS scripts registered at [[POS_READY]] and [[POS_LOAD]] positions
+     *                           will be rendered at the end of the view like normal scripts.
      * @return string the rendered content
      */
     protected function renderBodyEndHtml($ajaxMode)

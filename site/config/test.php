@@ -1,6 +1,7 @@
 <?php
-$main = require __DIR__ . '/main.php';
-$mainlocal = require __DIR__ . '/main-local.php';
+
+$main = include __DIR__ . '/main.php';
+$mainlocal = include __DIR__ . '/main-local.php';
 
 $config = [
   'id' => 'app-site-tests',
@@ -15,7 +16,7 @@ $config = [
 ];
 
 return yii\helpers\ArrayHelper::merge(
-  $main,
-  $mainlocal,
-  $config
+    $main,
+    $mainlocal,
+    $config
 );

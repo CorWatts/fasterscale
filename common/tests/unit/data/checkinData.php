@@ -1593,7 +1593,7 @@
         ],
     ];
 
-  $multipleDates = [
+    $multipleDates = [
     0 => [
       'id' => 437,
       'user_id' => 2,
@@ -3981,12 +3981,12 @@
         'category_id' => 6,
       ] ,
     ] ,
-  ];
+    ];
 
-  return [
+    return [
     'categories' => $categories,
     'singleBhvr' => $singleBhvr,
     'manyBhvrs' => $manyBhvrs,
         'allBhvrs' => $allBhvrs,
     'multipleDates' => $multipleDates
-  ];
+    ];

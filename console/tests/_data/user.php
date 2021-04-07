@@ -1,9 +1,9 @@
 <?php
 
 $current_time = time() + 5; // give us a five second buffer
-$future_time = time() + 60*60*24*7; // next week
-$past_time = time() - 60*60*24*7; // last week, (within the token lifetime, should not be purged)
-$very_past_time = time() - 60*60*24*7*52; // last year
+$future_time = time() + 60 * 60 * 24 * 7; // next week
+$past_time = time() - 60 * 60 * 24 * 7; // last week, (within the token lifetime, should not be purged)
+$very_past_time = time() - 60 * 60 * 24 * 7 * 52; // last year
 
 return [
     // should not be deleted

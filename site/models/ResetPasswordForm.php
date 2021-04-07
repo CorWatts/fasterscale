@@ -1,4 +1,5 @@
 <?php
+
 namespace site\models;
 
 use common\models\User;
@@ -43,9 +44,9 @@ class ResetPasswordForm extends Model
     public function rules()
     {
         return [
-      ['password', 'required'],
-      ['password', 'string', 'min' => 6],
-    ];
+        ['password', 'required'],
+        ['password', 'string', 'min' => 6],
+        ];
     }
 
     /**

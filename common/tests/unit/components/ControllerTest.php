@@ -16,14 +16,20 @@ class ControllerTest extends \Codeception\Test\Unit
     public function testActions()
     {
         $controller = new Controller('test', 'common');
-        expect('actions should return an array of action settings', $this->assertEquals([
-        'error' => [
-          'class' => 'yii\web\ErrorAction',
-        ],
-        'captcha' => [
-          'class' => 'yii\captcha\CaptchaAction',
-        ],
-      ], $controller->actions()));
+        expect(
+            'actions should return an array of action settings',
+            $this->assertEquals(
+                [
+                'error' => [
+                'class' => 'yii\web\ErrorAction',
+                ],
+                'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                ],
+                ],
+                $controller->actions()
+            )
+        );
     }
 
     public function testBeforeAction()

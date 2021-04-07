@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Nav;
@@ -14,8 +15,8 @@ use common\components\Utility;
 site\assets\AppAsset::register($this);
 
 if ($hash = Utility::getRevHash()) {
-    $rev_link = '<a href="'.Utility::getGithubRevUrl().'">'.Utility::getRevHash().'</a>';
-} else if (YII_ENV === 'dev') {
+    $rev_link = '<a href="' . Utility::getGithubRevUrl() . '">' . Utility::getRevHash() . '</a>';
+} elseif (YII_ENV === 'dev') {
     $rev_link = 'DEVELOPMENT';
 } else {
     $rev_link = null;
@@ -55,14 +56,14 @@ if ($hash = Utility::getRevHash()) {
                 'label' => 'Logout',
                 'url' => ['/site/logout'],
                 'linkOptions' => ['data-method' => 'post']
-              ];
+                ];
             }
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => $menuItems,
             ]);
             NavBar::end();
-        ?>
+            ?>
 
         <div class="container">
         <?= Breadcrumbs::widget([

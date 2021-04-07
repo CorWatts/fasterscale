@@ -3,7 +3,7 @@
 namespace site\tests\unit\models;
 
 use Yii;
-use \site\models\EditProfileForm;
+use site\models\EditProfileForm;
 
 class EditProfileFormTest extends \Codeception\Test\Unit
 {
@@ -21,8 +21,8 @@ class EditProfileFormTest extends \Codeception\Test\Unit
     public function setUp(): void
     {
         $this->graph = $this->getMockBuilder(common\components\Graph::class)
-      ->setMethods(['create', 'destroy'])
-      ->getMock();
+        ->setMethods(['create', 'destroy'])
+        ->getMock();
         parent::setUp();
     }
 
@@ -57,17 +57,17 @@ class EditProfileFormTest extends \Codeception\Test\Unit
 
         // Set up dependency injections
         Yii::$container
-      ->set(\common\interfaces\TimeInterface::class, function () {
-          return new \common\components\Time('UTC');
-      });
+        ->set(\common\interfaces\TimeInterface::class, function () {
+            return new \common\components\Time('UTC');
+        });
         Yii::$container
-      ->set(\common\components\Graph::class, function () {
-          return $this->graph;
-      });
+        ->set(\common\components\Graph::class, function () {
+            return $this->graph;
+        });
         Yii::$container
-      ->set(\common\interfaces\UserBehaviorInterface::class, function () {
-          return new FakeUserBehavior();
-      });
+        ->set(\common\interfaces\UserBehaviorInterface::class, function () {
+            return new FakeUserBehavior();
+        });
 
         // Actually begin testing
         $form->attributes = $this->values;
@@ -78,28 +78,28 @@ class EditProfileFormTest extends \Codeception\Test\Unit
         expect('saveProfile should return the user with the partner-related settings equal to null', $this->assertNull($form->saveProfile()));
 
         $null_vals = [
-      'partner_email1'  => null,
-      'partner_email2'  => null,
-      'partner_email3'  => null,
-      'send_email'      => false,
-      'email_category'  => 4,
-      'timezone'        => 'America/Los_Angeles',
-      'expose_graph'    => true,
-    ];
+        'partner_email1'  => null,
+        'partner_email2'  => null,
+        'partner_email3'  => null,
+        'send_email'      => false,
+        'email_category'  => 4,
+        'timezone'        => 'America/Los_Angeles',
+        'expose_graph'    => true,
+        ];
         $form->send_email = false;
         $ret = $form->saveProfile();
         expect('saveProfile should return the user with the partner-related settings equal to null', $this->assertEquals($null_vals, $user->attributes));
 
         $this->graph
-      ->expects($this->once())
-      ->method('destroy');
+        ->expects($this->once())
+        ->method('destroy');
         $form->expose_graph = false;
         $ret = $form->saveProfile();
         expect('if form->expose_graph is set to false, destroy the graph and set user->expose_graph to false', $this->assertFalse($ret->expose_graph));
 
         $this->graph
-      ->expects($this->once())
-      ->method('create');
+        ->expects($this->once())
+        ->method('create');
         $form->expose_graph = true;
         $ret = $form->saveProfile();
         expect('if form->expose_graph is set to true, create the graph and set user->expose_graph to true', $this->assertTrue($ret->expose_graph));
@@ -111,18 +111,18 @@ class EditProfileFormTest extends \Codeception\Test\Unit
     private function getUser()
     {
         $user = $this->getmockbuilder('\common\models\User')
-      ->disableoriginalconstructor()
-      ->setmethods(['getisnewrecord', 'attributes', 'save', 'findbypasswordresettoken', 'removepasswordresettoken', 'getid'])
-      ->getmock();
+        ->disableoriginalconstructor()
+        ->setmethods(['getisnewrecord', 'attributes', 'save', 'findbypasswordresettoken', 'removepasswordresettoken', 'getid'])
+        ->getmock();
         $user->method('attributes')->willReturn([
-      'timezone',
-      'partner_email1',
-      'partner_email2',
-      'partner_email3',
-      'send_email',
-      'email_category',
-      'expose_graph',
-    ]);
+        'timezone',
+        'partner_email1',
+        'partner_email2',
+        'partner_email3',
+        'send_email',
+        'email_category',
+        'expose_graph',
+        ]);
         $user->timezone = 'America/Los_Angeles';
         $user->partner_email1 = 'partner1@example.com';
         $user->partner_email2 = 'partner2@example.com';

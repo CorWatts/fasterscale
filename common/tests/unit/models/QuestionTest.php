@@ -98,7 +98,7 @@ class QuestionTest extends \Codeception\Test\Unit
       'date' => '2019-10-27 21:07:35',
       'category_id' => 2,
     ],
-  ];
+    ];
     private $userQuestions = [
     2664 => [
       'question' => [
@@ -136,7 +136,7 @@ class QuestionTest extends \Codeception\Test\Unit
         ],
       ],
     ],
-    2666=> [
+    2666 => [
       'question' => [
         'user_behavior_id' => 2666,
         'behavior_name' => 'some_custom_behavior',
@@ -154,45 +154,50 @@ class QuestionTest extends \Codeception\Test\Unit
         ],
       ],
     ],
-  ];
+    ];
 
     public function setUp(): void
     {
         $this->question = $this->getMockBuilder('\common\models\Question')
-         ->setMethods(['save', 'attributes'])
-         ->getMock();
+            ->setMethods(['save', 'attributes'])
+            ->getMock();
     }
 
     public function testParseQuestionData()
     {
-        $questions = array_map(function ($d) {
-            $q = $this->getMockBuilder('\common\models\Question')
-         ->setMethods(['save', 'attributes'])
-         ->getMock();
-            $q->method('save')->willReturn(true);
-            $q->method('attributes')
-        ->willReturn([
-          'id',
-          'user_id',
-          'behavior_id',
-          'category_id',
-          'user_behavior_id',
-          'question',
-          'answer',
-          'date',
-          'userBehavior',
-        ]);
-            foreach ($d as $k => $v) {
-                if ($k === 'behavior_id' && $v === null) {
-                    $ub = new \StdClass();
-                    $ub->custom_behavior = 'some_custom_behavior';
-                    $q->userBehavior = $ub;
-                } else {
-                    $q->$k = $v;
+        $questions = array_map(
+            function ($d) {
+                $q = $this->getMockBuilder('\common\models\Question')
+                    ->setMethods(['save', 'attributes'])
+                    ->getMock();
+                $q->method('save')->willReturn(true);
+                $q->method('attributes')
+                    ->willReturn(
+                        [
+                        'id',
+                        'user_id',
+                        'behavior_id',
+                        'category_id',
+                        'user_behavior_id',
+                        'question',
+                        'answer',
+                        'date',
+                        'userBehavior',
+                        ]
+                    );
+                foreach ($d as $k => $v) {
+                    if ($k === 'behavior_id' && $v === null) {
+                        $ub = new \StdClass();
+                        $ub->custom_behavior = 'some_custom_behavior';
+                        $q->userBehavior = $ub;
+                    } else {
+                        $q->$k = $v;
+                    }
                 }
-            }
-            return $q;
-        }, $this->questionData);
+                return $q;
+            },
+            $this->questionData
+        );
         expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals($this->question->parseQuestionData($questions), $this->userQuestions));
         expect('parseQuestionData should return empty with the empty set', $this->assertEmpty($this->question->parseQuestionData([])));
     }

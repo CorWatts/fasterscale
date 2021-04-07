@@ -1,4 +1,5 @@
 <?php
+
 namespace site\models;
 
 use common\models\User;
@@ -32,19 +33,19 @@ class ChangePasswordForm extends Model
     public function rules()
     {
         return [
-      ['old_password', 'string', 'min' => 6],
-      ['new_password', 'string', 'min' => 8],
-      [['old_password', 'new_password'], 'required'],
-      ['old_password', 'validatePassword'],
-    ];
+        ['old_password', 'string', 'min' => 6],
+        ['new_password', 'string', 'min' => 8],
+        [['old_password', 'new_password'], 'required'],
+        ['old_password', 'validatePassword'],
+        ];
     }
 
     public function attributeLabels()
     {
         return [
-      'old_password' => 'Current Password',
-      'new_password' => 'New Password',
-      ];
+        'old_password' => 'Current Password',
+        'new_password' => 'New Password',
+        ];
     }
 
     /**

@@ -3,8 +3,8 @@
 namespace console\tests\unit\controllers;
 
 use Yii;
-use \console\controllers\FsaController;
-use \common\fixtures\UserFixture;
+use console\controllers\FsaController;
+use common\fixtures\UserFixture;
 
 class FsaControllerTest extends \Codeception\Test\Unit
 {
@@ -44,4 +44,3 @@ class FsaControllerTest extends \Codeception\Test\Unit
         expect("should have the right number of digits", $this->assertEquals(10, strlen((string)$threshold)));
     }
 }
-

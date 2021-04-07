@@ -20,7 +20,7 @@ class ViewTest extends \Codeception\Test\Unit
         $data = [
         'name' => 'user one',
         'email' => 'userone@example.com'
-      ];
+        ];
         $view->registerJson($data, $key);
 
         expect("The supplied array should be encoded as JSON and set on the View obj", $this->assertEquals($data, json_decode($view->json[$view::POS_READY][$key], true)));
@@ -29,7 +29,7 @@ class ViewTest extends \Codeception\Test\Unit
         $data = [
         'name' => 'user one',
         'email' => 'userone@example.com'
-      ];
+        ];
         $view->registerJson($data);
 
         $expected_key = md5(json_encode($data, true));

@@ -1,9 +1,10 @@
 <?php
+
 namespace common\components;
 
 use yii;
-use \DateTime;
-use \DateTimeZone;
+use DateTime;
+use DateTimeZone;
 
 class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterface
 {
@@ -11,7 +12,7 @@ class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterf
 
     public $timezone;
 
-    public function __construct(String $timezone, $config = [])
+    public function __construct(string $timezone, $config = [])
     {
         $this->timezone = $timezone;
         parent::__construct($config);
@@ -108,13 +109,13 @@ class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterf
         }
 
         return (new DateTime("now", new DateTimeZone($timezone)))
-      ->format("Y-m-d");
+        ->format("Y-m-d");
     }
 
     public function alterLocalDate($date, $modifier)
     {
         return (new DateTime("$date $modifier", new DateTimeZone($this->timezone)))
-      ->format("Y-m-d");
+        ->format("Y-m-d");
     }
 
     public function getUTCBookends($local)
@@ -166,12 +167,12 @@ class Time extends \yii\base\BaseObject implements \common\interfaces\TimeInterf
         $end   = new DateTime("now", new DateTimeZone($this->timezone));
         $oneday = new \DateInterval('P1D');
         $end->add($oneday);      // add a day, so the end date gets included in the intervals
- 
-        $start->add(new \DateInterval('PT2M'))  // add two minutes, in case they just did a check-in
-          ->sub(new \DateInterval("P${period}D")); // subtract `$period` number of days
-    $end->add(new \DateInterval('PT2M'));   // add two minutes, in case they just did a check-in
 
-    $periods = new \DatePeriod($start, $oneday, $end, \DatePeriod::EXCLUDE_START_DATE);
+        $start->add(new \DateInterval('PT2M'))  // add two minutes, in case they just did a check-in
+            ->sub(new \DateInterval("P${period}D")); // subtract `$period` number of days
+        $end->add(new \DateInterval('PT2M'));   // add two minutes, in case they just did a check-in
+
+        $periods = new \DatePeriod($start, $oneday, $end, \DatePeriod::EXCLUDE_START_DATE);
         $local_tz = new \DateTimeZone($this->timezone);
         foreach ($periods as $period) {
             $period->setTimezone($local_tz);

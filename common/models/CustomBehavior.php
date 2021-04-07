@@ -23,6 +23,7 @@ class CustomBehavior extends ActiveRecord
 {
     /**
      * {@inheritdoc}
+     *
      * @codeCoverageIgnore
      */
     public static function tableName()
@@ -32,6 +33,7 @@ class CustomBehavior extends ActiveRecord
 
     /**
      * {@inheritdoc}
+     *
      * @codeCoverageIgnore
      */
     public function rules()
@@ -64,6 +66,7 @@ class CustomBehavior extends ActiveRecord
 
     /**
      * {@inheritdoc}
+     *
      * @codeCoverageIgnore
      */
     public function attributeLabels()
@@ -80,7 +83,7 @@ class CustomBehavior extends ActiveRecord
 
     /**
      * @codeCoverageIgnore
-     * @return \yii\db\ActiveQuery
+     * @return             \yii\db\ActiveQuery
      */
     public function getUser()
     {
@@ -89,26 +92,28 @@ class CustomBehavior extends ActiveRecord
 
     public function getGridView()
     {
-        $dataProvider = new \yii\data\ActiveDataProvider([
-        'query' => \common\models\CustomBehavior::find()->where(['user_id' => Yii::$app->user->id])->indexBy('id'),
-        'pagination' => [
-          'pageSize' => 20,
-        ],
-      ]);
+        $dataProvider = new \yii\data\ActiveDataProvider(
+            [
+            'query' => \common\models\CustomBehavior::find()->where(['user_id' => Yii::$app->user->id])->indexBy('id'),
+            'pagination' => [
+            'pageSize' => 20,
+            ],
+            ]
+        );
         $gridColumns = [[
-        'class'=>'kartik\grid\EditableColumn',
-        'attribute'=>'name',
+        'class' => 'kartik\grid\EditableColumn',
+        'attribute' => 'name',
         'editableOptions' => ['formOptions' => ['action' => ['/custom-behavior/update']]],
-      ], [
-        'class'=>'kartik\grid\EditableColumn',
-        'attribute'=>'category_id',
+        ], [
+        'class' => 'kartik\grid\EditableColumn',
+        'attribute' => 'category_id',
         'editableOptions' => [
           'formOptions' => ['action' => ['/custom-behavior/update']],
           'inputType' => 'dropDownList',
           'data' => \common\models\Category::getCategories(),
           'displayValueConfig' => \common\models\Category::getCategories(),
         ],
-      ], [
+        ], [
         'class' => 'kartik\grid\ActionColumn',
         'buttons' => [
           'view' => function ($url, $model) {
@@ -118,26 +123,32 @@ class CustomBehavior extends ActiveRecord
               return '';
           },
           'delete' => function ($url, $model) {
-              return yii\helpers\Html::a('<span class="glyphicon glyphicon-remove"></span>', "/custom-behavior/delete?id={$model->id}", [
-              'title' => 'Delete',
-              'data-pjax' => true,
-              'data-method' => 'post',
-              'data-confirm' => 'Are you sure to delete this item?'
-            ]);
+            return yii\helpers\Html::a(
+                '<span class="glyphicon glyphicon-remove"></span>',
+                "/custom-behavior/delete?id={$model->id}",
+                [
+                'title' => 'Delete',
+                'data-pjax' => true,
+                'data-method' => 'post',
+                'data-confirm' => 'Are you sure to delete this item?'
+                  ]
+            );
           }
-      ],
-      ]];
-        $gridView = \kartik\grid\GridView::widget([
-        'dataProvider'=>$dataProvider,
-        'columns'=>$gridColumns,
-        'panel' => false,
-        'pjax' => true,
-        'layout' => "\n{toolbar}\n{items}\n{summary}\n{pager}",
-        'toolbar' => [[
-          'content' => '<button type="button" class="btn btn-success btn-sm pull-right add-custom-behavior-btn" aria-label="Add Behavior" title="Add Behavior"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>',
-          'options' => ['class' => 'btn-group clearfix', 'style' => 'width: 100%;'],
-        ]]
-      ]);
+        ],
+        ]];
+        $gridView = \kartik\grid\GridView::widget(
+            [
+            'dataProvider' => $dataProvider,
+            'columns' => $gridColumns,
+            'panel' => false,
+            'pjax' => true,
+            'layout' => "\n{toolbar}\n{items}\n{summary}\n{pager}",
+            'toolbar' => [[
+            'content' => '<button type="button" class="btn btn-success btn-sm pull-right add-custom-behavior-btn" aria-label="Add Behavior" title="Add Behavior"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>',
+            'options' => ['class' => 'btn-group clearfix', 'style' => 'width: 100%;'],
+            ]]
+            ]
+        );
 
         return $gridView;
     }

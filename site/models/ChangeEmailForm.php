@@ -1,4 +1,5 @@
 <?php
+
 namespace site\models;
 
 use common\models\User;
@@ -31,18 +32,18 @@ class ChangeEmailForm extends Model
     public function rules()
     {
         return [
-      ['desired_email', 'required'],
-      ['desired_email', 'filter', 'filter' => 'trim'],
-      ['desired_email', 'filter', 'filter' => 'strtolower'],
-      ['desired_email', 'email'],
-    ];
+        ['desired_email', 'required'],
+        ['desired_email', 'filter', 'filter' => 'trim'],
+        ['desired_email', 'filter', 'filter' => 'strtolower'],
+        ['desired_email', 'email'],
+        ];
     }
 
     public function attributeLabels()
     {
         return [
-      'desired_email' => 'New Email',
-      ];
+        'desired_email' => 'New Email',
+        ];
     }
 
     /**
@@ -68,12 +69,12 @@ class ChangeEmailForm extends Model
     private function sendChangeEmailEmail()
     {
         Yii::$app->mailer->compose('changeEmail', [
-      'current_email' => $this->user->email,
-      'desired_email' => $this->desired_email,
-      'token'         => $this->user->change_email_token,
-    ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-    ->setSubject(Yii::$app->name . ' -- your requested email change')
-    ->setTo($this->desired_email)
-    ->send();
+        'current_email' => $this->user->email,
+        'desired_email' => $this->desired_email,
+        'token'         => $this->user->change_email_token,
+        ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+        ->setSubject(Yii::$app->name . ' -- your requested email change')
+        ->setTo($this->desired_email)
+        ->send();
     }
 }

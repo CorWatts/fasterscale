@@ -3,8 +3,8 @@
 namespace common\models;
 
 use Yii;
-use \common\interfaces\QuestionInterface;
-use \common\components\ActiveRecord;
+use common\interfaces\QuestionInterface;
+use common\components\ActiveRecord;
 
 /**
  * @property integer $id
@@ -25,13 +25,13 @@ class Question extends ActiveRecord implements QuestionInterface
     'a' => 1,
     'b' => 2,
     'c' => 3
-  ];
+    ];
 
     public static $QUESTIONS = [
     1 => "How does it affect me? How do I act and feel?",
     2 => "How does it affect the important people in my life?",
     3 => "Why do I do this? What is the benefit for me?"
-  ];
+    ];
 
     public $question_text;
 
@@ -51,13 +51,13 @@ class Question extends ActiveRecord implements QuestionInterface
     public function rules()
     {
         return [
-      [['user_id', 'category_id', 'user_behavior_id', 'question', 'answer', 'date'], 'required'],
-      [['user_id', 'behavior_id', 'category_id', 'user_behavior_id', 'question'], 'integer'],
-      ['behavior_id', 'in', 'range' => array_column(\common\models\Behavior::$behaviors, 'id')],
-      ['category_id', 'in', 'range' => array_column(\common\models\Category::$categories, 'id')],
-      ['answer', 'string'],
-      ['date', 'safe']
-    ];
+        [['user_id', 'category_id', 'user_behavior_id', 'question', 'answer', 'date'], 'required'],
+        [['user_id', 'behavior_id', 'category_id', 'user_behavior_id', 'question'], 'integer'],
+        ['behavior_id', 'in', 'range' => array_column(\common\models\Behavior::$behaviors, 'id')],
+        ['category_id', 'in', 'range' => array_column(\common\models\Category::$categories, 'id')],
+        ['answer', 'string'],
+        ['date', 'safe']
+        ];
     }
 
     /**
@@ -67,15 +67,15 @@ class Question extends ActiveRecord implements QuestionInterface
     public function attributeLabels()
     {
         return [
-      'id'             => 'ID',
-      'user_id'        => 'User ID',
-      'behavior_id'      => 'Behavior ID',
-      'category_id'      => 'Category ID',
-      'user_behavior_id' => 'User Behavior ID',
-      'question'       => 'Question',
-      'answer'         => 'Answer',
-      'date'           => 'Date',
-    ];
+        'id'             => 'ID',
+        'user_id'        => 'User ID',
+        'behavior_id'      => 'Behavior ID',
+        'category_id'      => 'Category ID',
+        'user_behavior_id' => 'User Behavior ID',
+        'question'       => 'Question',
+        'answer'         => 'Answer',
+        'date'           => 'Date',
+        ];
     }
 
     public function afterFind()
@@ -84,7 +84,7 @@ class Question extends ActiveRecord implements QuestionInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return             \yii\db\ActiveQuery
      * @codeCoverageIgnore
      */
     public function getUser()
@@ -93,7 +93,7 @@ class Question extends ActiveRecord implements QuestionInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return             \yii\db\ActiveQuery
      * @codeCoverageIgnore
      */
     public function getUserBehavior()
@@ -110,18 +110,18 @@ class Question extends ActiveRecord implements QuestionInterface
         list($start, $end) = $time->getUTCBookends($local_date);
 
         $questions = $this->find()
-      ->where(
-          "user_id=:user_id 
+            ->where(
+                "user_id=:user_id 
       AND date > :start_date 
       AND date < :end_date",
-          [
-      "user_id" => Yii::$app->user->id,
-      ':start_date' => $start,
-      ":end_date" => $end
-    ]
-      )
-    ->with('userBehavior')
-    ->all();
+                [
+                "user_id" => Yii::$app->user->id,
+                ':start_date' => $start,
+                ":end_date" => $end
+                ]
+            )
+            ->with('userBehavior')
+            ->all();
 
         return $this->parseQuestionData($questions);
     }
@@ -137,21 +137,21 @@ class Question extends ActiveRecord implements QuestionInterface
             $user_behavior_id = $question->user_behavior_id;
 
             $behavior_name = $question->behavior_id
-        // TODO: I think this is potentially a source of exceptions
-        // do we check if the behavior_id is an expected value on
-        // form submission?
-        ? \common\models\Behavior::getBehavior('id', $question->behavior_id)['name']
-        : $question->userBehavior->custom_behavior;
+            // TODO: I think this is potentially a source of exceptions
+            // do we check if the behavior_id is an expected value on
+            // form submission?
+            ? \common\models\Behavior::getBehavior('id', $question->behavior_id)['name']
+            : $question->userBehavior->custom_behavior;
 
             $question_answers[$user_behavior_id]['question'] = [
-        "user_behavior_id" => $user_behavior_id,
-        "behavior_name" => $behavior_name,
-      ];
+            "user_behavior_id" => $user_behavior_id,
+            "behavior_name" => $behavior_name,
+            ];
 
             $question_answers[$user_behavior_id]["answers"][] = [
-        "title" => $this::$QUESTIONS[$question['question']],
-        "answer" => $question['answer']
-      ];
+            "title" => $this::$QUESTIONS[$question['question']],
+            "answer" => $question['answer']
+            ];
         }
 
         return $question_answers;

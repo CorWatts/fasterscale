@@ -1,4 +1,5 @@
 <?php
+
 namespace site\models;
 
 use common\models\User;
@@ -31,16 +32,16 @@ class DeleteAccountForm extends Model
     public function rules()
     {
         return [
-      ['password', 'required'],
-      ['password', 'string', 'min' => 6],
-    ];
+        ['password', 'required'],
+        ['password', 'string', 'min' => 6],
+        ];
     }
 
     public function attributeLabels()
     {
         return [
-      'password' => 'Password'
-    ];
+        'password' => 'Password'
+        ];
     }
 
     /**

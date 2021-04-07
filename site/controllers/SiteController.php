@@ -19,7 +19,7 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-      'access' => [
+        'access' => [
         'class' => AccessControl::class,
         'rules' => [
           [
@@ -37,14 +37,14 @@ class SiteController extends Controller
             'roles' => ['@'],
           ],
         ],
-      ],
-      'verbs' => [
+        ],
+        'verbs' => [
         'class' => VerbFilter::class,
         'actions' => [
           'logout' => ['post'],
         ],
-      ],
-    ];
+        ],
+        ];
     }
 
     public function actionIndex()
@@ -55,17 +55,17 @@ class SiteController extends Controller
     public function actionBlog()
     {
         $time = Yii::$container->get(\common\interfaces\TimeInterface::class);
-        $key = "index_blog_".$time->getLocalDate('UTC');
+        $key = "index_blog_" . $time->getLocalDate('UTC');
         $posts = Yii::$app->cache->get($key);
         if ($posts === false) {
             $posts = \Yii::$app->getModule('blog')
                             ->fetch()
                             ->parse()
                             ->results;
-            Yii::$app->cache->set($key, $posts, 60*60*24);
+            Yii::$app->cache->set($key, $posts, 60 * 60 * 24);
         }
 
-        return $this->render('blog', ['posts'=>$posts]);
+        return $this->render('blog', ['posts' => $posts]);
     }
 
     public function actionLogin()
@@ -75,8 +75,8 @@ class SiteController extends Controller
             return $this->goBack();
         } else {
             return $this->render('login', [
-        'model' => $model,
-      ]);
+            'model' => $model,
+            ]);
         }
     }
 
@@ -98,8 +98,8 @@ class SiteController extends Controller
             return $this->refresh();
         } else {
             return $this->render('contact', [
-        'model' => $model,
-      ]);
+            'model' => $model,
+            ]);
         }
     }
 
@@ -128,8 +128,8 @@ class SiteController extends Controller
         }
 
         return $this->render('signup', [
-      'model' => $model,
-    ]);
+        'model' => $model,
+        ]);
     }
 
     public function actionRequestPasswordReset()
@@ -138,7 +138,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if (!$model->sendEmail()) {
                 $ip = Yii::$app->getRequest()->getUserIP() ?: "UNKNOWN";
-                Yii::warning("$ip has tried to reset the password for ".$model->email);
+                Yii::warning("$ip has tried to reset the password for " . $model->email);
             }
 
             Yii::$app->session->setFlash('success', 'If there is an account with the submitted email address you will receive further instructions in your email inbox.<br /><br />If the email does not arrive please check your spam folder.');
@@ -146,8 +146,8 @@ class SiteController extends Controller
         }
 
         return $this->render('requestPasswordResetToken', [
-      'model' => $model,
-    ]);
+        'model' => $model,
+        ]);
     }
 
     public function actionResetPassword($token)
@@ -158,16 +158,18 @@ class SiteController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
 
-        if ($model->load(Yii::$app->request->post())
-        && $model->validate()
-        && $model->resetPassword()) {
+        if (
+            $model->load(Yii::$app->request->post())
+            && $model->validate()
+            && $model->resetPassword()
+        ) {
             Yii::$app->session->setFlash('success', 'New password was saved.');
             return $this->goHome();
         }
 
         return $this->render('resetPassword', [
-      'model' => $model,
-    ]);
+        'model' => $model,
+        ]);
     }
 
     public function actionVerifyEmail($token)

@@ -1,14 +1,15 @@
 <?php
+
 $params = yii\helpers\ArrayHelper::merge(
-  require __DIR__ . '/params.php',
-  require __DIR__ . '/params-local.php'
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
 );
 
 return [
   'id' => 'faster-scale-app-common',
   'name' => "The Faster Scale App",
   'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-  'extensions' => require(__DIR__ . '/../../vendor/yiisoft/extensions.php'),
+  'extensions' => include __DIR__ . '/../../vendor/yiisoft/extensions.php',
   'container' => [
     'definitions' => [
       'common\interfaces\UserInterface' => \common\models\User::class,
@@ -18,11 +19,11 @@ return [
       'common\interfaces\CategoryInterface' => \common\models\Category::class,
       'common\interfaces\CustomBehaviorInterface' => \common\models\CustomBehavior::class,
       'common\interfaces\TimeInterface' => function () {
-          if (Yii::$app->user->getIsGuest()) {
-              return new \common\components\Time('UTC');
-          } else {
-              return new \common\components\Time(Yii::$app->user->identity->timezone);
-          }
+        if (Yii::$app->user->getIsGuest()) {
+            return new \common\components\Time('UTC');
+        } else {
+            return new \common\components\Time(Yii::$app->user->identity->timezone);
+        }
       },
     ],
   ],
@@ -36,7 +37,7 @@ return [
   ],
   'components' => [
     'cache' => [ // DummyCache never actually caches anything
-      'class'=> yii\caching\DummyCache::class,
+      'class' => yii\caching\DummyCache::class,
     ],
     'mailer' => [
       'class' => yii\swiftmailer\Mailer::class,

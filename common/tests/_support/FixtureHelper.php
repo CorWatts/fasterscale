@@ -15,7 +15,6 @@ use yii\test\InitDbFixture;
  */
 class FixtureHelper extends Module
 {
-
     /**
      * Redeclare visibility because codeception includes all public methods that do not start with "_"
      * and are not excluded by module settings, in actor class.
@@ -33,6 +32,7 @@ class FixtureHelper extends Module
     /**
      * Method called before any suite tests run. Loads User fixture login user
      * to use in acceptance and functional tests.
+     *
      * @param array $settings
      */
     public function _beforeSuite($settings = [])

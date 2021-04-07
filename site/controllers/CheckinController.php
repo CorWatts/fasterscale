@@ -21,7 +21,7 @@ class CheckinController extends Controller
     public function behaviors()
     {
         return [
-      'access' => [
+        'access' => [
         'class' => AccessControl::class,
         'only' => ['index', 'view', 'questions', 'report', 'history'],
         'rules' => [
@@ -31,8 +31,8 @@ class CheckinController extends Controller
             'roles' => ['@'],
           ],
         ],
-      ],
-    ];
+        ],
+        ];
     }
     public function actionIndex()
     {
@@ -52,11 +52,11 @@ class CheckinController extends Controller
         $behaviors  = Yii::$container->get(BehaviorInterface::class)::$behaviors;
         $custom = \common\models\CustomBehavior::find()->where(['user_id' => Yii::$app->user->id])->asArray()->all();
         return $this->render('index', [
-      'categories'    => Yii::$container->get(CategoryInterface::class)::$categories,
-      'model'         => $form,
-      'behaviorsList' => AH::index($behaviors, null, "category_id"),
-      'customList' => AH::index($custom, null, "category_id")
-    ]);
+        'categories'    => Yii::$container->get(CategoryInterface::class)::$categories,
+        'model'         => $form,
+        'behaviorsList' => AH::index($behaviors, null, "category_id"),
+        'customList' => AH::index($custom, null, "category_id")
+        ]);
     }
 
     public function actionQuestions()
@@ -89,9 +89,9 @@ class CheckinController extends Controller
         }
 
         return $this->render('questions', [
-      'model' => $form,
-      'behaviors' => $user_behaviors
-    ]);
+        'model' => $form,
+        'behaviors' => $user_behaviors
+        ]);
     }
 
     public function actionView(string $date = null)
@@ -116,15 +116,15 @@ class CheckinController extends Controller
         $answer_pie = $user_behavior->getBehaviorsByCategory($raw_pie_data);
 
         return $this->render('view', [
-      'model'              => $form,
-      'actual_date'        => $date,
-      'categories'         => $categories,
-      'behaviorsList'      => $form_behaviors,
-      'past_checkin_dates' => $user_behavior->getPastCheckinDates(),
-      'answer_pie'         => $answer_pie,
-      'questions'          => $question->getByUser(Yii::$app->user->id, $date),
-      'isToday'            => $time->getLocalDate() === $date,
-    ]);
+        'model'              => $form,
+        'actual_date'        => $date,
+        'categories'         => $categories,
+        'behaviorsList'      => $form_behaviors,
+        'past_checkin_dates' => $user_behavior->getPastCheckinDates(),
+        'answer_pie'         => $answer_pie,
+        'questions'          => $question->getByUser(Yii::$app->user->id, $date),
+        'isToday'            => $time->getLocalDate() === $date,
+        ]);
     }
 
     public function actionReport()
@@ -136,23 +136,23 @@ class CheckinController extends Controller
         $answer_pie    = $user_behavior->getBehaviorsByCategory($raw_pie_data);
 
         $pie_data   = [
-      "labels"   => array_column($answer_pie, "name"),
-      "datasets" => [[
+        "labels"   => array_column($answer_pie, "name"),
+        "datasets" => [[
           "data"                 => array_map('intval', array_column($answer_pie, "count")),
           "backgroundColor"      => array_column($answer_pie, "color"),
           "hoverBackgroundColor" => array_column($answer_pie, "highlight"),
-      ]]
-    ];
+        ]]
+        ];
 
         /* Bar Chart data */
         ['labels' => $labels, 'datasets' => $datasets] = $this->history(30);
 
         return $this->render('report', [
-      'top_behaviors' => $user_rows,
-      'pie_data' => $pie_data,
-      'bar_dates' => $labels,
-      'bar_datasets' => $datasets,
-    ]);
+        'top_behaviors' => $user_rows,
+        'pie_data' => $pie_data,
+        'bar_dates' => $labels,
+        'bar_datasets' => $datasets,
+        ]);
     }
 
     public function actionHistory($period)
@@ -173,7 +173,7 @@ class CheckinController extends Controller
 
         $accum = [];
         foreach ($checkins as $date => $cats) {
-            for ($i = 1; $i <= 7; $i ++) {
+            for ($i = 1; $i <= 7; $i++) {
                 $accum[$i][] = array_key_exists($i, $cats) ? $cats[$i]['count'] : [];
             }
         }
@@ -181,14 +181,14 @@ class CheckinController extends Controller
         $bar_datasets = [];
         foreach ($accum as $idx => $data) {
             $bar_datasets[] = [
-        'label' => ($category::getCategories())[$idx],
-        'backgroundColor' => $category::$colors[$idx]['color'],
-        'data' => $data
-      ];
+            'label' => ($category::getCategories())[$idx],
+            'backgroundColor' => $category::$colors[$idx]['color'],
+            'data' => $data
+            ];
         }
         return [
-      'labels' => array_keys($checkins),
-      'datasets' => $bar_datasets,
-    ];
+        'labels' => array_keys($checkins),
+        'datasets' => $bar_datasets,
+        ];
     }
 }

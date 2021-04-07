@@ -2,7 +2,7 @@
 
 namespace tests\codeception\site\_pages;
 
-use \yii\codeception\BasePage;
+use yii\codeception\BasePage;
 
 /**
  * Represents signup page

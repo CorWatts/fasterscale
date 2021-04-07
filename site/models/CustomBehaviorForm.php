@@ -1,4 +1,5 @@
 <?php
+
 namespace site\models;
 
 use common\models\User;
@@ -35,12 +36,12 @@ class CustomBehaviorForm extends Model
     public function rules()
     {
         return [
-      [['name', 'category_id'], 'required'],
-      ['name', 'filter', 'filter' => 'trim'],
-      ['category_id', 'integer'],
-      ['category_id', 'in', 'range'=>array_keys($this->categories)],
+        [['name', 'category_id'], 'required'],
+        ['name', 'filter', 'filter' => 'trim'],
+        ['category_id', 'integer'],
+        ['category_id', 'in', 'range' => array_keys($this->categories)],
 
-    ];
+        ];
     }
 
     /**
@@ -49,9 +50,9 @@ class CustomBehaviorForm extends Model
     public function attributeLabels()
     {
         return [
-      'name'        => 'Behavior Name',
-      'category_id' => 'Behavior Category',
-      ];
+        'name'        => 'Behavior Name',
+        'category_id' => 'Behavior Category',
+        ];
     }
 
 

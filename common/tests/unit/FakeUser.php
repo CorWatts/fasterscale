@@ -1,4 +1,5 @@
 <?php
+
 namespace common\tests\unit;
 
 use yii;

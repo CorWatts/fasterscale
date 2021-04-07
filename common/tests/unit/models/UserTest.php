@@ -83,49 +83,54 @@ class UserTest extends \Codeception\Test\Unit
         'name' => 'Ticked Off',
       ],
     ]
-  ];
+    ];
 
     public function setUp(): void
     {
-        $this->container = new \yii\di\Container;
+        $this->container = new \yii\di\Container();
         $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
         $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
-        $this->container->set('common\interfaces\TimeInterface', function () {
-            return new \common\components\Time('America/Los_Angeles');
-        });
+        $this->container->set(
+            'common\interfaces\TimeInterface',
+            function () {
+                return new \common\components\Time('America/Los_Angeles');
+            }
+        );
 
         $user_behavior = $this->container->get('common\interfaces\UserBehaviorInterface');
         $this->time    = $this->container->get('common\interfaces\TimeInterface');
 
         $this->question = $this->getMockBuilder('\common\models\Question')
-      ->setMethods(['save', 'attributes'])
-      ->getMock();
+            ->setMethods(['save', 'attributes'])
+            ->getMock();
 
         $this->user = $this->getMockBuilder(User::class)
-      ->setConstructorArgs([$user_behavior, $this->time])
-      ->setMethods(['save', 'attributes'])
-      ->getMock();
+            ->setConstructorArgs([$user_behavior, $this->time])
+            ->setMethods(['save', 'attributes'])
+            ->getMock();
         $this->user->method('save')->willReturn(true);
-        $this->user->method('attributes')->willReturn([
-      'id',
-      'password_hash',
-      'password_reset_token',
-      'verify_email_token',
-      'change_email_token',
-      'email',
-      'auth_key',
-      'role',
-      'status',
-      'created_at',
-      'updated_at',
-      'password',
-      'timezone',
-      'send_email',
-      'email_category',
-      'partner_email1',
-      'partner_email2',
-      'partner_email3',
-    ]);
+        $this->user->method('attributes')->willReturn(
+            [
+            'id',
+            'password_hash',
+            'password_reset_token',
+            'verify_email_token',
+            'change_email_token',
+            'email',
+            'auth_key',
+            'role',
+            'status',
+            'created_at',
+            'updated_at',
+            'password',
+            'timezone',
+            'send_email',
+            'email_category',
+            'partner_email1',
+            'partner_email2',
+            'partner_email3',
+            ]
+        );
 
         parent::setUp();
     }
@@ -138,17 +143,20 @@ class UserTest extends \Codeception\Test\Unit
 
     public function testIsTokenCurrent()
     {
-        $this->specify('isTokenCurrent should function correctly', function () {
-            $good_token = \Yii::$app
-                      ->getSecurity()
-                      ->generateRandomString() . '_' . time();
-            expect('isTokenCurrent should return true if the token is still current/alive', $this->assertTrue($this->user->isTokenCurrent($good_token)));
-            $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
-            $bad_token = \Yii::$app
-                      ->getSecurity()
-                      ->generateRandomString() . '_' . (time() - $expire - 1); // subtract the expiration time and a little more from the current time
-            expect('isTokenCurrent should return false if the token is expired', $this->assertFalse($this->user->isTokenCurrent($bad_token)));
-        });
+        $this->specify(
+            'isTokenCurrent should function correctly',
+            function () {
+                $good_token = \Yii::$app
+                    ->getSecurity()
+                    ->generateRandomString() . '_' . time();
+                expect('isTokenCurrent should return true if the token is still current/alive', $this->assertTrue($this->user->isTokenCurrent($good_token)));
+                $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
+                $bad_token = \Yii::$app
+                    ->getSecurity()
+                    ->generateRandomString() . '_' . (time() - $expire - 1); // subtract the expiration time and a little more from the current time
+                expect('isTokenCurrent should return false if the token is expired', $this->assertFalse($this->user->isTokenCurrent($bad_token)));
+            }
+        );
     }
 
     public function testIsTokenConfirmed()
@@ -176,7 +184,7 @@ class UserTest extends \Codeception\Test\Unit
     {
         $this->user->verify_email_token = 'hello_world';
         $this->user->confirmVerifyEmailToken();
-        expect('confirmVerifyEmailToken should append User::CONFIRMED_STRING to the end of the verify_email_token property', $this->assertEquals($this->user->verify_email_token, 'hello_world'.$this->user::CONFIRMED_STRING));
+        expect('confirmVerifyEmailToken should append User::CONFIRMED_STRING to the end of the verify_email_token property', $this->assertEquals($this->user->verify_email_token, 'hello_world' . $this->user::CONFIRMED_STRING));
     }
 
     public function testIsVerified()
@@ -211,52 +219,64 @@ class UserTest extends \Codeception\Test\Unit
     public function testCleanExportRow()
     {
         // need this for the convertUTCToLocal call
-        Yii::configure(Yii::$app, [
-      'components' => [
-        'user' => [
-          'class' => 'yii\web\User',
-          'identityClass' => 'common\tests\unit\FakeUser',
-        ],
-      ],
-    ]);
+        Yii::configure(
+            Yii::$app,
+            [
+            'components' => [
+            'user' => [
+            'class' => 'yii\web\User',
+            'identityClass' => 'common\tests\unit\FakeUser',
+            ],
+            ],
+            ]
+        );
         $identity = new \common\tests\unit\FakeUser();
         $identity->timezone = "America/Los_Angeles";
         // logs in the user
         Yii::$app->user->setIdentity($identity);
 
-        expect('cleanExportRow should clean and mutate the queried data to be suitable for downloading', $this->assertEquals([
-      [
-        'date' => '2017-07-29 03:40:29',
-        'behavior' => 'repetitive, negative thoughts',
-        'category' => 'Speeding Up',
-        'question1' => 'q1',
-        'question2' => 'q2',
-        'question3' => 'q3',
-      ], [
-        'date' => '2017-07-29 03:40:29',
-        'behavior' => 'tired',
-        'category' => 'Exhausted',
-        'question1' => 'q1',
-        'question2' => 'q2',
-        'question3' => 'q3',
-      ], [
-        'date' => '2017-07-29 03:40:29',
-        'behavior' => 'out of control',
-        'category' => 'Relapse/Moral Failure',
-        'question1' => 'q1',
-        'question2' => 'q2',
-        'question3' => 'q3',
-      ], [
-        'date' => '2017-07-29 03:40:29',
-        'behavior' => 'obsessive (stuck) thoughts',
-        'category' => 'Ticked Off',
-        'question1' => 'q1',
-        'question2' => 'q2',
-        'question3' => 'q3',
-      ]
-    ], array_map(function ($row) {
-        return $this->user->cleanExportRow($row);
-    }, $this->exportData)));
+        expect(
+            'cleanExportRow should clean and mutate the queried data to be suitable for downloading',
+            $this->assertEquals(
+                [
+                [
+                'date' => '2017-07-29 03:40:29',
+                'behavior' => 'repetitive, negative thoughts',
+                'category' => 'Speeding Up',
+                'question1' => 'q1',
+                'question2' => 'q2',
+                'question3' => 'q3',
+                ], [
+                'date' => '2017-07-29 03:40:29',
+                'behavior' => 'tired',
+                'category' => 'Exhausted',
+                'question1' => 'q1',
+                'question2' => 'q2',
+                'question3' => 'q3',
+                ], [
+                'date' => '2017-07-29 03:40:29',
+                'behavior' => 'out of control',
+                'category' => 'Relapse/Moral Failure',
+                'question1' => 'q1',
+                'question2' => 'q2',
+                'question3' => 'q3',
+                ], [
+                'date' => '2017-07-29 03:40:29',
+                'behavior' => 'obsessive (stuck) thoughts',
+                'category' => 'Ticked Off',
+                'question1' => 'q1',
+                'question2' => 'q2',
+                'question3' => 'q3',
+                ]
+                ],
+                array_map(
+                    function ($row) {
+                        return $this->user->cleanExportRow($row);
+                    },
+                    $this->exportData
+                )
+            )
+        );
     }
 
     public function testGenerateChangeEmailToken()
@@ -276,21 +296,23 @@ class UserTest extends \Codeception\Test\Unit
     public function testSendEmailReport()
     {
         $user_behavior = $this->getMockBuilder(\common\models\UserBehavior::class)
-      ->disableOriginalConstructor()
-      ->setMethods(['save', 'attributes', 'getCheckinBreakdown'])
-      ->getMock();
-        $expected = require(__DIR__.'/../data/expected_getCheckinBreakdown.php');
+            ->disableOriginalConstructor()
+            ->setMethods(['save', 'attributes', 'getCheckinBreakdown'])
+            ->getMock();
+        $expected = include __DIR__ . '/../data/expected_getCheckinBreakdown.php';
         $user_behavior->method('getCheckinBreakdown')->willReturn($expected);
 
         $user = $this->getMockBuilder(User::class)
-      ->setConstructorArgs([$user_behavior, $this->time])
-      ->setMethods(['save', 'attributes'])
-      ->getMock();
+            ->setConstructorArgs([$user_behavior, $this->time])
+            ->setMethods(['save', 'attributes'])
+            ->getMock();
         $user->method('save')->willReturn(true);
-        $user->method('attributes')->willReturn([
-      'send_email',
-      'email_category',
-    ]);
+        $user->method('attributes')->willReturn(
+            [
+            'send_email',
+            'email_category',
+            ]
+        );
 
         $user->send_email = false;
         $user->email_category = 6;

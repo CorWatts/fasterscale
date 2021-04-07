@@ -14,7 +14,6 @@ class m210316_010628_add_indexes_to_foreign_key_refs_for_faster_cleanup extends 
     {
         $this->createIndex('user_behavior_link_user_id', '{{%user_behavior_link}}', 'user_id');
         $this->createIndex('question_user_behavior_id', '{{%question}}', 'user_behavior_id');
-
     }
 
     /**

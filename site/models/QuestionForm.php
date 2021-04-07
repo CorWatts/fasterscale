@@ -1,11 +1,12 @@
 <?php
+
 namespace site\models;
 
 use Yii;
 use yii\base\Model;
 use yii\db\Expression;
-use \common\interfaces\UserInterface;
-use \common\interfaces\QuestionInterface;
+use common\interfaces\UserInterface;
+use common\interfaces\QuestionInterface;
 
 /**
  * Question form
@@ -53,8 +54,7 @@ class QuestionForm extends Model
     public function __construct(
         QuestionInterface $question,
         $config = []
-    )
-    {
+    ) {
         $this->question    = $question;
         parent::__construct($config);
     }
@@ -65,35 +65,35 @@ class QuestionForm extends Model
     public function rules()
     {
         return [
-      [['user_behavior_id1', 'user_behavior_id2', 'user_behavior_id3', 'user_behavior_id4', 'user_behavior_id5', 'user_behavior_id6', 'user_behavior_id7'], 'integer'],
+        [['user_behavior_id1', 'user_behavior_id2', 'user_behavior_id3', 'user_behavior_id4', 'user_behavior_id5', 'user_behavior_id6', 'user_behavior_id7'], 'integer'],
 
-      [['user_behavior_id1', 'user_behavior_id2', 'user_behavior_id3', 'user_behavior_id4', 'user_behavior_id5', 'user_behavior_id6', 'user_behavior_id7'],
+        [['user_behavior_id1', 'user_behavior_id2', 'user_behavior_id3', 'user_behavior_id4', 'user_behavior_id5', 'user_behavior_id6', 'user_behavior_id7'],
         'required',
         'when' => $this->getBhvrValidator(),
         'whenClient' => "function(attribute, value) { return false; }", // lame, but acceptable
         "message" => "You must select a behavior your responses apply to."],
 
-      [['answer_1a','answer_1b','answer_1c','answer_2a','answer_2b','answer_2c','answer_3a','answer_3b','answer_3c','answer_4a','answer_4b','answer_4c','answer_5a', 'answer_5b','answer_5c','answer_6a', 'answer_6b','answer_6c','answer_7a','answer_7b','answer_7c'], 'safe']
-    ];
+        [['answer_1a','answer_1b','answer_1c','answer_2a','answer_2b','answer_2c','answer_3a','answer_3b','answer_3c','answer_4a','answer_4b','answer_4c','answer_5a', 'answer_5b','answer_5c','answer_6a', 'answer_6b','answer_6c','answer_7a','answer_7b','answer_7c'], 'safe']
+        ];
     }
 
     public function attributeLabels()
     {
         return [
-      'user_behavior_id1' => 'Restoration',
-      'user_behavior_id2' => 'Forgetting Priorities',
-      'user_behavior_id3' => 'Anxiety',
-      'user_behavior_id4' => 'Speeding Up',
-      'user_behavior_id5' => 'Ticked Off',
-      'user_behavior_id6' => 'Exhausted',
-      'user_behavior_id7' => 'Relapsed/Moral Failure'
-    ];
+        'user_behavior_id1' => 'Restoration',
+        'user_behavior_id2' => 'Forgetting Priorities',
+        'user_behavior_id3' => 'Anxiety',
+        'user_behavior_id4' => 'Speeding Up',
+        'user_behavior_id5' => 'Ticked Off',
+        'user_behavior_id6' => 'Exhausted',
+        'user_behavior_id7' => 'Relapsed/Moral Failure'
+        ];
     }
 
     public function getBhvrValidator()
     {
         return function ($model, $attr) {
-            $attrNum = $attr[strlen($attr)-1];
+            $attrNum = $attr[strlen($attr) - 1];
             foreach (['a', 'b', 'c'] as $l) {
                 $attr = "answer_{$attrNum}{$l}";
                 if ($model->$attr) {
@@ -114,10 +114,10 @@ class QuestionForm extends Model
       AND date > :start_date 
       AND date < :end_date",
             [
-        ":user_id" => $user_id,
-        ':start_date' => $start,
-        ":end_date" => $end
-      ]
+            ":user_id" => $user_id,
+            ':start_date' => $start,
+            ":end_date" => $end
+            ]
         );
     }
 
@@ -130,7 +130,7 @@ class QuestionForm extends Model
         $answers = array_map(function ($n) {
             return $this->$n;
         }, $prop_names);
- 
+
         return array_combine($prop_letters, $answers);
     }
 

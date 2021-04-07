@@ -1,5 +1,6 @@
 <?php
-use \yii\helpers\Html;
+
+use yii\helpers\Html;
 
 foreach ($posts as $file) {
     $yaml       = $file['yaml'];
@@ -15,5 +16,5 @@ foreach ($posts as $file) {
   </div>
   <div class="post-body"><?=$content?></div>
 </div>
-<?php
+    <?php
 }
