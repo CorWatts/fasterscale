@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Configuration file for the "yii asset" console command.
  */

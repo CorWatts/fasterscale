@@ -11,9 +11,11 @@ class Controller extends \yii\web\Controller
      */
     public function beforeAction($action)
     {
-        if ($this->enableCsrfValidation
-      && Yii::$app->getErrorHandler()->exception === null
-      && !Yii::$app->getRequest()->validateCsrfToken()) {
+        if (
+            $this->enableCsrfValidation
+            && Yii::$app->getErrorHandler()->exception === null
+            && !Yii::$app->getRequest()->validateCsrfToken()
+        ) {
             Yii::$app->session->setFlash('error', 'Your security token has expired. Please retry your submission.');
             $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
             return false;
@@ -28,12 +30,12 @@ class Controller extends \yii\web\Controller
     public function actions()
     {
         return [
-      'error' => [
+        'error' => [
          'class' => 'yii\web\ErrorAction',
-       ],
-      'captcha' => [
+        ],
+        'captcha' => [
         'class' => 'yii\captcha\CaptchaAction',
-      ],
-    ];
+        ],
+        ];
     }
 }

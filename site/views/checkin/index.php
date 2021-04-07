@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Button;
@@ -23,7 +24,7 @@ function checkboxItemTemplate($index, $label, $name, $checked, $value)
         [
           'class' => $checked ? 'btn btn-default active' : 'btn btn-default',
         ],
-      ]
+        ]
     );
 }
 ?>

@@ -27,14 +27,14 @@ $this->registerJsFile('/js/checkin/report.js', ['depends' => [\site\assets\AppAs
                   <th>Category</th>
               </tr>
   <?php foreach ($top_behaviors as $key => $row) {
-    $num = $key + 1;
-    print "<tr>".
-    "<td>{$row['count']}</td>".
-    "<td>{$row['behavior']['name']}</td>".
-    "<td>{$row['category']['name']}</td>".
-    "</tr>";
-}
-  ?>
+        $num = $key + 1;
+        print "<tr>" .
+        "<td>{$row['count']}</td>" .
+        "<td>{$row['behavior']['name']}</td>" .
+        "<td>{$row['category']['name']}</td>" .
+        "</tr>";
+  }
+    ?>
           </table>
       </div>
   </div>

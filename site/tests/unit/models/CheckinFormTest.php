@@ -116,7 +116,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
 
     protected function setUp(): void
     {
-        $this->container = new \yii\di\Container;
+        $this->container = new \yii\di\Container();
         $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
         $this->container->set('common\interfaces\TimeInterface', function () {
             return new \common\components\Time('America/Los_Angeles');
@@ -136,7 +136,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
             'behaviors5' => 'Ticked Off',
             'behaviors6' => 'Exhausted',
             'behaviors7' => 'Relapsed/Moral Failure'
-          ], $model->attributeLabels()));
+            ], $model->attributeLabels()));
         });
     }
 
@@ -232,7 +232,7 @@ class CheckinFormTest extends \Codeception\Test\Unit
           'name' => 'some kind of really bad making eye contact',
           'category_id' => 7
         ]
-      ];
+        ];
         $expected_behaviors = $base_behaviors;
         $expected_behaviors[7] += $other_behaviors;
 

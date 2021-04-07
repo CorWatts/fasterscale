@@ -1,9 +1,10 @@
 <?php
+
 namespace site\models;
 
 use yii\base\Model;
 use Yii;
-use \common\interfaces\UserInterface;
+use common\interfaces\UserInterface;
 
 /**
  * Signup form
@@ -37,26 +38,26 @@ class SignupForm extends Model
     {
         return [
       //['email_category', 'filter', 'filter' => 'intval', 'skipOnEmpty' => true],
-      ['email', 'filter', 'filter' => 'trim'],
-      ['email', 'filter', 'filter' => 'strtolower'],
-      ['email', 'required'],
-      ['email', 'email'],
+        ['email', 'filter', 'filter' => 'trim'],
+        ['email', 'filter', 'filter' => 'strtolower'],
+        ['email', 'required'],
+        ['email', 'email'],
 
-      ['password', 'required'],
-      ['password', 'string', 'min' => 8],
+        ['password', 'required'],
+        ['password', 'string', 'min' => 8],
 
-      ['timezone', 'required'],
-      ['timezone', 'string', 'min' => 2, 'max' => 255],
-      ['timezone', 'in', 'range'   => \DateTimeZone::listIdentifiers()],
+        ['timezone', 'required'],
+        ['timezone', 'string', 'min' => 2, 'max' => 255],
+        ['timezone', 'in', 'range'   => \DateTimeZone::listIdentifiers()],
 
       // captcha needs to be entered correctly
-      ['captcha', 'captcha', 'caseSensitive' => false, 'skipOnEmpty' => !!YII_ENV_TEST],
+        ['captcha', 'captcha', 'caseSensitive' => false, 'skipOnEmpty' => !!YII_ENV_TEST],
 
-      ['send_email', 'boolean'],
-      ['email_category', 'integer'],
-      ['email_category', 'in', 'range'=>array_keys($this->categories)],
-      [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
-      [
+        ['send_email', 'boolean'],
+        ['email_category', 'integer'],
+        ['email_category', 'in', 'range' => array_keys($this->categories)],
+        [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
+        [
         ['partner_email1', 'email_category'],
         'required',
         'when' => function ($model) {
@@ -66,8 +67,8 @@ class SignupForm extends Model
         "whenClient" => 'function(attribute, value) {
           return $("#signupform-send_email").is("checked");
         }'
-      ]
-    ];
+        ]
+        ];
     }
 
     /**
@@ -76,13 +77,13 @@ class SignupForm extends Model
     public function attributeLabels()
     {
         return [
-      'partner_email1' => "Partner Email #1",
-      'partner_email2' => "Partner Email #2",
-      'partner_email3' => "Partner Email #3",
+        'partner_email1' => "Partner Email #1",
+        'partner_email2' => "Partner Email #2",
+        'partner_email3' => "Partner Email #3",
       //'send_email' => 'Send an email when I complete a check-in'
-      'send_email'     => 'Automatically send an email when I select behaviors at or above a specific category',
-      'email_category' => 'The email threshold category is',
-    ];
+        'send_email'     => 'Automatically send an email when I select behaviors at or above a specific category',
+        'email_category' => 'The email threshold category is',
+        ];
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 
 /**
@@ -8,6 +9,6 @@ use yii\helpers\Html;
 
 ?>
 
-<p>Hello <?= Html::encode($email) ?>,</p>
+<p>Hello <?php echo Html::encode($email) ?>,</p>
 
-<p>This is a notification that <?= Html::encode($user->email) ?> has deleted their account. Thank you for using the Faster Scale App.</p>
+<p>This is a notification that <?php echo Html::encode($user->email) ?> has deleted their account. Thank you for using the Faster Scale App.</p>

@@ -4,7 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper as AH;
-use \common\interfaces\BehaviorInterface;
+use common\interfaces\BehaviorInterface;
 
 /**
  * @property integer $id
@@ -144,7 +144,7 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
     ['id' => 130, 'name' => 'condemnation', 'category_id' => 7],
     ['id' => 131, 'name' => 'guilt', 'category_id' => 7],
     ['id' => 132, 'name' => 'aloneness', 'category_id' => 7],
-  ];
+    ];
 
     /**
      * @inheritdoc
@@ -153,10 +153,10 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
     public function rules()
     {
         return [
-      [['name', 'category_id'], 'required'],
-      [['name'], 'string'],
-      [['category_id'], 'integer']
-    ];
+        [['name', 'category_id'], 'required'],
+        [['name'], 'string'],
+        [['category_id'], 'integer']
+        ];
     }
 
     /**
@@ -166,10 +166,10 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
     public function attributeLabels()
     {
         return [
-      'id'          => 'ID',
-      'name'        => 'Name',
-      'category_id' => 'Category ID',
-    ];
+        'id'          => 'ID',
+        'name'        => 'Name',
+        'category_id' => 'Category ID',
+        ];
     }
 
     /**
@@ -185,14 +185,13 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
         $cats = AH::index(\common\models\Category::$categories, "id");
         foreach ($cats as $id => &$cat) {
             $cat['behavior_count'] = count($bhvrs_by_cat[$id]); // add count of behaviors
-      $cat['category_id'] = $cat['id']; // rename id to category_id
-      unset($cat['id']);
+            $cat['category_id'] = $cat['id']; // rename id to category_id
+            unset($cat['id']);
         }
         return $cats;
     }
 
     /**
-     *
     /**
      * Given a $key => $value pair, returns the matching behavior.
      * Example:
@@ -200,15 +199,20 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
      * Should return:
      *     ['id' => 1,   'name' => 'no current secrets', 'category_id' => 1]
      *
-     * @param string $key the name of the attribute to filter on
-     * @param string $val the value of the attribute to filter on
+     * @param  string $key the name of the attribute to filter on
+     * @param  string $val the value of the attribute to filter on
      * @return a single behavior
      */
     public static function getBehavior($key, $val)
     {
-        $ret = array_values(array_filter(self::$behaviors, function ($bvr) use ($key, $val) {
-            return $bvr[$key] === $val;
-        }));
+        $ret = array_values(
+            array_filter(
+                self::$behaviors,
+                function ($bvr) use ($key, $val) {
+                    return $bvr[$key] === $val;
+                }
+            )
+        );
         return $ret ? $ret[0] : null;
     }
 }

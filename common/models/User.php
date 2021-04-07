@@ -1,14 +1,15 @@
 <?php
+
 namespace common\models;
 
 use yii;
 use yii\base\NotSupportedException;
 use yii\db\Query;
 use yii\web\IdentityInterface;
-use \common\components\ActiveRecord;
-use \common\interfaces\UserInterface;
-use \common\interfaces\UserBehaviorInterface;
-use \common\interfaces\TimeInterface;
+use common\components\ActiveRecord;
+use common\interfaces\UserInterface;
+use common\interfaces\UserBehaviorInterface;
+use common\interfaces\TimeInterface;
 
 /**
  * User model
@@ -53,7 +54,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     "question1" => 3,
     "question2" => 4,
     "question3" => 5,
-  ];
+    ];
 
     public function __construct(UserBehaviorInterface $user_behavior, TimeInterface $time, $config = [])
     {
@@ -86,14 +87,14 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     public function behaviors()
     {
         return [
-      'timestamp' => [
+        'timestamp' => [
         'class' => yii\behaviors\TimestampBehavior::class,
         'attributes' => [
           ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
           ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
         ],
-      ],
-    ];
+        ],
+        ];
     }
 
     /**
@@ -102,21 +103,21 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     public function rules()
     {
         return [
-      ['status', 'default', 'value' => self::STATUS_ACTIVE],
-      ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+        ['status', 'default', 'value' => self::STATUS_ACTIVE],
+        ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 
-      ['role', 'default', 'value' => self::ROLE_USER],
-      ['role', 'in', 'range' => [self::ROLE_USER]],
-    ];
+        ['role', 'default', 'value' => self::ROLE_USER],
+        ['role', 'in', 'range' => [self::ROLE_USER]],
+        ];
     }
 
     public function getPartnerEmails()
     {
         return [
-      $this->partner_email1,
-      $this->partner_email2,
-      $this->partner_email3,
-    ];
+        $this->partner_email1,
+        $this->partner_email2,
+        $this->partner_email3,
+        ];
     }
 
     /**
@@ -140,7 +141,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     /**
      * Finds user by email
      *
-     * @param  string      $email
+     * @param  string $email
      * @return static|null
      */
     public function findByEmail($email)
@@ -151,7 +152,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     /**
      * Finds user by password reset token
      *
-     * @param  string      $token password reset token
+     * @param  string $token password reset token
      * @return static|null
      */
     public function findByPasswordResetToken($token)
@@ -160,16 +161,18 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
             return null;
         }
 
-        return $this->find()->where([
-      'password_reset_token' => $token,
-      'status' => self::STATUS_ACTIVE,
-    ])->one();
+        return $this->find()->where(
+            [
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+            ]
+        )->one();
     }
 
     /**
      * Finds user by email verification token
      *
-     * @param  string      $token email verification token
+     * @param  string $token email verification token
      * @return static|null
      */
     public function findByVerifyEmailToken($token)
@@ -178,14 +181,18 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
             return null;
         }
 
-        $user = $this->find()->where([
-      'verify_email_token' => [$token, $token . self::CONFIRMED_STRING],
-      'status' => self::STATUS_ACTIVE,
-    ])->one();
+        $user = $this->find()->where(
+            [
+            'verify_email_token' => [$token, $token . self::CONFIRMED_STRING],
+            'status' => self::STATUS_ACTIVE,
+            ]
+        )->one();
 
         if ($user) {
-            if (!$this->isTokenConfirmed($token) &&
-         !$this->isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
+            if (
+                !$this->isTokenConfirmed($token)
+                && !$this->isTokenCurrent($token, 'user.verifyAccountTokenExpire')
+            ) {
                 return null;
             }
         }
@@ -196,15 +203,17 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     /**
      * Finds user by email change token
      *
-     * @param  string      $token email change token
+     * @param  string $token email change token
      * @return static|null
      */
     public function findByChangeEmailToken($token)
     {
-        $user = static::find()->where([
-      'change_email_token' => $token,
-      'status' => self::STATUS_ACTIVE,
-    ])->one();
+        $user = static::find()->where(
+            [
+            'change_email_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+            ]
+        )->one();
 
         if ($user) {
             if (!$user->isTokenCurrent($token, 'user.verifyAccountTokenExpire')) {
@@ -218,11 +227,11 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     /**
      * Finds out if a token is current or expired
      *
-     * @param  string      $token verification token
-     * @param  string      $paramPath Yii app param path
+     * @param  string $token     verification token
+     * @param  string $paramPath Yii app param path
      * @return boolean
      */
-    public function isTokenCurrent($token, String $paramPath = 'user.passwordResetTokenExpire')
+    public function isTokenCurrent($token, string $paramPath = 'user.passwordResetTokenExpire')
     {
         $expire = \Yii::$app->params[$paramPath];
         $parts = explode('_', $token);
@@ -240,7 +249,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
      * @param string    $token verification token (the haystack)
      * @param string    $match the needle to search for
      */
-    public function isTokenConfirmed($token = null, String $match = self::CONFIRMED_STRING)
+    public function isTokenConfirmed($token = null, string $match = self::CONFIRMED_STRING)
     {
         if (is_null($token)) {
             $token = $this->verify_email_token;
@@ -293,14 +302,14 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     /**
      * Validates password
      *
-     * @param  string  $password password to validate
+     * @param  string $password password to validate
      * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password)
     {
         return Yii::$app
-      ->getSecurity()
-      ->validatePassword($password, $this->password_hash);
+            ->getSecurity()
+            ->validatePassword($password, $this->password_hash);
     }
 
     /**
@@ -311,8 +320,8 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     public function setPassword($password)
     {
         $this->password_hash = Yii::$app
-      ->getSecurity()
-      ->generatePasswordHash($password);
+            ->getSecurity()
+            ->generatePasswordHash($password);
     }
 
     /**
@@ -361,8 +370,8 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     public function generateAuthKey()
     {
         $this->auth_key = Yii::$app
-      ->getSecurity()
-      ->generateRandomString();
+            ->getSecurity()
+            ->generateRandomString();
     }
 
     /**
@@ -403,18 +412,18 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
         $checkins_last_month = $user_behavior->getCheckInBreakdown();
 
         // we should only proceed with sending the email if the user
-    // scored above their set email threshold (User::email_category)
-    $this_checkin     = $checkins_last_month[$date]; // gets the check-in
-    if (!$this_checkin) {
-        return false;
-    }                // sanity check
-    $highest_cat_data = end($this_checkin);          // gets the data for the highest category from the check-in
-    if (!$highest_cat_data) {
-        return false;
-    }             // another sanity check
-    $highest_cat_idx  = key($this_checkin);          // gets the key of the highest category
+        // scored above their set email threshold (User::email_category)
+        $this_checkin     = $checkins_last_month[$date]; // gets the check-in
+        if (!$this_checkin) {
+            return false;
+        }                // sanity check
+        $highest_cat_data = end($this_checkin);          // gets the data for the highest category from the check-in
+        if (!$highest_cat_data) {
+            return false;
+        }             // another sanity check
+        $highest_cat_idx  = key($this_checkin);          // gets the key of the highest category
 
-    // if the highest category they reached today was less than
+        // if the highest category they reached today was less than
         // the category threshold they have set, don't send the email
         if ($highest_cat_idx < $this->email_category) {
             return false;
@@ -426,25 +435,28 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
         $user_questions = $question->getByUser(Yii::$app->user->id, $date);
 
         $graph = Yii::$container
-      ->get(\common\components\Graph::class)
-      ->create($checkins_last_month);
+            ->get(\common\components\Graph::class)
+            ->create($checkins_last_month);
 
         $messages = [];
         foreach ($this->getPartnerEmails() as $email) {
             if ($email) {
-                $messages[] = Yii::$app->mailer->compose('checkinReport', [
-          'user'           => $this,
-          'email'          => $email,
-          'date'           => $date,
-          'user_behaviors' => $user_behaviors,
-          'questions'      => $user_questions,
-          'chart_content'  => $graph,
-          'categories'     => \common\models\Category::$categories,
-          'behaviors_list' => \common\models\Behavior::$behaviors,
-        ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-        ->setReplyTo($this->email)
-        ->setSubject($this->email." has completed a Faster Scale check-in")
-        ->setTo($email);
+                $messages[] = Yii::$app->mailer->compose(
+                    'checkinReport',
+                    [
+                    'user'           => $this,
+                    'email'          => $email,
+                    'date'           => $date,
+                    'user_behaviors' => $user_behaviors,
+                    'questions'      => $user_questions,
+                    'chart_content'  => $graph,
+                    'categories'     => \common\models\Category::$categories,
+                    'behaviors_list' => \common\models\Behavior::$behaviors,
+                    ]
+                )->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+                    ->setReplyTo($this->email)
+                    ->setSubject($this->email . " has completed a Faster Scale check-in")
+                    ->setTo($email);
             }
         }
 
@@ -453,9 +465,9 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
 
     public function getExportData()
     {
-        $query = (new Query)
-      ->select(
-          'l.id,        
+        $query = (new Query())
+            ->select(
+                'l.id,        
        l.date      AS "date",
        l.custom_behavior AS "custom_behavior",
        l.behavior_id AS "behavior_id",
@@ -472,20 +484,22 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
         FROM question q1
         WHERE q1.question = 3
           AND q1.user_behavior_id = l.id) AS "question3"'
-      )
-      ->from('user_behavior_link l')
-      ->join("LEFT JOIN", "question q", "l.id = q.user_behavior_id")
-      ->where('l.user_id=:user_id', ["user_id" => Yii::$app->user->id])
-      ->groupBy('l.id,
+            )
+            ->from('user_behavior_link l')
+            ->join("LEFT JOIN", "question q", "l.id = q.user_behavior_id")
+            ->where('l.user_id=:user_id', ["user_id" => Yii::$app->user->id])
+            ->groupBy(
+                'l.id,
           l.date,
           "question1",
           "question2",
-          "question3"')
-      ->orderBy('l.date DESC');
+          "question3"'
+            )
+            ->orderBy('l.date DESC');
 
         return $query
-      ->createCommand()
-      ->query();
+            ->createCommand()
+            ->query();
 
         /* Plaintext Query
         SELECT l.id,
@@ -521,19 +535,19 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     public function sendSignupNotificationEmail()
     {
         return \Yii::$app->mailer->compose('signupNotification')
-      ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
-      ->setTo(\Yii::$app->params['adminEmail'])
-      ->setSubject('A new user has signed up for '.\Yii::$app->name)
-      ->send();
+            ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+            ->setTo(\Yii::$app->params['adminEmail'])
+            ->setSubject('A new user has signed up for ' . \Yii::$app->name)
+            ->send();
     }
 
     public function sendVerifyEmail()
     {
         return \Yii::$app->mailer->compose('verifyEmail', ['user' => $this])
-      ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
-      ->setTo($this->email)
-      ->setSubject('Please verify your '.\Yii::$app->name .' account')
-      ->send();
+            ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name])
+            ->setTo($this->email)
+            ->setSubject('Please verify your ' . \Yii::$app->name . ' account')
+            ->send();
     }
 
     public function sendDeleteNotificationEmail()
@@ -541,13 +555,16 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
         $messages = [];
         foreach (array_merge([$this->email], $this->getPartnerEmails()) as $email) {
             if ($email) {
-                $messages[] = Yii::$app->mailer->compose('deleteNotification', [
-          'user' => $this,
-          'email' => $email
-        ])->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-        ->setReplyTo($this->email)
-        ->setSubject($this->email." has deleted their The Faster Scale App account")
-        ->setTo($email);
+                $messages[] = Yii::$app->mailer->compose(
+                    'deleteNotification',
+                    [
+                    'user' => $this,
+                    'email' => $email
+                    ]
+                )->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+                    ->setReplyTo($this->email)
+                    ->setSubject($this->email . " has deleted their The Faster Scale App account")
+                    ->setTo($email);
             }
         }
 
@@ -572,9 +589,12 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
         unset($row['custom_behavior']);
 
         // sort the array into a sensible order
-        uksort($row, function ($a, $b) {
-            return $this->export_order[$a] <=> $this->export_order[$b];
-        });
+        uksort(
+            $row,
+            function ($a, $b) {
+                return $this->export_order[$a] <=> $this->export_order[$b];
+            }
+        );
         return $row;
     }
 
@@ -597,12 +617,12 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     {
         return rtrim(
             strtr(
-          base64_encode(
-            hash('sha256', $this->id."::".$this->created_at, true)
-        ),
-          '+/',
-          '-_'
-      ),
+                base64_encode(
+                    hash('sha256', $this->id . "::" . $this->created_at, true)
+                ),
+                '+/',
+                '-_'
+            ),
             '='
         );
     }
@@ -617,7 +637,7 @@ class User extends ActiveRecord implements IdentityInterface, UserInterface
     private function getRandomVerifyString()
     {
         return Yii::$app
-      ->getSecurity()
-      ->generateRandomString() . '_' . time();
+            ->getSecurity()
+            ->generateRandomString() . '_' . time();
     }
 }

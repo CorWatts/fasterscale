@@ -14,14 +14,14 @@ class GraphTest extends \Codeception\Test\Unit
     use \Codeception\Specify;
 
     private $user;
-    private $filepath = __DIR__.'/../../_output/test_graph.png';
-    private $filepath_extra = __DIR__.'/../../_output/charts/test_graph.png';
+    private $filepath = __DIR__ . '/../../_output/test_graph.png';
+    private $filepath_extra = __DIR__ . '/../../_output/charts/test_graph.png';
 
     public function setUp(): void
     {
         $this->user = $this->getMockBuilder('\site\tests\_support\MockUser')
-          ->setMethods(['getIdHash'])
-          ->getMock();
+            ->setMethods(['getIdHash'])
+            ->getMock();
 
         parent::setUp();
     }
@@ -35,18 +35,18 @@ class GraphTest extends \Codeception\Test\Unit
     public function testGetFilepath()
     {
         $this->user
-      ->method('getIdHash')
-      ->willReturn('random1DH4sh');
+            ->method('getIdHash')
+            ->willReturn('random1DH4sh');
         $graph = new Graph($this->user);
 
-        expect('the expected graph image filepath will be returned', $this->assertEquals(dirname(dirname(dirname(dirname(__DIR__)))).'/site/web/charts/random1DH4sh.png', $graph->getFilepath()));
+        expect('the expected graph image filepath will be returned', $this->assertEquals(dirname(dirname(dirname(dirname(__DIR__)))) . '/site/web/charts/random1DH4sh.png', $graph->getFilepath()));
     }
 
     public function testGetUrl()
     {
         $this->user
-      ->method('getIdHash')
-      ->willReturn('random1DH4sh');
+            ->method('getIdHash')
+            ->willReturn('random1DH4sh');
         $graph = new Graph($this->user);
 
         expect('the expected graph image filepath will be returned', $this->assertStringEndsWith('/charts/random1DH4sh.png', $graph->getUrl()));
@@ -55,12 +55,12 @@ class GraphTest extends \Codeception\Test\Unit
     public function testDestroy()
     {
         $this->graph = $this->getMockBuilder('\common\components\Graph', [$this->user])
-      ->setConstructorArgs([$this->user])
-      ->setMethods(['getFilepath'])
-      ->getMock();
+            ->setConstructorArgs([$this->user])
+            ->setMethods(['getFilepath'])
+            ->getMock();
         $this->graph
-      ->method('getFilepath')
-      ->willReturn($this->filepath);
+            ->method('getFilepath')
+            ->willReturn($this->filepath);
 
         if (!file_exists($this->filepath) && preg_match('%/_output/test_graph.png$%', $this->filepath)) {
             touch($this->filepath);
@@ -78,12 +78,12 @@ class GraphTest extends \Codeception\Test\Unit
     public function testCreate()
     {
         $this->graph = $this->getMockBuilder('\common\components\Graph', [$this->user])
-      ->setConstructorArgs([$this->user])
-      ->setMethods(['getFilepath'])
-      ->getMock();
+            ->setConstructorArgs([$this->user])
+            ->setMethods(['getFilepath'])
+            ->getMock();
         $this->graph
-      ->method('getFilepath')
-      ->willReturn($this->filepath_extra);
+            ->method('getFilepath')
+            ->willReturn($this->filepath_extra);
 
         expect('the file should not exist yet. If this fails, delete the file', $this->assertFileNotExists($this->filepath));
         expect('the containing directory should not exist yet either. If this fails, delete the directory', $this->assertFalse(is_dir(dirname($this->filepath_extra))));
@@ -241,17 +241,17 @@ function checkinBreakdown()
         'count' => 6,
         'color' => '#4CA100',
         'highlight' => '#61B219',
-      ], 3 => [
+        ], 3 => [
         'name' => 'Anxiety',
         'count' => 5,
         'color' => '#98C300',
         'highlight' => '#AACC33',
-      ], 4 => [
+        ], 4 => [
         'name' => 'Speeding Up',
         'count' => 6,
         'color' => '#E5E500',
         'highlight' => '#E5E533',
+        ],
       ],
-    ],
-  ];
+    ];
 }

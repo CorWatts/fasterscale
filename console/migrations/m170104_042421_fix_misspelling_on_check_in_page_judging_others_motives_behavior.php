@@ -6,11 +6,11 @@ class m170104_042421_fix_misspelling_on_check_in_page_judging_others_motives_beh
 {
     public function safeUp()
     {
-        $this->update("option", array("name"=>"judging others' motives"), array("name"=>"juding others' motives"));
+        $this->update("option", array("name" => "judging others' motives"), array("name" => "juding others' motives"));
     }
 
     public function safeDown()
     {
-        $this->update("option", array("name"=>"juding others' motives"), array("name"=>"judging others' motives"));
+        $this->update("option", array("name" => "juding others' motives"), array("name" => "judging others' motives"));
     }
 }

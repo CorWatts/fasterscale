@@ -3,8 +3,8 @@
 namespace site\tests\unit\models;
 
 use Yii;
-use \site\models\PasswordResetRequestForm;
-use \yii\base\InvalidArgumentException;
+use site\models\PasswordResetRequestForm;
+use yii\base\InvalidArgumentException;
 
 class PasswordResetRequestFormTest extends \Codeception\Test\Unit
 {
@@ -73,16 +73,16 @@ class PasswordResetRequestFormTest extends \Codeception\Test\Unit
     private function getUser()
     {
         $user = $this->getmockbuilder('\common\models\user')
-      ->disableoriginalconstructor()
-      ->setmethods(['getisnewrecord', 'attributes', 'save', 'generatepasswordresettoken', 'istokencurrent', 'findOne'])
-      ->getmock();
+        ->disableoriginalconstructor()
+        ->setmethods(['getisnewrecord', 'attributes', 'save', 'generatepasswordresettoken', 'istokencurrent', 'findOne'])
+        ->getmock();
         $user->method('attributes')->willReturn([
-      'isGuest',
-      'email',
-      'password',
-      'password_reset_token',
-      'password_hash',
-    ]);
+        'isGuest',
+        'email',
+        'password',
+        'password_reset_token',
+        'password_hash',
+        ]);
         return $user;
     }
 }

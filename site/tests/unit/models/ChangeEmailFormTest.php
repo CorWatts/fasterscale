@@ -3,7 +3,7 @@
 namespace site\tests\unit\models;
 
 use Yii;
-use \site\models\ChangeEmailForm;
+use site\models\ChangeEmailForm;
 
 class ChangeEmailFormTest extends \Codeception\Test\Unit
 {
@@ -27,12 +27,12 @@ class ChangeEmailFormTest extends \Codeception\Test\Unit
         $this->specify('changeEmail() should return true and do nothing when the email is already taken', function () {
             $user = $this->getUser();
             $user
-        ->expects($this->never())
-        ->method('save');
+            ->expects($this->never())
+            ->method('save');
             $desired_email = 'new_email@email.com';
             $user
-        ->method('findByEmail')
-        ->willReturn(true); // true, as a stand-in for some valid user object
+            ->method('findByEmail')
+            ->willReturn(true); // true, as a stand-in for some valid user object
 
             $form = new ChangeEmailForm($user);
             $form->desired_email = $desired_email;
@@ -45,8 +45,8 @@ class ChangeEmailFormTest extends \Codeception\Test\Unit
             $user = $this->getUser();
             $desired_email = 'new_email@email.com';
             $user
-        ->method('findByEmail')
-        ->willReturn(null);
+            ->method('findByEmail')
+            ->willReturn(null);
             $user->email = 'email@email.com';
 
             $form = new ChangeEmailForm($user);
@@ -69,14 +69,14 @@ class ChangeEmailFormTest extends \Codeception\Test\Unit
     private function getUser()
     {
         $user = $this->getmockbuilder('\common\models\user')
-      ->disableoriginalconstructor()
-      ->setmethods(['getisnewrecord', 'attributes', 'generatechangeemailtoken', 'findbyemail', 'save'])
-      ->getmock();
+        ->disableoriginalconstructor()
+        ->setmethods(['getisnewrecord', 'attributes', 'generatechangeemailtoken', 'findbyemail', 'save'])
+        ->getmock();
         $user->method('attributes')->willreturn([
-      'email',
-      'desired_email',
-      'change_email_token',
-    ]);
+        'email',
+        'desired_email',
+        'change_email_token',
+        ]);
         return $user;
     }
 }

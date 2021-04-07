@@ -23,16 +23,16 @@ class ContactForm extends Model
     {
         return [
       // name, email, subject and body are required
-      [['name', 'email', 'subject', 'body'], 'required'],
+        [['name', 'email', 'subject', 'body'], 'required'],
       // email has to be a valid email address
-      ['email', 'filter', 'filter' => 'trim'],
-      ['email', 'filter', 'filter' => 'strtolower'],
-      ['email', 'email'],
+        ['email', 'filter', 'filter' => 'trim'],
+        ['email', 'filter', 'filter' => 'strtolower'],
+        ['email', 'email'],
       // verifyCode needs to be entered correctly
-      ['verifyCode', 'captcha', 'when' => function () {
-          return Yii::$app->user->isGuest;
-      }, 'skipOnEmpty' => !!YII_ENV_TEST],
-    ];
+        ['verifyCode', 'captcha', 'when' => function () {
+            return Yii::$app->user->isGuest;
+        }, 'skipOnEmpty' => !!YII_ENV_TEST],
+        ];
     }
 
     /**
@@ -42,8 +42,8 @@ class ContactForm extends Model
     public function attributeLabels()
     {
         return [
-      'verifyCode' => 'Verification Code',
-    ];
+        'verifyCode' => 'Verification Code',
+        ];
     }
 
     /**
@@ -55,10 +55,10 @@ class ContactForm extends Model
     public function sendEmail($email)
     {
         return Yii::$app->mailer->compose()
-      ->setTo($email)
-      ->setFrom([$this->email => $this->name])
-      ->setSubject("[FSA Contact] ".$this->subject)
-      ->setTextBody($this->body)
-      ->send();
+        ->setTo($email)
+        ->setFrom([$this->email => $this->name])
+        ->setSubject("[FSA Contact] " . $this->subject)
+        ->setTextBody($this->body)
+        ->send();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models;
 
 use Yii;
@@ -28,16 +29,16 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-      // email and password are both required
-      ['email', 'filter', 'filter' => 'trim'],
-      ['email', 'filter', 'filter' => 'strtolower'],
-      [['email', 'password'], 'required'],
-      ['email', 'email'],
-      // rememberMe must be a boolean value
-      ['rememberMe', 'boolean'],
-      // password is validated by validatePassword()
-      ['password', 'validatePassword'],
-    ];
+        // email and password are both required
+        ['email', 'filter', 'filter' => 'trim'],
+        ['email', 'filter', 'filter' => 'strtolower'],
+        [['email', 'password'], 'required'],
+        ['email', 'email'],
+        // rememberMe must be a boolean value
+        ['rememberMe', 'boolean'],
+        // password is validated by validatePassword()
+        ['password', 'validatePassword'],
+        ];
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace common\components;
 
 use yii;
@@ -31,7 +32,7 @@ class Graph extends \yii\base\BaseObject
     {
         $path = Yii::getAlias('@graphImgPath');
         $filename = $this->user->getIdHash() . ".png";
-        return $path. '/' . $filename;
+        return $path . '/' . $filename;
     }
 
     /**
@@ -61,8 +62,8 @@ class Graph extends \yii\base\BaseObject
      * always returns the in-memory image, saving the image to disk is optionally
      * specified with the $toDisk boolean.
      *
-     * @param array $values an associative array of dates => check-in summary
-     * @param bool $toDisk used to specify whether or not to save the generated image to disk at the filepath returned by getFilepath(). Defaults to false.
+     * @param  array $values an associative array of dates => check-in summary
+     * @param  bool  $toDisk used to specify whether or not to save the generated image to disk at the filepath returned by getFilepath(). Defaults to false.
      * @return string the encoded image
      */
     public function create(array $checkins, bool $toDisk = false)
@@ -100,7 +101,7 @@ class Graph extends \yii\base\BaseObject
         // format the data into something nicer
         $accum = [];
         foreach ($checkins as $checkin_sum) {
-            for ($i = 1; $i <= 7; $i ++) {
+            for ($i = 1; $i <= 7; $i++) {
                 $accum[$i][] = array_key_exists($i, $checkin_sum) ? $checkin_sum[$i]['count'] : 0;
             }
         }

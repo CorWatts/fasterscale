@@ -1,9 +1,10 @@
 <?php
+
 namespace site\models;
 
 use yii\base\Model;
 use Yii;
-use \DateTimeZone;
+use DateTimeZone;
 
 /**
  * edit profile form
@@ -43,16 +44,16 @@ class EditProfileForm extends Model
     public function rules()
     {
         return [
-      ['email_category', 'filter', 'filter' => 'intval', 'skipOnEmpty' => true],
-      [['timezone', 'expose_graph', 'send_email'], 'required'],
-      ['timezone', 'string', 'min' => 2, 'max' => 255],
-      ['timezone', 'in', 'range'=>DateTimeZone::listIdentifiers()],
-      ['expose_graph', 'boolean'],
-      ['send_email', 'boolean'],
-      ['email_category', 'integer'],
-      ['email_category', 'in', 'range'=>array_keys($this->categories)],
-      [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
-      [['partner_email1', 'email_category'], 'required',
+        ['email_category', 'filter', 'filter' => 'intval', 'skipOnEmpty' => true],
+        [['timezone', 'expose_graph', 'send_email'], 'required'],
+        ['timezone', 'string', 'min' => 2, 'max' => 255],
+        ['timezone', 'in', 'range' => DateTimeZone::listIdentifiers()],
+        ['expose_graph', 'boolean'],
+        ['send_email', 'boolean'],
+        ['email_category', 'integer'],
+        ['email_category', 'in', 'range' => array_keys($this->categories)],
+        [['partner_email1', 'partner_email2', 'partner_email3'], 'email'],
+        [['partner_email1', 'email_category'], 'required',
         'when' => function ($model) {
             return $model->send_email;
         },
@@ -60,7 +61,7 @@ class EditProfileForm extends Model
         "whenClient" => "function(attribute, value) {
           return $('#editprofileform-send_email').is(':checked');
         }"]
-    ];
+        ];
     }
 
     /**
@@ -69,13 +70,13 @@ class EditProfileForm extends Model
     public function attributeLabels()
     {
         return [
-      'partner_email1' => "Partner Email #1",
-      'partner_email2' => "Partner Email #2",
-      'partner_email3' => "Partner Email #3",
-      'send_email'     => 'Send an email when I select behaviors at or above a specific FASTER category',
-      'email_category' => 'FASTER Category',
-      'expose_graph'   => 'Share my behaviors graph via a link'
-    ];
+        'partner_email1' => "Partner Email #1",
+        'partner_email2' => "Partner Email #2",
+        'partner_email3' => "Partner Email #3",
+        'send_email'     => 'Send an email when I select behaviors at or above a specific FASTER category',
+        'email_category' => 'FASTER Category',
+        'expose_graph'   => 'Share my behaviors graph via a link'
+        ];
     }
 
     /**
@@ -89,7 +90,7 @@ class EditProfileForm extends Model
             $user  = $this->user;
 
             $graph = Yii::$container
-        ->get(\common\components\Graph::class, [$this->user]);
+            ->get(\common\components\Graph::class, [$this->user]);
 
             if ($this->timezone) {
                 $user->timezone = $this->timezone;

@@ -1,4 +1,5 @@
 <?php
+
 namespace site\models;
 
 use Yii;
@@ -29,7 +30,7 @@ class CheckinForm extends Model
     public function rules()
     {
         return [
-      [
+        [
         [
           'behaviors1',
           'behaviors2',
@@ -40,20 +41,20 @@ class CheckinForm extends Model
           'behaviors7'
         ],
         'validateBehaviors'],
-    ];
+        ];
     }
 
     public function attributeLabels()
     {
         return [
-      'behaviors1' => 'Restoration',
-      'behaviors2' => 'Forgetting Priorities',
-      'behaviors3' => 'Anxiety',
-      'behaviors4' => 'Speeding Up',
-      'behaviors5' => 'Ticked Off',
-      'behaviors6' => 'Exhausted',
-      'behaviors7' => 'Relapsed/Moral Failure'
-    ];
+        'behaviors1' => 'Restoration',
+        'behaviors2' => 'Forgetting Priorities',
+        'behaviors3' => 'Anxiety',
+        'behaviors4' => 'Speeding Up',
+        'behaviors5' => 'Ticked Off',
+        'behaviors6' => 'Exhausted',
+        'behaviors7' => 'Relapsed/Moral Failure'
+        ];
     }
 
     public function setBehaviors($behaviors)
@@ -134,15 +135,15 @@ class CheckinForm extends Model
       AND date > :start_date 
       AND date < :end_date",
             [
-        "user_id" => Yii::$app->user->id,
-        ':start_date' => $start,
-        ":end_date" => $end
-      ]
+            "user_id" => Yii::$app->user->id,
+            ':start_date' => $start,
+            ":end_date" => $end
+            ]
         );
 
         // delete cached behaviors
         array_map(function ($period) use ($time) {
-            $key = "checkins_".Yii::$app->user->id."_{$period}_".$time->getLocalDate();
+            $key = "checkins_" . Yii::$app->user->id . "_{$period}_" . $time->getLocalDate();
             Yii::$app->cache->delete($key);
         }, [30, 90, 180]);
     }
@@ -191,12 +192,12 @@ class CheckinForm extends Model
         }
 
         $custom_bhvrs = \common\models\CustomBehavior::find()
-      ->where([
-      'user_id' => Yii::$app->user->id,
-      'id' => (array)$this->getCustomBehaviors()
-    ])
-    ->asArray()
-    ->all();
+        ->where([
+        'user_id' => Yii::$app->user->id,
+        'id' => (array)$this->getCustomBehaviors()
+        ])
+        ->asArray()
+        ->all();
 
         $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);
 
@@ -207,35 +208,35 @@ class CheckinForm extends Model
             $behavior = \common\models\Behavior::getBehavior('id', $behavior_id);
             $category_id = $behavior['category_id'];
             $temp = [
-        Yii::$app->user->id,
-        (int)$behavior_id,
-        (int)$category_id,
-        null,
-        new Expression("now()::timestamp")
-      ];
+            Yii::$app->user->id,
+            (int)$behavior_id,
+            (int)$category_id,
+            null,
+            new Expression("now()::timestamp")
+            ];
             $rows[] = $temp;
         }
 
         foreach ($custom_bhvrs as $cb) {
             $temp = [
-        Yii::$app->user->id,
-        null,
-        (int)$cb['category_id'],
-        $cb['name'],
-        new Expression("now()::timestamp")
-      ];
+            Yii::$app->user->id,
+            null,
+            (int)$cb['category_id'],
+            $cb['name'],
+            new Expression("now()::timestamp")
+            ];
             $rows[] = $temp;
         }
 
         // this batchInsert() method properly escapes the inputted data
         Yii::$app
-      ->db
-      ->createCommand()
-      ->batchInsert(
-          $user_behavior->tableName(),
-          ['user_id', 'behavior_id', 'category_id', 'custom_behavior', 'date'],
-          $rows
-      )->execute();
+        ->db
+        ->createCommand()
+        ->batchInsert(
+            $user_behavior->tableName(),
+            ['user_id', 'behavior_id', 'category_id', 'custom_behavior', 'date'],
+            $rows
+        )->execute();
 
         // if the user has publicised their check-in graph, create the image
         if (Yii::$app->user->identity->expose_graph) {
@@ -243,8 +244,8 @@ class CheckinForm extends Model
 
             if ($checkins_last_month) {
                 Yii::$container
-          ->get(\common\components\Graph::class, [Yii::$app->user->identity])
-          ->create($checkins_last_month, true);
+                ->get(\common\components\Graph::class, [Yii::$app->user->identity])
+                ->create($checkins_last_month, true);
             }
         }
     }

@@ -1,15 +1,19 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\models\UserBehavior;
 
 $email = Html::encode($user->email);
 $date = str_replace('-', '', $date);
-$imgRef = $message->embedContent($chart_content, [
-  'fileName'       => "faster-scale-checkins-$date.png",
-  'contentType'    => 'image/png',
-  'setDisposition' => 'inline'
-]);
+$imgRef = $message->embedContent(
+    $chart_content,
+    [
+    'fileName'       => "faster-scale-checkins-$date.png",
+    'contentType'    => 'image/png',
+    'setDisposition' => 'inline'
+    ]
+);
 $categories = \common\models\Category::getCategories();
 ?>
 
@@ -68,7 +72,7 @@ $categories = \common\models\Category::getCategories();
                                           <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
                                              <tr style="padding:0;text-align:left;vertical-align:top">
                                                 <th style="Margin:0;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
-                                                   <img width="400" src="<?=$imgRef?>" style="-ms-interpolation-mode:bicubic;clear:both;display:block;max-width:100%;outline:0;text-decoration:none;width:auto">
+                                                   <img width="400" src="<?php echo $imgRef?>" style="-ms-interpolation-mode:bicubic;clear:both;display:block;max-width:100%;outline:0;text-decoration:none;width:auto">
                                                    <table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
                                                       <tbody>
                                                          <tr style="padding:0;text-align:left;vertical-align:top">
@@ -76,7 +80,7 @@ $categories = \common\models\Category::getCategories();
                                                          </tr>
                                                       </tbody>
                                                    </table>
-                                                   <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">Hello there! <?=$email?> has set you as one of their report recipients. These reports are sent out when <?=$email?> scores above a set FASTER category. If the responses below appear concerning (even just a little), you should contact them. You can reply to this email, and it will go directly to your friend.</p>
+                                                   <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">Hello there! <?php echo $email?> has set you as one of their report recipients. These reports are sent out when <?php echo $email?> scores above a set FASTER category. If the responses below appear concerning (even just a little), you should contact them. You can reply to this email, and it will go directly to your friend.</p>
                                                 </th>
                                                 <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
                                              </tr>
@@ -129,13 +133,13 @@ if ($questions) {
     foreach ($questions as $behavior_id => $behavior_questions) {
         ?>
 
-                                                   <h4 style="Margin:0;Margin-bottom:10px;color:#37b98f;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:5px;padding:0 8px;text-align:left;word-wrap:normal"> <?= Html::encode($behavior_questions['question']['behavior_name']) ?> </h4>
+                                                   <h4 style="Margin:0;Margin-bottom:10px;color:#37b98f;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:5px;padding:0 8px;text-align:left;word-wrap:normal"> <?php echo Html::encode($behavior_questions['question']['behavior_name']) ?> </h4>
 
-<?php
-    foreach ($behavior_questions['answers'] as $key => $question) {  ?>
-      <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left"><strong><?= Html::encode($question['title']) ?></strong> <?= Html::encode($question['answer']) ?></p>
-<?php
-    }
+        <?php
+        foreach ($behavior_questions['answers'] as $key => $question) {  ?>
+      <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left"><strong><?php echo Html::encode($question['title']) ?></strong> <?php echo Html::encode($question['answer']) ?></p>
+            <?php
+        }
     }
 } else { ?>
       <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">None of the processing questions were answered.</p>
@@ -192,13 +196,13 @@ if ($questions) {
 if ($user_behaviors) {
     foreach ($user_behaviors as $cat_key => $behaviors) { ?>
         <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:left">
-          <strong style="color:#37b98f"><?= Html::encode($categories[$cat_key]) ?></strong>
-<?php
-    foreach ($behaviors as $behavior) { ?>
-        <br><?= Html::encode($behavior['name']) ?>
-<?php
+          <strong style="color:#37b98f"><?php echo Html::encode($categories[$cat_key]) ?></strong>
+        <?php
+        foreach ($behaviors as $behavior) { ?>
+        <br><?php echo Html::encode($behavior['name']) ?>
+            <?php
+        }
     }
-  }
 }
 ?>
 </p>
@@ -235,8 +239,8 @@ if ($user_behaviors) {
                                                 <th style="Margin:0;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
                                                    <center data-parsed="" style="min-width:532px;width:100%">
                                                    <p class="text-center float-center" align="center" style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0 8px 4px 8px;text-align:center">
-                                                     <a href="<?=Url::to(['site/privacy'], true)?>" style="Margin:0;color:#2199e8;font-family:Arial,Verdana,Helvetica,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Privacy</a> |
-                                                     <a href="<?=Url::to(['site/terms'], true)?>" style="Margin:0;color:#2199e8;font-family:Arial,Verdana,Helvetica,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Terms</a> |
+                                                     <a href="<?php echo Url::to(['site/privacy'], true)?>" style="Margin:0;color:#2199e8;font-family:Arial,Verdana,Helvetica,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Privacy</a> |
+                                                     <a href="<?php echo Url::to(['site/terms'], true)?>" style="Margin:0;color:#2199e8;font-family:Arial,Verdana,Helvetica,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Terms</a> |
                                                      <a href="%unsubscribe_url%" style="Margin:0;color:#2199e8;font-family:Arial,Verdana,Helvetica,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Unsubscribe</a>
 </p>
                                                    </center>

@@ -28,7 +28,7 @@ class m180514_045605_move_email_threshold_to_send_email extends Migration
         // $this->addColumn("user", "email_threshold", "INT");
         // $this->dropColumn('{{%user}}', 'send_email');
         // ---------
-      
+
         echo "m180514_045605_move_email_threshold_to_send_email cannot be reverted.\n";
         echo "We can't figure out the user's previously selected email_threshold value.";
 

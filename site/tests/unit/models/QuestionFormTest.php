@@ -3,8 +3,8 @@
 namespace site\tests\unit\models;
 
 use Yii;
-use \site\models\QuestionForm;
-use \yii\di\Container;
+use site\models\QuestionForm;
+use yii\di\Container;
 
 class QuestionFormTest extends \Codeception\Test\Unit
 {
@@ -14,7 +14,7 @@ class QuestionFormTest extends \Codeception\Test\Unit
 
     public function setUp(): void
     {
-        $this->container = new Container;
+        $this->container = new Container();
         $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
         $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
         $this->container->set('common\interfaces\QuestionInterface', '\site\tests\_support\MockQuestion');
@@ -28,14 +28,14 @@ class QuestionFormTest extends \Codeception\Test\Unit
         $this->specify('setBehaviors should function properly', function () {
             $model = $this->container->get('\site\models\QuestionForm');
             expect('attributeLabels should be correct', $this->assertEquals($model->attributeLabels(), [
-        'user_behavior_id1' => 'Restoration',
-        'user_behavior_id2' => 'Forgetting Priorities',
-        'user_behavior_id3' => 'Anxiety',
-        'user_behavior_id4' => 'Speeding Up',
-        'user_behavior_id5' => 'Ticked Off',
-        'user_behavior_id6' => 'Exhausted',
-        'user_behavior_id7' => 'Relapsed/Moral Failure'
-      ]));
+            'user_behavior_id1' => 'Restoration',
+            'user_behavior_id2' => 'Forgetting Priorities',
+            'user_behavior_id3' => 'Anxiety',
+            'user_behavior_id4' => 'Speeding Up',
+            'user_behavior_id5' => 'Ticked Off',
+            'user_behavior_id6' => 'Exhausted',
+            'user_behavior_id7' => 'Relapsed/Moral Failure'
+            ]));
         });
     }
 
@@ -129,10 +129,10 @@ class QuestionFormTest extends \Codeception\Test\Unit
             $model->answer_3c = "processing emotions";
 
             expect('getAnswers should extract and coerce the data correctly', $this->assertEquals($model->getAnswers([
-        $this->fakeModel(7, 280, 8),
-        $this->fakeModel(13, 281, 8),
-        $this->fakeModel(28, 284, 8)
-      ]), [ [
+            $this->fakeModel(7, 280, 8),
+            $this->fakeModel(13, 281, 8),
+            $this->fakeModel(28, 284, 8)
+            ]), [ [
                                         'behavior_id' => 280,
                     'category_id' => 8,
                                         'user_bhvr_id' => 7,
@@ -196,12 +196,12 @@ class QuestionFormTest extends \Codeception\Test\Unit
                   ->setMethods(['save', 'attributes'])
                   ->getMock();
         $question
-      ->method('attributes')
-      ->willReturn(['id', 'user_id', 'behavior_id', 'category_id', 'user_behavior_id', 'question', 'answer', 'date']);
+        ->method('attributes')
+        ->willReturn(['id', 'user_id', 'behavior_id', 'category_id', 'user_behavior_id', 'question', 'answer', 'date']);
         $question
-      ->expects($this->exactly(6))
-      ->method('save')
-      ->willReturn(true);
+        ->expects($this->exactly(6))
+        ->method('save')
+        ->willReturn(true);
 
         Yii::$container->set(\common\interfaces\QuestionInterface::class, $question);
 
@@ -210,45 +210,45 @@ class QuestionFormTest extends \Codeception\Test\Unit
                   ->setMethods(['getAnswers'])
                   ->getMock();
         $model
-      ->expects($this->once())
-      ->method('getAnswers')
-      ->willReturn([[
+        ->expects($this->once())
+        ->method('getAnswers')
+        ->willReturn([[
         'behavior_id' => 280,
         'category_id' => 8,
         'user_bhvr_id' => 7,
         'question_id' => 1,
         'answer' => 'processing emotions',
-      ], [
+        ], [
         'behavior_id' => 280,
         'category_id' => 8,
         'user_bhvr_id' => 7,
         'question_id' => 2,
         'answer' => 'processing emotions',
-      ], [
+        ], [
         'behavior_id' => 280,
         'category_id' => 8,
         'user_bhvr_id' => 7,
         'question_id' => 3,
         'answer' => 'processing emotions',
-      ], [
+        ], [
         'behavior_id' => 281,
         'category_id' => 8,
         'user_bhvr_id' => 13,
         'question_id' => 1,
         'answer' => 'processing emotions',
-      ], [
+        ], [
         'behavior_id' => 281,
         'category_id' => 8,
         'user_bhvr_id' => 13,
         'question_id' => 2,
         'answer' => 'processing emotions',
-      ], [
+        ], [
         'behavior_id' => 281,
         'category_id' => 8,
         'user_bhvr_id' => 13,
         'question_id' => 3,
         'answer' => 'processing emotions',
-      ]]);
+        ]]);
 
         expect('saveAnswers should invoke save() the expected number of times and return true', $this->assertTrue($model->saveAnswers(123, []))); // doesn't matter what we pass in, we're mocking getAnswers()
     }
@@ -291,7 +291,7 @@ class QuestionFormTest extends \Codeception\Test\Unit
 
     private function fakeModel($id, $behavior_id, $category_id)
     {
-        $class = new \stdClass;
+        $class = new \stdClass();
         $class->id = $id;
         $class->behavior_id = $behavior_id;
         $class->category_id = $category_id;

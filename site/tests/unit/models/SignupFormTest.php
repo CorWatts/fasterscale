@@ -16,7 +16,7 @@ class SignupFormTest extends \Codeception\Test\Unit
     'partner_email1'  => 'partner1@email.com',
     'partner_email2'  => 'partner2@email.com',
     'partner_email3'  => 'partner3@email.com',
-  ];
+    ];
 
     private $whitelist = [
     'email',
@@ -25,12 +25,12 @@ class SignupFormTest extends \Codeception\Test\Unit
     'partner_email1',
     'partner_email2',
     'partner_email3'
-  ];
+    ];
 
     public function setUp(): void
     {
         // define interfaces for injection
-        $this->container = new \yii\di\Container;
+        $this->container = new \yii\di\Container();
         $this->container->set('common\interfaces\UserInterface', '\site\tests\_support\MockUser');
         $this->container->set('common\interfaces\UserBehaviorInterface', '\site\tests\_support\MockUserBehavior');
         $this->container->set('common\interfaces\TimeInterface', function () {
@@ -42,39 +42,39 @@ class SignupFormTest extends \Codeception\Test\Unit
         $time        = $this->container->get(\common\interfaces\TimeInterface::class);
 
         $question = $this->getMockBuilder(\common\models\Question::class)
-      ->setMethods(['save', 'attributes'])
-      ->getMock();
+        ->setMethods(['save', 'attributes'])
+        ->getMock();
 
         $user_methods = ['save', 'attributes', 'findByEmail', 'sendSignupNotificationEmail', 'sendVerifyEmail'];
         $this->user = $this->getMockBuilder(\common\models\User::class)
-      ->setConstructorArgs([$user_behavior, $time])
-      ->setMethods($user_methods)
-      ->getMock();
+        ->setConstructorArgs([$user_behavior, $time])
+        ->setMethods($user_methods)
+        ->getMock();
         $user_attrs = [
-      'id',
-      'password_hash',
-      'password_reset_token',
-      'verify_email_token',
-      'email',
-      'auth_key',
-      'role',
-      'status',
-      'created_at',
-      'updated_at',
-      'password',
-      'timezone',
-      'send_email',
-      'email_category',
-      'partner_email1',
-      'partner_email2',
-      'partner_email3',
-    ];
+        'id',
+        'password_hash',
+        'password_reset_token',
+        'verify_email_token',
+        'email',
+        'auth_key',
+        'role',
+        'status',
+        'created_at',
+        'updated_at',
+        'password',
+        'timezone',
+        'send_email',
+        'email_category',
+        'partner_email1',
+        'partner_email2',
+        'partner_email3',
+        ];
         $this->user->method('attributes')->willReturn($user_attrs);
 
         $this->existing_user = $this->getMockBuilder(\common\models\User::class)
-      ->setConstructorArgs([$user_behavior, $time])
-      ->setMethods($user_methods)
-      ->getMock();
+        ->setConstructorArgs([$user_behavior, $time])
+        ->setMethods($user_methods)
+        ->getMock();
         $this->existing_user->method('attributes')->willReturn($user_attrs);
 
         $this->existing_user->id          = 1;
@@ -111,7 +111,7 @@ class SignupFormTest extends \Codeception\Test\Unit
 
     // set up a side effect to occur when the user's save() function is called
         $saved = false;
-        $this->user->method('save')->will($this->returnCallback(function ($runValidation=true, $attributeNames=null) use (&$saved) {
+        $this->user->method('save')->will($this->returnCallback(function ($runValidation = true, $attributeNames = null) use (&$saved) {
             $saved = true;
             return $this->user;
         }));
@@ -142,11 +142,11 @@ class SignupFormTest extends \Codeception\Test\Unit
             expect('This user should be an isNewRecord -- they should NOT already exist', $this->assertTrue($user->getIsNewRecord()));
         });
     }
- 
+
     public function testSignupExistingConfirmedUser()
     {
         $saved = false;
-        $this->existing_user->method('save')->will($this->returnCallback(function ($runValidation=true, $attributeNames=null) use (&$saved) {
+        $this->existing_user->method('save')->will($this->returnCallback(function ($runValidation = true, $attributeNames = null) use (&$saved) {
             $saved = true;
             return $this->existing_user;
         }));
@@ -166,11 +166,11 @@ class SignupFormTest extends \Codeception\Test\Unit
     public function testSignupExistingUnconfirmedUser()
     {
         $saved = false;
-        $this->existing_user->method('save')->will($this->returnCallback(function ($runValidation=true, $attributeNames=null) use (&$saved) {
+        $this->existing_user->method('save')->will($this->returnCallback(function ($runValidation = true, $attributeNames = null) use (&$saved) {
             $saved = true;
             return $this->existing_user;
         }));
- 
+
         $this->existing_user->verify_email_token = $this->getExpiredToken();
         // make sure our fake token actually _is_ expired
         expect('token is not confirmed', $this->assertFalse($this->existing_user->isTokenConfirmed()));
@@ -193,7 +193,7 @@ class SignupFormTest extends \Codeception\Test\Unit
 
     public function testSetFields()
     {
-        $container = new yii\di\Container;
+        $container = new yii\di\Container();
         $form = $container->get('\site\models\SignupForm', [$this->user]);
 
         $form = $this->setAttrs($form, $this->vals);
@@ -219,15 +219,15 @@ class SignupFormTest extends \Codeception\Test\Unit
         // subtract the expiration time and a little more from the current time
         $expire = \Yii::$app->params['user.verifyAccountTokenExpire'];
         return \Yii::$app
-      ->getSecurity()
-      ->generateRandomString() . '_' . (time() - $expire - 1);
+        ->getSecurity()
+        ->generateRandomString() . '_' . (time() - $expire - 1);
     }
 
     private function getValidToken()
     {
         return \Yii::$app
-      ->getSecurity()
-      ->generateRandomString() . '_' . time();
+        ->getSecurity()
+        ->generateRandomString() . '_' . time();
     }
 
     private function getForm($user = null)

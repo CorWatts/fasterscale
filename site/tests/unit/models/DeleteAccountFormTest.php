@@ -3,7 +3,7 @@
 namespace site\tests\unit\models;
 
 use Yii;
-use \site\models\DeleteAccountForm;
+use site\models\DeleteAccountForm;
 
 class DeleteAccountFormTest extends \Codeception\Test\Unit
 {
@@ -29,8 +29,8 @@ class DeleteAccountFormTest extends \Codeception\Test\Unit
         $this->specify('deleteAccount() should return false if the form does not validate', function () {
             $user = $this->getUser();
             $user
-        ->expects($this->never())
-        ->method('delete');
+            ->expects($this->never())
+            ->method('delete');
 
             $form = new DeleteAccountForm($user);
             $form->password = '1';
@@ -40,8 +40,8 @@ class DeleteAccountFormTest extends \Codeception\Test\Unit
         $this->specify('deleteAccount() should return false if the user\'s password is incorrect', function () {
             $user = $this->getUser();
             $user
-        ->expects($this->never())
-        ->method('delete');
+            ->expects($this->never())
+            ->method('delete');
 
             $form = new DeleteAccountForm($user);
             $form->password = '1';
@@ -55,12 +55,12 @@ class DeleteAccountFormTest extends \Codeception\Test\Unit
             $user->partner_email1 = 'partner1@example.com';
             $user->setPassword($password);
             $user
-        ->method('isPartnerEnabled')
-        ->willReturn(true);
+            ->method('isPartnerEnabled')
+            ->willReturn(true);
 
             $user
-        ->expects($this->once())
-        ->method('delete');
+            ->expects($this->once())
+            ->method('delete');
 
             $form = new DeleteAccountForm($user);
             $form->password = $password;
@@ -82,17 +82,17 @@ class DeleteAccountFormTest extends \Codeception\Test\Unit
     private function getUser()
     {
         $user = $this->getmockbuilder('\common\models\user')
-      ->disableoriginalconstructor()
-      ->setmethods(['getisnewrecord', 'attributes', 'generatechangeemailtoken', 'findbyemail', 'save', 'delete', 'ispartnerenabled'])
-      ->getmock();
+        ->disableoriginalconstructor()
+        ->setmethods(['getisnewrecord', 'attributes', 'generatechangeemailtoken', 'findbyemail', 'save', 'delete', 'ispartnerenabled'])
+        ->getmock();
         $user->method('attributes')->willreturn([
-      'email',
-      'password',
-      'password_hash',
-      'partner_email1',
-      'partner_email2',
-      'partner_email3',
-    ]);
+        'email',
+        'password',
+        'password_hash',
+        'partner_email1',
+        'partner_email2',
+        'partner_email3',
+        ]);
         return $user;
     }
 }

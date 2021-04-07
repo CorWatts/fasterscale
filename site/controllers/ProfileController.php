@@ -1,4 +1,5 @@
 <?php
+
 namespace site\controllers;
 
 use Yii;
@@ -20,7 +21,7 @@ class ProfileController extends Controller
     public function behaviors()
     {
         return [
-      'access' => [
+        'access' => [
         'class' => AccessControl::class,
         'rules' => [
           [
@@ -32,15 +33,15 @@ class ProfileController extends Controller
             'allow'   => true,
           ],
         ],
-      ],
-      'verbs' => [
+        ],
+        'verbs' => [
         'class' => VerbFilter::class,
         'actions' => [
           'deleteAccount' => ['post'],
           'changePassword' => ['post'],
         ],
-      ],
-    ];
+        ],
+        ];
     }
 
     public function actionIndex()
@@ -66,14 +67,14 @@ class ProfileController extends Controller
         }
 
         return $this->render('index', [
-      'profile'         => $editProfileForm,
-      'change_password' => $changePasswordForm,
-      'change_email'    => $changeEmailForm,
-      'delete'          => $deleteAccountForm,
-      'custom_behavior'=> $customBehaviorForm,
-      'graph_url'       => $graph->getUrl(Yii::$app->user->identity->getIdHash()),
-      'gridView'        => Yii::$container->get(\common\models\CustomBehavior::class)->getGridView(),
-    ]);
+        'profile'         => $editProfileForm,
+        'change_password' => $changePasswordForm,
+        'change_email'    => $changeEmailForm,
+        'delete'          => $deleteAccountForm,
+        'custom_behavior' => $customBehaviorForm,
+        'graph_url'       => $graph->getUrl(Yii::$app->user->identity->getIdHash()),
+        'gridView'        => Yii::$container->get(\common\models\CustomBehavior::class)->getGridView(),
+        ]);
     }
 
     public function actionDeleteAccount()
@@ -150,19 +151,19 @@ class ProfileController extends Controller
     public function actionExport()
     {
         header("Content-Type: text/csv");
-        header("Content-Disposition: attachment; filename=fsa-data-export-".Yii::$app->user->identity->email."-".date('Ymd').".csv");
+        header("Content-Disposition: attachment; filename=fsa-data-export-" . Yii::$app->user->identity->email . "-" . date('Ymd') . ".csv");
 
         $reader = Yii::$app->user->identity->getExportData();
         $fp = fopen('php://output', 'w');
 
         $header = [
-      'Date',
-      'Behavior',
-      'Category',
-      Question::$QUESTIONS[1],
-      Question::$QUESTIONS[2],
-      Question::$QUESTIONS[3],
-    ];
+        'Date',
+        'Behavior',
+        'Category',
+        Question::$QUESTIONS[1],
+        Question::$QUESTIONS[2],
+        Question::$QUESTIONS[3],
+        ];
 
         fputcsv($fp, $header);
         $user_behavior = Yii::$container->get(\common\interfaces\UserBehaviorInterface::class);

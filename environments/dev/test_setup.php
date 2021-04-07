@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is only used for our CI system.
  * Obviously, don't use this for anything else

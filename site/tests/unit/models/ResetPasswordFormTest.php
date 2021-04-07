@@ -3,8 +3,8 @@
 namespace site\tests\unit\models;
 
 use Yii;
-use \site\models\ResetPasswordForm;
-use \yii\base\InvalidArgumentException;
+use site\models\ResetPasswordForm;
+use yii\base\InvalidArgumentException;
 
 class ResetPasswordFormTest extends \Codeception\Test\Unit
 {
@@ -52,11 +52,11 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
         $form = new ResetPasswordForm($token, $user);
 
         $user
-      ->expects($this->once())
-      ->method('removepasswordresettoken');
+        ->expects($this->once())
+        ->method('removepasswordresettoken');
         $user
-      ->expects($this->once())
-      ->method('save');
+        ->expects($this->once())
+        ->method('save');
 
         $form->password = 'new';
         $form->resetPassword();
@@ -67,17 +67,17 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
     private function getUser()
     {
         $user = $this->getmockbuilder('\common\models\user')
-      ->disableoriginalconstructor()
-      ->setmethods(['getisnewrecord', 'attributes', 'save', 'findbypasswordresettoken', 'removepasswordresettoken'])
-      ->getmock();
+        ->disableoriginalconstructor()
+        ->setmethods(['getisnewrecord', 'attributes', 'save', 'findbypasswordresettoken', 'removepasswordresettoken'])
+        ->getmock();
         $user->method('attributes')->willReturn([
-      'email',
-      'password',
-      'password_hash',
-      'partner_email1',
-      'partner_email2',
-      'partner_email3',
-    ]);
+        'email',
+        'password',
+        'password_hash',
+        'partner_email1',
+        'partner_email2',
+        'partner_email3',
+        ]);
         return $user;
     }
 }

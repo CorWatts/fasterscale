@@ -1,4 +1,5 @@
 <?php
+
 namespace site\controllers;
 
 use Yii;
@@ -17,7 +18,7 @@ class CustomBehaviorController extends Controller
     public function behaviors()
     {
         return [
-      'access' => [
+        'access' => [
         'class' => AccessControl::class,
         'rules' => [
           [
@@ -26,22 +27,22 @@ class CustomBehaviorController extends Controller
             'roles'   => ['@'],
           ],
         ],
-      ],
-      'verbs' => [
+        ],
+        'verbs' => [
         'class' => VerbFilter::class,
         'actions' => [
           'create' => ['post'],
           'update' => ['post'],
           'delete' => ['post'],
         ],
-      ],
-    ];
+        ],
+        ];
     }
 
     public function actions()
     {
         return array_replace_recursive(parent::actions(), [
-      'update' => [  // identifier for your editable column action
+        'update' => [  // identifier for your editable column action
         'class'           => EditableColumnAction::className(), // action class name
         'modelClass'      => CustoMBehavior::className(), // the model for the record being edited
         'scenario'        => CustomBehavior::SCENARIO_DEFAULT, // model scenario assigned before validation & update
@@ -56,8 +57,8 @@ class CustomBehaviorController extends Controller
             }
             throw new NotFoundHttpException('The specified behavior does not exist.');
         },
-      ]
-    ]);
+        ]
+        ]);
     }
 
     public function actionCreate()

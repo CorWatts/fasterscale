@@ -1,4 +1,5 @@
 <?php
+
 $test_config = [
     'components' => [
         'request' => [

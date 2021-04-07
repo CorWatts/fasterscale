@@ -19,7 +19,7 @@ class Category extends \yii\base\BaseObject implements \common\interfaces\Catego
     [ "id" => 5, "name" => "Ticked Off"],
     [ "id" => 6, "name" => "Exhausted"],
     [ "id" => 7, "name" => "Relapse/Moral Failure"],
-  ];
+    ];
 
     public static $colors = [
     1 => [
@@ -50,7 +50,7 @@ class Category extends \yii\base\BaseObject implements \common\interfaces\Catego
       "color" => "#CC0000",
       "highlight" => "#CC3333"
     ]
-  ];
+    ];
 
     /**
      * @inheritdoc
@@ -58,9 +58,9 @@ class Category extends \yii\base\BaseObject implements \common\interfaces\Catego
     public function rules()
     {
         return [
-      ['name', 'required'],
-      ['name', 'string', 'max' => 255],
-    ];
+        ['name', 'required'],
+        ['name', 'string', 'max' => 255],
+        ];
     }
 
     /**
@@ -69,9 +69,9 @@ class Category extends \yii\base\BaseObject implements \common\interfaces\Catego
     public function attributeLabels()
     {
         return [
-      'id' => 'ID',
-      'name' => 'Name',
-    ];
+        'id' => 'ID',
+        'name' => 'Name',
+        ];
     }
 
     /**
@@ -82,6 +82,7 @@ class Category extends \yii\base\BaseObject implements \common\interfaces\Catego
      *        2 => 'Forgetting Priorities',
      *        ...
      *      ]
+     *
      * @return array of categories
      */
     public static function getCategories()
@@ -96,15 +97,20 @@ class Category extends \yii\base\BaseObject implements \common\interfaces\Catego
      * Should return:
      *     [ "id" => 1, "name" => "Restoration"]
      *
-     * @param string $key the name of the attribute to filter on
-     * @param string $val the value of the attribute to filter on
+     * @param  string $key the name of the attribute to filter on
+     * @param  string $val the value of the attribute to filter on
      * @return a single category
      */
     public static function getCategory($key, $val)
     {
-        $ret = array_values(array_filter(self::$categories, function ($cat) use ($key, $val) {
-            return $cat[$key] === $val;
-        }));
+        $ret = array_values(
+            array_filter(
+                self::$categories,
+                function ($cat) use ($key, $val) {
+                    return $cat[$key] === $val;
+                }
+            )
+        );
         return $ret ? $ret[0] : null;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
@@ -71,11 +72,13 @@ $timezones = \DateTimeZone::listIdentifiers();
 ]); ?>
             <?= $form->field($profile, 'timezone')->dropDownList(array_combine($timezones, $timezones)); ?>
             <?= $form->field($profile, 'expose_graph')->checkbox() ?>
-            <?php if ($profile->expose_graph): ?>
+            <?php if ($profile->expose_graph) : ?>
             <div class='alert alert-success behaviors-graph-info'>Your behaviors graph can be found at:<br /> <a id="behaviors-graph-link" target="_blank" href="<?=$graph_url?>"><?=$graph_url?></a></div>
             <?php endif; ?>
             <?= $form->field($profile, 'send_email')->checkbox() ?>
-            <div id='send_email_fields' <?php if (!$profile->send_email) { ?>style="display: none;"<?php } ?>>
+            <div id='send_email_fields' <?php if (!$profile->send_email) {
+                ?>style="display: none;"<?php
+                                        } ?>>
               <?= $form->field($profile, 'email_category')->dropdownList(Category::getCategories(), ['data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-trigger' => 'hover', 'data-delay' => '{"show": 500, "hide": 100}', 'title' => 'Want to send an email with every check-in? Try setting this to "Restoration"']) ?>
               <?= $form->field($profile, 'partner_email1')->input('email'); ?>
               <?= $form->field($profile, 'partner_email2')->input('email'); ?>
@@ -112,7 +115,7 @@ $timezones = \DateTimeZone::listIdentifiers();
             <p>To export ALL of your check-in data, click this button. You will be redirected to a CSV download that can be opened in any spreadsheet program.</p>
     
             <div class="form-group">
-              <?= Html::a('Export', ['/profile/export'], ['class'=>'btn btn-success']) ?>
+              <?= Html::a('Export', ['/profile/export'], ['class' => 'btn btn-success']) ?>
             </div>
           </div>
         </div>
@@ -149,9 +152,9 @@ yii\bootstrap\Modal::begin([
   'size' => 'modal-md',
   'header' => '<h4 class="modal-title">Add Behavior</h4>',
   'closeButton' => [
-    'id'=>'close-button',
-    'class'=>'close',
-    'data-dismiss' =>'modal',
+    'id' => 'close-button',
+    'class' => 'close',
+    'data-dismiss' => 'modal',
   ],
   //keeps from closing modal with esc key or by clicking out of the modal.
   // user must click cancel or X to close

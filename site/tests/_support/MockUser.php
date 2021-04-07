@@ -5,7 +5,7 @@ namespace site\tests\_support;
 class MockUser implements \common\interfaces\UserInterface, \yii\web\IdentityInterface
 {
     use \yii\base\StaticInstanceTrait;
-    
+
     public $timezone = 'America/Los_Angeles';
     public $password;
 
@@ -116,10 +116,10 @@ class MockUser implements \common\interfaces\UserInterface, \yii\web\IdentityInt
     public function getPartnerEmails()
     {
     }
-    public function isTokenCurrent($token, String $paramPath)
+    public function isTokenCurrent($token, string $paramPath)
     {
     }
-    public function isTokenConfirmed($token, String $match)
+    public function isTokenConfirmed($token, string $match)
     {
     }
 

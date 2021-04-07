@@ -18,33 +18,51 @@ class CategoryTest extends \Codeception\Test\Unit
 
     public function testRules()
     {
-        $category = new Category;
-        expect('rules', $this->assertEquals($category->rules(), [
-      ['name', 'required'],
-      ['name', 'string', 'max' => 255],
-    ]));
+        $category = new Category();
+        expect(
+            'rules',
+            $this->assertEquals(
+                $category->rules(),
+                [
+                ['name', 'required'],
+                ['name', 'string', 'max' => 255],
+                ]
+            )
+        );
     }
 
     public function testAttributeLabels()
     {
-        $category = new Category;
-        expect('attributeLabels', $this->assertEquals($category->attributeLabels(), [
-      'id' => 'ID',
-      'name' => 'Name',
-    ]));
+        $category = new Category();
+        expect(
+            'attributeLabels',
+            $this->assertEquals(
+                $category->attributeLabels(),
+                [
+                'id' => 'ID',
+                'name' => 'Name',
+                ]
+            )
+        );
     }
 
     public function testGetCategories()
     {
-        expect('getCategories', $this->assertEquals(Category::getCategories(), [
-      1 => 'Restoration',
-      2 => 'Forgetting Priorities',
-      3 => 'Anxiety',
-      4 => 'Speeding Up',
-      5 => 'Ticked Off',
-      6 => 'Exhausted',
-      7 => 'Relapse/Moral Failure',
-    ]));
+        expect(
+            'getCategories',
+            $this->assertEquals(
+                Category::getCategories(),
+                [
+                1 => 'Restoration',
+                2 => 'Forgetting Priorities',
+                3 => 'Anxiety',
+                4 => 'Speeding Up',
+                5 => 'Ticked Off',
+                6 => 'Exhausted',
+                7 => 'Relapse/Moral Failure',
+                ]
+            )
+        );
     }
 
     public function testGetCategory()

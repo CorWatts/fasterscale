@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 
 /**
@@ -9,7 +10,7 @@ use yii\helpers\Html;
 $changeLink = Yii::$app->urlManager->createAbsoluteUrl(['profile/change-email', 'token' => $token]);
 ?>
 
-<p>Hello <?= Html::encode($current_email) ?>,<br/>
-Please click the link below to confirm your email address change to <?= Html::encode($desired_email) ?>:</p>
+<p>Hello <?php echo Html::encode($current_email) ?>,<br/>
+Please click the link below to confirm your email address change to <?php echo Html::encode($desired_email) ?>:</p>
 
-<p><?= Html::a(Html::encode($changeLink), $changeLink) ?></p>
+<p><?php echo Html::a(Html::encode($changeLink), $changeLink) ?></p>
