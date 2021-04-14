@@ -126,6 +126,14 @@ class Question extends ActiveRecord implements QuestionInterface
         return $this->parseQuestionData($questions);
     }
 
+    /**
+     * Parses question array (formatted like the return value from Question::find())
+     * into an easily-iterable format for display.
+     *
+     *
+     * @param array $questions the raw list of questions and data
+     * @return an array of easily-iterable questions and related data
+     */
     public function parseQuestionData($questions)
     {
         if (!$questions) {
@@ -137,23 +145,40 @@ class Question extends ActiveRecord implements QuestionInterface
             $user_behavior_id = $question->user_behavior_id;
 
             $behavior_name = $question->behavior_id
-        // TODO: I think this is potentially a source of exceptions
-        // do we check if the behavior_id is an expected value on
-        // form submission?
-        ? \common\models\Behavior::getBehavior('id', $question->behavior_id)['name']
-        : $question->userBehavior->custom_behavior;
+                // TODO: I think this is potentially a source of exceptions
+                // do we check if the behavior_id is an expected value on
+                // form submission?
+                ? \common\models\Behavior::getBehavior('id', $question->behavior_id)['name']
+                : $question->userBehavior->custom_behavior;
 
+            $category_name = \common\models\Category::getCategory('id', $question->category_id)['name'] ?? "Question";
+
+            $question_answers[$user_behavior_id]['category_id'] = $question->category_id;
+            $question_answers[$user_behavior_id]['category_name'] = $category_name;
             $question_answers[$user_behavior_id]['question'] = [
-        "user_behavior_id" => $user_behavior_id,
-        "behavior_name" => $behavior_name,
-      ];
+                "user_behavior_id" => $user_behavior_id,
+                "behavior_name" => $behavior_name,
+            ];
 
             $question_answers[$user_behavior_id]["answers"][] = [
-        "title" => $this::$QUESTIONS[$question['question']],
-        "answer" => $question['answer']
-      ];
+                "title" => $this::$QUESTIONS[$question['question']],
+                "answer" => $question['answer']
+            ];
         }
 
+        /*
+         * Sort the questions by category_id, ascending. For some reason
+         * questions/answers associated with custom behaviors are always last
+         * when supplied func. Looks like those user_behavior_ids are always a
+         * higher number than the user_behavior_ids for regular behaviors.
+         *
+         * Instead of acutally hunting down and fixing where this originally
+         * happens we can sort the results here. Lazy, I know, but it gets the
+         * job done.
+         */
+        usort($question_answers, function($a, $b) {
+            return $a['category_id'] <=> $b['category_id'];
+        });
         return $question_answers;
     }
 }

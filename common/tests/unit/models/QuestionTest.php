@@ -100,7 +100,29 @@ class QuestionTest extends \Codeception\Test\Unit
     ],
   ];
     private $userQuestions = [
-    2664 => [
+    0 => [
+      'category_id' => 2,
+      'category_name' => 'Forgetting Priorities',
+      'question' => [
+        'user_behavior_id' => 2666,
+        'behavior_name' => 'some_custom_behavior',
+      ],
+      'answers' => [
+        [
+          'title' => 'How does it affect me? How do I act and feel?',
+          'answer' => 'test1',
+        ], [
+          'title' => 'How does it affect the important people in my life?',
+          'answer' => 'test2',
+        ], [
+          'title' => 'Why do I do this? What is the benefit for me?',
+          'answer' => 'test3',
+        ],
+      ],
+    ],
+    1 => [
+    'category_id' => 4,
+    'category_name' => 'Speeding Up',
       'question' => [
         'user_behavior_id' => 2664,
         'behavior_name' => 'can\'t turn off thoughts',
@@ -118,28 +140,12 @@ class QuestionTest extends \Codeception\Test\Unit
         ],
       ],
     ],
-    2665 => [
+    2=> [
+    'category_id' => 7,
+    'category_name' => 'Relapse/Moral Failure',
       'question' => [
         'user_behavior_id' => 2665,
         'behavior_name' => 'aloneness',
-      ],
-      'answers' => [
-        [
-          'title' => 'How does it affect me? How do I act and feel?',
-          'answer' => 'test1',
-        ], [
-          'title' => 'How does it affect the important people in my life?',
-          'answer' => 'test2',
-        ], [
-          'title' => 'Why do I do this? What is the benefit for me?',
-          'answer' => 'test3',
-        ],
-      ],
-    ],
-    2666=> [
-      'question' => [
-        'user_behavior_id' => 2666,
-        'behavior_name' => 'some_custom_behavior',
       ],
       'answers' => [
         [
@@ -167,21 +173,21 @@ class QuestionTest extends \Codeception\Test\Unit
     {
         $questions = array_map(function ($d) {
             $q = $this->getMockBuilder('\common\models\Question')
-         ->setMethods(['save', 'attributes'])
-         ->getMock();
+                      ->setMethods(['save', 'attributes'])
+                      ->getMock();
             $q->method('save')->willReturn(true);
             $q->method('attributes')
-        ->willReturn([
-          'id',
-          'user_id',
-          'behavior_id',
-          'category_id',
-          'user_behavior_id',
-          'question',
-          'answer',
-          'date',
-          'userBehavior',
-        ]);
+              ->willReturn([
+                  'id',
+                  'user_id',
+                  'behavior_id',
+                  'category_id',
+                  'user_behavior_id',
+                  'question',
+                  'answer',
+                  'date',
+                  'userBehavior',
+              ]);
             foreach ($d as $k => $v) {
                 if ($k === 'behavior_id' && $v === null) {
                     $ub = new \StdClass();
@@ -193,7 +199,8 @@ class QuestionTest extends \Codeception\Test\Unit
             }
             return $q;
         }, $this->questionData);
-        expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals($this->question->parseQuestionData($questions), $this->userQuestions));
+
+        expect('parseQuestionData should return the correct structure with expected data', $this->assertEquals($this->userQuestions, $this->question->parseQuestionData($questions)));
         expect('parseQuestionData should return empty with the empty set', $this->assertEmpty($this->question->parseQuestionData([])));
     }
 }

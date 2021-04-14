@@ -72,13 +72,14 @@ if ($answer_pie) {
   </div>
 
   <?php if ($questions) {
-    foreach ($questions as $behavior_id => $behavior_questions) {
+    foreach ($questions as $q) {
         print "<div class='well well-sm'>";
-        print "<button type='button' class='btn btn-primary' disabled='disabled'>{$behavior_questions['question']['behavior_name']}</button>";
+        print "<p><strong>{$q['category_name']}</strong></p>";
+        print "<button type='button' class='btn btn-primary' disabled='disabled'>{$q['question']['behavior_name']}</button>";
         print "<div class='row'>";
-        foreach ($behavior_questions['answers'] as $question) {
+        foreach ($q['answers'] as $question) {
             print "<div class='col-md-4'>";
-            print "<p><strong>{$question['title']}</strong></p>";
+            print "<p><em>{$question['title']}</em></p>";
             print "<p>".Html::encode($question['answer'])."</p>";
             print "</div>";
         }

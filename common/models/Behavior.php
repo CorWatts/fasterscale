@@ -192,8 +192,6 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
     }
 
     /**
-     *
-    /**
      * Given a $key => $value pair, returns the matching behavior.
      * Example:
      *     getBehavior('id', 1);
