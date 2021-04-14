@@ -129,7 +129,7 @@ if ($questions) {
     foreach ($questions as $behavior_id => $behavior_questions) {
         ?>
 
-                                                   <h4 style="Margin:0;Margin-bottom:10px;color:#37b98f;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:5px;padding:0 8px;text-align:left;word-wrap:normal"> <?= Html::encode($behavior_questions['question']['behavior_name']) ?> </h4>
+                                                    <h4 style="Margin:0;Margin-bottom:10px;color:#37b98f;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:5px;padding:0 8px;text-align:left;word-wrap:normal"> <?= Html::encode($behavior_questions['question']['behavior_name']) ?> <span style="font-size: 16px;">(<?= Html::encode($behavior_questions['category_name']) ?>)</span></h4>
 
 <?php
     foreach ($behavior_questions['answers'] as $key => $question) {  ?>
