@@ -98,7 +98,9 @@ class SignupForm extends Model
             $this->user = $this->setFields($this->user);
             $this->user->save();
 
-            $this->user->sendSignupNotificationEmail();
+            if(\Yii::$app->params['sendSignupNotification']) {
+                $this->user->sendSignupNotificationEmail();
+            }
             $this->user->sendVerifyEmail();
 
             return $this->user;
