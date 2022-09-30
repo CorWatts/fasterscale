@@ -4,7 +4,6 @@ use yii\helpers\Html;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
- * @var \site\models\ContactForm $model
  */
 $this->title = 'Privacy';
 ?>
@@ -62,7 +61,7 @@ $this->title = 'Privacy';
   <p>By using this Site, you signify your acceptance of this policy. If you do not agree to this policy, please do not use our Site. Your continued use of the Site following the posting of changes to this policy will be deemed your acceptance of those changes. This policy was generated using <a href="http://privacypolicies.com" target="_blank">PrivacyPolicies.Com</a></p>
   
   <h3>Contacting us</h3>
-  <p>If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please contact us using the contact form.</p>
+  <p>If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please contact us using the contact email.</p>
   
   <p>This document was last updated on November 21, 2015</p>
 </div>
