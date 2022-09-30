@@ -5,7 +5,6 @@ use yii\helpers\Url;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
- * @var \site\models\ContactForm $model
  */
 $this->title = 'Terms';
 ?>

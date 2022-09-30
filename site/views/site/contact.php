@@ -6,7 +6,6 @@ use yii\captcha\Captcha;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
- * @var \site\models\ContactForm $model
  */
 $this->title = 'The Faster Scale App | Contact Us';
 $this->registerMetaTag([
@@ -50,24 +49,7 @@ $this->registerMetaTag([
 
     <div class="col-md-6 col-md-border">
       <h2 style="margin-top: 0px;">Send us a message</h2>
-      <p>If you'd like to contact us directly, this is the form to use.</p>
-      <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
-        <?= $form->field($model, 'name') ?>
-        <?= $form->field($model, 'email', ['inputTemplate' => '<div class="input-group"><span class="input-group-addon">@</span>{input}</div>'])->input('email') ?>
-        <?= $form->field($model, 'subject') ?>
-        <?= $form->field($model, 'body')->textArea(['rows' => 6]) ?>
-
-        <?php if (Yii::$app->user->isGuest) {
-    // only show captcha if user is not logged in
-    print $form->field($model, 'verifyCode')->widget(Captcha::class, [
-            'template' => '<div class="row"><div class="col-md-4">{image}</div><div class="col-md-8">{input}</div></div>',
-          ]);
-} ?>
-
-        <div class="form-group">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-        </div>
-      <?php ActiveForm::end(); ?>
-    </div>
+      <p>If you'd like to email us remove 'deleteme' and the hyphen from the below email address.</p>
+      <p><?=\Yii::$app->params['contactEmail']?></p>
   </div>
 </div>

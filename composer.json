@@ -44,7 +44,10 @@
         "assets": "rm -f site/assets/publish/css/app.css && ./yii asset site/assets/assets.php site/assets/assets-compressed.php"
     },
     "config": {
-        "process-timeout": 1800
+        "process-timeout": 1800,
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
     },
     "repositories": [
         {

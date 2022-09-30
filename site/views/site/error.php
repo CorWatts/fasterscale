@@ -20,7 +20,7 @@ if ($exception instanceof \yii\web\NotFoundHttpException):
 
   <h1>Hmm, that's not quite right.</h1>
   <div class="alert alert-danger"><?= nl2br(Html::encode($name)) ?></div>
-  <p>We've got no current secrets and we're being open....we honestly have no idea what page you're trying to find. If you landed on this page from a link on The Faster Scale App please send us a message on our <a href="<?=Url::to(['site/contact'])?>">contact form</a>.</p>
+  <p>We've got no current secrets and we're being open....we honestly have no idea what page you're trying to find. If you landed on this page from a link on The Faster Scale App please send us a message on our <a href="<?=Url::to(['site/contact'])?>">contact email</a>.</p>
   <p>Otherwise, please ensure your attempted url is correct.</p>
 
 <?php
@@ -30,7 +30,7 @@ elseif ($exception instanceof \yii\web\ServerErrorHttpException):
 
   <h1>It's not you. It's us.</h1>
   <div class="alert alert-danger"><?= nl2br(Html::encode($name)) ?></div>
-  <p>Well this is embarrassing...we're having an error on our side. So sorry for the annoyance. If you'd like to help, please send us a message on our <a href='<?=Url::to(['site/contact'])?>'>contact form</a>.</p>
+  <p>Well this is embarrassing...we're having an error on our side. So sorry for the annoyance. If you'd like to help, please send us a message on our <a href='<?=Url::to(['site/contact'])?>'>contact email</a>.</p>
 
 <?php else: ?>
 
