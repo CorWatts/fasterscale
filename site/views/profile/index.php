@@ -4,7 +4,7 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use common\models\Category;
 
-$this->title = 'Profile';
+$this->title = 'The Unofficial Faster Scale App | Profile';
 $timezones = \DateTimeZone::listIdentifiers();
 ?>
 <div class="profile-index">

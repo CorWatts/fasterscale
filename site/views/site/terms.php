@@ -6,7 +6,7 @@ use yii\helpers\Url;
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
  */
-$this->title = 'Terms';
+$this->title = 'The Unofficial Faster Scale App | Terms';
 ?>
 <div class="site-terms">
   <h1><?= Html::encode($this->title) ?></h1>

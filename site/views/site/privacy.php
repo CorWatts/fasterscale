@@ -5,7 +5,7 @@ use yii\helpers\Html;
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
  */
-$this->title = 'Privacy';
+$this->title = 'The Unofficial Faster Scale App | Privacy';
 ?>
 <div class="site-privacy">
   <h1><?= Html::encode($this->title) ?></h1>

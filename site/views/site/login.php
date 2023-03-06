@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
  * @var yii\widgets\ActiveForm $form
  * @var \common\models\LoginForm $model
  */
-$this->title = 'The Faster Scale App | Log in';
+$this->title = 'The Unofficial Faster Scale App | Log in';
 ?>
 <div class="site-login">
   <div class="row">

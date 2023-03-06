@@ -9,7 +9,7 @@ use common\models\Category;
  * @var yii\widgets\ActiveForm $form
  * @var \site\models\SignupForm $model
  */
-$this->title = 'The Faster Scale App | Sign up';
+$this->title = 'The Unofficial Faster Scale App | Sign up';
 $timezones = DateTimeZone::listIdentifiers();
 
 $this->registerMetaTag([

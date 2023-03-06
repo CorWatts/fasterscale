@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'The Faster Scale App | FAQ';
+$this->title = 'The Unofficial Faster Scale App | FAQ';
 $this->registerMetaTag([
   'name' => 'description',
   'content' => Html::encode("Have questions about the Faster Scale App? You might find your answers in this FAQ.")

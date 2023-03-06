@@ -7,7 +7,7 @@ use yii\captcha\Captcha;
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
  */
-$this->title = 'The Faster Scale App | Contact Us';
+$this->title = 'The Unofficial Faster Scale App | Contact Us';
 $this->registerMetaTag([
   'name' => 'description',
   'content' => 'The Faster Scale App is a totally free, online version of Michael Dye\'s relapse awareness scale. Please send us comments, questions, or suggestions here.'

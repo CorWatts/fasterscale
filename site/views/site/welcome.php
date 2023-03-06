@@ -4,7 +4,7 @@ use yii\helpers\Html;
 /**
  * @var yii\web\View $this
  */
-$this->title = 'The Faster Scale App | Welcome';
+$this->title = 'The Unofficial Faster Scale App | Welcome';
 ?>
 <div class="site-welcome">
   <h1>Welcome to the Faster Scale App</h1>

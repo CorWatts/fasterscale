@@ -14,7 +14,7 @@ use common\models\Question;
 \site\assets\PickadateAsset::register($this);
 \site\assets\ChartjsAsset::register($this);
 
-$this->title = "The Faster Scale App | Previous Check-ins";
+$this->title = "The Unofficial Faster Scale App | Previous Check-ins";
 $time = Yii::$container->get('common\interfaces\TimeInterface');
 $this->registerJsFile('/js/checkin/view.js', ['depends' => [\site\assets\AppAsset::class]]);
 

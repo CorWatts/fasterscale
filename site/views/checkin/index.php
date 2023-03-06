@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper as AH;
  * @var yii\web\View $this
  */
 
-$this->title = "The Faster Scale App | Check-in";
+$this->title = "The Unofficial Faster Scale App | Check-in";
 
 function checkboxItemTemplate($index, $label, $name, $checked, $value)
 {

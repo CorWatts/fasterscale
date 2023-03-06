@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
  * @var yii\widgets\ActiveForm $form
  * @var \site\models\PasswordResetRequestForm $model
  */
-$this->title = 'Request password reset';
+$this->title = 'The Unofficial Faster Scale App | Request Password Reset';
 ?>
 <div class="site-request-password-reset">
   <h1><?= Html::encode($this->title) ?></h1>

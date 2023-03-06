@@ -10,7 +10,7 @@ use yii\helpers\Url;
  * @var Exception $exception
  */
 
-$this->title = "The Faster Scale App | $name";
+$this->title = "The Unofficial Faster Scale App | $name";
 
 $exception = Yii::$app->errorHandler->exception;
 

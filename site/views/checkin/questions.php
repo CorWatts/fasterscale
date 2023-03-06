@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
  * @var yii\web\View $this
  */
 
-$this->title = "The Faster Scale App | Check-in | Questions";
+$this->title = "The Unofficial Faster Scale App | Check-in | Questions";
 
 function radioItemTemplate($index, $label, $name, $checked, $value)
 {
