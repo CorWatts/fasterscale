@@ -157,7 +157,29 @@ class QuestionForm extends Model
     public function getAnswers($bhvrs)
     {
         $answers = [];
-        $user_bhvrs = array_combine($this->getUserBehaviorProps(), $bhvrs);
+
+        /*
+         * Fixes issue #194 with processing question answers for custom behaviors
+         *
+         * Answers were not correctly associated with custom behaviors due to an incorrect
+         * assumption that they were inserted into the DB in the typical FASTER order.
+         *
+         * We set the array keys to be the category ids then sort the array by key. This
+         * ensures our behaviors are in the FASTER order.
+         *
+         * NOTE: This further entrenches us in the assumption that we are
+         * processing one-and-only-one behavior per category. This logic will
+         * break if that assumption becomes invalid as we're indexing the
+         * array on category_id.
+         */
+        $bhvrs2 = [];
+        foreach($bhvrs as $b) {
+            $bhvrs2[$b->category_id] = $b;
+        }
+        ksort($bhvrs2);
+        /* ** ** */
+
+        $user_bhvrs = array_combine($this->getUserBehaviorProps(), $bhvrs2);
         foreach ($user_bhvrs as $property => $user_bhvr) {
             $behavior_id = intval(substr($property, -1, 1));
             foreach ($this->behaviorToAnswers($behavior_id) as $answer_letter => $answer) {

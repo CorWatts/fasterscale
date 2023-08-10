@@ -129,42 +129,42 @@ class QuestionFormTest extends \Codeception\Test\Unit
             $model->answer_3c = "processing emotions";
 
             expect('getAnswers should extract and coerce the data correctly', $this->assertEquals($model->getAnswers([
-        $this->fakeModel(7, 280, 8),
-        $this->fakeModel(13, 281, 8),
+        $this->fakeModel(7, 280, 6),
+        $this->fakeModel(13, 281, 7),
         $this->fakeModel(28, 284, 8)
       ]), [ [
                                         'behavior_id' => 280,
-                    'category_id' => 8,
+                    'category_id' => 6,
                                         'user_bhvr_id' => 7,
                                         'question_id' => 1,
                                         'answer' => 'processing emotions',
                                     ], [
                                         'behavior_id' => 280,
-                    'category_id' => 8,
+                    'category_id' => 6,
                                         'user_bhvr_id' => 7,
                                         'question_id' => 2,
                                         'answer' => 'processing emotions',
                                     ], [
                                         'behavior_id' => 280,
-                    'category_id' => 8,
+                    'category_id' => 6,
                                         'user_bhvr_id' => 7,
                                         'question_id' => 3,
                                         'answer' => 'processing emotions',
                                     ], [
                                         'behavior_id' => 281,
-                    'category_id' => 8,
+                    'category_id' => 7,
                                         'user_bhvr_id' => 13,
                                         'question_id' => 1,
                                         'answer' => 'processing emotions',
                                     ], [
                                         'behavior_id' => 281,
-                    'category_id' => 8,
+                    'category_id' => 7,
                                         'user_bhvr_id' => 13,
                                         'question_id' => 2,
                                         'answer' => 'processing emotions',
                                     ], [
                                         'behavior_id' => 281,
-                    'category_id' => 8,
+                    'category_id' => 7,
                                         'user_bhvr_id' => 13,
                                         'question_id' => 3,
                                         'answer' => 'processing emotions',
