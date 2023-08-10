@@ -28,7 +28,7 @@ These instructions will help you get a local installation set up for development
 
 ## Assets
 We have built-in support for minimizing JS and CSS assets. This is optional in both the dev and prod environments but is strongly recommended in prod to reduce the page load time. The following steps should be sufficient:  
-1. Ensure the npm packages `uglify-js` and `uglifycss` are installed via ```npm install uglify-js uglifycss -g```
+1. Ensure the npm packages `uglify-js`,  `uglifycss`, and `node-sass` are installed via ```npm install uglify-js uglifycss node-sass -g```
 2. Swap the commented and uncommented code blocks in ```site/config/bundles-local.php```
 3. Run the asset compression by executing ```composer assets```
 

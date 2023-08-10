@@ -8,7 +8,7 @@ $this->title = 'The Unofficial Faster Scale App | Profile';
 $timezones = \DateTimeZone::listIdentifiers();
 ?>
 <div class="profile-index">
-  <h1><?= Html::encode($this->title) ?></h1>
+  <h1>Profile</h1>
 
   <p>Update your account information below</p>
 
