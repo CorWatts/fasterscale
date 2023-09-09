@@ -37,6 +37,7 @@ class CustomBehaviorForm extends Model
         return [
       [['name', 'category_id'], 'required'],
       ['name', 'filter', 'filter' => 'trim'],
+      ['name', 'string', 'length' => [1, 255]],
       ['category_id', 'integer'],
       ['category_id', 'in', 'range'=>array_keys($this->categories)],
 
